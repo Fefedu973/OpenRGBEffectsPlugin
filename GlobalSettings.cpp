@@ -15,6 +15,7 @@ GlobalSettings::GlobalSettings(QWidget *parent) :
     ui->brightnessSlider->setValue(OpenRGBEffectSettings::globalSettings.brightness);
     ui->temperature->setValue(OpenRGBEffectSettings::globalSettings.temperature);
     ui->tint->setValue(OpenRGBEffectSettings::globalSettings.tint);
+    ui->startup_timeout->setValue(OpenRGBEffectSettings::globalSettings.startup_timeout);
     ui->fpsSlider->setValue(OpenRGBEffectSettings::globalSettings.fps);
     ui->hide_unsupportedCheckBox->setChecked(OpenRGBEffectSettings::globalSettings.hide_unsupported);
     ui->randomColorsCheckBox->setChecked(OpenRGBEffectSettings::globalSettings.prefer_random);
@@ -67,6 +68,11 @@ void GlobalSettings::on_temperature_valueChanged(int value)
 void GlobalSettings::on_tint_valueChanged(int value)
 {
     OpenRGBEffectSettings::globalSettings.tint = value;
+}
+
+void GlobalSettings::on_startup_timeout_valueChanged(int value)
+{
+    OpenRGBEffectSettings::globalSettings.startup_timeout = value;
 }
 
 void GlobalSettings::on_hide_unsupportedCheckBox_stateChanged(int state)

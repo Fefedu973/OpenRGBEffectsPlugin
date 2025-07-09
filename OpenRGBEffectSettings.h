@@ -19,6 +19,7 @@ struct GlobalSettingsStruct
     bool hide_unsupported = true;
     bool prefer_random = false;
     bool use_prefered_colors = false;
+    int  startup_timeout = 2000;
     std::string startup_profile;
     std::vector<RGBColor> prefered_colors;
     Audio::AudioSettingsStruct      audio_settings;

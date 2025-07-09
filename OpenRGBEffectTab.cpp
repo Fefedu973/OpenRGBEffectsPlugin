@@ -49,7 +49,7 @@ OpenRGBEffectTab::OpenRGBEffectTab(QWidget *parent):
 
     // Give a bit to other plugins before loading.
     // So we make sure all virtual devices are ready
-    QTimer::singleShot(2000, [=](){
+    QTimer::singleShot(OpenRGBEffectSettings::globalSettings.startup_timeout, [=](){
         LoadProfileList();
 
         std::string startup_profile = qgetenv("OPENRGB_EFFECTS_PLUGIN_STARTUP_PROFILE").toStdString();

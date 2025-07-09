@@ -26,6 +26,7 @@ bool OpenRGBEffectSettings::WriteGlobalSettings()
     j["prefered_colors"]       = globalSettings.prefered_colors;
     j["use_prefered_colors"]   = globalSettings.use_prefered_colors;
     j["audio_settings"]        = globalSettings.audio_settings;
+    j["startup_timeout"]       = globalSettings.startup_timeout;
 
     if(!CreateSettingsDirectory())
     {
@@ -58,6 +59,7 @@ void OpenRGBEffectSettings::LoadGlobalSettings()
             if(j.contains("prefer_random"))         globalSettings.prefer_random        =j["prefer_random"];
             if(j.contains("use_prefered_colors"))   globalSettings.use_prefered_colors  =j["use_prefered_colors"];
             if(j.contains("audio_settings"))        globalSettings.audio_settings       =j["audio_settings"];
+            if(j.contains("startup_timeout"))       globalSettings.startup_timeout      =j["startup_timeout"];
 
 
             if(j.contains("prefered_colors"))
