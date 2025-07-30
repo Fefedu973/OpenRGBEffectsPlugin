@@ -9,29 +9,42 @@
 
 #include <QMenu>
 #include <QSystemTrayIcon>
+#include <QThread>
 #include "OpenRGBEffectsPlugin.h"
 #include "EffectList.h"
 #include "EffectListManager.h"
 #include "EffectManager.h"
-#include "NetworkServer.h"
 #include "OpenRGBEffectSettings.h"
 
-ResourceManagerInterface* OpenRGBEffectsPlugin::RMPointer = nullptr;
+#define SETTINGSMANAGER_UPDATE_REASON_SETTINGS_UPDATED 0
 
+/*---------------------------------------------------------*\
+| Plugin Global Variables                                   |
+\*---------------------------------------------------------*/
+std::atomic<bool>               OpenRGBEffectsPlugin::controllers_updating;
+std::vector<ControllerZone*>    OpenRGBEffectsPlugin::controller_zones;
+std::shared_mutex               OpenRGBEffectsPlugin::controller_zones_mutex;
+OpenRGBPluginAPIInterface*      OpenRGBEffectsPlugin::api = nullptr;
+
+/*---------------------------------------------------------*\
+| Plugin Information                                        |
+\*---------------------------------------------------------*/
 OpenRGBPluginInfo OpenRGBEffectsPlugin::GetPluginInfo()
 {
     OpenRGBPluginInfo info;
 
-    info.Name           = "OpenRGB Effects Plugin";
-    info.Description    = "Provides a variety of custom effects";
-    info.Version        = VERSION_STRING;
-    info.Commit         = GIT_COMMIT_ID;
-    info.URL            = "https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin";
+    info.Name               = PROJECT_NAME;
+    info.Description        = PROJECT_DESC;
+    info.Version            = VERSION_STRING;
+    info.Commit             = GIT_COMMIT_ID;
+    info.URL                = PROJECT_URL;
 
-    info.Label          = "Effects";
-    info.Location       = OPENRGB_PLUGIN_LOCATION_TOP;
+    info.Label              = "Effects";
+    info.Location           = OPENRGB_PLUGIN_LOCATION_TOP;
 
     info.Icon.load(":/OpenRGBEffectsPlugin.png");
+
+    info.ProtocolVersion    = 2;
 
     return(info);
 }
@@ -41,50 +54,56 @@ unsigned int OpenRGBEffectsPlugin::GetPluginAPIVersion()
     return(OPENRGB_PLUGIN_API_VERSION);
 }
 
-void OpenRGBEffectsPlugin::Load(ResourceManagerInterface *RM)
+/*---------------------------------------------------------*\
+| Plugin Functionality                                      |
+\*---------------------------------------------------------*/
+void OpenRGBEffectsPlugin::Load(OpenRGBPluginAPIInterface* api_interface_ptr)
 {
-    RMPointer = RM;
-    OpenRGBPluginInfo info = OpenRGBEffectsPlugin::GetPluginInfo();
-    NetworkPlugin net_plugin;
-    net_plugin.name = info.Name;
-    net_plugin.description = info.Description;
-    net_plugin.protocol_version = 2;
-    net_plugin.version = info.Version;
-    net_plugin.callback = OpenRGBEffectsPlugin::HandleSDK;
-    net_plugin.callback_arg = (void*)this;
-    RMPointer->GetServer()->RegisterPlugin(net_plugin);
+    /*-----------------------------------------------------*\
+    | Store API interface pointer                           |
+    \*-----------------------------------------------------*/
+    api = api_interface_ptr;
+    
+    /*-----------------------------------------------------*\
+    | Log initial messages                                  |
+    \*-----------------------------------------------------*/
+    LOG_INFO("[OpenRGBEffectsPlugin] version %s (%s), build date %s", VERSION_STRING, GIT_COMMIT_ID, GIT_COMMIT_DATE);
+    LOG_INFO("[OpenRGBEffectsPlugin] %lu effects registered", EffectListManager::get()->GetEffectsListSize());
+
+    /*-----------------------------------------------------*\
+    | Load global settings                                  |
+    \*-----------------------------------------------------*/
     OpenRGBEffectSettings::LoadGlobalSettings();
+
+    /*-----------------------------------------------------*\
+    | Create the main UI widget and return it               |
+    \*-----------------------------------------------------*/
+    ui = new OpenRGBEffectTab();
+
+    /*-----------------------------------------------------*\
+    | Update the controller list                            |
+    \*-----------------------------------------------------*/
+    UpdateControllers();
 }
 
 QWidget* OpenRGBEffectsPlugin::GetWidget()
 {
-    printf("[OpenRGBEffectsPlugin] version %s (%s), build date %s\n", VERSION_STRING, GIT_COMMIT_ID, GIT_COMMIT_DATE);
-
-    printf("[OpenRGBEffectsPlugin] %lu effects registered\n", EffectListManager::get()->GetEffectsListSize());
-
-    RMPointer->WaitForDeviceDetection();
-
-    OpenRGBEffectTab* ui = new OpenRGBEffectTab();
-
-    this->ui = ui;
-
-    RMPointer->RegisterDeviceListChangeCallback(DeviceListChangedCallback, ui);
-    RMPointer->RegisterDetectionProgressCallback(DeviceListChangedCallback, ui);
-
     return ui;
 }
 
 QMenu* OpenRGBEffectsPlugin::GetTrayMenu()
 {
+    /*-----------------------------------------------------*\
+    | Create the tray menu                                  |
+    \*-----------------------------------------------------*/
     QMenu* pluginsMenu = new QMenu("Effects", ui);
 
-    QMenu* profilesMenu = new QMenu("Profiles", pluginsMenu);
+    pluginsMenu->setObjectName("OpenRGBEffectsPlugin::TrayMenu");
 
-    pluginsMenu->setObjectName("OpenRGBEffectsPlugin::profilesMenu");
-
-    // START ALL EFFECTS
-
-    QAction* actionStartAll = new QAction("Start all effects", ui);
+    /*-----------------------------------------------------*\
+    | Add Start All Effects action                          |
+    \*-----------------------------------------------------*/
+    QAction* actionStartAll = new QAction("Start All Effects", ui);
 
     connect(actionStartAll, &QAction::triggered, [=](){
         QMetaObject::invokeMethod(ui, "StartAll", Qt::QueuedConnection);
@@ -96,9 +115,10 @@ QMenu* OpenRGBEffectsPlugin::GetTrayMenu()
 
     pluginsMenu->addAction(actionStartAll);
 
-    // STOP ALL EFFECTS
-
-    QAction* actionStopAll = new QAction("Stop all effects", ui);
+    /*-----------------------------------------------------*\
+    | Add Stop All Effects action                           |
+    \*-----------------------------------------------------*/
+    QAction* actionStopAll = new QAction("Stop All Effects", ui);
 
     connect(actionStopAll, &QAction::triggered, [=](){
         QMetaObject::invokeMethod(ui, "StopAll", Qt::QueuedConnection);
@@ -109,71 +129,37 @@ QMenu* OpenRGBEffectsPlugin::GetTrayMenu()
 
     pluginsMenu->addAction(actionStopAll);
 
-    // PROFILES SHORTUCTS
-
-    connect(ui, &OpenRGBEffectTab::ProfileListUpdated, [=](){
-        profilesMenu->clear();
-
-        std::vector<std::string> profiles = OpenRGBEffectSettings::ListProfiles();
-
-        for(const std::string& profile: profiles)
-        {
-            QString profile_name = QString::fromStdString(profile);
-
-            QAction* profileAction = new QAction(profile_name, ui);
-
-            connect(profileAction, &QAction::triggered, [=](){
-                QMetaObject::invokeMethod(ui, "LoadProfile", Qt::QueuedConnection, Q_ARG(QString, QString::fromStdString(profile)));
-            });
-
-            profileAction->setObjectName("OpenRGBEffectsPlugin::Action::Profile::"+profile_name);
-            profileAction->setProperty("OpenRGBEffectsPlugin::ActionTitle", "Load profile: " + profile_name);
-            profilesMenu->addAction(profileAction);
-        }
-    });
-
-    pluginsMenu->addMenu(profilesMenu);
-
     return(pluginsMenu);
 }
 
 void OpenRGBEffectsPlugin::Unload()
 {
-    printf("[OpenRGBEffectsPlugin] Unloading\n");
+    /*-----------------------------------------------------*\
+    | Log unload message                                    |
+    \*-----------------------------------------------------*/
+    LOG_INFO("[OpenRGBEffectsPlugin] Unloading\n");
 
+    /*-----------------------------------------------------*\
+    | Stop all effects                                      |
+    \*-----------------------------------------------------*/
     ui->StopAll();
-
-    RMPointer->UnregisterDeviceListChangeCallback(DeviceListChangedCallback, ui);
-    RMPointer->UnregisterDetectionProgressCallback(DeviceListChangedCallback, ui);
-    OpenRGBPluginInfo info = OpenRGBEffectsPlugin::GetPluginInfo();
-    RMPointer->GetServer()->UnregisterPlugin(info.Name);
 }
 
-void OpenRGBEffectsPlugin::DeviceListChangedCallback(void* o)
+unsigned char* OpenRGBEffectsPlugin::OnSDKCommand(unsigned int pkt_id, unsigned char* data, unsigned int* data_size)
 {
-    // todo : investigate why this is called so many times (openrgb codebase)
-
-    EffectManager::Get()->ClearAssignments();
-
-    QMetaObject::invokeMethod((OpenRGBEffectTab *)o, "DeviceListChanged", Qt::QueuedConnection);
-}
-
-unsigned char* OpenRGBEffectsPlugin::HandleSDK(void * instance, unsigned int pkt_id, unsigned char* data, unsigned int* data_size)
-{
-    OpenRGBEffectsPlugin* plugin = (OpenRGBEffectsPlugin*)instance;
     unsigned char* data_out = nullptr;
 
-    switch (pkt_id)
+    switch(pkt_id)
     {
         case NET_PACKET_ID_REQUEST_EFFECT_LIST:
-            data_out = plugin->ui->GetEffectListDescription(data_size);
+            data_out = ui->GetEffectListDescription(data_size);
             break;
         case NET_PACKET_ID_START_EFFECT:
             {
                 unsigned short name_len;
                 memcpy(&name_len, &data[0], sizeof(name_len));
                 char* name = (char *)&data[sizeof(unsigned short)];
-                plugin->ui->SetEffectState(std::string(name), true);
+                ui->SetEffectState(std::string(name), true);
             }
             break;
         case NET_PACKET_ID_STOP_EFFECT:
@@ -181,22 +167,176 @@ unsigned char* OpenRGBEffectsPlugin::HandleSDK(void * instance, unsigned int pkt
                 unsigned short name_len;
                 memcpy(&name_len, &data[0], sizeof(name_len));
                 char* name = (char *)&data[sizeof(unsigned short)];
-                plugin->ui->SetEffectState(std::string(name), false);
+                ui->SetEffectState(std::string(name), false);
             }
             break;
-        case NET_PACKET_ID_REQUEST_EFFECTS_PROFILE_LIST:
-            data_out = plugin->ui->GetProfileListDescription(data_size);
-            break;
-        case NET_PACKET_ID_LOAD_EFFECTS_PROFILE:
-        {
-            unsigned short name_len;
-            memcpy(&name_len, &data[0], sizeof(name_len));
-            char* name = (char *)&data[sizeof(unsigned short)];
-            QMetaObject::invokeMethod(plugin->ui, "LoadProfile", Qt::QueuedConnection, Q_ARG(QString, QString::fromStdString(name)));
-        }
-        break;
-
-
     }
     return data_out;
+}
+
+void OpenRGBEffectsPlugin::OnProfileAboutToLoad()
+{
+    if(QThread::currentThread() == this->thread())
+    {
+        ui->AboutToLoadProfile();
+    }
+    else
+    {
+        QMetaObject::invokeMethod(ui, [=](){ui->AboutToLoadProfile();}, Qt::BlockingQueuedConnection );
+    }
+}
+
+void OpenRGBEffectsPlugin::OnProfileLoad(nlohmann::json profile_data)
+{
+    if(QThread::currentThread() == this->thread())
+    {
+        ui->LoadProfileJson(profile_data);
+    }
+    else
+    {
+        QMetaObject::invokeMethod(ui, [=](){ui->LoadProfileJson(profile_data);}, Qt::BlockingQueuedConnection );
+    }
+}
+
+nlohmann::json OpenRGBEffectsPlugin::OnProfileSave()
+{
+    nlohmann::json profile_json;
+
+    profile_json = ui->GetProfileJson(true);
+
+    return(profile_json);
+}
+
+/*---------------------------------------------------------*\
+| Update Signals                                            |
+\*---------------------------------------------------------*/
+void OpenRGBEffectsPlugin::ProfileManagerUpdated(unsigned int /*update_reason*/)
+{
+
+}
+
+void OpenRGBEffectsPlugin::ResourceManagerUpdated(unsigned int update_reason)
+{
+    switch(update_reason)
+    {
+        case RESOURCEMANAGER_UPDATE_REASON_DEVICE_LIST_UPDATED:
+            QMetaObject::invokeMethod(this, "UpdateControllers", Qt::BlockingQueuedConnection );
+            break;
+    }
+}
+
+void OpenRGBEffectsPlugin::SettingsManagerUpdated(unsigned int update_reason)
+{
+    switch(update_reason)
+    {
+        case SETTINGSMANAGER_UPDATE_REASON_SETTINGS_UPDATED:
+            ui->SetLanguage();
+            break;
+    }
+}
+
+void OpenRGBEffectsPlugin::OpenRGBEffectsPluginRGBControllerCallback(void * this_ptr, unsigned int update_reason, void * /*controller_ptr*/)
+{
+    OpenRGBEffectsPlugin * this_obj = (OpenRGBEffectsPlugin *)this_ptr;
+
+    switch(update_reason)
+    {
+        case RGBCONTROLLER_UPDATE_REASON_HIDDEN:
+        case RGBCONTROLLER_UPDATE_REASON_UNHIDDEN:
+            QMetaObject::invokeMethod(this_obj, "UpdateControllers", Qt::BlockingQueuedConnection );
+            break;
+    }
+}
+
+/*---------------------------------------------------------*\
+| Controller List Management                                |
+\*---------------------------------------------------------*/
+void OpenRGBEffectsPlugin::UpdateControllers()
+{
+    controllers_updating = true;
+
+    /*-----------------------------------------------------*\
+    | Lock the controller zones mutex                       |
+    \*-----------------------------------------------------*/
+    controller_zones_mutex.lock();
+
+    /*-----------------------------------------------------*\
+    | Clear the existing controller zones                   |
+    \*-----------------------------------------------------*/
+    controller_zones.clear();
+
+    /*-----------------------------------------------------*\
+    | Create ControllerZones for new controllers            |
+    \*-----------------------------------------------------*/
+    for(RGBControllerInterface* controller : api->GetRGBControllers())
+    {
+        /*-------------------------------------------------*\
+        | Unregister any existing callback registered to    |
+        | this controller                                   |
+        \*-------------------------------------------------*/
+        controller->UnregisterUpdateCallback(this);
+
+        /*-------------------------------------------------*\
+        | Check if controller supports Direct mode          |
+        \*-------------------------------------------------*/
+        bool has_direct = false;
+
+        for(unsigned int i = 0; i < controller->GetModeCount(); i++)
+        {
+            if(controller->GetModeName(i) == "Direct")
+            {
+                has_direct = true;
+                break;
+            }
+        }
+
+        /*-------------------------------------------------*\
+        | Skip this controller if it doesn't have Direct    |
+        | mode and the hide unsupported devices setting is  |
+        | set, or if the controller indicates that it is    |
+        | hidden                                            |
+        \*-------------------------------------------------*/
+        if((OpenRGBEffectSettings::globalSettings.hide_unsupported && !has_direct) || controller->GetHidden())
+        {
+            continue;
+        }
+
+        /*-------------------------------------------------*\
+        | Register callback with the controller             |
+        \*-------------------------------------------------*/
+        controller->RegisterUpdateCallback(OpenRGBEffectsPluginRGBControllerCallback, this);
+
+        /*-------------------------------------------------*\
+        | Create a ControllerZone for each zone and each    |
+        | segment in the controller                         |
+        \*-------------------------------------------------*/
+        for(std::size_t zone_idx = 0; zone_idx < controller->GetZoneCount(); zone_idx++)
+        {
+            if((controller->GetZoneSegmentCount(zone_idx) != 0) && (controller->GetZoneType(zone_idx == ZONE_TYPE_SEGMENTED)))
+            {
+                for(std::size_t segment_idx = 0; segment_idx < controller->GetZoneSegmentCount(zone_idx); segment_idx++)
+                {
+                    ControllerZone* controller_zone = new ControllerZone(controller, zone_idx, false, 100, has_direct, true, segment_idx);
+                    controller_zones.push_back(controller_zone);
+                }
+            }
+            else
+            {
+                ControllerZone* controller_zone = new ControllerZone(controller, zone_idx, false, 100, has_direct, false);
+                controller_zones.push_back(controller_zone);
+            }
+        }
+    }
+
+    /*-----------------------------------------------------*\
+    | Update the device list UI                             |
+    \*-----------------------------------------------------*/
+    ui->UpdateDeviceList();
+    
+    /*-----------------------------------------------------*\
+    | Unlock the controller zones mutex                     |
+    \*-----------------------------------------------------*/
+    controller_zones_mutex.unlock();
+
+    controllers_updating = false;
 }

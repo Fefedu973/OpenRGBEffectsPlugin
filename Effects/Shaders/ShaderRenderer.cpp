@@ -1,3 +1,4 @@
+#include "OpenRGBEffectsPlugin.h"
 #include "ShaderRenderer.h"
 
 std::mutex ShaderRenderer::context_lock;
@@ -56,7 +57,7 @@ void ShaderRenderer::RendererThreadFunction()
     std::string renderer = reinterpret_cast<const char*>(functions->glGetString(GL_RENDERER));
     std::string version = reinterpret_cast<const char*>(functions->glGetString(GL_VERSION));
 
-    printf("[OpenRGBEffectsPlugin] OpenGL vendor: %s, renderer: %s, version: %s\n", vendor.c_str(), renderer.c_str(), version.c_str());
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] OpenGL vendor: %s, renderer: %s, version: %s", vendor.c_str(), renderer.c_str(), version.c_str());
 
     surface->setFormat(context->format());
 

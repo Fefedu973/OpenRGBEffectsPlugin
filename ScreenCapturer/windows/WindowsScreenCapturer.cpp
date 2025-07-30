@@ -1,3 +1,4 @@
+#include "OpenRGBEffectsPlugin.h"
 #include "WindowsScreenCapturer.h"
 #include <QGuiApplication>
 #include <QPixmap>
@@ -47,7 +48,7 @@ void WindowsScreenCapturer::Stop()
 {
     if(capture_thread != nullptr)
     {
-        printf("[WindowsScreenCapturer] Stopping capture thread...\n");
+        LOG_VERBOSE("[WindowsScreenCapturer] Stopping capture thread...");
         continue_capture = false;
         capture_thread->join();
         delete capture_thread;
@@ -57,7 +58,7 @@ void WindowsScreenCapturer::Stop()
 
 void WindowsScreenCapturer::CaptureThreadFunction()
 {
-    printf("[WindowsScreenCapturer] Thread started\n");
+    LOG_VERBOSE("[WindowsScreenCapturer] Thread started");
 
     while(continue_capture)
     {
@@ -82,7 +83,7 @@ void WindowsScreenCapturer::CaptureThreadFunction()
         std::this_thread::sleep_for(std::chrono::milliseconds(delta > 2 ? delta : 2));
     }
 
-    printf("[WindowsScreenCapturer] Thread ended\n");
+    LOG_VERBOSE("[WindowsScreenCapturer] Thread ended");
 }
 
 #ifdef _WIN32

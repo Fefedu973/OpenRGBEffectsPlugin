@@ -7,6 +7,8 @@
 |   SPDX-License-Identifier: GPL-2.0-or-later               |
 \*---------------------------------------------------------*/
 
+#include <mutex>
+#include <thread>
 #include "ControllerZone.h"
 #include "RGBEffect.h"
 

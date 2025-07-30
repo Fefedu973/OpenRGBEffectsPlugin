@@ -311,8 +311,8 @@ void DeviceListItem::RunGlobalCheckVerification()
 
     ui->enable->blockSignals(true);
     ui->reverse->blockSignals(true);
-    ui->enable->setChecked(enabled_count == controller->zones.size());
-    ui->reverse->setChecked(reversed_count == controller->zones.size());
+    ui->enable->setChecked(enabled_count == controller->GetZoneCount());
+    ui->reverse->setChecked(reversed_count == controller->GetZoneCount());
     ui->enable->blockSignals(false);
     ui->reverse->blockSignals(false);
 

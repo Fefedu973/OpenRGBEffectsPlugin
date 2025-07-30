@@ -25,8 +25,6 @@ DeviceList::DeviceList(QWidget *parent) :
     ui->toggle_brightness->setText(OpenRGBPluginsFont::icon(OpenRGBPluginsFont::sun));
 
     select_all = false;
-
-    InitControllersList();
 }
 
 DeviceList::~DeviceList()
@@ -48,59 +46,55 @@ void DeviceList::Clear()
 
     QLayoutItem *child;
 
-    while ((child = ui->devices->layout()->takeAt(0)) != 0)
+    while((child = ui->devices->layout()->takeAt(0)) != 0)
     {
         delete child->widget();
     }
+
+    emit SelectionChanged();
 }
 
-void DeviceList::InitControllersList()
+void DeviceList::UpdateDeviceList()
 {
-    std::vector<RGBController*> controllers = OpenRGBEffectsPlugin::RMPointer->GetRGBControllers();
+    /*-----------------------------------------------------*\
+    | Clear the device list                                 |
+    \*-----------------------------------------------------*/
+    Clear();
 
-    controller_zones.clear();
+    /*-----------------------------------------------------*\
+    | Group all ControllerZones for the same controller and |
+    | create DeviceListItems for each group                 |
+    \*-----------------------------------------------------*/
+    RGBControllerInterface*         current_controller;
+    std::vector<ControllerZone*>    current_controller_zones;
 
-    for(RGBController* controller : controllers)
+    current_controller = NULL;
+
+    for(ControllerZone* controller_zone : OpenRGBEffectsPlugin::controller_zones)
     {
-        bool has_direct = false;
-
-        for(unsigned int i = 0; i < controller->modes.size(); i++)
+        if(controller_zone->controller != current_controller)
         {
-            if(controller->modes[i].name == "Direct")
+            if(current_controller_zones.size() > 0)
             {
-                has_direct = true;
-                break;
-            }
-        }
+                DeviceListItem* item = new DeviceListItem(current_controller_zones, current_controller_zones[0]->has_direct);
+                ui->devices->layout()->addWidget(item);
+                device_items.push_back(item);
 
-        if(OpenRGBEffectSettings::globalSettings.hide_unsupported && !has_direct)
-        {
-            continue;
-        }
-
-        std::vector<ControllerZone*> iteration_zones;
-
-        for(unsigned int i = 0; i < controller->zones.size(); i++)
-        {
-            ControllerZone* controller_zone = new ControllerZone(controller, i, false, 100, false);
-            controller_zones.push_back(controller_zone);
-            iteration_zones.push_back(controller_zone);
-
-            for(unsigned int s = 0; s <  controller->zones[i].segments.size(); s++)
-            {
-                ControllerZone* controller_zone = new ControllerZone(controller, i, false, 100, true, s);
-                controller_zones.push_back(controller_zone);
-                iteration_zones.push_back(controller_zone);
+                connect(item, &DeviceListItem::SelectionChanged, [=](){
+                    emit SelectionChanged();
+                });
             }
 
+            current_controller_zones.clear();
         }
 
-        if(iteration_zones.empty())
-        {
-            continue;
-        }
-
-        DeviceListItem* item = new DeviceListItem(iteration_zones, has_direct);
+        current_controller_zones.push_back(controller_zone);
+        current_controller = controller_zone->controller;
+    }
+    
+    if(current_controller_zones.size() > 0)
+    {
+        DeviceListItem* item = new DeviceListItem(current_controller_zones, current_controller_zones[0]->has_direct);
         ui->devices->layout()->addWidget(item);
         device_items.push_back(item);
 
@@ -180,11 +174,6 @@ void DeviceList::EnableControls()
     {
         item->EnableControls();
     }
-}
-
-std::vector<ControllerZone*> DeviceList::GetControllerZones()
-{
-    return controller_zones;
 }
 
 std::vector<ControllerZone*> DeviceList::GetSelection()

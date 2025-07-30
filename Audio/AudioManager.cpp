@@ -1,4 +1,5 @@
 #include "Audio/AudioManager.h"
+#include "OpenRGBEffectsPlugin.h"
 
 #ifdef _WIN32
 #include <stringapiset.h>
@@ -308,7 +309,7 @@ void AudioManager::InitAudioDeviceList()
 
 void AudioManager::CaptureThreadFunction(int device_idx)
 {
-    printf("[OpenRGBEffectsPlugin] AUDIO: Thread %d started\n", device_idx);
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] AUDIO: Thread %d started", device_idx);
 
     while(ContinueCapture[device_idx])
     {
@@ -328,24 +329,24 @@ void AudioManager::CaptureThreadFunction(int device_idx)
 
         IAudioCaptureClient * pAudioCaptureClient = active_audio_capture_clients[device_idx];
 
-        while (nextPacketSize > 0 && ContinueCapture[device_idx])
+        while(nextPacketSize > 0 && ContinueCapture[device_idx])
         {
             float *buf;
             if (pAudioCaptureClient != NULL)
             {
                 pAudioCaptureClient->GetBuffer((BYTE**)&buf, &nextPacketSize, (DWORD *)&flags, NULL, NULL);
 
-                if (buf == NULL && nextPacketSize > 0)
+                if(buf == NULL && nextPacketSize > 0)
                 {
                     CloseDevice(device_idx);
-                    printf("[OpenRGBEffectsPlugin] STOPPED Thread %d\n", device_idx);
+                    LOG_VERBOSE("[OpenRGBEffectsPlugin] STOPPED Thread %d", device_idx);
                     return;
                 }
                 else
                 {
-                    for (unsigned int i = 0; i < nextPacketSize; i += 4)
+                    for(unsigned int i = 0; i < nextPacketSize; i += 4)
                     {
-                        for (int j = 0; j < 255; j++)
+                        for(int j = 0; j < 255; j++)
                         {
                             input_wave[2 * j] = input_wave[2 * (j + 1)];
                             input_wave[(2 * j) + 1] = input_wave[2 * j];
@@ -401,13 +402,13 @@ void AudioManager::CaptureThreadFunction(int device_idx)
         std::this_thread::sleep_for(std::chrono::milliseconds(delta > 0 ? delta:1));
     }
 
-    printf("[OpenRGBEffectsPlugin] AUDIO: Thread %d stopped\n", device_idx);
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] AUDIO: Thread %d stopped", device_idx);
 
 }
 
 void AudioManager::OpenDevice(int device_idx)
 {
-    printf("[OpenRGBEffectsPlugin] AUDIO: Opening device %d\n" , device_idx);
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] AUDIO: Opening device %d", device_idx);
     ContinueCapture[device_idx] = true;
 
     #ifdef _WIN32
@@ -458,7 +459,7 @@ void AudioManager::OpenDevice(int device_idx)
 
 void AudioManager::CloseDevice(int device_idx)
 {
-    printf("[OpenRGBEffectsPlugin] AUDIO: Closing device %d\n" , device_idx);
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] AUDIO: Closing device %d" , device_idx);
     ContinueCapture[device_idx] = false;
 
     #ifdef _WIN32

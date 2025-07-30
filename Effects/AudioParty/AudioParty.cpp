@@ -177,8 +177,8 @@ void AudioParty::StepEffect(std::vector<ControllerZone*> controller_zones)
 
         if(ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
         {
-            unsigned int width = controller_zone->leds_count();
-            unsigned int height = 1;
+            unsigned int            width   = controller_zone->leds_count();
+            unsigned int            height  = 1;
 
             for(unsigned int i = 0; i < width; i++)
             {
@@ -189,9 +189,9 @@ void AudioParty::StepEffect(std::vector<ControllerZone*> controller_zones)
         }
         else if(ZT == ZONE_TYPE_MATRIX)
         {
-            unsigned int width = controller_zone->matrix_map_width();
-            unsigned int height = controller_zone->matrix_map_height();
-            unsigned int * map = controller_zone->map();
+            unsigned int            width   = controller_zone->matrix_map_width();
+            unsigned int            height  = controller_zone->matrix_map_height();
+            const unsigned int *    map     = controller_zone->map();
 
             for(unsigned int w = 0; w <  width; w++)
             {

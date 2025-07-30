@@ -1,6 +1,7 @@
 #include "AudioSettings.h"
 #include "ui_AudioSettings.h"
 #include "Audio/AudioManager.h"
+#include "OpenRGBEffectsPlugin.h"
 #include <QSlider>
 
 AudioSettings::AudioSettings(QWidget *parent) :
@@ -93,7 +94,7 @@ void AudioSettings::SetEQValues(const Audio::AudioSettingsStruct& s)
 
 void AudioSettings::on_audio_device_currentIndexChanged(int idx)
 {
-    printf("AudioSettings::on_devices_currentIndexChanged: %d\n", idx);
+    LOG_TRACE("AudioSettings::on_devices_currentIndexChanged: %d", idx);
     emit AudioDeviceChanged(idx);
 }
 

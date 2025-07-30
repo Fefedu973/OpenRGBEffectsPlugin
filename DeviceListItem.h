@@ -10,7 +10,7 @@
 #pragma once
 
 #include <QWidget>
-#include "RGBController.h"
+#include "RGBControllerInterface.h"
 #include "ControllerZone.h"
 #include "ZoneListItem.h"
 
@@ -52,15 +52,14 @@ private slots:
     void OnZoneListItemBrightnessChanged(int, int);
 
 private:
-    Ui::DeviceListItem *ui;
-    void SetupZonesListItems();
-    std::vector<ZoneListItem*> zone_items;
+    Ui::DeviceListItem*             ui;
+    RGBControllerInterface*         controller;
+    std::vector<ControllerZone*>    controller_zones;
+    bool                            direct;
+    bool                            single_zone;
+    std::vector<ZoneListItem*>      zone_items;
 
     void RunGlobalCheckVerification();
-
-    std::vector<ControllerZone*> controller_zones;
-    RGBController* controller;
-    bool direct;
-    bool single_zone;
+    void SetupZonesListItems();
     void UpdateCheckState();
 };

@@ -10,6 +10,7 @@
 #include <QAction>
 #include <QComboBox>
 #include <QDialog>
+#include <QDirIterator>
 #include <QFile>
 #include <QInputDialog>
 #include <QMainWindow>
@@ -23,7 +24,6 @@
 #include "EffectManager.h"
 #include "OpenRGBEffectsPlugin.h"
 #include "PluginInfo.h"
-#include "SaveProfilePopup.h"
 #include "EffectTabHeader.h"
 #include "OpenRGBEffectPage.h"
 #include "GlobalSettings.h"
@@ -41,38 +41,6 @@ OpenRGBEffectTab::OpenRGBEffectTab(QWidget *parent):
     AddGlobalMenus();
     InitEffectTabs();
 
-    for (QWidget *w : QApplication::topLevelWidgets())
-    {
-        if (QMainWindow* mainWin = qobject_cast<QMainWindow*>(w))
-        {
-            QAction* actionLightsOff = mainWin->findChild<QAction *>("ActionLightsOff");
-
-            if(actionLightsOff)
-            {
-                connect(actionLightsOff, SIGNAL(triggered()), this, SLOT(OnStopEffects()));
-                break;
-            }
-        }
-    }
-
-    // Give a bit to other plugins before loading.
-    // So we make sure all virtual devices are ready
-    QTimer::singleShot(OpenRGBEffectSettings::globalSettings.startup_timeout, [=](){
-        LoadProfileList();
-
-        std::string startup_profile = qgetenv("OPENRGB_EFFECTS_PLUGIN_STARTUP_PROFILE").toStdString();
-
-        if(startup_profile.empty())
-        {
-            startup_profile = OpenRGBEffectSettings::globalSettings.startup_profile;
-        }
-
-        if(!startup_profile.empty())
-        {
-            LoadProfile(QString::fromStdString(startup_profile));
-        }
-    });
-
     // Switch language on launch
     SetLanguage();
 }
@@ -82,81 +50,57 @@ OpenRGBEffectTab::~OpenRGBEffectTab()
     delete ui;
 }
 
-void OpenRGBEffectTab::changeEvent(QEvent *event)
-{
-    if(event->type() == QEvent::LanguageChange)
-    {
-        SetLanguage();
-    }
-}
-
 void OpenRGBEffectTab::SetLanguage()
 {
-    QString new_file;
-    bool loaded             = false;
-    QApplication* app       = static_cast<QApplication *>(QApplication::instance());
+    /*-----------------------------------------------------*\
+    | Read UserInterface settings                           |
+    \*-----------------------------------------------------*/
+    json                ui_settings         = OpenRGBEffectsPlugin::api->GetSettings("UserInterface");
+    std::string         locale              = "default";
 
-    for(QWidget *w : app->topLevelWidgets())
+    if(ui_settings.contains("language"))
     {
-        if (QMainWindow* mainWin = qobject_cast<QMainWindow*>(w))
-        {
-            QComboBox* language     = mainWin->findChild<QComboBox *>("ComboBoxLanguage");
-            new_file                = language->currentData().toString();
-            new_file                = new_file.replace("OpenRGB","OpenRGB_EffectsEngine");
-            break;
-        }
+        locale                              = ui_settings["language"];
     }
 
-    if(new_file.toStdString() != current_i18n_file)
+    QApplication*           app             = static_cast<QApplication *>(QApplication::instance());
+    QDirIterator            language_files(":/i18n/", QDirIterator::Subdirectories);
+    bool                    loaded          = false;
+
+    app->removeTranslator(&translator);
+
+    /*-----------------------------------------------------*\
+    | Attempt to load given locale                          |
+    \*-----------------------------------------------------*/
+    loaded = translator.load(":/i18n/" + QString("OpenRGB_EffectsEngine_%1.qm").arg(QString::fromStdString(locale)));
+
+    /*-----------------------------------------------------*\
+    | If the given locale could not be loaded, try loading  |
+    | the system locale                                     |
+    \*-----------------------------------------------------*/
+    if(!loaded)
     {
-        app->removeTranslator(&translator);
+        QLocale locale = QLocale(QLocale::system());
+        QLocale::setDefault(locale);
 
-        if(new_file == "default")
-        {
-            QLocale locale = QLocale(QLocale::system());
-            QLocale::setDefault(locale);
+        loaded = translator.load(":/i18n/" + QString("OpenRGB_EffectsEngine_%1.qm").arg(locale.name()));
+    }
 
-            loaded = translator.load(":/i18n/" + QString("OpenRGB_EffectsEngine_%1.qm").arg(locale.name()));
-        }
-        else
-        {
-            loaded = translator.load(new_file);
-        }
-
-        if(loaded)
-        {
-            app->installTranslator(&translator);
-            current_i18n_file = new_file.toStdString();
-            ui->retranslateUi(this);
-            effect_list->ResetMenus();
-
-            AddGlobalMenus();
-        }
+    if(loaded)
+    {
+        app->installTranslator(&translator);
+        LOG_DEBUG("[OpenRGBEffectTab] Changed Language to %s\n", locale.c_str());
     }
 }
 
 void OpenRGBEffectTab::AddGlobalMenus()
 {
-    QMenu* manage_profile_menu = new QMenu(tr("Profiles"), this);
-
-    load_profile_menu = new QMenu(tr("Load profile"), this);
-    manage_profile_menu->addMenu(load_profile_menu);
-
-    QAction* save_profile = new QAction(tr("Save"), this);
-    connect(save_profile, &QAction::triggered, this, &OpenRGBEffectTab::SaveProfileAction);
-    manage_profile_menu->addAction(save_profile);
-
-    QAction* delete_profile = new QAction(tr("Delete"), this);
-    connect(delete_profile, &QAction::triggered, this, &OpenRGBEffectTab::DeleteProfileAction);
-    manage_profile_menu->addAction(delete_profile);
-
     QAction* global_settings = new QAction(tr("Settings"), this);
     connect(global_settings, &QAction::triggered, this, &OpenRGBEffectTab::GlobalSettingsAction);
 
     QAction* plugin_info = new QAction(tr("About"), this);
     connect(plugin_info, &QAction::triggered, this, &OpenRGBEffectTab::PluginInfoAction);
 
-    effect_list->AddMenu(manage_profile_menu);
     effect_list->AddEffectsMenus();
     effect_list->AddAction(global_settings);
     effect_list->AddAction(plugin_info);
@@ -242,39 +186,9 @@ void OpenRGBEffectTab::CreateEffectTab(RGBEffect* effect)
     effect_list->EnableStartStopButton(ui->EffectTabs->count() > 1);
 }
 
-void OpenRGBEffectTab::DeviceListChanged()
+void OpenRGBEffectTab::UpdateDeviceList()
 {
-    printf("[OpenRGBEffectsPlugin] Clear device list\n");
-    ui->device_list->Clear();
-
-    if (OpenRGBEffectsPlugin::RMPointer->GetDetectionPercent() < 100)
-    {
-        return;
-    }
-
-    printf("[OpenRGBEffectsPlugin] Init device list\n");
-    ui->device_list->InitControllersList();
-}
-
-void OpenRGBEffectTab::LoadProfileList()
-{
-    std::vector<std::string> profiles = OpenRGBEffectSettings::ListProfiles();
-
-    load_profile_menu->clear();
-
-    for (const std::string& file_name: profiles)
-    {
-        QAction* profile_action = new QAction(QString::fromStdString(file_name), this);
-
-        connect(profile_action, &QAction::triggered,[=](){
-            LoadProfile(QString::fromStdString(file_name));
-        });
-
-        load_profile_menu->addAction(profile_action);
-
-    }
-
-    emit ProfileListUpdated();
+    ui->device_list->UpdateDeviceList();
 }
 
 void OpenRGBEffectTab::on_EffectTabs_currentChanged(int current)
@@ -339,162 +253,85 @@ void OpenRGBEffectTab::GlobalSettingsAction()
     dialog.exec();
 }
 
-void OpenRGBEffectTab::DeleteProfileAction()
+json OpenRGBEffectTab::GetProfileJson(bool save_effects_state)
 {
-    QString current_profile = QString::fromStdString(latest_loaded_profile);
+    std::map<RGBEffect*, std::vector<ControllerZone*>> effect_zones = EffectManager::Get()->GetEffectsMapping();
+    std::map<RGBEffect*, std::vector<ControllerZone*>>::iterator it;
 
-    if(!current_profile.isEmpty())
+    json settings;
+
+    settings["version"] = OpenRGBEffectSettings::version;
+
+    std::vector<json> effects_settings;
+
+    QList<OpenRGBEffectPage*> pages;
+
+    for(int i = 1; i < ui->EffectTabs->count(); i++)
     {
-        QMessageBox msgBox;
-        msgBox.setText("Delete profile?");
-        msgBox.setInformativeText("Are you sure to want to delete this profile?");
-        msgBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Cancel);
-        int ret = msgBox.exec();
-
-        switch (ret) {
-        case QMessageBox::Ok:
-            if(OpenRGBEffectSettings::DeleteProfile(current_profile.toStdString()))
-            {
-                LoadProfileList();
-            }
-            break;
-        default:
-            break;
-        }
+        pages.push_back(dynamic_cast<OpenRGBEffectPage*>(ui->EffectTabs->widget(i)));
     }
-}
 
-void OpenRGBEffectTab::SaveProfileAction()
-{
-    QString current_text = latest_loaded_profile.empty() ? "my-profile" : QString::fromStdString(latest_loaded_profile);
+    for(OpenRGBEffectPage* page: pages)
+    {
+        RGBEffect* effect = page->GetEffect();
+        std::vector<ControllerZone*> controller_zones = effect_zones[effect];
 
-    QDialog* dialog = new QDialog(this);
+        json effect_settings = effect->ToJson();
 
-    dialog->setWindowTitle("Save to profile");
+        effect_settings["AutoStart"] = save_effects_state ? EffectManager::Get()->IsActive(effect) : false;
 
-    dialog->setModal(true);
+        std::vector<json> zones;
 
-    QVBoxLayout* dialog_layout = new QVBoxLayout(dialog);
-
-    SaveProfilePopup* save_profile_popup = new SaveProfilePopup(dialog);
-
-    save_profile_popup->SetFileName(current_text);
-
-    dialog_layout->addWidget(save_profile_popup);
-
-    connect(save_profile_popup, &SaveProfilePopup::Accept, [=](){
-
-        QString profile_name = save_profile_popup->Filename();
-        bool should_load_at_startup = save_profile_popup->ShouldLoadAtStartup();
-        bool save_effects_state = save_profile_popup->ShouldSaveEffectsState();
-
-        if (!profile_name.isEmpty())
+        for(ControllerZone* controller_zone: controller_zones)
         {
-            std::map<RGBEffect*, std::vector<ControllerZone*>> effect_zones = EffectManager::Get()->GetEffectsMapping();
-            std::map<RGBEffect*, std::vector<ControllerZone*>>::iterator it;
-
-            json settings;
-
-            settings["version"] = OpenRGBEffectSettings::version;
-
-            std::vector<json> effects_settings;
-
-            QList<OpenRGBEffectPage*> pages;
-
-            for(int i = 1; i < ui->EffectTabs->count(); i++)
-            {
-                pages.push_back(dynamic_cast<OpenRGBEffectPage*>(ui->EffectTabs->widget(i)));
-            }
-
-            for(OpenRGBEffectPage* page: pages)
-            {
-                RGBEffect* effect = page->GetEffect();
-                std::vector<ControllerZone*> controller_zones = effect_zones[effect];
-
-                json effect_settings = effect->ToJson();
-
-                effect_settings["AutoStart"] = save_effects_state ? EffectManager::Get()->IsActive(effect) : false;
-
-                std::vector<json> zones;
-
-                for(ControllerZone* controller_zone: controller_zones)
-                {
-                    zones.push_back(controller_zone->to_json());
-                }
-
-                effect_settings["ControllerZones"] = zones;
-
-                effect_settings["SelectAll"] = ui->device_list->GetSelectAll();
-
-                effects_settings.push_back(effect_settings);
-            }
-
-            settings["Effects"] = effects_settings;
-
-            bool ok = OpenRGBEffectSettings::SaveUserProfile(settings, profile_name.toStdString());
-
-            if(!ok)
-            {
-                QMessageBox::critical(this,"Error","An error has occured, check the application logs for more details.");
-            }
-            else
-            {
-                LoadProfileList();
-
-                if(should_load_at_startup)
-                {
-                    OpenRGBEffectSettings::globalSettings.startup_profile = profile_name.toStdString();
-                    OpenRGBEffectSettings::WriteGlobalSettings();
-                }
-            }
+            zones.push_back(controller_zone->to_json());
         }
 
-        dialog->accept();
-    });
+        effect_settings["ControllerZones"] = zones;
 
-    connect(save_profile_popup, &SaveProfilePopup::Reject, [=](){
-        dialog->reject();
-    });
+        effect_settings["SelectAll"] = ui->device_list->GetSelectAll();
+        
+        effects_settings.push_back(effect_settings);
+    }
 
-    dialog->exec();
+    settings["Effects"] = effects_settings;
+
+    return(settings);
 }
 
-void OpenRGBEffectTab::LoadProfile(QString profile)
+void OpenRGBEffectTab::AboutToLoadProfile()
+{
+    StopAll();
+    ClearAll();
+}
+
+void OpenRGBEffectTab::LoadProfileJson(json profile_json)
 {
     StopAll();
     ClearAll();
 
-    printf("[OpenRGBEffectsPlugin] LoadProfile '%s'.\n", profile.toStdString().c_str());
-
-    if(!profile.isEmpty())
+    if(!profile_json.contains("version") || profile_json["version"] != OpenRGBEffectSettings::version)
     {
-        json settings = OpenRGBEffectSettings::LoadUserProfile(profile.toStdString());
+        LOG_WARNING("[OpenRGBEffectsPlugin] Trying to load an old settings file version. Aborting.");
+        return;
+    }
 
-        if(!settings.contains("version") || settings["version"] != OpenRGBEffectSettings::version)
+    json effects_settings = profile_json["Effects"];
+
+    for(json effect_settings : effects_settings)
+    {
+        try
         {
-            printf("[OpenRGBEffectsPlugin] Trying to load an old settings file version. Aborting.\n");
-            return;
+            LoadEffect(effect_settings);
         }
-
-        json effects_settings = settings["Effects"];
-
-        for(json effect_settings : effects_settings)
+        catch (const std::exception& e)
         {
-            try {
-                LoadEffect(effect_settings);
-            }
-            catch (const std::exception& e)
-            {
-                printf("[OpenRGBEffectsPlugin] Something went wrong while loading effect: %s.\n", e.what());
-            }
-            catch(...)
-            {
-                printf("[OpenRGBEffectsPlugin] Unknown error while loading effect.\n");
-            }
+            LOG_WARNING("[OpenRGBEffectsPlugin] Something went wrong while loading effect: %s.", e.what());
         }
-
-        latest_loaded_profile = profile.toStdString();
+        catch(...)
+        {
+            LOG_WARNING("[OpenRGBEffectsPlugin] Unknown error while loading effect.");
+        }
     }
 }
 
@@ -513,9 +350,10 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
 
     json zones = effect_settings["ControllerZones"];
 
-    printf("[OpenRGBEffectsPlugin] Looking for corresponding controllers for auto assignement...\n");
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] Looking for corresponding controllers for auto assignment...");
 
-    for(ControllerZone* controller_zone: ui->device_list->GetControllerZones())
+    OpenRGBEffectsPlugin::controller_zones_mutex.lock_shared();
+    for(ControllerZone* controller_zone: OpenRGBEffectsPlugin::controller_zones)
     {
         for(auto j : zones)
         {
@@ -577,12 +415,13 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
             }
         }
     }
+    OpenRGBEffectsPlugin::controller_zones_mutex.unlock_shared();
 
-    printf("[OpenRGBEffectsPlugin] Creating effect: %s\n", name.c_str());
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] Creating effect: %s", name.c_str());
 
     RGBEffect* effect = EffectListManager::get()->GetEffectConstructor(name)();
 
-    printf("[OpenRGBEffectsPlugin] Effect %s: Applying basic settings\n", name.c_str());
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] Effect %s: Applying basic settings", name.c_str());
 
     effect->SetFPS(effect_settings["FPS"]);
     effect->SetAutoStart(effect_settings["AutoStart"]);
@@ -624,14 +463,14 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
         effect->SetTint(0);
     }
 
-    printf("[OpenRGBEffectsPlugin] Effect %s: Loading custom settings\n", name.c_str());
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] Effect %s: Loading custom settings", name.c_str());
 
     if(effect_settings.contains("CustomSettings"))
     {
         effect->LoadCustomSettings(effect_settings["CustomSettings"]);
     }
 
-    printf("[OpenRGBEffectsPlugin] Creating effect %s tab\n", name.c_str());
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] Creating effect %s tab", name.c_str());
 
     CreateEffectTab(effect);
 
@@ -786,48 +625,3 @@ unsigned char * OpenRGBEffectTab::GetEffectListDescription(unsigned int* data_si
 
     return(data_buf);
 }
-
-unsigned char * OpenRGBEffectTab::GetProfileListDescription(unsigned int* data_size)
-{
-    std::vector<std::string> profiles = OpenRGBEffectSettings::ListProfiles();
-
-    unsigned int data_ptr = 0;
-    unsigned short num_profiles = profiles.size();
-
-    *data_size += sizeof(unsigned int);
-    *data_size += sizeof(num_profiles);
-
-    for (unsigned int i = 0; i < num_profiles; i++)
-    {
-        *data_size += sizeof(unsigned short);
-        *data_size += strlen(profiles[i].c_str()) + 1;
-    }
-
-    /*---------------------------------------------------------*\
-    | Create data buffer                                        |
-    \*---------------------------------------------------------*/
-    unsigned char *data_buf = new unsigned char[*data_size];
-
-    /*---------------------------------------------------------*\
-    | Copy in num_profiles                                      |
-    \*---------------------------------------------------------*/
-    memcpy(&data_buf[data_ptr], &num_profiles, sizeof(num_profiles));
-    data_ptr += sizeof(num_profiles);
-
-    for (unsigned int i = 0; i < num_profiles; i++)
-    {
-        /*---------------------------------------------------------*\
-        | Copy in profile name (size+data)                           |
-        \*---------------------------------------------------------*/
-        unsigned short str_len = strlen(profiles[i].c_str()) + 1;
-
-        memcpy(&data_buf[data_ptr], &str_len, sizeof(unsigned short));
-        data_ptr += sizeof(unsigned short);
-
-        strcpy((char *)&data_buf[data_ptr], profiles[i].c_str());
-        data_ptr += str_len;
-    }
-
-    return(data_buf);
-}
-

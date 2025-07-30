@@ -1,5 +1,5 @@
 #include "ShaderPass.h"
-#include "RGBController.h"
+#include "RGBControllerInterface.h"
 
 #ifdef __linux__
 #include <GL/gl.h>

@@ -27,14 +27,13 @@ public:
     ~DeviceList();
 
     void Clear();
-    void InitControllersList();
+    void UpdateDeviceList();
 
     void DisableControls();
     void EnableControls();
 
     void                            ApplySelection(std::vector<ControllerZone*>);
     std::vector<ControllerZone*>    GetSelection();
-    std::vector<ControllerZone*>    GetControllerZones();
     bool                            GetSelectAll();
 
     void                            SetSelectAll(bool selectall);
@@ -51,7 +50,6 @@ private slots:
 private:
     Ui::DeviceList *ui;
 
-    std::vector<ControllerZone*>    controller_zones;
     std::vector<DeviceListItem*>    device_items;
     bool                            select_all;
 };

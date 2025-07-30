@@ -1,9 +1,10 @@
-#include "Shaders.h"
-#include "Audio/AudioManager.h"
-#include "OpenRGBEffectSettings.h"
 #include <QDesktopServices>
 #include <QInputDialog>
 #include <QUrl>
+#include "Audio/AudioManager.h"
+#include "OpenRGBEffectSettings.h"
+#include "OpenRGBEffectsPlugin.h"
+#include "Shaders.h"
 
 REGISTER_EFFECT(Shaders);
 
@@ -406,7 +407,7 @@ void Shaders::on_open_shaders_folder_clicked()
 {
     filesystem::path config_dir = OpenRGBEffectSettings::ShadersFolder();
     QUrl url = QUrl::fromLocalFile(QString::fromStdString(config_dir.string()));
-    printf("[OpenRGBEffectsPlugin] Opening %s\n", url.path().toStdString().c_str());
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] Opening %s", url.path().toStdString().c_str());
     QDesktopServices::openUrl(url);
 }
 

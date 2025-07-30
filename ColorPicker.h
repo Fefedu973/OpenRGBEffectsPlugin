@@ -10,7 +10,7 @@
 #pragma once
 
 #include <QWidget>
-#include "RGBController.h"
+#include "RGBControllerInterface.h"
 #include "ColorUtils.h"
 
 namespace Ui

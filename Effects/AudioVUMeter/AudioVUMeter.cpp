@@ -139,8 +139,6 @@ void AudioVUMeter::StepEffect(std::vector<ControllerZone*> controller_zones)
         last_height = amp;
     }
 
-    //printf("%f -- %f\n", amp, last_height);
-
     for(ControllerZone* controller_zone : controller_zones)
     {
         zone_type ZT = controller_zone->type();
@@ -148,7 +146,7 @@ void AudioVUMeter::StepEffect(std::vector<ControllerZone*> controller_zones)
 
         if(ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
         {
-            unsigned int width = controller_zone->leds_count();
+            unsigned int            width   = controller_zone->leds_count();
 
             for(unsigned int i = 0; i < width; i++)
             {
@@ -159,9 +157,9 @@ void AudioVUMeter::StepEffect(std::vector<ControllerZone*> controller_zones)
         }
         else if(ZT == ZONE_TYPE_MATRIX)
         {
-            unsigned int width = controller_zone->matrix_map_width();
-            unsigned int height = controller_zone->matrix_map_height();
-            unsigned int * map = controller_zone->map();
+            unsigned int            width   = controller_zone->matrix_map_width();
+            unsigned int            height  = controller_zone->matrix_map_height();
+            const unsigned int *    map     = controller_zone->map();
 
             for(unsigned int h = 0; h < height; h++)
             {

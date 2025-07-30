@@ -71,8 +71,8 @@ void Hypnotoad::StepEffect(std::vector<ControllerZone*> controller_zones)
 
         if(ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
         {
-            unsigned int width = controller_zone->leds_count();
-            unsigned int height = 1;
+            unsigned int            width   = controller_zone->leds_count();
+            unsigned int            height  = 1;
 
             float cx = (width-1) * cx_shift_mult;
             float cy = height * cy_shift_mult;
@@ -86,9 +86,9 @@ void Hypnotoad::StepEffect(std::vector<ControllerZone*> controller_zones)
         }
         else if(ZT == ZONE_TYPE_MATRIX)
         {
-            unsigned int width = controller_zone->matrix_map_width();
-            unsigned int height = controller_zone->matrix_map_height();
-            unsigned int * map = controller_zone->map();
+            unsigned int            width   = controller_zone->matrix_map_width();
+            unsigned int            height  = controller_zone->matrix_map_height();
+            const unsigned int *    map     = controller_zone->map();
 
             float cx = (width-1) * cx_shift_mult;
             float cy = (height-1) * cy_shift_mult;

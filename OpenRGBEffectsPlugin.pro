@@ -79,10 +79,13 @@ GIT_COMMIT_DATE = $$system(git log -n 1 --pretty=format:"%ci")
 GIT_BRANCH      = $$system(git branch --show-current)
 
 #-----------------------------------------------------------------------------------------------#
-# Download links                                                                                #
+# Metadata                                                                                      #
 #-----------------------------------------------------------------------------------------------#
-win32:LATEST_BUILD_URL="https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Windows 64"
-unix:!macx:LATEST_BUILD_URL="https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Linux 64"
+PROJECT_DESC                = "Provides a variety of custom effects"
+PROJECT_NAME                = "OpenRGB Effects Plugin"
+PROJECT_URL                 = "https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin"
+win32:LATEST_BUILD_URL      = "https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Windows 64"
+unix:!macx:LATEST_BUILD_URL = "https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Linux 64"
 
 #-----------------------------------------------------------------------------------------------#
 # Inject vars in defines                                                                        #
@@ -93,37 +96,42 @@ DEFINES +=                                                                      
     GIT_COMMIT_ID=\\"\"\"$$GIT_COMMIT_ID\\"\"\"                                                 \
     GIT_COMMIT_DATE=\\"\"\"$$GIT_COMMIT_DATE\\"\"\"                                             \
     GIT_BRANCH=\\"\"\"$$GIT_BRANCH\\"\"\"                                                       \
+    PROJECT_DESC=\\"\"\"$$PROJECT_DESC\\"\"\"                                                   \
+    PROJECT_NAME=\\"\"\"$$PROJECT_NAME\\"\"\"                                                   \
+    PROJECT_URL=\\"\"\"$$PROJECT_URL\\"\"\"                                                     \
     LATEST_BUILD_URL=\\"\"\"$$LATEST_BUILD_URL\\"\"\"                                           \
     SHADERS_README=\\"\"\"https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/blob/master/Effects/Shaders/README.md\\"\"\"                                               \
+
+#-----------------------------------------------------------------------------------------------#
+# Update version in plugin metadata json                                                        #
+#-----------------------------------------------------------------------------------------------#
+JSON_FILE_IN            = $$PWD/OpenRGBEffectsPlugin.json.in
+JSON_FILE_OUT           = $$PWD/OpenRGBEffectsPlugin.json
+
+prebuild_json.target    = prebuild_json_target
+prebuild_json.depends   = FORCE
+prebuild_json.commands  = $$QMAKE_STREAM_EDITOR -e \"s|VERSION_NUM|$$VERSION_NUM|g\"            \
+                                                -e \"s|VERSION_STR|$$VERSION_STR|g\"            \
+                                                -e \"s|GIT_COMMIT_ID|$$GIT_COMMIT_ID|g\"        \
+                                                -e \"s|PROJECT_DESC|$$PROJECT_DESC|g\"          \
+                                                -e \"s|PROJECT_NAME|$$PROJECT_NAME|g\"          \
+                                                -e \"s|PROJECT_URL|$$PROJECT_URL|g\"            \
+                                                $$JSON_FILE_IN > $$JSON_FILE_OUT                \
+
+QMAKE_EXTRA_TARGETS    += prebuild_json
+PRE_TARGETDEPS         += prebuild_json_target
 
 #-----------------------------------------------------------------------------------------------#
 # OpenRGB Plugin SDK                                                                            #
 #-----------------------------------------------------------------------------------------------#
 INCLUDEPATH +=                                                                                  \
     OpenRGB                                                                                     \
-    OpenRGB/RGBController                                                                       \
     OpenRGB/dependencies/json                                                                   \
     OpenRGB/qt                                                                                  \
-    OpenRGB/i2c_smbus                                                                           \
-    OpenRGB/net_port                                                                            \
-
-HEADERS +=                                                                                      \
-    OpenRGB/Colors.h                                                                            \
-    OpenRGB/OpenRGBPluginInterface.h                                                            \
-    OpenRGB/ResourceManagerInterface.h                                                          \
-
+    OpenRGB/RGBController                                                                       \
 
 SOURCES +=                                                                                      \
-    OpenRGB/RGBController/RGBController.cpp                                                     \
-    OpenRGB/RGBController/RGBController_Network.cpp                                             \
-    OpenRGB/NetworkServer.cpp                                                                   \
-    OpenRGB/NetworkClient.cpp                                                                   \
-    OpenRGB/NetworkProtocol.cpp                                                                 \
-    OpenRGB/LogManager.cpp                                                                      \
-    OpenRGB/net_port/net_port.cpp                                                               \
     OpenRGB/qt/hsv.cpp                                                                          \
-
-
 
 #-----------------------------------------------------------------------------------------------#
 # QCodeEditor                                                                                   #
@@ -247,7 +255,6 @@ HEADERS +=                                                                      
     PluginInfo.h                                                                                \
     PreviewWidget.h                                                                             \
     QTooltipedSlider.h                                                                          \
-    SaveProfilePopup.h                                                                          \
     ZoneListItem.h                                                                              \
     OpenRGBPluginsFont.h                                                                        \
     GlobalSettings.h                                                                            \
@@ -262,6 +269,8 @@ SOURCES +=                                                                      
     Audio/AudioManager.cpp                                                                      \
     ColorPicker.cpp                                                                             \
     ColorsPicker.cpp                                                                            \
+    ColorUtils.cpp                                                                              \
+    ControllerZone.cpp                                                                          \
     DeviceList.cpp                                                                              \
     DeviceListItem.cpp                                                                          \
     EffectList.cpp                                                                              \
@@ -277,13 +286,11 @@ SOURCES +=                                                                      
     PluginInfo.cpp                                                                              \
     QTooltipedSlider.cpp                                                                        \
     PreviewWidget.cpp                                                                           \
-    SaveProfilePopup.cpp                                                                        \
     ZoneListItem.cpp                                                                            \
     OpenRGBPluginsFont.cpp                                                                      \
     GlobalSettings.cpp                                                                          \
     ScreenCapturer/qt/QtScreenCapturer.cpp                                                      \
     ScreenCapturer/windows/WindowsScreenCapturer.cpp
-
 
 FORMS +=                                                                                        \
     Audio/AudioSettings.ui                                                                      \
@@ -298,7 +305,6 @@ FORMS +=                                                                        
     OpenRGBEffectPage.ui                                                                        \
     OpenRGBEffectTab.ui                                                                         \
     PluginInfo.ui                                                                               \
-    SaveProfilePopup.ui                                                                         \
     ZoneListItem.ui                                                                             \
     GlobalSettings.ui
 

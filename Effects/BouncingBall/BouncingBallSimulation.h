@@ -1,8 +1,9 @@
 #ifndef BOUNCINGBALLSIMULATION_H
 #define BOUNCINGBALLSIMULATION_H
 
-#include <unordered_set>
+#include <mutex>
 #include <random>
+#include <unordered_set>
 #include <QPoint>
 
 #include "hsv.h"

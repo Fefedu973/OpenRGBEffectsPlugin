@@ -1,6 +1,7 @@
 #ifndef AMBIENT_H
 #define AMBIENT_H
 
+#include <mutex>
 #include <QWidget>
 #include <QMouseEvent>
 #include "ui_Ambient.h"

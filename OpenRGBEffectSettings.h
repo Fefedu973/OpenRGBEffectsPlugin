@@ -15,7 +15,7 @@
 #include <nlohmann/json.hpp>
 #include "AudioSettingsStruct.h"
 #include "filesystem.h"
-#include "RGBController.h"
+#include "RGBControllerInterface.h"
 
 struct GlobalSettingsStruct
 {
@@ -28,7 +28,6 @@ struct GlobalSettingsStruct
     bool prefer_random = false;
     bool use_prefered_colors = false;
     int  startup_timeout = 2000;
-    std::string startup_profile;
     std::vector<RGBColor> prefered_colors;
     Audio::AudioSettingsStruct      audio_settings;
 
@@ -45,11 +44,6 @@ public:
     static bool WriteGlobalSettings();
     static void LoadGlobalSettings();
 
-    static bool DeleteProfile(std::string);
-    static bool SaveUserProfile(json, std::string);
-    static json LoadUserProfile(std::string);
-    static std::vector<std::string> ListProfiles();
-
     static bool SaveEffectPattern(json, std::string, std::string);
     static std::vector<std::string> ListPattern(std::string);
     static json LoadPattern(std::string, std::string);
@@ -64,12 +58,10 @@ public:
 
 private:
     static bool CreateSettingsDirectory();
-    static bool CreateEffectProfilesDirectory();
     static bool CreateEffectPatternsDirectory(std::string);
     static bool CreateShadersDirectory();
 
     static filesystem::path SettingsFolder();
-    static filesystem::path ProfilesFolder();
 
     static bool create_dir(filesystem::path);
     static std::vector<std::string> list_files(filesystem::path, bool full_path = false);

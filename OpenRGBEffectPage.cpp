@@ -20,12 +20,13 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QUrl>
+#include "ColorUtils.h"
+#include "EffectManager.h"
+#include "LivePreviewController.h"
 #include "OpenRGBEffectPage.h"
 #include "OpenRGBEffectSettings.h"
+#include "OpenRGBEffectsPlugin.h"
 #include "OpenRGBPluginsFont.h"
-#include "EffectManager.h"
-#include "ColorUtils.h"
-#include "LivePreviewController.h"
 
 OpenRGBEffectPage::OpenRGBEffectPage(QWidget *parent, RGBEffect* effect):
     QWidget(parent),
@@ -260,7 +261,10 @@ void OpenRGBEffectPage::StopEffect()
 
 void OpenRGBEffectPage::OpenPreview()
 {
-    preview_dialog = new QDialog(this);
+    /*-----------------------------------------------------*\
+    | Create preview dialog                                 |
+    \*-----------------------------------------------------*/
+    preview_dialog                          = new QDialog(this);
 
     preview_dialog->setAttribute(Qt::WA_DeleteOnClose);
     preview_dialog->setModal(false);
@@ -270,18 +274,16 @@ void OpenRGBEffectPage::OpenPreview()
                                    Qt::WindowMinimizeButtonHint  |
                                    Qt::WindowMaximizeButtonHint  |
                                    Qt::WindowCloseButtonHint     );
-
     preview_dialog->setMinimumSize(256,256);
 
-    QVBoxLayout* dialog_layout = new QVBoxLayout(preview_dialog);
-    LivePreviewController* preview = new LivePreviewController(preview_dialog);
-    preview_zone = new ControllerZone(preview, 0, false, 100, false);
+    QVBoxLayout*            dialog_layout   = new QVBoxLayout(preview_dialog);
+    LivePreviewController*  preview         = new LivePreviewController(preview_dialog);
+    preview_zone                            = new ControllerZone(preview->controller, 0, false, 100, true, false);
+
     EffectManager::Get()->AddPreview(effect, preview_zone);
 
     dialog_layout->addWidget(preview);
-
     preview_dialog->show();
-
     ui->preview->setDisabled(true);
 
     connect(preview, &LivePreviewController::ReversedChanged, [=](bool state){
@@ -289,8 +291,8 @@ void OpenRGBEffectPage::OpenPreview()
     });
 
     connect(preview_dialog, &QDialog::finished, [=](){
-        ui->preview->setDisabled(false);
         EffectManager::Get()->RemovePreview(effect);
+        ui->preview->setDisabled(false);
 
         delete preview_zone;
     });
@@ -448,7 +450,7 @@ void OpenRGBEffectPage::LoadPatternAction()
     try {
         ApplyJson(effect_settings);
     }  catch (const std::exception & e) {
-        printf("[OpenRGBEffectsPlugin] Cannot apply effect settings, reason: %s\n", e.what());
+        LOG_WARNING("[OpenRGBEffectsPlugin] Cannot apply effect settings, reason: %s", e.what());
     }
 }
 
@@ -607,7 +609,7 @@ void OpenRGBEffectPage::EditPatternAction()
             try {
                 ApplyJson(json::parse(text.toStdString()));
             } catch (const std::exception & e) {
-                printf("[OpenRGBEffectsPlugin] Cannot apply effect settings, reason: %s\n", e.what());
+                LOG_WARNING("[OpenRGBEffectsPlugin] Cannot apply effect settings, reason: %s", e.what());
             }
         }
     }

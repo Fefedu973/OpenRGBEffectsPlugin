@@ -10,6 +10,7 @@
 #include <QFontDatabase>
 #include <QList>
 #include <QString>
+#include "OpenRGBEffectsPlugin.h"
 #include "OpenRGBPluginsFont.h"
 
 OpenRGBPluginsFont* OpenRGBPluginsFont::instance;
@@ -25,7 +26,7 @@ OpenRGBPluginsFont *OpenRGBPluginsFont::Get()
 
         if(instance->fontId == -1)
         {
-            printf("Cannot load requested font.\n");
+            LOG_ERROR("Cannot load requested font.");
         }
         else
         {

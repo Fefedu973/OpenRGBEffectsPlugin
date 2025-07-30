@@ -32,8 +32,10 @@ public:
     void EnableControls();
     void ToggleBrightnessSlider();
 
+    bool HasSegments();
     bool IsEnabled();
     bool IsReversed();
+    bool IsSegment();
 
     void SetBrightness(int);
 

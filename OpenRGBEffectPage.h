@@ -58,30 +58,20 @@ private slots:
     void OpenPatternsFolder();
 
 private:
-    Ui::OpenRGBEffectPage *ui;
-
-    RGBEffect* effect;
-
-    std::vector<RGBController*> OwnedController;
-    std::vector<RGBColor> UserColors;
-    std::vector<ColorPicker*> ColorPickers;
-
-    bool RandomColors = false;
-
-    void InitUi();
-    void OpenPreview();
-
-    QDialog* preview_dialog;
-
-    ControllerZone* preview_zone;
-
-    QHBoxLayout* colors_layout = nullptr;
-
-    json ToJson();
-
-    bool info_visible = false;
+    Ui::OpenRGBEffectPage*                  ui;
+    QHBoxLayout*                            colors_layout = nullptr;
+    std::vector<ColorPicker*>               ColorPickers;
+    RGBEffect*                              effect;
+    bool                                    info_visible = false;
+    std::vector<RGBControllerInterface*>    OwnedController;
+    QDialog*                                preview_dialog;
+    ControllerZone*                         preview_zone;
+    bool                                    RandomColors = false;
+    std::vector<RGBColor>                   UserColors;
 
     void ApplyJson(json);
-
+    void InitUi();
+    void OpenPreview();
     void ToggleInfo();
+    json ToJson();
 };

@@ -96,6 +96,11 @@ void ZoneListItem::on_brightness_valueChanged(int value)
     emit BrightnessChanged(value);
 }
 
+bool ZoneListItem::HasSegments()
+{
+    return controller_zone->has_segments();
+}
+
 bool ZoneListItem::IsEnabled()
 {
     return ui->enable->isChecked();
@@ -104,6 +109,11 @@ bool ZoneListItem::IsEnabled()
 bool ZoneListItem::IsReversed()
 {
     return ui->reverse->isChecked();
+}
+
+bool ZoneListItem::IsSegment()
+{
+    return controller_zone->is_segment;
 }
 
 void ZoneListItem::SetBrightness(int value)

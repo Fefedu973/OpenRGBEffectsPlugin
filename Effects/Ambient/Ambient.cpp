@@ -172,7 +172,7 @@ void Ambient::StepEffect(std::vector<ControllerZone*> controller_zones)
 
         for(ControllerZone* controller_zone : controller_zones)
         {
-            RGBColor previous_color = controller_zone->controller->GetLED(0);
+            RGBColor previous_color = controller_zone->controller->GetColor(0);
             RGBColor smoothed = Smooth(previous_color, color);
             controller_zone->SetAllZoneLEDs(smoothed, Brightness, Temperature, Tint);
         }
@@ -189,15 +189,15 @@ void Ambient::StepEffect(std::vector<ControllerZone*> controller_zones)
 
             if(controller_zone->type() == ZONE_TYPE_SINGLE || controller_zone->type() == ZONE_TYPE_LINEAR)
             {
-                unsigned int width = controller_zone->leds_count();
-                unsigned int height = 1;
+                unsigned int            width   = controller_zone->leds_count();
+                unsigned int            height  = 1;
 
                 QImage scaled = image.scaled(width, height);
 
                 for(unsigned int i = 0; i < width; i++)
                 {
                     QColor color = scaled.pixelColor(reverse ? leds_count - i - 1 : i, 0);
-                    RGBColor previous_color = controller_zone->controller->GetLED(i);
+                    RGBColor previous_color = controller_zone->controller->GetColor(i);
 
                     controller_zone->SetLED(i, Smooth(previous_color, ColorUtils::fromQColor(color)), Brightness, Temperature, Tint);
                 }
@@ -205,9 +205,9 @@ void Ambient::StepEffect(std::vector<ControllerZone*> controller_zones)
             }
             else if(controller_zone->type() == ZONE_TYPE_MATRIX)
             {
-                unsigned int width = controller_zone->matrix_map_width();
-                unsigned int height = controller_zone->matrix_map_height();
-                unsigned int * map = controller_zone->map();
+                unsigned int            width   = controller_zone->matrix_map_width();
+                unsigned int            height  = controller_zone->matrix_map_height();
+                const unsigned int *    map     = controller_zone->map();
 
                 QImage scaled = image.scaled(width, height);            
 
@@ -218,7 +218,7 @@ void Ambient::StepEffect(std::vector<ControllerZone*> controller_zones)
                         QColor color = scaled.pixelColor(reverse ? width - w - 1: w, h);
 
                         unsigned int led_num = map[h * width + w];
-                        RGBColor previous_color = controller_zone->controller->GetLED(led_num);
+                        RGBColor previous_color = controller_zone->controller->GetColor(led_num);
 
                         controller_zone->SetLED(led_num, Smooth(previous_color, ColorUtils::fromQColor(color)), Brightness, Temperature, Tint);
                     }

@@ -1,3 +1,4 @@
+#include "OpenRGBEffectsPlugin.h"
 #include "QtScreenCapturer.h"
 #include <QGuiApplication>
 #include <QPixmap>
@@ -43,7 +44,7 @@ void QtScreenCapturer::Stop()
 {
     if(capture_thread != nullptr)
     {
-        printf("[QtScreenCapturer] Stopping capture thread...\n");
+        LOG_VERBOSE("[QtScreenCapturer] Stopping capture thread...");
         continue_capture = false;
         capture_thread->join();
         delete capture_thread;
@@ -53,7 +54,7 @@ void QtScreenCapturer::Stop()
 
 void QtScreenCapturer::CaptureThreadFunction()
 {
-    printf("[QtScreenCapturer] Thread started\n");
+    LOG_VERBOSE("[QtScreenCapturer] Thread started");
 
     while(continue_capture)
     {
@@ -76,5 +77,5 @@ void QtScreenCapturer::CaptureThreadFunction()
         std::this_thread::sleep_for(std::chrono::milliseconds(delta > 2 ? delta : 2));
     }
 
-    printf("[QtScreenCapturer] Thread ended\n");
+    LOG_VERBOSE("[QtScreenCapturer] Thread ended");
 }

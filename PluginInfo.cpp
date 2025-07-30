@@ -42,11 +42,11 @@ void PluginInfo::changeEvent(QEvent *event)
 
 void PluginInfo::on_open_plugin_folder_clicked()
 {
-    filesystem::path config_dir = OpenRGBEffectsPlugin::RMPointer->GetConfigurationDirectory() / "plugins";
+    filesystem::path config_dir = OpenRGBEffectsPlugin::api->GetConfigurationDirectory() / "plugins";
 
     QUrl url = QUrl::fromLocalFile(QString::fromStdString(config_dir.string()));
 
-    printf("[OpenRGBEffectsPlugin] Opening %s\n", url.path().toStdString().c_str());
+    LOG_VERBOSE("[OpenRGBEffectsPlugin] Opening %s", url.path().toStdString().c_str());
 
     QDesktopServices::openUrl(url);
 }
