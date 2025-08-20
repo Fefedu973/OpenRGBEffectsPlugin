@@ -127,23 +127,23 @@ public:
 
     std::string display_name()
     {
-        return controller->name + ": " +  controller->zones[zone_idx].name + (is_segment ? (" - " + controller->zones[zone_idx].segments[segment_idx].name) : "");
+        return controller->GetName() + ": " +  controller->GetZoneName(zone_idx) + (is_segment ? (" - " + controller->zones[zone_idx].segments[segment_idx].name) : "");
     }
 
     json to_json()
     {
         json j;
-        j["zone_idx"] = zone_idx;
-        j["reverse"] = reverse;
-        j["self_brightness"] = self_brightness;
-        j["name"] = controller->name;
-        j["location"] = controller->location;
-        j["serial"] = controller->serial;
-        j["description"] = controller->description;
-        j["version"] = controller->version;
-        j["vendor"] = controller->vendor;
-        j["is_segment"] = is_segment;
-        j["segment_idx"] = segment_idx;
+        j["zone_idx"]           = zone_idx;
+        j["reverse"]            = reverse;
+        j["self_brightness"]    = self_brightness;
+        j["name"]               = controller->GetName();
+        j["location"]           = controller->GetLocation();
+        j["serial"]             = controller->GetSerial();
+        j["description"]        = controller->GetDescription();
+        j["version"]            = controller->GetVersion();
+        j["vendor"]             = controller->GetVendor();
+        j["is_segment"]         = is_segment;
+        j["segment_idx"]        = segment_idx;
         return j;
     }
 

@@ -518,7 +518,7 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
                     // We don't compare location of hid device since it changes randomly.
                     return true;
                 }
-                return controller_zone->controller->location == location_str;
+                return controller_zone->controller->GetLocation() == location_str;
             }();
 
             bool is_segment = j.contains("is_segment") ? (bool)j["is_segment"] : false;
@@ -526,14 +526,14 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
 
             if(
                     location_matches &&
-                    controller_zone->controller->name        == j["name"] &&
-                    controller_zone->controller->serial      == j["serial"] &&
-                    controller_zone->controller->description == j["description"] &&
-                    controller_zone->controller->version     == j["version"] &&
-                    controller_zone->controller->vendor      == j["vendor"] &&
-                    controller_zone->zone_idx                == j["zone_idx"]&&
-                    controller_zone->is_segment              == is_segment &&
-                    controller_zone->segment_idx             == segment_idx
+                    controller_zone->controller->GetName()        == j["name"] &&
+                    controller_zone->controller->GetSerial()      == j["serial"] &&
+                    controller_zone->controller->GetDescription() == j["description"] &&
+                    controller_zone->controller->GetVersion()     == j["version"] &&
+                    controller_zone->controller->GetVendor()      == j["vendor"] &&
+                    controller_zone->zone_idx                     == j["zone_idx"]&&
+                    controller_zone->is_segment                   == is_segment &&
+                    controller_zone->segment_idx                  == segment_idx
                     )
             {
                 if(j.contains("self_brightness"))
