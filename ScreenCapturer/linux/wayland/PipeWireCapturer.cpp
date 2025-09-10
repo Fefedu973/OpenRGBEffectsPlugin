@@ -17,12 +17,12 @@ PipeWireCapturer::~PipeWireCapturer()
     StopStream();
 }
 
-void PipeWireCapturer::OnCoreError(void* data, uint32_t id, int seq, int res, const char* message)
+void PipeWireCapturer::OnCoreError(void* /*data*/, uint32_t /*id*/, int /*seq*/, int /*res*/, const char* message)
 {
     qDebug() << "OnCoreError " << message;
 }
 
-void PipeWireCapturer::OnStreamStateChanged(void* data, pw_stream_state old_state, pw_stream_state state, const char* error_message) {
+void PipeWireCapturer::OnStreamStateChanged(void* /*data*/, pw_stream_state old_state, pw_stream_state state, const char* /*error_message*/) {
 
     qDebug() << "stream state changed from " << old_state << " to " << state;
 }
@@ -132,7 +132,7 @@ pw_stream* PipeWireCapturer::CreateReceivingStream() {
     auto stream = pw_stream_new(core, "webrtc-consume-stream", reuseProps);
     uint8_t buffer[2048] = {};
 
-    spa_pod_builder builder = spa_pod_builder{buffer, sizeof(buffer)};
+    spa_pod_builder builder = spa_pod_builder{buffer, sizeof(buffer), 0, 0, 0, 0, 0, 0};
     std::vector<const spa_pod*> params;
 
     struct spa_rectangle resolution = SPA_RECTANGLE(width, height);

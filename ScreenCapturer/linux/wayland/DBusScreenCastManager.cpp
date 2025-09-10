@@ -211,7 +211,7 @@ void DBusScreenCastManager::SelectSources()
     }
 }
 
-void DBusScreenCastManager::OnSourceSelected(uint responseCode, QVariantMap results) {
+void DBusScreenCastManager::OnSourceSelected(uint responseCode, QVariantMap /*results*/) {
     if(responseCode == 0)
     {
         sources_selected = true;

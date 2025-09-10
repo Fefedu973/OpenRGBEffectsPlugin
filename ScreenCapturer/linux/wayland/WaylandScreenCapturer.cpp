@@ -17,7 +17,7 @@ WaylandScreenCapturer::WaylandScreenCapturer(QObject* parent): ScreenCapturer(pa
         capturer->StartStream(node_id, fd, width, height, framerate);
     });
 
-    connect(dbus_manager, &DBusScreenCastManager::OnError,[=](const QDBusError& err, const QString& message){
+    connect(dbus_manager, &DBusScreenCastManager::OnError,[=](const QDBusError& /*err*/, const QString& message){
         emit OnError(Other, message);
     });
 }

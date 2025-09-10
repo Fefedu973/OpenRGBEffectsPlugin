@@ -49,7 +49,7 @@ void StarryNight::StepEffect(std::vector<ControllerZone*> controller_zones)
         {
             // The background color was changed. Loop through all controllers and set the color.
             // Stars will remain as is but change based on their current fade status to use the new background color
-            for (int idx = 0; idx < controller_zones.size(); idx++)
+            for (std::size_t idx = 0; idx < controller_zones.size(); idx++)
             {
                 //controller_zones[idx]->SetAllZoneLEDs(ui->backColor->CurrentRGBColor(), Brightness, Temperature, Tint);
                 controller_zones[idx]->SetAllZoneLEDs(ColorUtils::apply_brightness(ui->backColor->CurrentRGBColor(), float(ui->backColorBrightness->value()) / 100), Brightness, Temperature, Tint);
@@ -58,7 +58,7 @@ void StarryNight::StepEffect(std::vector<ControllerZone*> controller_zones)
         }
 
         UpdateStarInfo(controller_zones);
-        for(unsigned int i = 0; i < stars.size(); i++)
+        for(std::size_t i = 0; i < stars.size(); i++)
         {
             // update the colors for LEDs that are stars
             controller_zones[stars[i].controllerIdx]->SetLED(stars[i].ctrlLedIdx, stars[i].intColor, Brightness, Temperature, Tint);
@@ -70,7 +70,7 @@ void StarryNight::StepEffect(std::vector<ControllerZone*> controller_zones)
 void StarryNight::updateStarVectorSize(int starNum, int newDensity)
 {
     //the star dentisty is changed or no stars exist so we need to create them
-    if (stars.empty() || starNum > stars.size())
+    if (stars.empty() || starNum > (int)stars.size())
     {
         // The number of stars required is either being set or has increased so we can safely adjust the vector size.
         stars.resize(starNum);
@@ -83,7 +83,7 @@ void StarryNight::updateStarVectorSize(int starNum, int newDensity)
     else
     {
         // We are reducing the number of active stars so we have to stop those.
-        for (int idx = stars.size() -1; idx > starNum -1; idx--)
+        for (int idx = (int)(stars.size() -1); idx > starNum -1; idx--)
         {
             inactiveStarToHandle = false;
             if (stars[idx].starStatus != inactive)
@@ -115,7 +115,7 @@ void StarryNight::updateStarVectorSize(int starNum, int newDensity)
 
 
 // This function will manage the stars including: creating new stars, transitioning them through their states and setting background color (used in stepEffect).
-void StarryNight::UpdateStarInfo(std::vector<ControllerZone*> controller_zones)
+void StarryNight::UpdateStarInfo(std::vector<ControllerZone*> /*controller_zones*/)
 {
     // random number ranges.
     std::uniform_int_distribution<std::mt19937::result_type> newStarGenerator(0,totalLEDs); // set range based on max
@@ -125,14 +125,14 @@ void StarryNight::UpdateStarInfo(std::vector<ControllerZone*> controller_zones)
     if (totalLEDs > 0)
     {
         // if (densityChanged || stars.empty())
-        if (densityChanged || starNum != stars.size())
+        if (densityChanged || starNum != (int)stars.size())
         {
             // We need to update the star vector
             updateStarVectorSize(starNum, newDensity);
         }
 
         // Now we need to see what we need to do for each star entry.
-        for (unsigned int idx = 0; idx < stars.size(); idx++)
+        for (std::size_t idx = 0; idx < stars.size(); idx++)
         {   
             if (stars[idx].starStatus == off || stars.size() < idx)
             {
@@ -143,7 +143,7 @@ void StarryNight::UpdateStarInfo(std::vector<ControllerZone*> controller_zones)
                 {
                     // Generate a random star based on the number of LEDs
                     int newStarIdx = newStarGenerator(generator);
-                    int idx1 = 0;
+                    std::size_t idx1 = 0;
                     bool matchFound = false;
 
                     // Let's make sure that we haven't selected an LED that is already in the star vector
@@ -269,7 +269,7 @@ void StarryNight::UpdateStarIndexMap(std::vector<ControllerZone*> controller_zon
     }
 }
 
-void StarryNight::ResetStarryNight(std::vector<ControllerZone*> controller_zones)
+void StarryNight::ResetStarryNight(std::vector<ControllerZone*> /*controller_zones*/)
 {
     stars.clear();
     ledMapForStars.clear();
@@ -277,7 +277,7 @@ void StarryNight::ResetStarryNight(std::vector<ControllerZone*> controller_zones
 
 void StarryNight::OnControllerZonesListChanged(std::vector<ControllerZone*> controller_zones)
 {
-        for(int idx = 0; idx < controller_zones.size(); idx++)
+        for(std::size_t idx = 0; idx < controller_zones.size(); idx++)
         {
             // Set the color as the background color
             controller_zones[idx]->SetAllZoneLEDs(ColorUtils::apply_brightness(ui->backColor->CurrentRGBColor(), float(ui->backColorBrightness->value()) / 100), Brightness, Temperature, Tint);
@@ -338,7 +338,7 @@ json StarryNight::SaveCustomSettings()
     return settings;
 }
 
-void StarryNight::on_backColor_ColorSelected(QColor c)
+void StarryNight::on_backColor_ColorSelected(QColor /*c*/)
 {
     backgroundColorChanged = true;
 }
@@ -366,7 +366,7 @@ void StarryNight::on_starOnTime_valueChanged(int value)
     starOnTimeSpeed = value;
 }
 
-void StarryNight::on_backColorBrightness_valueChanged(int value)
+void StarryNight::on_backColorBrightness_valueChanged(int /*value*/)
 {
     //This is the same as changing the background color since we are changing it's brightness so we will reuse the same bool
     backgroundColorChanged = true;

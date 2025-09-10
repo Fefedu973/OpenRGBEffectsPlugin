@@ -21,8 +21,8 @@ public:
 
     void SetFrameRate(unsigned int value) {framerate = value;};
 
-    virtual void Init(const QString& restore_token = "", bool auto_start = false) {};
-    virtual void SetToken(const QString& restore_token = "") {};
+    virtual void Init(const QString& restore_token = "", bool auto_start = false) { (void)restore_token; (void)auto_start; };
+    virtual void SetToken(const QString& restore_token = "") { (void)restore_token; };
     virtual void Start() {};
     virtual void Stop() {};
     virtual void SetScreen(int) {};

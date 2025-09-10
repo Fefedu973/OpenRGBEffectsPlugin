@@ -1,6 +1,6 @@
 #include "PipeWireStreamInfo.h"
 
-QDBusArgument &operator<<(QDBusArgument &arg, const PipeWireStreamInfoList& list){return arg;}
+QDBusArgument &operator<<(QDBusArgument &arg, const PipeWireStreamInfoList& /*list*/){return arg;}
 
 const QDBusArgument &operator>>(const QDBusArgument &arg, PipeWireStreamInfoList& list)
 {

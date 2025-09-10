@@ -57,7 +57,7 @@ void Breathing::StepEffect(std::vector<ControllerZone*> controller_zones)
         {
            rgb2hsv(ui->colorsPicker->Colors().at(colorLoopIndex), &CurrentColor);
 
-           if (colorLoopIndex < ui->colorsPicker->Colors().size() -1)
+           if (colorLoopIndex < (int)(ui->colorsPicker->Colors().size() -1))
            {
                colorLoopIndex++;
            }
@@ -78,7 +78,7 @@ void Breathing::StepEffect(std::vector<ControllerZone*> controller_zones)
 
 void Breathing::on_colorsPicker_ColorsChanged()
 {
-    if (colorLoopIndex > ui->colorsPicker->Colors().size() -1)
+    if (colorLoopIndex > (int)(ui->colorsPicker->Colors().size() -1))
     {
         // The number of colors was reduced so the next color no longer exists so let's restart at 0
         colorLoopIndex = 0;
