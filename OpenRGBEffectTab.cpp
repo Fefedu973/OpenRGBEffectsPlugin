@@ -505,19 +505,34 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
 
     printf("[OpenRGBEffectsPlugin] Looking for corresponding controllers for auto assignement...\n");
 
-    for(auto j : zones)
+    for(ControllerZone* controller_zone: ui->device_list->GetControllerZones())
     {
-        bool found = false;
-
-        for(ControllerZone* controller_zone: ui->device_list->GetControllerZones())
+        for(auto j : zones)
         {
             bool location_matches = [&]() {
                 const auto location_str = j["location"].get<std::string>();
+
                 if (location_str.find("HID: ") == 0)
                 {
                     // We don't compare location of hid device since it changes randomly.
                     return true;
                 }
+
+                else if(location_str.find("I2C: ") == 0)
+                {
+                    std::size_t loc = location_str.rfind(", ");
+
+                    if(loc == std::string::npos)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        std::string i2c_address = location_str.substr(loc + 2);
+                        return location_str.find(i2c_address) != std::string::npos;
+                    }
+                }
+
                 return controller_zone->controller->GetLocation() == location_str;
             }();
 
@@ -525,16 +540,16 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
             int segment_idx = j.contains("segment_idx") ? (int)j["segment_idx"] : -1;
 
             if(
-                    location_matches &&
-                    controller_zone->controller->GetName()        == j["name"] &&
-                    controller_zone->controller->GetSerial()      == j["serial"] &&
-                    controller_zone->controller->GetDescription() == j["description"] &&
-                    controller_zone->controller->GetVersion()     == j["version"] &&
-                    controller_zone->controller->GetVendor()      == j["vendor"] &&
-                    controller_zone->zone_idx                     == j["zone_idx"]&&
-                    controller_zone->is_segment                   == is_segment &&
-                    controller_zone->segment_idx                  == segment_idx
-                    )
+                location_matches &&
+                controller_zone->controller->GetName()        == j["name"] &&
+                controller_zone->controller->GetSerial()      == j["serial"] &&
+                controller_zone->controller->GetDescription() == j["description"] &&
+                controller_zone->controller->GetVersion()     == j["version"] &&
+                controller_zone->controller->GetVendor()      == j["vendor"] &&
+                controller_zone->zone_idx                     == j["zone_idx"]&&
+                controller_zone->is_segment                   == is_segment &&
+                controller_zone->segment_idx                  == segment_idx
+                )
             {
                 if(j.contains("self_brightness"))
                 {
@@ -548,17 +563,8 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
                 controller_zone->reverse = j["reverse"];
 
                 saved_zones.push_back(controller_zone);
-                found = true;
                 break;
             }
-        }
-
-        if(!found)
-        {
-            std::string dev_name = j["name"];
-            std::string dev_location = j["location"];
-
-            printf("[OpenRGBEffectsPlugin] Unable to find device: %s (%s)\n", dev_name.c_str(), dev_location.c_str());
         }
     }
 
@@ -627,7 +633,7 @@ void OpenRGBEffectTab::StartAll()
 {
     for(int i = 1; i < ui->EffectTabs->count(); i++)
     {
-       (dynamic_cast<OpenRGBEffectPage*>(ui->EffectTabs->widget(i)))->StartEffect();
+        (dynamic_cast<OpenRGBEffectPage*>(ui->EffectTabs->widget(i)))->StartEffect();
     }
 }
 
@@ -635,7 +641,7 @@ void OpenRGBEffectTab::StopAll()
 {
     for(int i = 1; i < ui->EffectTabs->count(); i++)
     {
-       (dynamic_cast<OpenRGBEffectPage*>(ui->EffectTabs->widget(i)))->StopEffect();
+        (dynamic_cast<OpenRGBEffectPage*>(ui->EffectTabs->widget(i)))->StopEffect();
     }
 }
 
