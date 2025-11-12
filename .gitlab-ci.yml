@@ -53,9 +53,9 @@ before_script:
     - export APPIMAGE_EXTRACT_AND_RUN=1
 
 #-----------------------------------------------------------#
-# Linux i386 Qt6 Build Target                               #
+# Linux i386 Qt5 Build Target                               #
 #-----------------------------------------------------------#
-"Linux i386 Qt6":
+"Linux i386 Qt5":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-i386
   tags:
@@ -64,10 +64,10 @@ before_script:
   stage: build
   script:
   - export $(dpkg-architecture)
-  - ./scripts/build-plugin.sh qt6
+  - ./scripts/build-plugin.sh
 
   artifacts:
-    name: "${CI_PROJECT_NAME}_Linux_i386_Qt6_${CI_COMMIT_SHORT_SHA}"
+    name: "${CI_PROJECT_NAME}_Linux_i386_Qt5_${CI_COMMIT_SHORT_SHA}"
     paths:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
@@ -87,7 +87,7 @@ before_script:
   stage: build
   script:
   - export $(dpkg-architecture)
-  - ./scripts/build-plugin.sh
+  - ./scripts/build-plugin.sh qt6
 
   artifacts:
     name: "${CI_PROJECT_NAME}_Linux_i386_${CI_COMMIT_SHORT_SHA}"
@@ -99,9 +99,9 @@ before_script:
     - !reference [.upstream_rules, rules]
 
 #-----------------------------------------------------------#
-# Linux amd64 Qt6 Build Target                              #
+# Linux amd64 Qt5 Build Target                              #
 #-----------------------------------------------------------#
-"Linux amd64 Qt6":
+"Linux amd64 Qt5":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-amd64
   tags:
@@ -110,10 +110,10 @@ before_script:
   stage: build
   script:
   - export $(dpkg-architecture)
-  - ./scripts/build-plugin.sh Qt6
+  - ./scripts/build-plugin.sh
 
   artifacts:
-    name: "${CI_PROJECT_NAME}_Linux_amd64_Qt6_${CI_COMMIT_SHORT_SHA}"
+    name: "${CI_PROJECT_NAME}_Linux_amd64_Qt5_${CI_COMMIT_SHORT_SHA}"
     paths:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
@@ -133,7 +133,7 @@ before_script:
   stage: build
   script:
   - export $(dpkg-architecture)
-  - ./scripts/build-plugin.sh
+  - ./scripts/build-plugin.sh qt6
 
   artifacts:
     name: "${CI_PROJECT_NAME}_Linux_amd64_${CI_COMMIT_SHORT_SHA}"
@@ -145,9 +145,9 @@ before_script:
     - !reference [.upstream_rules, rules]
 
 #-----------------------------------------------------------#
-# Linux armhf Qt6 Build Target                              #
+# Linux armhf Qt5 Build Target                              #
 #-----------------------------------------------------------#
-"Linux armhf Qt6":
+"Linux armhf Qt5":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-armhf
   tags:
@@ -156,10 +156,10 @@ before_script:
   stage: build
   script:
   - export $(dpkg-architecture)
-  - ./scripts/build-plugin.sh qt6
+  - ./scripts/build-plugin.sh
 
   artifacts:
-    name: "${CI_PROJECT_NAME}_Linux_armhf_Qt6_${CI_COMMIT_SHORT_SHA}"
+    name: "${CI_PROJECT_NAME}_Linux_armhf_Qt5_${CI_COMMIT_SHORT_SHA}"
     paths:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
@@ -179,7 +179,7 @@ before_script:
   stage: build
   script:
   - export $(dpkg-architecture)
-  - ./scripts/build-plugin.sh
+  - ./scripts/build-plugin.sh qt6
 
   artifacts:
     name: "${CI_PROJECT_NAME}_Linux_armhf_${CI_COMMIT_SHORT_SHA}"
@@ -191,9 +191,9 @@ before_script:
     - !reference [.upstream_rules, rules]
 
 #-----------------------------------------------------------#
-# Linux arm64 Qt6 Build Target                              #
+# Linux arm64 Qt5 Build Target                              #
 #-----------------------------------------------------------#
-"Linux arm64 Qt6":
+"Linux arm64 Qt5":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-arm64
   tags:
@@ -202,10 +202,10 @@ before_script:
   stage: build
   script:
   - export $(dpkg-architecture)
-  - ./scripts/build-plugin.sh qt6
+  - ./scripts/build-plugin.sh
 
   artifacts:
-    name: "${CI_PROJECT_NAME}_Linux_arm64_Qt6_${CI_COMMIT_SHORT_SHA}"
+    name: "${CI_PROJECT_NAME}_Linux_arm64_Qt5_${CI_COMMIT_SHORT_SHA}"
     paths:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
@@ -225,7 +225,7 @@ before_script:
   stage: build
   script:
   - export $(dpkg-architecture)
-  - ./scripts/build-plugin.sh
+  - ./scripts/build-plugin.sh qt6
 
   artifacts:
     name: "${CI_PROJECT_NAME}_Linux_arm64_${CI_COMMIT_SHORT_SHA}"
@@ -349,9 +349,28 @@ before_script:
     - !reference [.upstream_rules, rules]
 
 #-----------------------------------------------------------#
-# Windows (32-bit) Qt6 Build Target                         #
+# Windows (32-bit) Qt5 Build Target                         #
 #-----------------------------------------------------------#
-"Windows 32 Qt6":
+"Windows 32 Qt5":
+  extends:
+  - .shared_windows_runners
+  stage: build
+  script:
+  - scripts\build-windows.bat 5.15.0 2019 32
+  - mv "OpenRGBEffectsPlugin Windows 32-Bit\OpenRGBEffectsPlugin.dll" .
+  artifacts:
+    name: "${CI_PROJECT_NAME}_Windows_32_Qt5_${CI_COMMIT_SHORT_SHA}"
+    paths:
+    - OpenRGBEffectsPlugin.dll
+    expire_in: 30 days
+
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Windows (32-bit) Build Target                             #
+#-----------------------------------------------------------#
+"Windows 32":
   extends:
   - .shared_windows_runners
   stage: build
@@ -368,17 +387,17 @@ before_script:
     - !reference [.upstream_rules, rules]
 
 #-----------------------------------------------------------#
-# Windows (32-bit) Build Target                             #
+# Windows (64-bit) Qt5 Build Target                         #
 #-----------------------------------------------------------#
-"Windows 32":
+"Windows 64 Qt5":
   extends:
   - .shared_windows_runners
   stage: build
   script:
-  - scripts\build-windows.bat 5.15.0 2019 32
-  - mv "OpenRGBEffectsPlugin Windows 32-Bit\OpenRGBEffectsPlugin.dll" .
+  - scripts\build-windows.bat 5.15.0 2019 64
+  - mv "OpenRGBEffectsPlugin Windows 64-Bit\OpenRGBEffectsPlugin.dll" .
   artifacts:
-    name: "${CI_PROJECT_NAME}_Windows_32_${CI_COMMIT_SHORT_SHA}"
+    name: "${CI_PROJECT_NAME}_Windows_64_Qt5_${CI_COMMIT_SHORT_SHA}"
     paths:
     - OpenRGBEffectsPlugin.dll
     expire_in: 30 days
@@ -387,9 +406,9 @@ before_script:
     - !reference [.upstream_rules, rules]
 
 #-----------------------------------------------------------#
-# Windows (64-bit) Qt6 Build Target                         #
+# Windows (64-bit) Build Target                             #
 #-----------------------------------------------------------#
-"Windows 64 Qt6":
+"Windows 64":
   extends:
   - .shared_windows_runners
   stage: build
@@ -406,33 +425,30 @@ before_script:
     - !reference [.upstream_rules, rules]
 
 #-----------------------------------------------------------#
-# Windows (64-bit) Build Target                             #
-#-----------------------------------------------------------#
-"Windows 64":
-  extends:
-  - .shared_windows_runners
-  stage: build
-  script:
-  - scripts\build-windows.bat 5.15.0 2019 64
-  - mv "OpenRGBEffectsPlugin Windows 64-Bit\OpenRGBEffectsPlugin.dll" .
-  artifacts:
-    name: "${CI_PROJECT_NAME}_Windows_64_${CI_COMMIT_SHORT_SHA}"
-    paths:
-    - OpenRGBEffectsPlugin.dll
-    expire_in: 30 days
-
-  rules:
-    - !reference [.upstream_rules, rules]
-
-#-----------------------------------------------------------#
 # MacOS Build Target                                        #
 #-----------------------------------------------------------#
-"MacOS ARM64":
+"MacOS ARM64 Qt5":
   tags:
   - macos
   stage: build
   script:
   - ./scripts/build-macos.sh qt5 arm
+
+  artifacts:
+    name: "${CI_PROJECT_NAME}_MacOS_ARM64_Qt5_${CI_COMMIT_SHORT_SHA}"
+    paths:
+    - libOpenRGBEffectsPlugin.dylib
+    expire_in: 30 days
+
+  rules:
+    - !reference [.upstream_rules, rules]
+
+"MacOS ARM64":
+  tags:
+  - macos
+  stage: build
+  script:
+  - ./scripts/build-macos.sh qt6 arm
 
   artifacts:
     name: "${CI_PROJECT_NAME}_MacOS_ARM64_${CI_COMMIT_SHORT_SHA}"
@@ -443,15 +459,15 @@ before_script:
   rules:
     - !reference [.upstream_rules, rules]
 
-"MacOS ARM64 Qt6":
+"MacOS Intel Qt5":
   tags:
   - macos
   stage: build
   script:
-  - ./scripts/build-macos.sh qt6 arm
+  - ./scripts/build-macos.sh qt5 intel
 
   artifacts:
-    name: "${CI_PROJECT_NAME}_MacOS_ARM64_Qt6_${CI_COMMIT_SHORT_SHA}"
+    name: "${CI_PROJECT_NAME}_MacOS_Intel_Qt5_${CI_COMMIT_SHORT_SHA}"
     paths:
     - libOpenRGBEffectsPlugin.dylib
     expire_in: 30 days
@@ -464,26 +480,10 @@ before_script:
   - macos
   stage: build
   script:
-  - ./scripts/build-macos.sh qt5 intel
-
-  artifacts:
-    name: "${CI_PROJECT_NAME}_MacOS_Intel_${CI_COMMIT_SHORT_SHA}"
-    paths:
-    - libOpenRGBEffectsPlugin.dylib
-    expire_in: 30 days
-
-  rules:
-    - !reference [.upstream_rules, rules]
-
-"MacOS Intel Qt6":
-  tags:
-  - macos
-  stage: build
-  script:
   - ./scripts/build-macos.sh qt6 intel
 
   artifacts:
-    name: "${CI_PROJECT_NAME}_MacOS_Intel_Qt6_${CI_COMMIT_SHORT_SHA}"
+    name: "${CI_PROJECT_NAME}_MacOS_Intel_${CI_COMMIT_SHORT_SHA}"
     paths:
     - libOpenRGBEffectsPlugin.dylib
     expire_in: 30 days
