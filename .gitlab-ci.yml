@@ -361,7 +361,7 @@ before_script:
   stage: build
   script:
   - eval $(/opt/homebrew/bin/brew shellenv)
-  - qmake OpenRGBEffectsPlugin.pro
+  - /opt/homebrew/opt/qt@5/bin/qmake OpenRGBEffectsPlugin.pro
   - make -j16
   - install_name_tool libOpenRGBEffectsPlugin.dylib -change /opt/homebrew/opt/qt@5/lib/QtWidgets.framework/Versions/5/QtWidgets @executable_path/../Frameworks/QtWidgets.framework/Versions/5/QtWidgets
   - install_name_tool libOpenRGBEffectsPlugin.dylib -change /opt/homebrew/opt/qt@5/lib/QtGui.framework/Versions/5/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui
@@ -380,13 +380,38 @@ before_script:
   - if: '$BUILD_MACOS =~ /.+/'
     when: on_success
 
+"MacOS ARM64 Qt6":
+  tags:
+  - macos
+  stage: build
+  script:
+  - eval $(/opt/homebrew/bin/brew shellenv)
+  - qmake OpenRGBEffectsPlugin.pro
+  - make -j16
+  - install_name_tool libOpenRGBEffectsPlugin.dylib -change /opt/homebrew/opt/qt@6/lib/QtWidgets.framework/Versions/Current/QtWidgets @executable_path/../Frameworks/QtWidgets.framework/Versions/Current/QtWidgets
+  - install_name_tool libOpenRGBEffectsPlugin.dylib -change /opt/homebrew/opt/qt@6/lib/QtGui.framework/Versions/Current/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/Current/QtGui
+  - install_name_tool libOpenRGBEffectsPlugin.dylib -change /opt/homebrew/opt/qt@6/lib/QtCore.framework/Versions/Current/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/Current/QtCore
+  - codesign --force --verify -s OpenRGB libOpenRGBEffectsPlugin.dylib
+
+  artifacts:
+    name: "${CI_PROJECT_NAME}_MacOS_ARM64_Qt6_${CI_COMMIT_SHORT_SHA}"
+    paths:
+    - libOpenRGBEffectsPlugin.dylib
+    expire_in: 30 days
+
+  rules:
+  - if: '$CI_PROJECT_PATH == "OpenRGBDevelopers/OpenRGBEffectsPlugin"'
+    when: on_success
+  - if: '$BUILD_MACOS =~ /.+/'
+    when: on_success
+
 "MacOS Intel":
   tags:
   - macos
   stage: build
   script:
   - eval $(/usr/local/bin/brew shellenv)
-  - arch -x86_64 /usr/local/bin/qmake OpenRGBEffectsPlugin.pro
+  - arch -x86_64 /usr/local/opt/qt@5/bin/qmake OpenRGBEffectsPlugin.pro
   - arch -x86_64 make -j16
   - arch -x86_64 install_name_tool libOpenRGBEffectsPlugin.dylib -change /usr/local/opt/qt@5/lib/QtWidgets.framework/Versions/5/QtWidgets @executable_path/../Frameworks/QtWidgets.framework/Versions/5/QtWidgets
   - arch -x86_64 install_name_tool libOpenRGBEffectsPlugin.dylib -change /usr/local/opt/qt@5/lib/QtGui.framework/Versions/5/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/5/QtGui
@@ -394,6 +419,30 @@ before_script:
   - arch -x86_64 codesign --force --verify -s OpenRGB libOpenRGBEffectsPlugin.dylib
   artifacts:
     name: "${CI_PROJECT_NAME}_MacOS_Intel_${CI_COMMIT_SHORT_SHA}"
+    paths:
+    - libOpenRGBEffectsPlugin.dylib
+    expire_in: 30 days
+
+  rules:
+  - if: '$CI_PROJECT_PATH == "OpenRGBDevelopers/OpenRGBEffectsPlugin"'
+    when: on_success
+  - if: '$BUILD_MACOS =~ /.+/'
+    when: on_success
+
+"MacOS Intel Qt6":
+  tags:
+  - macos
+  stage: build
+  script:
+  - eval $(/usr/local/bin/brew shellenv)
+  - arch -x86_64 /usr/local/bin/qmake OpenRGBEffectsPlugin.pro
+  - arch -x86_64 make -j16
+  - arch -x86_64 install_name_tool libOpenRGBEffectsPlugin.dylib -change /usr/local/opt/qt@6/lib/QtWidgets.framework/Versions/Current/QtWidgets @executable_path/../Frameworks/QtWidgets.framework/Versions/Current/QtWidgets
+  - arch -x86_64 install_name_tool libOpenRGBEffectsPlugin.dylib -change /usr/local/opt/qt@6/lib/QtGui.framework/Versions/Current/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/Current/QtGui
+  - arch -x86_64 install_name_tool libOpenRGBEffectsPlugin.dylib -change /usr/local/opt/qt@6/lib/QtCore.framework/Versions/Current/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/Current/QtCore
+  - arch -x86_64 codesign --force --verify -s OpenRGB libOpenRGBEffectsPlugin.dylib
+  artifacts:
+    name: "${CI_PROJECT_NAME}_MacOS_Intel_Qt6_${CI_COMMIT_SHORT_SHA}"
     paths:
     - libOpenRGBEffectsPlugin.dylib
     expire_in: 30 days
