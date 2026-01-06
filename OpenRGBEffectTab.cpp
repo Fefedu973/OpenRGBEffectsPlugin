@@ -417,6 +417,8 @@ void OpenRGBEffectTab::SaveProfileAction()
 
                 effect_settings["ControllerZones"] = zones;
 
+                effect_settings["SelectAll"] = ui->device_list->GetSelectAll();
+
                 effects_settings.push_back(effect_settings);
             }
 
@@ -625,8 +627,18 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
 
     CreateEffectTab(effect);
 
-    EffectManager::Get()->Assign(saved_zones, effect);
-    ui->device_list->ApplySelection(saved_zones);
+
+    if(effect_settings.contains("SelectAll") && (effect_settings["SelectAll"] == true))
+    {
+        ui->device_list->SetSelectAll(true);
+    }
+    else
+    {
+        ui->device_list->SetSelectAll(false);
+
+        EffectManager::Get()->Assign(saved_zones, effect);
+        ui->device_list->ApplySelection(saved_zones);
+    }
 }
 
 void OpenRGBEffectTab::StartAll()

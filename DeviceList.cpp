@@ -17,6 +17,8 @@ DeviceList::DeviceList(QWidget *parent) :
     ui->toggle_brightness->setFont(OpenRGBPluginsFont::GetFont());
     ui->toggle_brightness->setText(OpenRGBPluginsFont::icon(OpenRGBPluginsFont::sun));
 
+    select_all = false;
+
     InitControllersList();
 }
 
@@ -100,16 +102,35 @@ void DeviceList::InitControllersList()
         });
     }
 
+    if(select_all)
+    {
+        for(DeviceListItem* item: device_items)
+        {
+            if(item->HasDirect())
+            {
+                item->SetEnabled(true);
+            }
+        }
+
+        emit SelectionChanged();
+    }
+
     ((QVBoxLayout*) ui->devices->layout())->addStretch(10000);
 }
 
 void DeviceList::on_toggle_select_all_clicked()
 {
+    select_all = ui->toggle_select_all->isChecked();
+
     for(DeviceListItem* item: device_items)
     {
-        if(item->HasDirect())
+        if(select_all && item->HasDirect())
         {
-            item->SetEnabled(ui->toggle_select_all->isChecked());
+            item->SetEnabled(true);
+        }
+        else
+        {
+            item->SetEnabled(false);
         }
     }
 
@@ -172,6 +193,32 @@ std::vector<ControllerZone*> DeviceList::GetSelection()
     }
 
     return selection;
+}
+
+bool DeviceList::GetSelectAll()
+{
+    return select_all;
+}
+
+void DeviceList::SetSelectAll(bool selectall)
+{
+    select_all = selectall;
+
+    ui->toggle_select_all->setChecked(select_all);
+
+    for(DeviceListItem* item: device_items)
+    {
+        if(select_all && item->HasDirect())
+        {
+            item->SetEnabled(true);
+        }
+        else
+        {
+            item->SetEnabled(false);
+        }
+    }
+
+    emit SelectionChanged();
 }
 
 void DeviceList::ApplySelection(std::vector<ControllerZone*> selection)

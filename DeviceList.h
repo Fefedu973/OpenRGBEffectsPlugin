@@ -23,9 +23,12 @@ public:
     void DisableControls();
     void EnableControls();
 
-    void ApplySelection(std::vector<ControllerZone*>);
-    std::vector<ControllerZone*> GetSelection();
-    std::vector<ControllerZone*> GetControllerZones();
+    void                            ApplySelection(std::vector<ControllerZone*>);
+    std::vector<ControllerZone*>    GetSelection();
+    std::vector<ControllerZone*>    GetControllerZones();
+    bool                            GetSelectAll();
+
+    void                            SetSelectAll(bool selectall);
 
 signals:
     void SelectionChanged();
@@ -39,8 +42,9 @@ private slots:
 private:
     Ui::DeviceList *ui;
 
-    std::vector<DeviceListItem*> device_items;
-    std::vector<ControllerZone*> controller_zones;
+    std::vector<ControllerZone*>    controller_zones;
+    std::vector<DeviceListItem*>    device_items;
+    bool                            select_all;
 };
 
 #endif // DEVICELIST_H
