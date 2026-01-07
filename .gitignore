@@ -10,3 +10,8 @@ OpenRGB-x86_64.AppImage
 build
 Ship
 libORGBEffectPlugin.so*
+*.qm
+_intermediate_release/
+release/
+OpenRGBEffectsPlugin Windows 32-bit/
+OpenRGBEffectsPlugin Windows 64-bit/
