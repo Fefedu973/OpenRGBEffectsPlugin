@@ -38,8 +38,6 @@ See the table below for packet ids
 
 ## Effect List
 
-note that the `data_size` field is currently _not sent_ (this is a bug).
-
 | Size                              | Format                    | Name                | Protocol Version | Description                              |
 | --------------------------------- | ------------------------- | ------------------- | ---------------- | -----------------------------------------|
 | 4                                 | unsigned int              | data_size           | 0                | size of all data in packet               |
