@@ -149,7 +149,7 @@ void EffectManager::EffectThreadFunction(RGBEffect* effect)
         TCount start = clock->now();
 
         lock.lock();
-        std::vector<ControllerZone*> controller_zones =  effect_zones[effect];
+        std::vector<ControllerZone*>& controller_zones =  effect_zones[effect];
 
         // Add preview virtual controllers to the list of real devices if any
         if (previews.find(effect) != previews.end())
@@ -160,17 +160,10 @@ void EffectManager::EffectThreadFunction(RGBEffect* effect)
         effect->StepEffect(controller_zones);
         lock.unlock();
 
-        // Use a set to update only once the controllers
-        std::set<RGBController*> controllers;
-
+        // Update the LEDs for all selected zones
         for(ControllerZone* controller_zone: controller_zones)
         {
-            controllers.insert(controller_zone->controller);
-        }
-
-        for(RGBController* controller : controllers)
-        {
-            controller->UpdateLEDs();
+            controller_zone->controller->UpdateLEDs();
         }
 
         TCount end = clock->now();
