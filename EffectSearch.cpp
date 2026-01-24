@@ -1,8 +1,16 @@
-#include "EffectSearch.h"
-#include "ui_EffectSearch.h"
+/*---------------------------------------------------------*\
+| EffectSearch.cpp                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Search Widget             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
 #include <QAction>
 #include <QScrollBar>
+#include "EffectSearch.h"
+#include "ui_EffectSearch.h"
 
 EffectSearch::EffectSearch(QWidget *parent,  unsigned int w) :
     QWidget(parent),

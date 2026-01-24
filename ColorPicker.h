@@ -1,12 +1,21 @@
-#ifndef COLORPICKER_H
-#define COLORPICKER_H
+/*---------------------------------------------------------*\
+| ColorPicker.h                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Color Picker Widget              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "RGBController.h"
 #include "ColorUtils.h"
 
-namespace Ui {
-class ColorPicker;
+namespace Ui
+{
+    class ColorPicker;
 }
 
 class ColorPicker : public QWidget
@@ -34,5 +43,3 @@ private:
     Ui::ColorPicker *ui;
     QColor current_color;
 };
-
-#endif // COLORPICKER_H

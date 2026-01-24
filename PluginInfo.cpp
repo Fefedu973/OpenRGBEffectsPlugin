@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| PluginInfo.cpp                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Info Widget                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "PluginInfo.h"
 #include "OpenRGBEffectsPlugin.h"
 

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| LivePreviewController.cpp                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Live Preview RGBController       |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "LivePreviewController.h"
 #include "OpenRGBPluginsFont.h"
 

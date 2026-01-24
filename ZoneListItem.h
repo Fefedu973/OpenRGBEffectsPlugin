@@ -1,11 +1,20 @@
-#ifndef ZONELISTITEM_H
-#define ZONELISTITEM_H
+/*---------------------------------------------------------*\
+| ZoneListItem.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Zone List Item Widget            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
-#include "ControllerZone.h"
+#pragma once
+
 #include <QWidget>
+#include "ControllerZone.h"
 
-namespace Ui {
-class ZoneListItem;
+namespace Ui
+{
+    class ZoneListItem;
 }
 
 class ZoneListItem : public QWidget
@@ -46,5 +55,3 @@ private:
     Ui::ZoneListItem *ui;
     void UpdateCheckState();
 };
-
-#endif // ZONELISTITEM_H

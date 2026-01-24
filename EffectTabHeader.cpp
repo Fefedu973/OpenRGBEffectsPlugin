@@ -1,6 +1,15 @@
+/*---------------------------------------------------------*\
+| EffectTabHeader.cpp                                       |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Tab Header Widget         |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#include <QInputDialog>
 #include "EffectTabHeader.h"
 #include "ui_EffectTabHeader.h"
-#include <QInputDialog>
 #include "OpenRGBPluginsFont.h"
 
 EffectTabHeader::EffectTabHeader(QWidget *parent,  RGBEffect* effect) :

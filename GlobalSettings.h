@@ -1,13 +1,21 @@
-#ifndef GLOBALSETTINGS_H
-#define GLOBALSETTINGS_H
+/*---------------------------------------------------------*\
+| GlobalSettings.h                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Global Settings Widget           |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
+#pragma once
+
+#include <QWidget>
 #include "AudioSettings.h"
 #include "ui_GlobalSettings.h"
 
-#include <QWidget>
-
-namespace Ui {
-class GlobalSettings;
+namespace Ui
+{
+    class GlobalSettings;
 }
 
 class GlobalSettings : public QWidget
@@ -37,5 +45,3 @@ private:
 
     AudioSettings                   audio_settings;
 };
-
-#endif // GLOBALSETTINGS_H

@@ -1,5 +1,13 @@
-#ifndef CONTROLLERZONE_H
-#define CONTROLLERZONE_H
+/*---------------------------------------------------------*\
+| ControllerZone.h                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Controller Zone                  |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <nlohmann/json.hpp>
 #include "ColorUtils.h"
@@ -9,9 +17,7 @@ using json = nlohmann::json;
 
 class ControllerZone
 {
-
 public:
-
     ControllerZone(RGBController* controller,
                    unsigned int zone_idx,
                    bool reverse,
@@ -172,5 +178,3 @@ public:
         return controller->colors[startidx() + idx];
     }
 };
-
-#endif // CONTROLLERZONE_H

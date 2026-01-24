@@ -1,9 +1,11 @@
-#include "OpenRGBEffectPage.h"
-#include "OpenRGBEffectSettings.h"
-#include "OpenRGBPluginsFont.h"
-#include "EffectManager.h"
-#include "ColorUtils.h"
-#include "LivePreviewController.h"
+/*---------------------------------------------------------*\
+| OpenRGBEffectPage.cpp                                     |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Page Widget               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
 #include <QDialog>
 #include <QFile>
@@ -18,6 +20,12 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QUrl>
+#include "OpenRGBEffectPage.h"
+#include "OpenRGBEffectSettings.h"
+#include "OpenRGBPluginsFont.h"
+#include "EffectManager.h"
+#include "ColorUtils.h"
+#include "LivePreviewController.h"
 
 OpenRGBEffectPage::OpenRGBEffectPage(QWidget *parent, RGBEffect* effect):
     QWidget(parent),

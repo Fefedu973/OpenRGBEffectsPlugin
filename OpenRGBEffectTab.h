@@ -1,8 +1,15 @@
-#ifndef OPENRGBEFFECTTAB_H
-#define OPENRGBEFFECTTAB_H
+/*---------------------------------------------------------*\
+| OpenRGBEffectTab.h                                        |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Tab                       |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QTranslator>
-
 #include "ui_OpenRGBEffectTab.h"
 #include "RGBEffect.h"
 #include "EffectList.h"
@@ -62,5 +69,3 @@ private:
     void ClearAll();
     void SetLanguage();
 };
-
-#endif // OPENRGBEFFECTTAB_H

@@ -1,11 +1,20 @@
+/*---------------------------------------------------------*\
+| OpenRGBEffectsPlugin.cpp                                  |
+|                                                           |
+|   OpenRGB Effects Plugin                                  |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#include <QMenu>
+#include <QSystemTrayIcon>
 #include "OpenRGBEffectsPlugin.h"
-#include "EffectManager.h"
 #include "EffectList.h"
 #include "EffectListManager.h"
+#include "EffectManager.h"
 #include "NetworkServer.h"
 #include "OpenRGBEffectSettings.h"
-#include <QSystemTrayIcon>
-#include <QMenu>
 
 ResourceManagerInterface* OpenRGBEffectsPlugin::RMPointer = nullptr;
 

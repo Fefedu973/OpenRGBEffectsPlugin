@@ -1,11 +1,19 @@
-#include "OpenRGBEffectSettings.h"
+/*---------------------------------------------------------*\
+| OpenRGBEffectSettings.cpp                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Settings                         |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include <fstream>
 #include <iostream>
-#include "OpenRGBEffectsPlugin.h"
-
 #include <QFile>
 #include <QString>
 #include <QDir>
+#include "OpenRGBEffectSettings.h"
+#include "OpenRGBEffectsPlugin.h"
 
 unsigned int OpenRGBEffectSettings::version = 2;
 

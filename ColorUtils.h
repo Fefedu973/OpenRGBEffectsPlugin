@@ -1,10 +1,19 @@
-#ifndef COLORUTILS_H
-#define COLORUTILS_H
-#define HEXCOLOR(rgb) (ToRGBColor(RGBGetBValue(rgb), RGBGetGValue(rgb), RGBGetRValue(rgb)))
+/*---------------------------------------------------------*\
+| ColorUtils.h                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Color Utilities                  |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
-#include "RGBController.h"
-#include "hsv.h"
+#pragma once
+
 #include <QColor>
+#include "hsv.h"
+#include "RGBController.h"
+
+#define HEXCOLOR(rgb) (ToRGBColor(RGBGetBValue(rgb), RGBGetGValue(rgb), RGBGetRValue(rgb)))
 
 enum ColorBlendFn
 {
@@ -20,7 +29,8 @@ enum ColorBlendFn
     DIFF = 9
 };
 
-static std::vector<std::string> COLOR_BLEND_FN_NAMES = {
+static std::vector<std::string> COLOR_BLEND_FN_NAMES =
+{
     QT_TRANSLATE_NOOP("ColorUtils", "Multiply"),
     QT_TRANSLATE_NOOP("ColorUtils", "Screen"),
     QT_TRANSLATE_NOOP("ColorUtils", "Overlay"),
@@ -33,10 +43,9 @@ static std::vector<std::string> COLOR_BLEND_FN_NAMES = {
     QT_TRANSLATE_NOOP("ColorUtils", "Difference")
 };
 
-class ColorUtils {
-
+class ColorUtils
+{
 public:
-
     static hsv_t RandomHSVColor()
     {
         hsv_t hsv;
@@ -289,5 +298,3 @@ private:
     }
 
 };
-
-#endif // COLORUTILS_H

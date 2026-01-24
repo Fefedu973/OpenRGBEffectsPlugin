@@ -1,13 +1,22 @@
-#ifndef DEVICELISTITEM_H
-#define DEVICELISTITEM_H
+/*---------------------------------------------------------*\
+| DeviceListItem.h                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Device List Item Widget          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "RGBController.h"
 #include "ControllerZone.h"
 #include "ZoneListItem.h"
 
-namespace Ui {
-class DeviceListItem;
+namespace Ui
+{
+    class DeviceListItem;
 }
 
 class DeviceListItem : public QWidget
@@ -55,5 +64,3 @@ private:
     bool single_zone;
     void UpdateCheckState();
 };
-
-#endif // DEVICELISTITEM_H

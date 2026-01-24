@@ -1,10 +1,19 @@
-#ifndef SAVEPROFILEPOPUP_H
-#define SAVEPROFILEPOPUP_H
+/*---------------------------------------------------------*\
+| SaveProfilePopup.h                                        |
+|                                                           |
+|   OpenRGB Effects Plugin Save Profile Popup Widget        |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 
-namespace Ui {
-class SaveProfilePopup;
+namespace Ui
+{
+    class SaveProfilePopup;
 }
 
 class SaveProfilePopup : public QWidget
@@ -33,5 +42,3 @@ private slots:
 private:
     Ui::SaveProfilePopup *ui;
 };
-
-#endif // SAVEPROFILEPOPUP_H

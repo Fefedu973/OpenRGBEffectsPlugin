@@ -1,11 +1,18 @@
+/*---------------------------------------------------------*\
+| DeviceList.cpp                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Device List Widget               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#include <QVBoxLayout>
 #include "DeviceList.h"
 #include "ui_DeviceList.h"
 #include "OpenRGBPluginsFont.h"
-
 #include "OpenRGBEffectsPlugin.h"
 #include "OpenRGBEffectSettings.h"
-#include <QVBoxLayout>
-
 
 DeviceList::DeviceList(QWidget *parent) :
     QWidget(parent),

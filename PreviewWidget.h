@@ -1,5 +1,13 @@
-#ifndef PREVIEWWIDGET_H
-#define PREVIEWWIDGET_H
+/*---------------------------------------------------------*\
+| PreviewWidget.h                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Preview Widget                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -18,5 +26,3 @@ private:
     void ToggleFullScreen();
     Qt::WindowFlags original_flags;
 };
-
-#endif // PREVIEWWIDGET_H

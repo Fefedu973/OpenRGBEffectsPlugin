@@ -1,12 +1,21 @@
-#ifndef LIVEPREVIEWCONTROLLER_H
-#define LIVEPREVIEWCONTROLLER_H
+/*---------------------------------------------------------*\
+| LivePreviewController.h                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Live Preview RGBController       |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "RGBController.h"
 #include "ui_LivePreviewController.h"
 
-namespace Ui {
-class LivePreviewController;
+namespace Ui
+{
+    class LivePreviewController;
 }
 
 class LivePreviewController : public QWidget, public RGBController
@@ -83,5 +92,3 @@ private:
 
     std::mutex lock;
 };
-
-#endif // LIVEPREVIEWCONTROLLER_H

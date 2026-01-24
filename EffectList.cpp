@@ -1,13 +1,21 @@
+/*---------------------------------------------------------*\
+| EffectList.cpp                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Effect List                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#include <QMenu>
+#include <QAction>
+#include <QWidgetAction>
 #include "EffectList.h"
 #include "EffectListManager.h"
 #include "ui_EffectList.h"
 #include "ColorUtils.h"
 #include "OpenRGBPluginsFont.h"
 #include "OpenRGBEffectSettings.h"
-
-#include <QMenu>
-#include <QAction>
-#include <QWidgetAction>
 
 EffectList::EffectList(QWidget *parent) :
     QWidget(parent),

@@ -1,15 +1,23 @@
-#ifndef EFFECTLIST_H
-#define EFFECTLIST_H
+/*---------------------------------------------------------*\
+| EffectList.h                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Effect List                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <set>
-
 #include <QWidget>
 #include <QMenu>
 #include "RGBEffect.h"
 #include "EffectSearch.h"
 
-namespace Ui {
-class EffectList;
+namespace Ui
+{
+    class EffectList;
 }
 
 class EffectList : public QWidget
@@ -44,5 +52,3 @@ private:
     std::vector<QMenu*>     sub_menus;
     std::vector<QAction*>   sub_actions;
 };
-
-#endif // EFFECTLIST_H

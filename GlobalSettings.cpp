@@ -1,9 +1,17 @@
-#include "GlobalSettings.h"
-#include "OpenRGBEffectSettings.h"
+/*---------------------------------------------------------*\
+| GlobalSettings.cpp                                        |
+|                                                           |
+|   OpenRGB Effects Plugin Global Settings Widget           |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
 #include <QDesktopServices>
 #include <QUrl>
 #include <string>
+#include "GlobalSettings.h"
+#include "OpenRGBEffectSettings.h"
 
 GlobalSettings::GlobalSettings(QWidget *parent) :
     QWidget(parent),

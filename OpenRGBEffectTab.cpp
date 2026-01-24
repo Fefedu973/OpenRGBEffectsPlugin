@@ -1,13 +1,11 @@
-#include "OpenRGBEffectTab.h"
-#include "OpenRGBEffectSettings.h"
-#include "EffectListManager.h"
-#include "EffectManager.h"
-#include "OpenRGBEffectsPlugin.h"
-#include "PluginInfo.h"
-#include "SaveProfilePopup.h"
-#include "EffectTabHeader.h"
-#include "OpenRGBEffectPage.h"
-#include "GlobalSettings.h"
+/*---------------------------------------------------------*\
+| OpenRGBEffectTab.cpp                                      |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Tab                       |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
 #include <QAction>
 #include <QComboBox>
@@ -19,6 +17,16 @@
 #include <QString>
 #include <QTabBar>
 #include <QTimer>
+#include "OpenRGBEffectTab.h"
+#include "OpenRGBEffectSettings.h"
+#include "EffectListManager.h"
+#include "EffectManager.h"
+#include "OpenRGBEffectsPlugin.h"
+#include "PluginInfo.h"
+#include "SaveProfilePopup.h"
+#include "EffectTabHeader.h"
+#include "OpenRGBEffectPage.h"
+#include "GlobalSettings.h"
 
 OpenRGBEffectTab::OpenRGBEffectTab(QWidget *parent):
     QWidget(parent),

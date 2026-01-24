@@ -1,11 +1,20 @@
-#ifndef COLORSPICKER_H
-#define COLORSPICKER_H
+/*---------------------------------------------------------*\
+| ColorsPicker.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Colors Picker Widget             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ColorPicker.h"
 
-namespace Ui {
-class ColorsPicker;
+namespace Ui
+{
+    class ColorsPicker;
 }
 
 class ColorsPicker : public QWidget
@@ -36,5 +45,3 @@ private:
     std::vector<ColorPicker*> color_pickers;
 
 };
-
-#endif // COLORSPICKER_H

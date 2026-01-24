@@ -1,13 +1,22 @@
-#ifndef OPENRGBEFFECTPAGE_H
-#define OPENRGBEFFECTPAGE_H
+/*---------------------------------------------------------*\
+| OpenRGBEffectPage.h                                       |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Page Widget               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "ui_OpenRGBEffectPage.h"
 
 #include "RGBEffect.h"
 #include "ColorPicker.h"
 
-namespace Ui {
-class OpenRGBEffectPage;
+namespace Ui
+{
+    class OpenRGBEffectPage;
 }
 
 class OpenRGBEffectPage : public QWidget
@@ -76,5 +85,3 @@ private:
 
     void ToggleInfo();
 };
-
-#endif // OPENRGBEFFECTPAGE_H

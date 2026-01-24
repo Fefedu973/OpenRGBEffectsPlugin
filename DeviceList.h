@@ -1,12 +1,21 @@
-#ifndef DEVICELIST_H
-#define DEVICELIST_H
+/*---------------------------------------------------------*\
+| DeviceList.h                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Device List Widget               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ControllerZone.h"
 #include "DeviceListItem.h"
 
-namespace Ui {
-class DeviceList;
+namespace Ui
+{
+    class DeviceList;
 }
 
 class DeviceList : public QWidget
@@ -46,5 +55,3 @@ private:
     std::vector<DeviceListItem*>    device_items;
     bool                            select_all;
 };
-
-#endif // DEVICELIST_H

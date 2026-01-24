@@ -1,11 +1,20 @@
-#ifndef EFFECTTABHEADER_H
-#define EFFECTTABHEADER_H
+/*---------------------------------------------------------*\
+| EffectTabHeader.h                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Tab Header Widget         |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "RGBEffect.h"
 
-namespace Ui {
-class EffectTabHeader;
+namespace Ui
+{
+    class EffectTabHeader;
 }
 
 class EffectTabHeader : public QWidget
@@ -33,5 +42,3 @@ private:
     Ui::EffectTabHeader *ui;
     RGBEffect           *effect;
 };
-
-#endif // EFFECTTABHEADER_H

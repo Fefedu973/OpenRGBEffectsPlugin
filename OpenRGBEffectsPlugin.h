@@ -1,17 +1,25 @@
-#ifndef OPENRGBEFFECTSPLUGIN_H
-#define OPENRGBEFFECTSPLUGIN_H
+/*---------------------------------------------------------*\
+| OpenRGBEffectsPlugin.h                                    |
+|                                                           |
+|   OpenRGB Effects Plugin                                  |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QObject>
 #include <QWidget>
-
-#include "OpenRGBPluginInterface.h"
 #include "OpenRGBEffectTab.h"
+#include "OpenRGBPluginInterface.h"
 #include "ResourceManagerInterface.h"
 
-enum {
-    NET_PACKET_ID_REQUEST_EFFECT_LIST   = 0,
-    NET_PACKET_ID_START_EFFECT          = 20,
-    NET_PACKET_ID_STOP_EFFECT           = 21,
+enum
+{
+    NET_PACKET_ID_REQUEST_EFFECT_LIST           = 0,
+    NET_PACKET_ID_START_EFFECT                  = 20,
+    NET_PACKET_ID_STOP_EFFECT                   = 21,
     NET_PACKET_ID_REQUEST_EFFECTS_PROFILE_LIST  = 22,
     NET_PACKET_ID_LOAD_EFFECTS_PROFILE          = 23
 };
@@ -49,5 +57,3 @@ private:
     static void                 DeviceListChangedCallback(void* ptr);
     OpenRGBEffectTab*           ui;
 };
-
-#endif

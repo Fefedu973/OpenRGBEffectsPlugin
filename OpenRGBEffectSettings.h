@@ -1,5 +1,13 @@
-#ifndef OPENRGBEFFECTSETTINGS_H
-#define OPENRGBEFFECTSETTINGS_H
+/*---------------------------------------------------------*\
+| OpenRGBEffectSettings.h                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Settings                         |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <fstream>
 #include <iostream>
@@ -70,5 +78,3 @@ private:
     static bool write_text_to_file(filesystem::path, std::string);
 
 };
-
-#endif // OPENRGBEFFECTSETTINGS_H

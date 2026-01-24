@@ -7,7 +7,7 @@
 |   Adam Honse (CalcProgrammer1)                10 Aug 2024 |
 |                                                           |
 |   This file is part of the OpenRGB Effects Plugin project |
-|   SPDX-License-Identifier: GPL-2.0-only                   |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
 \*---------------------------------------------------------*/
 
 #include "EffectListManager.h"

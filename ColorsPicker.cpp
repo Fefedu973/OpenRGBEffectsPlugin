@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| ColorsPicker.cpp                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Colors Picker Widget             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "ColorsPicker.h"
 #include "ui_ColorsPicker.h"
 #include "ColorUtils.h"

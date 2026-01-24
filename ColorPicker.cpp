@@ -1,5 +1,11 @@
-#include "ColorPicker.h"
-#include "ui_ColorPicker.h"
+/*---------------------------------------------------------*\
+| ColorPicker.cpp                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Color Picker Widget              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
 #include <QString>
 #include <QFile>
@@ -7,6 +13,8 @@
 #include <QVBoxLayout>
 #include <QColorDialog>
 #include "ColorUtils.h"
+#include "ColorPicker.h"
+#include "ui_ColorPicker.h"
 
 ColorPicker::ColorPicker(QWidget *parent) :
     QWidget(parent),

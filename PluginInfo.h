@@ -1,11 +1,20 @@
-#ifndef PLUGININFO_H
-#define PLUGININFO_H
+/*---------------------------------------------------------*\
+| PluginInfo.cpp                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Info Widget                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_PluginInfo.h"
 
-namespace Ui {
-class PluginInfo;
+namespace Ui
+{
+    class PluginInfo;
 }
 
 class PluginInfo : public QWidget
@@ -24,5 +33,3 @@ private slots:
 private:
     Ui::PluginInfo *ui;
 };
-
-#endif // PLUGININFO_H

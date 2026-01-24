@@ -1,5 +1,11 @@
-#ifndef EFFECTMANAGER_H
-#define EFFECTMANAGER_H
+/*---------------------------------------------------------*\
+| EffectManager.h                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Manager                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
 #include "ControllerZone.h"
 #include "RGBEffect.h"
@@ -47,5 +53,3 @@ private:
 
     std::mutex lock;
 };
-
-#endif // EFFECTMANAGER_H

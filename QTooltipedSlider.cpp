@@ -1,5 +1,14 @@
-#include "QTooltipedSlider.h"
+/*---------------------------------------------------------*\
+| QTooltipedSlider.cpp                                      |
+|                                                           |
+|   Qt Slider with value tooltip widget                     |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include <QToolTip>
+#include "QTooltipedSlider.h"
 
 QTooltipedSlider::QTooltipedSlider(QWidget *parent) :
     QSlider(parent)

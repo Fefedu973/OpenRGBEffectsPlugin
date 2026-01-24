@@ -1,9 +1,17 @@
-#include "SaveProfilePopup.h"
-#include "ui_SaveProfilePopup.h"
-#include "OpenRGBEffectSettings.h"
+/*---------------------------------------------------------*\
+| SaveProfilePopup.cpp                                      |
+|                                                           |
+|   OpenRGB Effects Plugin Save Profile Popup Widget        |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
+#include "SaveProfilePopup.h"
+#include "ui_SaveProfilePopup.h"
+#include "OpenRGBEffectSettings.h"
 
 SaveProfilePopup::SaveProfilePopup(QWidget *parent) :
     QWidget(parent),
