@@ -9,8 +9,9 @@ This is a plugin for [OpenRGB](https://gitlab.com/CalcProgrammer1/OpenRGB) that 
 ## Experimental (Master)
 
 * [Windows 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Windows%2064)
-* [Linux 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Linux%20amd64)
-* [Bookworm 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Linux%20amd64%20.deb%20%28Debian%20Bookworm%29)
+* [Buster 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Buster%2064)
+* [Bullseye 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Bullseye%2064)
+* [Bookworm 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Bookworm%2064)
 * [MacOS ARM64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=MacOS%20ARM64)
 * [MacOS Intel](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=MacOS%20Intel)
 
@@ -28,6 +29,8 @@ You can get older releases [here](https://gitlab.com/OpenRGBDevelopers/OpenRGBEf
 * Download and extract the correct files depending on your system
 * Launch OpenRGB
 * From the Settings -> Plugins menu, click the "Install plugin" button
+
+
 
 ### Linux
 
@@ -106,7 +109,7 @@ brew install openal-soft
 
 ## SDK support
 
-This plugin is supported by the OpenRGB SDK, see [SDK docs](./SDK.md) for more details.
+This plugin is supported by the OpenRGB SDK, see [SDK docs](./Documentation/SDK.md) for more details.
 
 ## Common Issues
 
@@ -127,5 +130,7 @@ The very nature of ambient is to do massive calulation to get the average or mos
 
 ## Contributing
 
-Please read the [contributing guide](./CONTRIBUTING.md) if you want to add effects or bring new features.
+Check out the [compilation instructions](./Documentation/Compilation.md) to build this project locally.
+
+Please read the [contributing guide](./Documentation/CONTRIBUTING.md) if you want to add effects or bring new features.
 
