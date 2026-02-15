@@ -1,24 +1,48 @@
-# swy: some useful references; the MSVC part of the CI script is based on the one from bind9, by Michał Kępień:
-# https://gitlab.com/gitlab-org/ci-cd/shared-runners/images/gcp/windows-containers/blob/master/cookbooks/preinstalled-software/README.md
-# https://gitlab.isc.org/isc-projects/bind9/commit/facc6a051fcac70fbbc61cb92a37be8c3e4db5ec#587d266bb27a4dc3022bbed44dfa19849df3044c_718_731
-# https://www.kittell.net/code/powershell-unix-sed-equivalent-change-text-file/
-# https://powershell.org/forums/topic/how-to-use-ansi-vt100-formatting-in-powershell-ooh-pretty-colors/
+#-----------------------------------------------------------#
+# .gitlab-ci.yml                                            #
+#                                                           #
+#   OpenRGB Effects Plugin GitLab CI Configuration          #
+#                                                           #
+#   This file is part of the OpenRGB Effects Plugin project #
+#   SPDX-License-Identifier: GPL-2.0-or-later               #
+#-----------------------------------------------------------#
 
-#-----------------------------------------------------------------------#
-# OpenRGB Effects Plugin GitLab CI Configuration                        #
-#-----------------------------------------------------------------------#
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-  GIT_DEPTH: 0
+#-----------------------------------------------------------#
+# GitLab CI Rules                                           #
+#                                                           #
+# * For downstream forks (not on OpenRGBDevelopers/         #
+#   OpenRGBEffectsPlugin), run only if manually started to  #
+#   save CI minutes if GitLab hosted runners                #
+# * For commits to the OpenRGBDevelopers/                   #
+#   OpenRGBEffectsPlugin repository, automatically run all  #
+#   jobs on the default branch, otherwise run them if the   #
+#   source is part of a merge request                       #
+#-----------------------------------------------------------#
+.downstream_rules:
+  rules:
+  - if: $CI_PROJECT_PATH != "OpenRGBDevelopers/OpenRGBEffectsPlugin" && $CI_PIPELINE_SOURCE == "push"
+    when: manual
+    allow_failure: true
+
+.upstream_rules:
+  rules:
+  - if: '$CI_PROJECT_PATH == "OpenRGBDevelopers/OpenRGBEffectsPlugin" && ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_PIPELINE_SOURCE == "merge_request_event")'
+    when: on_success
+  - !reference [.downstream_rules, rules]
 
 .shared_windows_runners:
   tags:
   - shared-windows
   - windows
+  - windows-1809
 
 stages:
   - build
   - deploy
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_DEPTH: 0
 
 before_script:
  - echo "started by ${GITLAB_USER_NAME}"
@@ -28,9 +52,9 @@ before_script:
   before_script:
     - export APPIMAGE_EXTRACT_AND_RUN=1
 
-#-----------------------------------------------------------------------#
-# Linux i386 Qt6 Build Target                                           #
-#-----------------------------------------------------------------------#
+#-----------------------------------------------------------#
+# Linux i386 Qt6 Build Target                               #
+#-----------------------------------------------------------#
 "Linux i386 Qt6":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-i386
@@ -48,9 +72,12 @@ before_script:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux i386 Build Target                                               #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux i386 Build Target                                   #
+#-----------------------------------------------------------#
 "Linux i386":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-i386
@@ -68,9 +95,12 @@ before_script:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux amd64 Qt6 Build Target                                          #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux amd64 Qt6 Build Target                              #
+#-----------------------------------------------------------#
 "Linux amd64 Qt6":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-amd64
@@ -88,9 +118,12 @@ before_script:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux amd64 Build Target                                              #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux amd64 Build Target                                  #
+#-----------------------------------------------------------#
 "Linux amd64":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-amd64
@@ -108,9 +141,12 @@ before_script:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux armhf Qt6 Build Target                                          #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux armhf Qt6 Build Target                              #
+#-----------------------------------------------------------#
 "Linux armhf Qt6":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-armhf
@@ -128,9 +164,12 @@ before_script:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux armhf Build Target                                              #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux armhf Build Target                                  #
+#-----------------------------------------------------------#
 "Linux armhf":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-armhf
@@ -148,9 +187,12 @@ before_script:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux arm64 Qt6 Build Target                                          #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux arm64 Qt6 Build Target                              #
+#-----------------------------------------------------------#
 "Linux arm64 Qt6":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-arm64
@@ -168,9 +210,12 @@ before_script:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux arm64 Build Target                                              #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux arm64 Build Target                                  #
+#-----------------------------------------------------------#
 "Linux arm64":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-arm64
@@ -188,9 +233,12 @@ before_script:
     - ./libOpenRGBEffectsPlugin.so
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux (.deb) Debian Bookworm i386 Build Target                        #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux (.deb) Debian Bookworm i386 Build Target            #
+#-----------------------------------------------------------#
 "Linux i386 .deb (Debian Bookworm)":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-i386
@@ -212,10 +260,13 @@ before_script:
     exclude:
     - openrgb-plugin-effects-dbgsym*.deb
     expire_in: 30 days
-  
-#-----------------------------------------------------------------------#
-# Linux (.deb) Debian Bookworm amd64 Build Target                       #
-#-----------------------------------------------------------------------#
+
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux (.deb) Debian Bookworm amd64 Build Target           #
+#-----------------------------------------------------------#
 "Linux amd64 .deb (Debian Bookworm)":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-amd64
@@ -237,10 +288,13 @@ before_script:
     exclude:
     - openrgb-plugin-effects-dbgsym*.deb
     expire_in: 30 days
-  
-#-----------------------------------------------------------------------#
-# Linux (.deb) Debian Bookworm armhf Build Target                       #
-#-----------------------------------------------------------------------#
+
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux (.deb) Debian Bookworm armhf Build Target           #
+#-----------------------------------------------------------#
 "Linux armhf .deb (Debian Bookworm)":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-armhf
@@ -263,9 +317,12 @@ before_script:
     - openrgb-plugin-effects-dbgsym*.deb
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Linux (.deb) Debian Bookworm arm64 Build Target                       #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux (.deb) Debian Bookworm arm64 Build Target           #
+#-----------------------------------------------------------#
 "Linux arm64 .deb (Debian Bookworm)":
   <<: *ccache_init
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-arm64
@@ -288,9 +345,12 @@ before_script:
     - openrgb-plugin-effects-dbgsym*.deb
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Windows (32-bit) Qt6 Build Target                                     #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Windows (32-bit) Qt6 Build Target                         #
+#-----------------------------------------------------------#
 "Windows 32 Qt6":
   extends:
   - .shared_windows_runners
@@ -304,9 +364,12 @@ before_script:
     - OpenRGBEffectsPlugin.dll
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Windows (32-bit) Build Target                                         #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Windows (32-bit) Build Target                             #
+#-----------------------------------------------------------#
 "Windows 32":
   extends:
   - .shared_windows_runners
@@ -320,9 +383,12 @@ before_script:
     - OpenRGBEffectsPlugin.dll
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Windows (64-bit) Qt6 Build Target                                     #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Windows (64-bit) Qt6 Build Target                         #
+#-----------------------------------------------------------#
 "Windows 64 Qt6":
   extends:
   - .shared_windows_runners
@@ -336,9 +402,12 @@ before_script:
     - OpenRGBEffectsPlugin.dll
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# Windows (64-bit) Build Target                                         #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Windows (64-bit) Build Target                             #
+#-----------------------------------------------------------#
 "Windows 64":
   extends:
   - .shared_windows_runners
@@ -352,9 +421,12 @@ before_script:
     - OpenRGBEffectsPlugin.dll
     expire_in: 30 days
 
-#-----------------------------------------------------------------------#
-# MacOS Build Target                                                    #
-#-----------------------------------------------------------------------#
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# MacOS Build Target                                        #
+#-----------------------------------------------------------#
 "MacOS ARM64":
   tags:
   - macos
@@ -375,10 +447,7 @@ before_script:
     expire_in: 30 days
 
   rules:
-  - if: '$CI_PROJECT_PATH == "OpenRGBDevelopers/OpenRGBEffectsPlugin"'
-    when: on_success
-  - if: '$BUILD_MACOS =~ /.+/'
-    when: on_success
+    - !reference [.upstream_rules, rules]
 
 "MacOS ARM64 Qt6":
   tags:
@@ -400,10 +469,7 @@ before_script:
     expire_in: 30 days
 
   rules:
-  - if: '$CI_PROJECT_PATH == "OpenRGBDevelopers/OpenRGBEffectsPlugin"'
-    when: on_success
-  - if: '$BUILD_MACOS =~ /.+/'
-    when: on_success
+    - !reference [.upstream_rules, rules]
 
 "MacOS Intel":
   tags:
@@ -424,10 +490,7 @@ before_script:
     expire_in: 30 days
 
   rules:
-  - if: '$CI_PROJECT_PATH == "OpenRGBDevelopers/OpenRGBEffectsPlugin"'
-    when: on_success
-  - if: '$BUILD_MACOS =~ /.+/'
-    when: on_success
+    - !reference [.upstream_rules, rules]
 
 "MacOS Intel Qt6":
   tags:
@@ -448,14 +511,11 @@ before_script:
     expire_in: 30 days
 
   rules:
-  - if: '$CI_PROJECT_PATH == "OpenRGBDevelopers/OpenRGBEffectsPlugin"'
-    when: on_success
-  - if: '$BUILD_MACOS =~ /.+/'
-    when: on_success
+    - !reference [.upstream_rules, rules]
 
-#-----------------------------------------------------------------------#
-# Windows (64-bit) MSI Target                                           #
-#-----------------------------------------------------------------------#
+#-----------------------------------------------------------#
+# Windows (64-bit) MSI Target                               #
+#-----------------------------------------------------------#
 "Windows 64 MSI":
   image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-i386
   stage: deploy
@@ -475,3 +535,6 @@ before_script:
     paths:
     - OpenRGB_Effects_Plugin_Windows_64.msi
     expire_in: 30 days
+
+  rules:
+    - !reference [.upstream_rules, rules]
