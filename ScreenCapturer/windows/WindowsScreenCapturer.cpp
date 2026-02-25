@@ -104,6 +104,8 @@ QPixmap WindowsScreenCapturer::grabWindow(quintptr window) const
         hwnd = GetDesktopWindow();
         const QRect screenGeometry = screen->geometry();
         windowSize = screenGeometry.size();
+        windowSize.setWidth((int)(windowSize.width() * screen->devicePixelRatio()));
+        windowSize.setHeight((int)(windowSize.height() * screen->devicePixelRatio()));
     }
 
     int xIn = 0;
