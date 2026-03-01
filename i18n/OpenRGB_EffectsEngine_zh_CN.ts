@@ -5,19 +5,19 @@
     <name>Ambient</name>
     <message>
         <source>Mode</source>
-        <translation>模式</translation>
+        <translation>采样模式</translation>
     </message>
     <message>
         <source>Select rectangle...</source>
-        <translation>选择矩形…</translation>
+        <translation>框选采样区域…</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>左</translation>
+        <translation>X轴取样位置</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation>前</translation>
+        <translation>Y轴取样位置</translation>
     </message>
     <message>
         <source>Width</source>
@@ -29,7 +29,7 @@
     </message>
     <message>
         <source>Smoothness</source>
-        <translation>平滑渡</translation>
+        <translation>平滑过渡</translation>
     </message>
     <message>
         <source>Screen</source>
@@ -68,7 +68,7 @@
     <name>AudioParty</name>
     <message>
         <source>Zones</source>
-        <translation>区</translation>
+        <translation>频率响应区</translation>
     </message>
     <message>
         <source>Effect threshold</source>
@@ -76,7 +76,7 @@
     </message>
     <message>
         <source>Divisions</source>
-        <translation>分部</translation>
+        <translation>条形数量</translation>
     </message>
     <message>
         <source>Audio settings</source>
@@ -88,7 +88,7 @@
     </message>
     <message>
         <source>Color change speed</source>
-        <translation>颜色变化速度</translation>
+        <translation>变色速度</translation>
     </message>
     <message>
         <source>Audio Party</source>
@@ -103,11 +103,11 @@
     </message>
     <message>
         <source>Capture settings</source>
-        <translation>捕获设置</translation>
+        <translation>音频采样设置</translation>
     </message>
     <message>
         <source>Reset EQ</source>
-        <translation>重置EQ</translation>
+        <translation>重置EQ曲线</translation>
     </message>
     <message>
         <source>Normalization offset</source>
@@ -123,11 +123,11 @@
     </message>
     <message>
         <source>Normalization scale</source>
-        <translation>归一化尺度</translation>
+        <translation>归一化缩放</translation>
     </message>
     <message>
         <source>Decay (% per step)</source>
-        <translation>衰变(% 每 一步)</translation>
+        <translation>衰减(% 每 一步)</translation>
     </message>
     <message>
         <source>AudioDevice</source>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>FFT Window mode</source>
-        <translation>FFT窗口模式</translation>
+        <translation>FFT Windows模式</translation>
     </message>
     <message>
         <source>Average mode</source>
@@ -166,7 +166,7 @@
     </message>
     <message>
         <source>Thickness</source>
-        <translation>厚度</translation>
+        <translation>宽度</translation>
     </message>
     <message>
         <source>Color mode</source>
@@ -178,7 +178,7 @@
     </message>
     <message>
         <source>Oscillation</source>
-        <translation>振荡</translation>
+        <translation>振幅</translation>
     </message>
     <message>
         <source>Background</source>
@@ -186,11 +186,11 @@
     </message>
     <message>
         <source>Wave color</source>
-        <translation>波色</translation>
+        <translation>静态颜色</translation>
     </message>
     <message>
         <source>Sinusoidal audio rendering</source>
-        <translation>正弦音频渲染</translation>
+        <translation>FFT正弦音频</translation>
     </message>
     <message>
         <source>Spectrum cycle</source>
@@ -209,7 +209,7 @@
     <name>AudioStar</name>
     <message>
         <source>Saturation</source>
-        <translation>饱和</translation>
+        <translation>饱和度</translation>
     </message>
     <message>
         <source>Hue</source>
@@ -240,15 +240,15 @@
     <name>AudioSync</name>
     <message>
         <source>Hue shift</source>
-        <translation>色调偏移</translation>
+        <translation>Hue色调偏移</translation>
     </message>
     <message>
         <source>Color fade speed</source>
-        <translation>褪色速度</translation>
+        <translation>变色速度</translation>
     </message>
     <message>
         <source>Saturation</source>
-        <translation>饱和</translation>
+        <translation>色彩饱和</translation>
     </message>
     <message>
         <source>Roll mode</source>
@@ -268,7 +268,7 @@
     </message>
     <message>
         <source>Band-pass filter</source>
-        <translation>Band-pass 过滤器</translation>
+        <translation>带通过滤器</translation>
     </message>
     <message>
         <source>Display frequency based colors with different modes</source>
@@ -280,7 +280,7 @@
     </message>
     <message>
         <source>Saturate high amplitudes</source>
-        <translation>饱和高振幅</translation>
+        <translation>高饱和振幅</translation>
     </message>
     <message>
         <source>Black and white mode</source>
@@ -292,7 +292,7 @@
     </message>
     <message>
         <source>No roll</source>
-        <translation>没有滚动</translation>
+        <translation>全局脉冲</translation>
     </message>
     <message>
         <source>Radial</source>
@@ -308,14 +308,14 @@
     </message>
     <message>
         <source>Audio Sync</source>
-        <translation>音频同步</translation>
+        <translation>律动音频-波</translation>
     </message>
 </context>
 <context>
     <name>AudioVUMeter</name>
     <message>
         <source>Hue offset</source>
-        <translation>色调偏移量</translation>
+        <translation>Hue色调偏移</translation>
     </message>
     <message>
         <source>Invert hue direction</source>
@@ -323,7 +323,7 @@
     </message>
     <message>
         <source>Hue spread</source>
-        <translation>色调传播</translation>
+        <translation>Hue色调宽度</translation>
     </message>
     <message>
         <source>Audio settings</source>
@@ -331,11 +331,11 @@
     </message>
     <message>
         <source>Saturation</source>
-        <translation>饱和</translation>
+        <translation>饱和度</translation>
     </message>
     <message>
         <source>Fill your led strip based on audio load</source>
-        <translation>根据音频负载填充led灯带</translation>
+        <translation>根据音频填充led灯带</translation>
     </message>
     <message>
         <source>Audio VU Meter</source>
@@ -361,7 +361,7 @@
     </message>
     <message>
         <source>Background Brightness</source>
-        <translation>背景亮度</translation>
+        <translation>背景灯光亮度</translation>
     </message>
     <message>
         <source>Animation Speed</source>
@@ -369,11 +369,11 @@
     </message>
     <message>
         <source>Background Mode</source>
-        <translation>背景模式</translation>
+        <translation>背景颜色模式</translation>
     </message>
     <message>
         <source>Foreground Mode</source>
-        <translation>前台模式</translation>
+        <translation>频率颜色模式</translation>
     </message>
     <message>
         <source>Single Color Mode</source>
@@ -381,15 +381,15 @@
     </message>
     <message>
         <source>Background Timeout</source>
-        <translation>背景超时</translation>
+        <translation>背景切换超时</translation>
     </message>
     <message>
         <source>Reactive Background</source>
-        <translation>被动的背景</translation>
+        <translation>音频控制背景</translation>
     </message>
     <message>
         <source>Silent Background</source>
-        <translation>沉默的背景</translation>
+        <translation>静音启用背景</translation>
     </message>
     <message>
         <source>Audio settings</source>
@@ -400,7 +400,7 @@
     <name>Bloom</name>
     <message>
         <source>Saturation</source>
-        <translation>饱和</translation>
+        <translation>饱和度</translation>
     </message>
     <message>
         <source>Flower blooming effect</source>
@@ -469,11 +469,11 @@
     <name>BreathingCircle</name>
     <message>
         <source>A breathing circle effect</source>
-        <translation>呼吸循环效应</translation>
+        <translation>呼吸循环效果</translation>
     </message>
     <message>
         <source>Thickness</source>
-        <translation>厚度</translation>
+        <translation>宽度</translation>
     </message>
     <message>
         <source>Breathing Circle</source>
@@ -492,7 +492,7 @@
     </message>
     <message>
         <source>Rarity</source>
-        <translation>稀薄</translation>
+        <translation>生成间距</translation>
     </message>
     <message>
         <source>Background</source>
@@ -500,11 +500,11 @@
     </message>
     <message>
         <source>Max expansion</source>
-        <translation>最大扩张</translation>
+        <translation>破裂距离</translation>
     </message>
     <message>
         <source>Bubbles thickness</source>
-        <translation>泡沫厚度</translation>
+        <translation>泡泡宽度</translation>
     </message>
     <message>
         <source>Bloop bloop</source>
@@ -589,11 +589,11 @@
     </message>
     <message>
         <source>X position</source>
-        <translation>X位置</translation>
+        <translation>X轴位置</translation>
     </message>
     <message>
         <source>Y position</source>
-        <translation>Y位置</translation>
+        <translation>Y轴位置</translation>
     </message>
     <message>
         <source>A rotating rainbow</source>
@@ -601,22 +601,22 @@
     </message>
     <message>
         <source>Clockwise</source>
-        <translation>顺时针方向的</translation>
+        <translation>顺时针</translation>
     </message>
     <message>
         <source>Counter-clockwise</source>
-        <translation>逆时针地</translation>
+        <translation>逆时针</translation>
     </message>
     <message>
         <source>Color Wheel</source>
-        <translation>螺旋彩虹波</translation>
+        <translation>螺旋彩虹</translation>
     </message>
 </context>
 <context>
     <name>ColorsPicker</name>
     <message>
         <source>Colors count</source>
-        <translation>颜色计数</translation>
+        <translation>颜色数量</translation>
     </message>
 </context>
 <context>
@@ -627,7 +627,7 @@
     </message>
     <message>
         <source>Comet size</source>
-        <translation>横扫大小</translation>
+        <translation>横扫宽度</translation>
     </message>
     <message>
         <source>Comet</source>
@@ -642,7 +642,7 @@
     </message>
     <message>
         <source>Thickness</source>
-        <translation>厚度</translation>
+        <translation>宽度</translation>
     </message>
     <message>
         <source>Glow</source>
@@ -704,7 +704,7 @@
     <name>CustomGradientWave</name>
     <message>
         <source>Height</source>
-        <translation>高度</translation>
+        <translation>Y轴</translation>
     </message>
     <message>
         <source>Preset</source>
@@ -712,7 +712,7 @@
     </message>
     <message>
         <source>Spread</source>
-        <translation>传播</translation>
+        <translation>渐变宽度</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -720,27 +720,27 @@
     </message>
     <message>
         <source>Width</source>
-        <translation>宽度</translation>
+        <translation>X轴</translation>
     </message>
     <message>
         <source>Create your own gradient wave or use predefined color set</source>
-        <translation>创建自己的渐变波或使用预定义的颜色集</translation>
+        <translation>创建自己的彩虹渐变或使用彩虹预设</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation>水平的</translation>
+        <translation>水平</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation>垂直的</translation>
+        <translation>垂直</translation>
     </message>
     <message>
         <source>Radial out</source>
-        <translation>径向向外</translation>
+        <translation>从内到外扩散</translation>
     </message>
     <message>
         <source>Radial in</source>
-        <translation>径向入</translation>
+        <translation>从外到内收缩</translation>
     </message>
     <message>
         <source>Unicorn Vomit</source>
@@ -792,18 +792,18 @@
     </message>
     <message>
         <source>Custom Gradient Wave</source>
-        <translation>自定义渐变波浪</translation>
+        <translation>自定义彩虹</translation>
     </message>
 </context>
 <context>
     <name>CustomMarquee</name>
     <message>
         <source>Create your own marquee effect</source>
-        <translation>创建自己的字幕效果</translation>
+        <translation>创建自己的交错效果</translation>
     </message>
     <message>
         <source>Custom Marquee</source>
-        <translation>自定义选框</translation>
+        <translation>自定义条形交错</translation>
     </message>
 </context>
 <context>
@@ -864,7 +864,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Effects...</source>
-        <translation>灯效</translation>
+        <translation>灯效...</translation>
     </message>
 </context>
 <context>
@@ -901,14 +901,14 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Fill</source>
-        <translation>序列填充并消退</translation>
+        <translation>填充</translation>
     </message>
 </context>
 <context>
     <name>FractalMotion</name>
     <message>
         <source>Thickness</source>
-        <translation>厚度</translation>
+        <translation>宽度</translation>
     </message>
     <message>
         <source>Freq m10</source>
@@ -952,7 +952,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Defaults</source>
-        <translation>预设值</translation>
+        <translation>恢复默认</translation>
     </message>
     <message>
         <source>Freq m7</source>
@@ -991,7 +991,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>#version </source>
-        <translation>#版本</translation>
+        <translation>#版本 </translation>
     </message>
     <message>
         <source>Tab 1</source>
@@ -1053,7 +1053,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Configure screen recorder behavior</source>
-        <translation>配置屏幕录制器行为</translation>
+        <translation>配置屏幕采样器数据</translation>
     </message>
     <message>
         <source>Set default values for new effects</source>
@@ -1069,7 +1069,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Hide devices without Direct mode (restart required)</source>
-        <translation>隐藏没有直接模式的设备（需要重新启动）</translation>
+        <translation>隐藏没有Direct模式的设备（需要重启软件）</translation>
     </message>
     <message>
         <source>Audio settings:</source>
@@ -1081,11 +1081,11 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>FPS capture</source>
-        <translation>帧率捕捉</translation>
+        <translation>默认采样帧率</translation>
     </message>
     <message>
         <source>Set default values for audio effects</source>
-        <translation>设置音频效果的默认值</translation>
+        <translation>设置音频效果的采样器默认值</translation>
     </message>
     <message>
         <source>FPS</source>
@@ -1097,7 +1097,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Temperature</source>
-        <translation>温度</translation>
+        <translation>色温</translation>
     </message>
     <message>
         <source>Tint</source>
@@ -1140,15 +1140,15 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>X position</source>
-        <translation>x 位置</translation>
+        <translation>X轴位置</translation>
     </message>
     <message>
         <source>Y position</source>
-        <translation>y 位置</translation>
+        <translation>Y轴位置</translation>
     </message>
     <message>
         <source>Rotation direction</source>
-        <translation>转动方向</translation>
+        <translation>旋转方向</translation>
     </message>
     <message>
         <source>Rotation speed</source>
@@ -1156,7 +1156,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Thickness</source>
-        <translation>厚度</translation>
+        <translation>宽度</translation>
     </message>
     <message>
         <source>TextLabel</source>
@@ -1168,31 +1168,31 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Rainbow</source>
-        <translation>彩虹波</translation>
+        <translation>彩虹</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation>习惯</translation>
+        <translation>自定义</translation>
     </message>
     <message>
         <source>Clockwise</source>
-        <translation>顺时针方向的</translation>
+        <translation>顺时针</translation>
     </message>
     <message>
         <source>Counter-clockwise</source>
-        <translation>逆时针地</translation>
+        <translation>逆时针</translation>
     </message>
     <message>
         <source>To the inside</source>
-        <translation>到里面去</translation>
+        <translation>从内向外</translation>
     </message>
     <message>
         <source>To the outside</source>
-        <translation>到外面去</translation>
+        <translation>从外向内</translation>
     </message>
     <message>
         <source>Hypnotoad</source>
-        <translation>圆圈汇聚</translation>
+        <translation>彩圆汇聚</translation>
     </message>
 </context>
 <context>
@@ -1401,7 +1401,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Divisions</source>
-        <translation>分部</translation>
+        <translation>交错数量</translation>
     </message>
     <message>
         <source>Moving Panes</source>
@@ -1467,7 +1467,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Mode</source>
-        <translation>模式</translation>
+        <translation>颜色模式</translation>
     </message>
     <message>
         <source>Floor is lava</source>
@@ -1475,15 +1475,15 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Rainbow</source>
-        <translation>彩虹波</translation>
+        <translation>彩虹</translation>
     </message>
     <message>
         <source>Inverse rainbow</source>
-        <translation>逆彩虹波</translation>
+        <translation>反色彩虹</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation>习惯</translation>
+        <translation>自定义</translation>
     </message>
     <message>
         <source>Up</source>
@@ -1554,7 +1554,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Temperature</source>
-        <translation>温度</translation>
+        <translation>色温</translation>
     </message>
     <message>
         <source>Tint</source>
@@ -1562,7 +1562,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>First color</source>
-        <translation>第一颜色</translation>
+        <translation>单色</translation>
     </message>
     <message>
         <source>Speed</source>
@@ -1593,7 +1593,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     <name>OpenRGBEffectTab</name>
     <message>
         <source>Profiles</source>
-        <translation>简介</translation>
+        <translation>配置文件</translation>
     </message>
     <message>
         <source>Load profile</source>
@@ -1617,7 +1617,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>No effects added yet.Please select one from the list to get started.</source>
-        <translation>尚未添加任何效果,请从列表中选择一个开始</translation>
+        <translation>未添加任何效果,请从列表中选择一个开始。</translation>
     </message>
 </context>
 <context>
@@ -1644,11 +1644,11 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Build date:</source>
-        <translation>建造日期:</translation>
+        <translation>Build日期:</translation>
     </message>
     <message>
         <source>Documentation:</source>
-        <translation>汉化_言之</translation>
+        <translation>文档:</translation>
     </message>
     <message>
         <source>&lt;a href=&quot;https://gitlab.com/OpenRGBDevelopers/OpenRGB-Wiki/-/blob/stable/Plugins/Effects/Effects.md&quot;&gt;help&lt;/a&gt;</source>
@@ -1663,7 +1663,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     <name>RGBEffect</name>
     <message>
         <source>Advanced</source>
-        <translation>高阶灯效</translation>
+        <translation>高级</translation>
     </message>
     <message>
         <source>Audio</source>
@@ -1675,7 +1675,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Rainbow</source>
-        <translation>彩虹波</translation>
+        <translation>彩虹</translation>
     </message>
     <message>
         <source>Random</source>
@@ -1687,14 +1687,14 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Special</source>
-        <translation>特别的</translation>
+        <translation>特殊</translation>
     </message>
 </context>
 <context>
     <name>RadialRainbow</name>
     <message>
         <source>X position</source>
-        <translation>x 位置</translation>
+        <translation>Y轴位置</translation>
     </message>
     <message>
         <source>Shape</source>
@@ -1702,7 +1702,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Y position</source>
-        <translation>y 位置</translation>
+        <translation>Y轴位置</translation>
     </message>
     <message>
         <source>Dive into the RGB tunnel</source>
@@ -1714,7 +1714,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Circles</source>
-        <translation>圈</translation>
+        <translation>圆形</translation>
     </message>
     <message>
         <source>Squares</source>
@@ -1722,26 +1722,26 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Radial Rainbow</source>
-        <translation>扩散彩虹波</translation>
+        <translation>彩虹扩散</translation>
     </message>
 </context>
 <context>
     <name>Rain</name>
     <message>
         <source>Drop Size</source>
-        <translation>减小尺寸</translation>
+        <translation>雨水大小</translation>
     </message>
     <message>
         <source>Droplet effect</source>
-        <translation>液滴效应</translation>
+        <translation>下雨灯效</translation>
     </message>
     <message>
         <source>Drops</source>
-        <translation>雨水长度</translation>
+        <translation>雨水密度</translation>
     </message>
     <message>
         <source>Rain</source>
-        <translation>下雨</translation>
+        <translation>雨</translation>
     </message>
 </context>
 <context>
@@ -1789,11 +1789,11 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Thickness</source>
-        <translation>厚度</translation>
+        <translation>宽度</translation>
     </message>
     <message>
         <source>A beam that rotates in different ways</source>
-        <translation>以不同方式旋转的梁</translation>
+        <translation>以不同方式旋转的灯光</translation>
     </message>
     <message>
         <source>Glow</source>
@@ -1801,11 +1801,11 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Clockwise</source>
-        <translation>顺时针方向的</translation>
+        <translation>顺时针</translation>
     </message>
     <message>
         <source>Counter clockwise</source>
-        <translation>逆时针方向</translation>
+        <translation>逆时针</translation>
     </message>
     <message>
         <source>Pendulum</source>
@@ -1813,15 +1813,15 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Wipers</source>
-        <translation>刮水器</translation>
+        <translation>雨刮</translation>
     </message>
     <message>
         <source>Swing H</source>
-        <translation>摆动H</translation>
+        <translation>H字摆动</translation>
     </message>
     <message>
         <source>Swing V</source>
-        <translation>摆动V</translation>
+        <translation>V字摆动</translation>
     </message>
     <message>
         <source>Rotating Beam</source>
@@ -1847,7 +1847,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     <name>SaveProfilePopup</name>
     <message>
         <source>Save effects state</source>
-        <translation>Ave效应状态</translation>
+        <translation>保存灯效状态</translation>
     </message>
     <message>
         <source>Save</source>
@@ -1859,15 +1859,15 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Or create a new one:</source>
-        <translation>或者创建一个新的:</translation>
+        <translation>或者创建一个新的配置文件:</translation>
     </message>
     <message>
         <source>Load profile at startup</source>
-        <translation>启动时的负载配置</translation>
+        <translation>软件启动时，加载该配置</translation>
     </message>
     <message>
         <source>Choose an existing profile:</source>
-        <translation>选择一个现有的概要文件:</translation>
+        <translation>选择一个现有的配置:</translation>
     </message>
     <message>
         <source>Enter a profile name:</source>
@@ -1886,7 +1886,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Fade time</source>
-        <translation>褪色时间</translation>
+        <translation>变色时间</translation>
     </message>
     <message>
         <source>Sequence</source>
@@ -1923,11 +1923,11 @@ Using an effect on a device WILL damage the flash or controller</source>
     <name>Shaders</name>
     <message>
         <source>Save shader as...</source>
-        <translation>将着色器另存为。。。</translation>
+        <translation>将着色器另存为...</translation>
     </message>
     <message>
         <source>Use audio</source>
-        <translation>使用音频</translation>
+        <translation>启用音频</translation>
     </message>
     <message>
         <source>Width</source>
@@ -1959,7 +1959,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Show rendering</source>
-        <translation>显示渲染</translation>
+        <translation>显示预览</translation>
     </message>
     <message>
         <source>Unleash the power of OpenRGB with GL shaders</source>
@@ -1967,7 +1967,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Save shader to file...</source>
-        <translation>将着色器保存到文件</translation>
+        <translation>将着色器保存到文件...</translation>
     </message>
     <message>
         <source>Choose a filename</source>
@@ -2018,27 +2018,27 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Pulses (n)</source>
-        <translation>脉冲(n)</translation>
+        <translation>闪烁次数(n)</translation>
     </message>
     <message>
         <source>Y position</source>
-        <translation>Y位置</translation>
+        <translation>Y轴位置</translation>
     </message>
     <message>
         <source>X position</source>
-        <translation>X位置</translation>
+        <translation>X轴位置</translation>
     </message>
     <message>
         <source>Defaults</source>
-        <translation>预设值</translation>
+        <translation>恢复默认值</translation>
     </message>
     <message>
         <source>Create your own breathing sequences</source>
-        <translation>创建自己的呼吸序列</translation>
+        <translation>创建自己的闪烁效果</translation>
     </message>
     <message>
         <source>Solid</source>
-        <translation>固体</translation>
+        <translation>全局闪烁</translation>
     </message>
     <message>
         <source>Circle</source>
@@ -2053,7 +2053,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     <name>SpectrumCycling</name>
     <message>
         <source>Saturation</source>
-        <translation>饱和</translation>
+        <translation>饱和度</translation>
     </message>
     <message>
         <source>Goes through every solid color of the rainbow</source>
@@ -2083,7 +2083,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     <name>Stack</name>
     <message>
         <source>Matrix zone direction</source>
-        <translation>矩阵区方向</translation>
+        <translation>堆叠方向</translation>
     </message>
     <message>
         <source>Fills and stack your devices with a solid color</source>
@@ -2153,7 +2153,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Run only once</source>
-        <translation>只运行一次</translation>
+        <translation>只运动一次</translation>
     </message>
     <message>
         <source>Radius</source>
@@ -2199,7 +2199,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Glow</source>
-        <translation>光发散</translation>
+        <translation>发光</translation>
     </message>
     <message>
         <source>Swirl Circles</source>
@@ -2218,7 +2218,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Rotating circles reacting to audio</source>
-        <translation>旋转圆圈对音频做出反应</translation>
+        <translation>音频律动版本量子纠缠</translation>
     </message>
     <message>
         <source>Glow</source>
@@ -2226,7 +2226,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Swirl Circles Audio</source>
-        <translation>量子纠缠的音频</translation>
+        <translation>量子纠缠(律动)</translation>
     </message>
 </context>
 <context>
@@ -2298,7 +2298,7 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
     <message>
         <source>Change direction</source>
-        <translation>改变方向</translation>
+        <translation>全部镜像</translation>
     </message>
 </context>
 </TS>
