@@ -42,6 +42,10 @@ public:
     void Resize(int,int);
     QImage toImage();
 
+    // Cleanup OpenGL resources. Must be called from the renderer thread
+    // while the GL context is still current.
+    void CleanupGL();
+
     ShaderPass* Copy();
 
     ShaderPass::Type GetType();
@@ -66,6 +70,8 @@ private:
     QImage img;
 
     QOpenGLTexture* texture = nullptr;
+
+    GLuint vbo = 0;
 };
 
 #endif // SHADERPASS_H

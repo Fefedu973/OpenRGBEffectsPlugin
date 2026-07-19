@@ -29,6 +29,22 @@ void ShaderPass::Init(int width, int height)
 
     program = new QOpenGLShaderProgram();
     program->link();
+
+    // Create a VBO with a full-screen quad
+    // Using a triangle strip (4 vertices) for the quad
+    GLfloat quad_vertices[] =
+    {
+        -1.0f, -1.0f, 0.0f,
+        -1.0f,  1.0f, 0.0f,
+         1.0f, -1.0f, 0.0f,
+         1.0f,  1.0f, 0.0f
+    };
+
+    QOpenGLFunctions* gl = QOpenGLContext::currentContext()->functions();
+    gl->glGenBuffers(1, &vbo);
+    gl->glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    gl->glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), quad_vertices, GL_STATIC_DRAW);
+    gl->glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void ShaderPass::Resize(int width, int height)
@@ -123,18 +139,18 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         program->setUniformValue("iChannel2", 2);
         program->setUniformValue("iChannel3", 3);
 
+        // Bind VBO and set vertex attribute
+        gl->glBindBuffer(GL_ARRAY_BUFFER, vbo);
         program->enableAttributeArray(0);
         program->setAttributeBuffer(0, GL_FLOAT, 0, 3);
 
-        glViewport(0, 0, width, height);
+        gl->glViewport(0, 0, width, height);
+        gl->glClear(GL_COLOR_BUFFER_BIT);
 
-        glClear(GL_COLOR_BUFFER_BIT);
-        glBegin(GL_QUADS);
-        glVertex2f(-1.0, -1.0);
-        glVertex2f(-1.0, 1.0);
-        glVertex2f(1.0, 1.0);
-        glVertex2f(1.0, -1.0);
-        glEnd();
+        // Draw full-screen quad using VBO
+        gl->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        gl->glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         // ...
 
@@ -142,7 +158,7 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         program->release();
 
         gl->glActiveTexture(unit);
-        glBindTexture(GL_TEXTURE_2D, fbo->texture());
+        gl->glBindTexture(GL_TEXTURE_2D, fbo->texture());
 
         break;
     }
@@ -152,18 +168,18 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         program->bind();
         fbo->bind();
 
+        // Bind VBO and set vertex attribute
+        gl->glBindBuffer(GL_ARRAY_BUFFER, vbo);
         program->enableAttributeArray(0);
         program->setAttributeBuffer(0, GL_FLOAT, 0, 3);
 
-        glViewport(0, 0, width, height);
+        gl->glViewport(0, 0, width, height);
+        gl->glClear(GL_COLOR_BUFFER_BIT);
 
-        glClear(GL_COLOR_BUFFER_BIT);
-        glBegin(GL_QUADS);
-        glVertex2f(-1.0, -1.0);
-        glVertex2f(-1.0, 1.0);
-        glVertex2f(1.0, 1.0);
-        glVertex2f(1.0, -1.0);
-        glEnd();
+        // Draw full-screen quad using VBO
+        gl->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        gl->glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         fbo->release();
         program->release();
@@ -171,7 +187,7 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         if(!img.isNull())
         {
             gl->glActiveTexture(unit);
-            glBindTexture(GL_TEXTURE_2D, texture->textureId());
+            gl->glBindTexture(GL_TEXTURE_2D, texture->textureId());
 
         }
 
@@ -183,18 +199,18 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         program->bind();
         fbo->bind();
 
+        // Bind VBO and set vertex attribute
+        gl->glBindBuffer(GL_ARRAY_BUFFER, vbo);
         program->enableAttributeArray(0);
         program->setAttributeBuffer(0, GL_FLOAT, 0, 3);
 
-        glViewport(0, 0, width, height);
+        gl->glViewport(0, 0, width, height);
+        gl->glClear(GL_COLOR_BUFFER_BIT);
 
-        glClear(GL_COLOR_BUFFER_BIT);
-        glBegin(GL_QUADS);
-        glVertex2f(-1.0, -1.0);
-        glVertex2f(-1.0, 1.0);
-        glVertex2f(1.0, 1.0);
-        glVertex2f(1.0, -1.0);
-        glEnd();
+        // Draw full-screen quad using VBO
+        gl->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        gl->glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         fbo->release();
         program->release();
@@ -226,7 +242,7 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
             texture->setData(img.mirrored(false, false));
 
             gl->glActiveTexture(unit);
-            glBindTexture(GL_TEXTURE_2D, texture->textureId());
+            gl->glBindTexture(GL_TEXTURE_2D, texture->textureId());
         }
 
         break;
@@ -255,6 +271,7 @@ std::string ShaderPass::MakeFragmentShader(std::string pre_processor_version, st
 {
     std::string header =
             "#version " + pre_processor_version +  "\n"
+            "precision highp float; \n"
             "#define HW_PERFORMANCE 1 \n"
             "uniform vec3      iResolution;\n"
             "uniform vec4      iMouse;\n"
@@ -296,17 +313,41 @@ QImage ShaderPass::toImage()
     return fbo->toImage();
 }
 
-ShaderPass::~ShaderPass()
+void ShaderPass::CleanupGL()
 {
+    if(vbo != 0)
+    {
+        QOpenGLFunctions* gl = QOpenGLContext::currentContext()->functions();
+        gl->glDeleteBuffers(1, &vbo);
+        vbo = 0;
+    }
+
+    if(texture != nullptr)
+    {
+        delete texture;
+        texture = nullptr;
+    }
+
     if(fbo != nullptr)
     {
         delete fbo;
+        fbo = nullptr;
     }
 
     if(program != nullptr)
     {
         delete program;
+        program = nullptr;
     }
+}
+
+ShaderPass::~ShaderPass()
+{
+    // Note: GL resources (vbo, texture, fbo, program) should be cleaned up
+    // via CleanupGL() while the GL context is still current.
+    // The destructor only cleans up non-GL resources.
+    // If CleanupGL() wasn't called, the GL resources will leak rather than
+    // crash due to missing context.
 }
 
 ShaderPass* ShaderPass::Copy()

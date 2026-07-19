@@ -104,8 +104,13 @@ void ShaderRenderer::RendererThreadFunction()
         }
     }
 
-    // clean
-    //delete shader_program;
+    // Clean up GL resources while the context is still current
+    program_lock.lock();
+    if(shader_program != nullptr)
+    {
+        shader_program->CleanupGL();
+    }
+    program_lock.unlock();
 
     delete surface;
     delete context;

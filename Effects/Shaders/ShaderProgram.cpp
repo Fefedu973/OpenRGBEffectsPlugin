@@ -63,6 +63,16 @@ void ShaderProgram::Draw(const Uniforms& uniforms, QOpenGLFunctions* gl)
     resize = false;
 }
 
+void ShaderProgram::CleanupGL()
+{
+    for(ShaderPass* pass: passes)
+    {
+        pass->CleanupGL();
+    }
+
+    main_pass->CleanupGL();
+}
+
 QImage ShaderProgram::Image()
 {
     return main_pass->toImage();

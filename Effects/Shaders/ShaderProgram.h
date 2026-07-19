@@ -19,6 +19,7 @@ public:
     void Draw(const Uniforms& uniforms, QOpenGLFunctions*);
     void SetVersion(std::string);
     std::string GetVersion();
+    void CleanupGL();
 
     QImage Image();
     void Resize(int,int);
