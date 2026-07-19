@@ -1,5 +1,13 @@
-#ifndef AMBIENT_H
-#define AMBIENT_H
+/*---------------------------------------------------------*\
+| Ambient.h                                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Ambient Effect                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <mutex>
 #include <QWidget>
@@ -75,5 +83,3 @@ private:
     QImage image;
     std::mutex lock;
 };
-
-#endif // AMBIENT_H

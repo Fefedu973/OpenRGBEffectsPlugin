@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| DBusScreenCastManager.cpp                                 |
+|                                                           |
+|   OpenRGB Effects Plugin D-Bus Screen Cast Manager        |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "DBusScreenCastManager.h"
 #include <stdio.h>
 #include <math.h>
@@ -325,4 +334,3 @@ void DBusScreenCastManager::OnCallFinished(QDBusPendingCallWatcher *watcher)
         emit OnPipeWireStreamOpened(stream_info.node_id, fd, stream_info.width , stream_info.height);
     }
 }
-

@@ -1,5 +1,5 @@
 /*---------------------------------------------------------*\
-| PluginInfo.cpp                                            |
+| PluginInfo.h                                              |
 |                                                           |
 |   OpenRGB Effects Plugin Info Widget                      |
 |                                                           |

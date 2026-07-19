@@ -1,5 +1,13 @@
-#ifndef FRACTALMOTION_H
-#define FRACTALMOTION_H
+/*---------------------------------------------------------*\
+| FractalMotion.h                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Fractal Motion Effect            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "RGBEffect.h"
@@ -102,5 +110,3 @@ private:
     RGBColor next_random_color;
 
 };
-
-#endif // FRACTALMOTION_H

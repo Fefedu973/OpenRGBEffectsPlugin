@@ -1,5 +1,13 @@
-#ifndef SPARKLEFADE_H
-#define SPARKLEFADE_H
+/*---------------------------------------------------------*\
+| SparkleFade.h                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Sparkle Fade Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "ui_SparkleFade.h"
 #include "RGBEffect.h"
@@ -72,5 +80,3 @@ private:
     void SetDynamicStrings();
     void ResetSparkleFade(std::vector<ControllerZone*> controller_zones);
 };
-
-#endif // SPARKLEFADE_H

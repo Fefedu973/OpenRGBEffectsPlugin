@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| DoubleRotatingRainbow.cpp                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Double Rotating Rainbow Effect   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "DoubleRotatingRainbow.h"
 
 REGISTER_EFFECT(DoubleRotatingRainbow);

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioSignalProcessor.cpp                                  |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Signal Processor           |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Audio/AudioSignalProcessor.h"
 #include "Audio/AudioManager.h"
 #include "chuck_fft.h"

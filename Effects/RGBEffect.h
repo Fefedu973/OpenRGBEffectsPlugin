@@ -1,5 +1,13 @@
-#ifndef RGBEFFECT_H
-#define RGBEFFECT_H
+/*---------------------------------------------------------*\
+| RGBEffect.h                                               |
+|                                                           |
+|   OpenRGB Effects Plugin RGB Effect Base Class            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <QLayout>
@@ -138,5 +146,3 @@ protected:
     int Temperature = 0;
     int Tint = 0;
 };
-
-#endif // RGBEFFECT_H

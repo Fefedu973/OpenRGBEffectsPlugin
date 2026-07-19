@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| ShaderFileTabHeader.cpp                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Shader File Tab Header           |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "ShaderFileTabHeader.h"
 #include "ui_ShaderFileTabHeader.h"
 

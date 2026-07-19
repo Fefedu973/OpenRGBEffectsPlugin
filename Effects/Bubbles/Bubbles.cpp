@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Bubbles.cpp                                               |
+|                                                           |
+|   OpenRGB Effects Plugin Bubbles Effect                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Bubbles.h"
 #include "ColorUtils.h"
 #include "hsv.h"

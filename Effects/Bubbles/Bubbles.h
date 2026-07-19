@@ -1,5 +1,13 @@
-#ifndef BUBBLES_H
-#define BUBBLES_H
+/*---------------------------------------------------------*\
+| Bubbles.h                                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Bubbles Effect                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "ui_Bubbles.h"
 #include <QWidget>
@@ -59,5 +67,3 @@ private slots:
     void on_speed_mult_valueChanged(int);
     void on_background_ColorSelected(QColor);
 };
-
-#endif // BUBBLES_H

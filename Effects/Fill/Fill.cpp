@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Fill.cpp                                                  |
+|                                                           |
+|   OpenRGB Effects Plugin Fill Effect                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Fill.h"
 #include "ColorUtils.h"
 

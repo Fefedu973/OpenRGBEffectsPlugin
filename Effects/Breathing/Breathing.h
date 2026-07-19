@@ -1,5 +1,13 @@
-#ifndef BREATHING_H
-#define BREATHING_H
+/*---------------------------------------------------------*\
+| Breathing.h                                               |
+|                                                           |
+|   OpenRGB Effects Plugin Breathing Effect                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "RGBEffect.h"
 #include "EffectRegisterer.h"
@@ -41,5 +49,3 @@ private:
     hsv_t CurrentColor;
     int colorLoopIndex = 0;
 };
-
-#endif // BREATHING_H

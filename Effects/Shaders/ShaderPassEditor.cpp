@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| ShaderPassEditor.cpp                                      |
+|                                                           |
+|   OpenRGB Effects Plugin Shader Pass Editor               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "ShaderPassEditor.h"
 #include "ui_ShaderPassEditor.h"
 #include <QFileDialog>

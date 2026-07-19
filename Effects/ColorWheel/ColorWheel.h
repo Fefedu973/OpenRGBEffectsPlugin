@@ -1,5 +1,13 @@
-#ifndef ColorWheel_H
-#define ColorWheel_H
+/*---------------------------------------------------------*\
+| ColorWheel.h                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Color Wheel Effect               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_ColorWheel.h"
@@ -45,5 +53,3 @@ private:
     unsigned int cy_shift = 50;
     unsigned int direction = 0;
 };
-
-#endif // ColorWheel_H

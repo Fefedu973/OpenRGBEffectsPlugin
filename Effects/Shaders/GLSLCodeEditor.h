@@ -1,5 +1,13 @@
-#ifndef GLSLCODEEDITOR_H
-#define GLSLCODEEDITOR_H
+/*---------------------------------------------------------*\
+| GLSLCodeEditor.h                                          |
+|                                                           |
+|   OpenRGB Effects Plugin GLSL Code Editor                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QDialog>
 #include "GLSLHighlighter.h"
@@ -60,5 +68,3 @@ private:
 
     QString readme = SHADERS_README;
 };
-
-#endif // GLSLCODEEDITOR_H

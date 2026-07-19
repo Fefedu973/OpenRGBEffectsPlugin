@@ -1,5 +1,13 @@
-#ifndef AUDIOSINE_H
-#define AUDIOSINE_H
+/*---------------------------------------------------------*\
+| AudioSine.h                                               |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Sine Effect                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "AudioSignalProcessor.h"
 #include "AudioSettings.h"
@@ -75,5 +83,3 @@ private:
     float           GetSineValue(unsigned int, unsigned int, bool);
     RGBColor        GetColor(float, unsigned int, unsigned int);
 };
-
-#endif // AUDIOSINE_H

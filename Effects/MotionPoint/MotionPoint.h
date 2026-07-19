@@ -1,5 +1,13 @@
-#ifndef MOTIONPOINT_H
-#define MOTIONPOINT_H
+/*---------------------------------------------------------*\
+| MotionPoint.h                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Motion Point Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_MotionPoint.h"
@@ -44,5 +52,3 @@ private:
     RGBColor current = ColorUtils::OFF();
 
 };
-
-#endif // MOTIONPOINT_H

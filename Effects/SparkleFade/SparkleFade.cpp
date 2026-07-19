@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| SparkleFade.cpp                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Sparkle Fade Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "SparkleFade.h"
 #include "ui_SparkleFade.h"
 

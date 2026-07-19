@@ -1,5 +1,13 @@
-#ifndef SMOOTHBLINK_H
-#define SMOOTHBLINK_H
+/*---------------------------------------------------------*\
+| SmoothBlink.h                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Smooth Blink Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "ui_SmoothBlink.h"
 #include "RGBEffect.h"
@@ -88,5 +96,3 @@ private:
     void HandleCircleRendering(std::vector<ControllerZone*>);
 
 };
-
-#endif // SMOOTHBLINK_H

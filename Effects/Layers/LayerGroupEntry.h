@@ -1,5 +1,13 @@
-#ifndef LAYERGROUPENTRY_H
-#define LAYERGROUPENTRY_H
+/*---------------------------------------------------------*\
+| LayerGroupEntry.h                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Layer Group Entry                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <nlohmann/json.hpp>
@@ -51,5 +59,3 @@ private:
     bool state = false;
     QVBoxLayout* layers_layout;
 };
-
-#endif // LAYERGROUPENTRY_H

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioSettingsStruct.cpp                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Settings Structures        |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "AudioSettingsStruct.h"
 
 namespace Audio {

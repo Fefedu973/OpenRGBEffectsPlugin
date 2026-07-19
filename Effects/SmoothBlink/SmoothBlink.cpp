@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| SmoothBlink.cpp                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Smooth Blink Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "SmoothBlink.h"
 #include "ColorUtils.h"
 
@@ -270,4 +279,3 @@ void SmoothBlink::on_defaults_clicked()
 {
     Defaults();
 }
-

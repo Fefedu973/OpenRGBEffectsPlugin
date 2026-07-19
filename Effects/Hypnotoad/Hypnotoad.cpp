@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Hypnotoad.cpp                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Hypnotoad Effect                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Hypnotoad.h"
 #include "hsv.h"
 #include "ColorUtils.h"
@@ -272,4 +281,3 @@ void Hypnotoad::GenerateGradient()
 
     ui->gradient->setPixmap(QPixmap::fromImage(gradient));
 }
-

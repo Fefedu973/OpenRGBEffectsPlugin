@@ -1,5 +1,13 @@
-#ifndef BOUNCINGBALLSIMULATION_H
-#define BOUNCINGBALLSIMULATION_H
+/*---------------------------------------------------------*\
+| BouncingBallSimulation.h                                  |
+|                                                           |
+|   OpenRGB Effects Plugin Bouncing Ball Simulation         |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <mutex>
 #include <random>
@@ -86,5 +94,3 @@ private:
     std::vector<QPoint> pointsInBall;
     std::vector<unsigned char> pointBrightness;
 };
-
-#endif // BOUNCINGBALLSIMULATION_H

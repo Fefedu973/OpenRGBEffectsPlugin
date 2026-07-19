@@ -1,5 +1,13 @@
-#ifndef NOISEMAP_H
-#define NOISEMAP_H
+/*---------------------------------------------------------*\
+| NoiseMap.h                                                |
+|                                                           |
+|   OpenRGB Effects Plugin Noise Map Effect                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <QImage>
@@ -119,5 +127,3 @@ private:
          }},
     };
 };
-
-#endif // NOISEMAP_H

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioStar.cpp                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Star Effect                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "AudioStar.h"
 #include "ColorUtils.h"
 #include "Audio/AudioManager.h"

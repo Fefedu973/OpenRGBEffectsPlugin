@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| ShaderProgram.cpp                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Shader Program                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "ShaderProgram.h"
 
 ShaderProgram::ShaderProgram()

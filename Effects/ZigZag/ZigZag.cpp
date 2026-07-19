@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| ZigZag.cpp                                                |
+|                                                           |
+|   OpenRGB Effects Plugin ZigZag Effect                    |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "ZigZag.h"
 #include "ColorUtils.h"
 
@@ -112,4 +121,3 @@ RGBColor ZigZag::GetColor(float x, float y, float w, float h)
     }
 
 }
-

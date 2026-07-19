@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Stack.cpp                                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Stack Effect                     |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Stack.h"
 #include "ColorUtils.h"
 
@@ -226,5 +235,3 @@ void Stack::on_direction_currentIndexChanged(int)
 {
     reset = true;
 }
-
-

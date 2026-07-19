@@ -1,5 +1,13 @@
-#ifndef LAYERENTRY_H
-#define LAYERENTRY_H
+/*---------------------------------------------------------*\
+| LayerEntry.h                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Layer Entry                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <nlohmann/json.hpp>
@@ -52,5 +60,3 @@ private:
     QDialog* effect_page_dialog = nullptr;
 
 };
-
-#endif // LAYERENTRY_H

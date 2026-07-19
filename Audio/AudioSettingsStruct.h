@@ -1,5 +1,13 @@
-#ifndef AUDIOSETTINGSSTRUCT_H
-#define AUDIOSETTINGSSTRUCT_H
+/*---------------------------------------------------------*\
+| AudioSettingsStruct.h                                     |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Settings Structures        |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <nlohmann/json.hpp>
 
@@ -47,5 +55,3 @@ namespace Audio
     void to_json(json& j, const AudioSettingsStruct& s);
     void from_json(const json& j, AudioSettingsStruct& s);
 }
-
-#endif // AUDIOSETTINGSSTRUCT_H

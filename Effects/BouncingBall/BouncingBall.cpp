@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| BouncingBall.cpp                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Bouncing Ball Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "BouncingBall.h"
 
 REGISTER_EFFECT(BouncingBall);

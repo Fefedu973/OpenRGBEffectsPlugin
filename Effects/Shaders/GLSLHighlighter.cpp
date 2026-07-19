@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| GLSLHighlighter.cpp                                       |
+|                                                           |
+|   OpenRGB Effects Plugin GLSL Highlighter                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "GLSLHighlighter.h"
 
 GLSLHighlighter::GLSLHighlighter(QTextDocument *parent)

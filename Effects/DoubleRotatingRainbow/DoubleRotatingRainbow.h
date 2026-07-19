@@ -1,5 +1,13 @@
-#ifndef DOUBLEROTATINGRAINBOW_H
-#define DOUBLEROTATINGRAINBOW_H
+/*---------------------------------------------------------*\
+| DoubleRotatingRainbow.h                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Double Rotating Rainbow Effect   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_DoubleRotatingRainbow.h"
@@ -51,5 +59,3 @@ private:
 
     RGBColor GetColor(float, float, float, float, bool);
 };
-
-#endif // DOUBLEROTATINGRAINBOW_H

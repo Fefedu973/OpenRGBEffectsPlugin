@@ -1,6 +1,13 @@
-#ifndef WAVY_H
-#define WAVY_H
+/*---------------------------------------------------------*\
+| Wavy.h                                                    |
+|                                                           |
+|   OpenRGB Effects Plugin Wavy Effect                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
+#pragma once
 
 #include "ui_Wavy.h"
 #include <QWidget>
@@ -57,5 +64,3 @@ private slots:
     void on_wave_speed_slider_valueChanged(int);
     void on_oscillation_speed_slider_valueChanged(int);
 };
-
-#endif // WAVY_H

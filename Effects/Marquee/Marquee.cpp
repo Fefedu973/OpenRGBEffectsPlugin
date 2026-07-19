@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Marquee.cpp                                               |
+|                                                           |
+|   OpenRGB Effects Plugin Marquee Effect                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Marquee.h"
 #include "ColorUtils.h"
 

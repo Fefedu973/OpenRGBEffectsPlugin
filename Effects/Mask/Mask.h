@@ -1,5 +1,13 @@
-#ifndef MASK_H
-#define MASK_H
+/*---------------------------------------------------------*\
+| Mask.h                                                    |
+|                                                           |
+|   OpenRGB Effects Plugin Mask Effect                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_Mask.h"
@@ -46,5 +54,3 @@ private:
 
     bool invert_colors = false;
 };
-
-#endif // MASK_H

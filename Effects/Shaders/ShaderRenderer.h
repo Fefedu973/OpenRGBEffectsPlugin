@@ -1,5 +1,13 @@
-#ifndef SHADERRENDERER_H
-#define SHADERRENDERER_H
+/*---------------------------------------------------------*\
+| ShaderRenderer.h                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Shader Renderer                  |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QObject>
 #include <QImage>
@@ -57,5 +65,3 @@ signals:
     void Image(const QImage&);
     void Log(const QString&);
 };
-
-#endif // SHADERRENDERER_H

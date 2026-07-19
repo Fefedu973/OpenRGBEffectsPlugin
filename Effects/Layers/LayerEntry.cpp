@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| LayerEntry.cpp                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Layer Entry                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "LayerEntry.h"
 #include "ui_LayerEntry.h"
 #include "OpenRGBEffectSettings.h"

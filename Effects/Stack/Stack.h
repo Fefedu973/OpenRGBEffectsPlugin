@@ -1,5 +1,13 @@
-#ifndef STACK_H
-#define STACK_H
+/*---------------------------------------------------------*\
+| Stack.h                                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Stack Effect                     |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_Stack.h"
@@ -47,5 +55,3 @@ private:
     RGBColor GetColor(unsigned int, unsigned int);
     void ResetZone(unsigned int, ControllerZone*);
 };
-
-#endif // STACK_H

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| RainbowWave.cpp                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Rainbow Wave Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "RainbowWave.h"
 #include "hsv.h"
 
@@ -116,4 +125,3 @@ void RainbowWave::StepEffect(std::vector<ControllerZone*> controller_zones)
         Progress = 0;
     }
 }
-

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| StarryNight.cpp                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Starry Night Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "StarryNight.h"
 
 REGISTER_EFFECT(StarryNight);

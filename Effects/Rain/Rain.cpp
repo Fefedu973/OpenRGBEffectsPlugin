@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Rain.cpp                                                  |
+|                                                           |
+|   OpenRGB Effects Plugin Rain Effect                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Rain.h"
 #include "ColorUtils.h"
 

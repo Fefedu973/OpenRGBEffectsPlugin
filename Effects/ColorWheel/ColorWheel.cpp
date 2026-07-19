@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| ColorWheel.cpp                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Color Wheel Effect               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "ColorWheel.h"
 #include "hsv.h"
 
@@ -133,5 +142,3 @@ json ColorWheel::SaveCustomSettings()
 
     return settings;
 }
-
-

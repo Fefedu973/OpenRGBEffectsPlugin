@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| SpectrumCycling.cpp                                       |
+|                                                           |
+|   OpenRGB Effects Plugin Spectrum Cycling Effect          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "SpectrumCycling.h"
 #include "hsv.h"
 #include "ui_SpectrumCycling.h"

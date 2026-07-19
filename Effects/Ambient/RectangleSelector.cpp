@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| RectangleSelector.cpp                                     |
+|                                                           |
+|   OpenRGB Effects Plugin Rectangle Selector               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "RectangleSelector.h"
 #include <math.h>
 #include <QBrush>

@@ -1,5 +1,13 @@
-#ifndef AUDIOVISUALIZER_H
-#define AUDIOVISUALIZER_H
+/*---------------------------------------------------------*\
+| AudioVisualizer.h                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Visualizer Effect          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "AudioSignalProcessor.h"
 #include "AudioSettings.h"
@@ -274,5 +282,3 @@ private:
     void SetupMatrixGrid(int x_count, int y_count, int * x_idx_list, int * y_idx_list);
     void SetupLinearGrid(int x_count, int * x_idx_list);
 };
-
-#endif // AUDIOVISUALIZER_H

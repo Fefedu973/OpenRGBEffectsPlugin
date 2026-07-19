@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| BreathingCircle.cpp                                       |
+|                                                           |
+|   OpenRGB Effects Plugin Breathing Circle Effect          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "BreathingCircle.h"
 #include "ColorUtils.h"
 

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| SwirlCirclesAudio.cpp                                     |
+|                                                           |
+|   OpenRGB Effects Plugin Swirl Circles Audio Effect       |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "SwirlCirclesAudio.h"
 #include "ColorUtils.h"
 #include "Audio/AudioManager.h"

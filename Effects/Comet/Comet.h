@@ -1,5 +1,13 @@
-#ifndef COMET_H
-#define COMET_H
+/*---------------------------------------------------------*\
+| Comet.h                                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Comet Effect                     |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_Comet.h"
@@ -41,5 +49,3 @@ private:
 private slots:
     void changeEvent(QEvent *event) override;
 };
-
-#endif // COMET_H

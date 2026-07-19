@@ -1,5 +1,13 @@
-#ifndef WINDOWSSCREENCAPTURER_H
-#define WINDOWSSCREENCAPTURER_H
+/*---------------------------------------------------------*\
+| WindowsScreenCapturer.h                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Windows Screen Capturer          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "ScreenCapturer.h"
 #include <thread>
@@ -24,5 +32,3 @@ private:
 
     QPixmap grabWindow(quintptr window) const;
 };
-
-#endif // WINDOWSSCREENCAPTURER_H

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| NewShaderPassTabHeader.cpp                                |
+|                                                           |
+|   OpenRGB Effects Plugin New Shader Pass Tab Header       |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "NewShaderPassTabHeader.h"
 #include "ui_NewShaderPassTabHeader.h"
 

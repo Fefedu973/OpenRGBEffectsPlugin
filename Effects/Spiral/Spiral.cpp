@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Spiral.cpp                                                |
+|                                                           |
+|   OpenRGB Effects Plugin Spiral Effect                    |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Spiral.h"
 
 REGISTER_EFFECT(Spiral);
@@ -105,5 +114,3 @@ RGBColor Spiral::GetColor(float x, float y, float cx, float cy, bool reverse)
 
     return RGBColor(hsv2rgb(&hsv));
 }
-
-

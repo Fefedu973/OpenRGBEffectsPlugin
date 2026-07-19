@@ -1,5 +1,13 @@
-#ifndef LIGHTNING_H
-#define LIGHTNING_H
+/*---------------------------------------------------------*\
+| Lightning.h                                               |
+|                                                           |
+|   OpenRGB Effects Plugin Lightning Effect                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <stdlib.h>
@@ -53,5 +61,3 @@ private:
 
     lightning_mode_value lightning_mode = WHOLE_ZONE;
 };
-
-#endif // LIGHTNING_H

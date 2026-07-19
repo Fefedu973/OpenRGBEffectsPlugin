@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| PipeWireStreamInfo.cpp                                    |
+|                                                           |
+|   OpenRGB Effects Plugin PipeWire Stream Info             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "PipeWireStreamInfo.h"
 
 QDBusArgument &operator<<(QDBusArgument &arg, const PipeWireStreamInfoList& /*list*/){return arg;}

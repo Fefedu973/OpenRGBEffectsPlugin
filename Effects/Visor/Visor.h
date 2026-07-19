@@ -1,5 +1,13 @@
-#ifndef Visor_H
-#define Visor_H
+/*---------------------------------------------------------*\
+| Visor.h                                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Visor Effect                     |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QEvent>
 #include "RGBEffect.h"
@@ -39,6 +47,3 @@ private:
 
     RGBColor GetColor(float i, float count);
 };
-
-#endif // Visor_H
-

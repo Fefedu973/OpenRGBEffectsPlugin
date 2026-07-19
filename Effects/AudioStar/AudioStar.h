@@ -1,5 +1,13 @@
-#ifndef AUDIOSTAR_H
-#define AUDIOSTAR_H
+/*---------------------------------------------------------*\
+| AudioStar.h                                               |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Star Effect                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "AudioSignalProcessor.h"
 #include "AudioSettings.h"
@@ -63,6 +71,3 @@ private:
     Audio::AudioSettingsStruct      audio_settings_struct;
     AudioSignalProcessor            audio_signal_processor;
 };
-
-
-#endif // AUDIOSTAR_H

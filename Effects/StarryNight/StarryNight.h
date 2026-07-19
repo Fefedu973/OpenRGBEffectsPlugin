@@ -1,5 +1,13 @@
-#ifndef STARRYNIGHT_H
-#define STARRYNIGHT_H
+/*---------------------------------------------------------*\
+| StarryNight.h                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Starry Night Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <QEvent>
@@ -134,8 +142,6 @@ private:
     void UpdateStarIndexMap(std::vector<ControllerZone*>);
     void updateStarVectorSize(int, int);
 };
-
-#endif //STARRYNIGHT_H
 
 /* Things to look at tracker
  *  POSSIBLE CHANGE: Should we look at moving UpdateStarInfo into StepEffect? It is called upon a controller list change but we could handle that the same way as a change to the background color.

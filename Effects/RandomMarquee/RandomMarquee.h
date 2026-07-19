@@ -1,5 +1,13 @@
-#ifndef RANDOM_MARQUEE_H
-#define RANDOM_MARQUEE_H
+/*---------------------------------------------------------*\
+| RandomMarquee.h                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Random Marquee Effect            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_RandomMarquee.h"
@@ -45,5 +53,3 @@ private:
     double progress_mult = 0.5;
     bool dir = false;
 };
-
-#endif // MARQUEE_H

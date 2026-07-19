@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| CrossingBeams.cpp                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Crossing Beams Effect            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "CrossingBeams.h"
 #include "hsv.h"
 #include "ColorUtils.h"

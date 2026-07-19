@@ -1,5 +1,13 @@
-#ifndef SHADERPROGRAM_H
-#define SHADERPROGRAM_H
+/*---------------------------------------------------------*\
+| ShaderProgram.h                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Shader Program                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <vector>
 #include <nlohmann/json.hpp>
@@ -42,5 +50,3 @@ private:
     int width = 128;
     int height = 128;
 };
-
-#endif // SHADERPROGRAM_H

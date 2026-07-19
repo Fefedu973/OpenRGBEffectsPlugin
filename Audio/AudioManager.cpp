@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioManager.cpp                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Manager                    |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Audio/AudioManager.h"
 #include "OpenRGBEffectsPlugin.h"
 

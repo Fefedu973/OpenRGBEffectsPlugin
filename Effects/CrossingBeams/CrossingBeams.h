@@ -1,5 +1,13 @@
-#ifndef CROSSINGBEAMS_H
-#define CROSSINGBEAMS_H
+/*---------------------------------------------------------*\
+| CrossingBeams.h                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Crossing Beams Effect            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_CrossingBeams.h"
@@ -58,5 +66,3 @@ private:
     RGBColor GetColor(unsigned int, unsigned int, unsigned int, unsigned int);
 
 };
-
-#endif // CROSSINGBEAMS_H

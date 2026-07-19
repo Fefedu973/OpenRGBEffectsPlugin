@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| PipeWireCapturer.cpp                                      |
+|                                                           |
+|   OpenRGB Effects Plugin PipeWire Capturer                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "PipeWireCapturer.h"
 #include <QDebug>
 #include <unistd.h>

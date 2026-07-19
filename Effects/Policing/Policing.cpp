@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Policing.cpp                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Policing Effect                  |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Policing.h"
 #include "ColorUtils.h"
 

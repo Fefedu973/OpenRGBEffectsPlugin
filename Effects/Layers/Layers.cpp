@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Layers.cpp                                                |
+|                                                           |
+|   OpenRGB Effects Plugin Layers Effect                    |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Layers.h"
 #include "OpenRGBEffectSettings.h"
 #include "ColorUtils.h"

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioVisualizer.cpp                                       |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Visualizer Effect          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "AudioVisualizer.h"
 #include "Colors.h"
 #include "Audio/AudioManager.h"

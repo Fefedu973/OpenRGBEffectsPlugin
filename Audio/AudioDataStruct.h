@@ -1,5 +1,13 @@
-#ifndef AUDIODATASTRUCT_H
-#define AUDIODATASTRUCT_H
+/*---------------------------------------------------------*\
+| AudioDataStruct.h                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Data Structures            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 namespace Audio
 {
@@ -16,5 +24,3 @@ namespace Audio
         float         win_blackman[256];
 };
 }
-
-#endif // AUDIODATASTRUCT_H

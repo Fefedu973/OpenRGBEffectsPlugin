@@ -1,5 +1,13 @@
-#ifndef PIPEWIRECAPTURER_H
-#define PIPEWIRECAPTURER_H
+/*---------------------------------------------------------*\
+| PipeWireCapturer.h                                        |
+|                                                           |
+|   OpenRGB Effects Plugin PipeWire Capturer                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QImage>
 #include <QObject>
@@ -71,5 +79,3 @@ protected:
     int map_size_;
     int fd_;
 };
-
-#endif // PIPEWIRECAPTURER_H

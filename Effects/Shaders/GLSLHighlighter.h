@@ -1,5 +1,13 @@
-#ifndef GLSLHIGHLIGHTER_H
-#define GLSLHIGHLIGHTER_H
+/*---------------------------------------------------------*\
+| GLSLHighlighter.h                                         |
+|                                                           |
+|   OpenRGB Effects Plugin GLSL Highlighter                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QSyntaxHighlighter>
 #include <QRegExp>
@@ -39,5 +47,3 @@ private:
     QColor quotationFormatColor = QColor("#ea3546");
     QColor functionFormatColor = QColor("#43bccd");
 };
-
-#endif // GLSLHIGHLIGHTER_H

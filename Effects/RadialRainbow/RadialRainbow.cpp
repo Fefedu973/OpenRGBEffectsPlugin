@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| RadialRainbow.cpp                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Radial Rainbow Effect            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "RadialRainbow.h"
 #include "hsv.h"
 #include "ColorUtils.h"

@@ -1,5 +1,13 @@
-#ifndef GRADIENTWAVE_H
-#define GRADIENTWAVE_H
+/*---------------------------------------------------------*\
+| GradientWave.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Gradient Wave Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "RGBEffect.h"
 #include "EffectRegisterer.h"
@@ -22,5 +30,3 @@ private:
     std::vector<float> Progress;
     RGBColor RandomColorList[2];
 };
-
-#endif // GRADIENTWAVE_H

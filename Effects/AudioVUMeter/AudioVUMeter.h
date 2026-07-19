@@ -1,5 +1,13 @@
-#ifndef AUDIOVUMETER_H
-#define AUDIOVUMETER_H
+/*---------------------------------------------------------*\
+| AudioVUMeter.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Audio VU Meter Effect            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "AudioSignalProcessor.h"
 #include "AudioSettings.h"
@@ -62,5 +70,3 @@ private:
 
     RGBColor GetColor(float, float, float);
 };
-
-#endif // AUDIOVUMETER_H

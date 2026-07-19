@@ -1,5 +1,13 @@
-#ifndef AUDIOSIGNALPROCESSOR_H
-#define AUDIOSIGNALPROCESSOR_H
+/*---------------------------------------------------------*\
+| AudioSignalProcessor.h                                    |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Signal Processor           |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "AudioSettingsStruct.h"
 #include "AudioDataStruct.h"
@@ -16,5 +24,3 @@ public:
 private:
     Audio::AudioDataStruct  data;
 };
-
-#endif // AUDIOSIGNALPROCESSOR_H

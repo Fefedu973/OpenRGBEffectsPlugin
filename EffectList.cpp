@@ -181,4 +181,3 @@ void EffectList::ResetMenus()
     search_action->setDefaultWidget(effect_search);
     main_menu->addAction(search_action);
 }
-

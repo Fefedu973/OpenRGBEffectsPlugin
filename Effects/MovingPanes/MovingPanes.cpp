@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| MovingPanes.cpp                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Moving Panes Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "MovingPanes.h"
 #include "ColorUtils.h"
 

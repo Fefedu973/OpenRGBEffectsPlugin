@@ -1,5 +1,13 @@
-#ifndef AUDIOBUBBLES_H
-#define AUDIOBUBBLES_H
+/*---------------------------------------------------------*\
+| AudioBubbles.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Bubbles Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "AudioSignalProcessor.h"
 #include "AudioSettings.h"
@@ -218,5 +226,3 @@ private:
         }}
     };
 };
-
-#endif // AUDIOBUBBLES

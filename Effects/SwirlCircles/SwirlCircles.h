@@ -1,5 +1,13 @@
-#ifndef SWIRLCIRCLES_H
-#define SWIRLCIRCLES_H
+/*---------------------------------------------------------*\
+| SwirlCircles.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Swirl Circles Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_SwirlCircles.h"
@@ -50,5 +58,3 @@ private:
     RGBColor GetColor(unsigned int, unsigned int,  unsigned int,  unsigned int, float, float);
 
 };
-
-#endif // SWIRLCIRCLES_H

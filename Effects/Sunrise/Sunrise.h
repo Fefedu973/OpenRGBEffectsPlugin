@@ -1,5 +1,13 @@
-#ifndef SUNRISE_H
-#define SUNRISE_H
+/*---------------------------------------------------------*\
+| Sunrise.h                                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Sunrise Effect                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_Sunrise.h"
@@ -56,5 +64,3 @@ private:
     bool run_once = false;
 
 };
-
-#endif // SUNRISE_H

@@ -1,5 +1,13 @@
-#ifndef QTSCREENCAPTURER_H
-#define QTSCREENCAPTURER_H
+/*---------------------------------------------------------*\
+| QtScreenCapturer.h                                        |
+|                                                           |
+|   OpenRGB Effects Plugin Qt Screen Capturer               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "ScreenCapturer.h"
 #include <thread>
@@ -21,5 +29,3 @@ private:
     bool continue_capture = false;
     QScreen* screen = nullptr;
 };
-
-#endif // QTSCREENCAPTURER_H

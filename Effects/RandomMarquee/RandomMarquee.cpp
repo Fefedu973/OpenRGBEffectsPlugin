@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| RandomMarquee.cpp                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Random Marquee Effect            |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "RandomMarquee.h"
 #include "ColorUtils.h"
 

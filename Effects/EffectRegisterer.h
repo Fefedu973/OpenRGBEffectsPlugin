@@ -1,5 +1,13 @@
-#ifndef EFFECTREGISTERER_H
-#define EFFECTREGISTERER_H
+/*---------------------------------------------------------*\
+| EffectRegisterer.h                                        |
+|                                                           |
+|   OpenRGB Effects Plugin Effect Registerer                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "EffectListManager.h"
 
@@ -14,5 +22,3 @@
     } _registerer;                                                                                      \
 
 #define REGISTER_EFFECT(T) T::_register T::_registerer;
-
-#endif // EFFECTREGISTERER_H

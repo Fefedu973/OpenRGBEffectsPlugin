@@ -1,5 +1,13 @@
-#ifndef DBUSSCREENCASTMANAGER_H
-#define DBUSSCREENCASTMANAGER_H
+/*---------------------------------------------------------*\
+| DBusScreenCastManager.h                                   |
+|                                                           |
+|   OpenRGB Effects Plugin D-Bus Screen Cast Manager        |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QObject>
 #include <QVariantMap>
@@ -80,5 +88,3 @@ private:
     PipeWireStreamInfo stream_info;
     QDBusPendingCallWatcher *watcher = nullptr;
 };
-
-#endif // DBUSSCREENCASTMANAGER_H

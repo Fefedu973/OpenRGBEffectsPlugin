@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioSync.cpp                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Sync Effect                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "AudioSync.h"
 #include "math.h"
 #include "ColorUtils.h"

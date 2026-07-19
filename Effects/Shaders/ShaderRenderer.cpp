@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| ShaderRenderer.cpp                                        |
+|                                                           |
+|   OpenRGB Effects Plugin Shader Renderer                  |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "OpenRGBEffectsPlugin.h"
 #include "ShaderRenderer.h"
 
@@ -144,4 +153,3 @@ void ShaderRenderer::SetProgram(ShaderProgram* program)
     shader_program->recompile = true;
     program_lock.unlock();
 }
-

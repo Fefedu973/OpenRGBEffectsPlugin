@@ -1,4 +1,13 @@
-﻿#include "Visor.h"
+/*---------------------------------------------------------*\
+| Visor.cpp                                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Visor Effect                     |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#include "Visor.h"
 #include "ColorUtils.h"
 
 REGISTER_EFFECT(Visor);

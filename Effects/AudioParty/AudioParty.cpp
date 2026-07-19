@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioParty.cpp                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Party Effect               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "AudioParty.h"
 #include "ColorUtils.h"
 #include "Audio/AudioManager.h"

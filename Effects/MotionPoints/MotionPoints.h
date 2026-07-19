@@ -1,5 +1,13 @@
-#ifndef MOTIONPOINTS_H
-#define MOTIONPOINTS_H
+/*---------------------------------------------------------*\
+| MotionPoints.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Motion Points Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_MotionPoints.h"
@@ -132,5 +140,3 @@ private:
 private slots:
     void changeEvent(QEvent *event) override;
 };
-
-#endif // MOTIONPOINTS_H

@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Wavy.cpp                                                  |
+|                                                           |
+|   OpenRGB Effects Plugin Wavy Effect                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Wavy.h"
 #include "ColorUtils.h"
 

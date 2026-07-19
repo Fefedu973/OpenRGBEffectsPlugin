@@ -1,5 +1,13 @@
-#ifndef AUDIOSETTINGS_H
-#define AUDIOSETTINGS_H
+/*---------------------------------------------------------*\
+| AudioSettings.h                                           |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Settings                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <QDialog>
@@ -47,5 +55,3 @@ private:
     void SetSettingsValues(const Audio::AudioSettingsStruct&);
     void SetEQValues(const Audio::AudioSettingsStruct&);
 };
-
-#endif // AUDIOSETTINGS_H

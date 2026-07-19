@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| GLSLCodeEditor.cpp                                        |
+|                                                           |
+|   OpenRGB Effects Plugin GLSL Code Editor                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "GLSLCodeEditor.h"
 #include "ui_GLSLCodeEditor.h"
 #include "QGLSLHighlighter.hpp"

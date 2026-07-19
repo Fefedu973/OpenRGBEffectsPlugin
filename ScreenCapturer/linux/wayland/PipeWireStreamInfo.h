@@ -1,5 +1,13 @@
-#ifndef PIPEWIRESTREAMINFO_H
-#define PIPEWIRESTREAMINFO_H
+/*---------------------------------------------------------*\
+| PipeWireStreamInfo.h                                      |
+|                                                           |
+|   OpenRGB Effects Plugin PipeWire Stream Info             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QString>
 #include <QList>
@@ -28,5 +36,3 @@ inline void registerCommType()
 
 QDBusArgument &operator<<(QDBusArgument &arg, const PipeWireStreamInfoList& reply);
 const QDBusArgument &operator>>(const QDBusArgument &arg, PipeWireStreamInfoList& reply);
-
-#endif // PIPEWIRESTREAMINFO_H

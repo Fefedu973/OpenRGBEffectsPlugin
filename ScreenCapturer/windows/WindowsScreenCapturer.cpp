@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| WindowsScreenCapturer.cpp                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Windows Screen Capturer          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "OpenRGBEffectsPlugin.h"
 #include "WindowsScreenCapturer.h"
 #include <QGuiApplication>

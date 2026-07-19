@@ -1,5 +1,13 @@
-#ifndef MOVINGPANES_H
-#define MOVINGPANES_H
+/*---------------------------------------------------------*\
+| MovingPanes.h                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Moving Panes Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_MovingPanes.h"
@@ -36,5 +44,3 @@ private:
 private slots:
     void changeEvent(QEvent *event) override;
 };
-
-#endif // MOVINGPANES_H

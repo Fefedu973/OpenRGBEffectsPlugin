@@ -1,5 +1,13 @@
-#ifndef MARQUEE_H
-#define MARQUEE_H
+/*---------------------------------------------------------*\
+| Marquee.h                                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Marquee Effect                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_Marquee.h"
@@ -39,5 +47,3 @@ private:
 private slots:
     void changeEvent(QEvent *event) override;
 };
-
-#endif // MARQUEE_H

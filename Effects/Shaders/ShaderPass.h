@@ -1,5 +1,13 @@
-#ifndef SHADERPASS_H
-#define SHADERPASS_H
+/*---------------------------------------------------------*\
+| ShaderPass.h                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Shader Pass                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QDebug>
 #include <QImage>
@@ -73,5 +81,3 @@ private:
 
     GLuint vbo = 0;
 };
-
-#endif // SHADERPASS_H

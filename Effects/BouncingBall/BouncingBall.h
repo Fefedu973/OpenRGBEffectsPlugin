@@ -1,5 +1,13 @@
-#ifndef BouncingBall_H
-#define BouncingBall_H
+/*---------------------------------------------------------*\
+| BouncingBall.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Bouncing Ball Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <vector>
@@ -57,5 +65,3 @@ private slots:
        void on_drop_height_percent_slider_valueChanged(int value);
        void on_reset_defaults_button_clicked();
 };
-
-#endif // BouncingBall_H

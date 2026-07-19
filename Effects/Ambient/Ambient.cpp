@@ -1,4 +1,13 @@
-﻿#include "Ambient.h"
+/*---------------------------------------------------------*\
+| Ambient.cpp                                               |
+|                                                           |
+|   OpenRGB Effects Plugin Ambient Effect                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#include "Ambient.h"
 #include <QDebug>
 #include "ColorUtils.h"
 #include "OpenRGBEffectSettings.h"
@@ -337,4 +346,3 @@ void Ambient::on_crop_stream_stateChanged(int value)
     crop_stream = value;
     ui->crop_frame->setVisible(value);
 }
-

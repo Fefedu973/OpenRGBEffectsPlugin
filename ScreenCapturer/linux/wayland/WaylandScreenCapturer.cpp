@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| WaylandScreenCapturer.cpp                                 |
+|                                                           |
+|   OpenRGB Effects Plugin Wayland Screen Capturer          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "WaylandScreenCapturer.h"
 
 WaylandScreenCapturer::WaylandScreenCapturer(QObject* parent): ScreenCapturer(parent)

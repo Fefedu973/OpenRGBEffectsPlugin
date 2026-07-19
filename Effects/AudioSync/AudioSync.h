@@ -1,5 +1,13 @@
-#ifndef AUDIOSYNC_H
-#define AUDIOSYNC_H
+/*---------------------------------------------------------*\
+| AudioSync.h                                               |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Sync Effect                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "AudioSignalProcessor.h"
 #include "AudioSettings.h"
@@ -118,5 +126,3 @@ private:
     RGBColor GetColor(int, int, int, int);
 
 };
-
-#endif // AUDIOSYNC_H

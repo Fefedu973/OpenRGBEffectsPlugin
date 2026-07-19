@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| SwirlCircles.cpp                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Swirl Circles Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "SwirlCircles.h"
 #include "ColorUtils.h"
 

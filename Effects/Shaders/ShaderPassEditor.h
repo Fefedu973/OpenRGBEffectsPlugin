@@ -1,5 +1,13 @@
-#ifndef SHADERPASSEDITOR_H
-#define SHADERPASSEDITOR_H
+/*---------------------------------------------------------*\
+| ShaderPassEditor.h                                        |
+|                                                           |
+|   OpenRGB Effects Plugin Shader Pass Editor               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "QGLSLHighlighter.hpp"
@@ -34,5 +42,3 @@ private:
     Ui::ShaderPassEditor *ui;
     ShaderPass* pass;
 };
-
-#endif // SHADERPASSEDITOR_H

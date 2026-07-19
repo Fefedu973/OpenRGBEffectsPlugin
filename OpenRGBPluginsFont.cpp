@@ -48,4 +48,3 @@ QFont OpenRGBPluginsFont::GetFont()
 {
     return Get()->font;
 }
-

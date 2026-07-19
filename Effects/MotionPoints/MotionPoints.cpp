@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| MotionPoints.cpp                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Motion Points Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "MotionPoints.h"
 #include "ColorUtils.h"
 
@@ -122,4 +131,3 @@ void MotionPoints::SetSlider2Val(unsigned int value)
         points.push_back(point);
     }
 }
-

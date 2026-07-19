@@ -1,5 +1,5 @@
 /*---------------------------------------------------------*\
-| DeviceListItem.h                                          |
+| DeviceListItem.cpp                                        |
 |                                                           |
 |   OpenRGB Effects Plugin Device List Item Widget          |
 |                                                           |

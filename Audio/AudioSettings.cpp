@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioSettings.cpp                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Settings                   |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "AudioSettings.h"
 #include "ui_AudioSettings.h"
 #include "Audio/AudioManager.h"

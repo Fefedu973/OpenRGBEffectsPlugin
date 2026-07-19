@@ -1,5 +1,13 @@
-#ifndef RAINBOWWAVE_H
-#define RAINBOWWAVE_H
+/*---------------------------------------------------------*\
+| RainbowWave.h                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Rainbow Wave Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QEvent>
 #include "RGBEffect.h"
@@ -28,5 +36,3 @@ private:
 
     float Progress = 0;
 };
-
-#endif // RAINBOWWAVE_H

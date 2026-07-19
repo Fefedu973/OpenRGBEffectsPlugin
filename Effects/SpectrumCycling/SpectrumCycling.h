@@ -1,5 +1,13 @@
-#ifndef SPECTRUMCYCLING_H
-#define SPECTRUMCYCLING_H
+/*---------------------------------------------------------*\
+| SpectrumCycling.h                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Spectrum Cycling Effect          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "RGBEffect.h"
 #include "EffectRegisterer.h"
@@ -38,5 +46,3 @@ private:
     double progress = 0.0;
     int  saturation   = 255;
 };
-
-#endif // SPECTRUMCYCLING_H

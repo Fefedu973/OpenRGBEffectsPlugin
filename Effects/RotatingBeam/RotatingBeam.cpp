@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| RotatingBeam.cpp                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Rotating Beam Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "RotatingBeam.h"
 #include "ColorUtils.h"
 

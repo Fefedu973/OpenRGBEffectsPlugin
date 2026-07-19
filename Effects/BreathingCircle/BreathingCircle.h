@@ -1,5 +1,13 @@
-#ifndef BREATHINGCIRCLE_H
-#define BREATHINGCIRCLE_H
+/*---------------------------------------------------------*\
+| BreathingCircle.h                                         |
+|                                                           |
+|   OpenRGB Effects Plugin Breathing Circle Effect          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_BreathingCircle.h"
@@ -39,5 +47,3 @@ private:
 private slots:
     void changeEvent(QEvent *event) override;
 };
-
-#endif // BREATHINGCIRCLE_H

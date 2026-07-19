@@ -1,6 +1,13 @@
-#ifndef AUDIOMANAGER_H
-#define AUDIOMANAGER_H
+/*---------------------------------------------------------*\
+| AudioManager.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Manager                    |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
 
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -94,7 +101,6 @@ private:
 
 #else
     std::map<int, ALCdevice *>                active_acl_devices;
-
 #endif
 
     /*------------------*\
@@ -110,6 +116,3 @@ private:
 
 
 };
-
-
-#endif // AUDIOMANAGER_H

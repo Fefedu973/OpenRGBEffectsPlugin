@@ -1,5 +1,13 @@
-#ifndef MOSAIC_H
-#define MOSAIC_H
+/*---------------------------------------------------------*\
+| Mosaic.h                                                  |
+|                                                           |
+|   OpenRGB Effects Plugin Mosaic Effect                    |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_Mosaic.h"
@@ -48,5 +56,3 @@ private:
     std::vector<std::vector<Tile>> tiles;
     int rarity = 10;
 };
-
-#endif // MOSAIC_H

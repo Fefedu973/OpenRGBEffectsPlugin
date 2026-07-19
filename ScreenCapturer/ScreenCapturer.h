@@ -1,5 +1,13 @@
-#ifndef SCREENCAPTURER_H
-#define SCREENCAPTURER_H
+/*---------------------------------------------------------*\
+| ScreenCapturer.h                                          |
+|                                                           |
+|   OpenRGB Effects Plugin Screen Capturer Base Class       |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QObject>
 #include <QString>
@@ -39,5 +47,3 @@ signals:
     void OnError(const ScreenCapturerError& err, const QString& message);
 
 };
-
-#endif // SCREENCAPTURER_H

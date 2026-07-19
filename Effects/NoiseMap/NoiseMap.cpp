@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| NoiseMap.cpp                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Noise Map Effect                 |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "NoiseMap.h"
 #include "hsv.h"
 #include "ColorUtils.h"

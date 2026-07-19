@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| Sequence.cpp                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Sequence Effect                  |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "Sequence.h"
 #include "ColorUtils.h"
 

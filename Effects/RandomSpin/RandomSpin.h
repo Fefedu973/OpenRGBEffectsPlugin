@@ -1,5 +1,13 @@
-#ifndef RANDOM_SPIN_H
-#define RANDOM_SPIN_H
+/*---------------------------------------------------------*\
+| RandomSpin.h                                              |
+|                                                           |
+|   OpenRGB Effects Plugin Random Spin Effect               |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_RandomSpin.h"
@@ -53,5 +61,3 @@ private:
     QImage gradient;
     void GenerateGradient();
 };
-
-#endif // MARQUEE_H

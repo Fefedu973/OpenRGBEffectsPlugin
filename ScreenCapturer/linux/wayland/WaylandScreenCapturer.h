@@ -1,5 +1,13 @@
-#ifndef WAYLANDSCREENCAPTURER_H
-#define WAYLANDSCREENCAPTURER_H
+/*---------------------------------------------------------*\
+| WaylandScreenCapturer.h                                   |
+|                                                           |
+|   OpenRGB Effects Plugin Wayland Screen Capturer          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "ScreenCapturer.h"
 #include "DBusScreenCastManager.h"
@@ -21,5 +29,3 @@ private:
     DBusScreenCastManager *dbus_manager = nullptr;
     PipeWireCapturer* capturer = nullptr;
 };
-
-#endif // WAYLANDSCREENCAPTURER_H

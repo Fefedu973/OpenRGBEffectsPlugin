@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| SpaPodUtils.cpp                                           |
+|                                                           |
+|   OpenRGB Effects Plugin SPA Pod Utilities                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "SpaPodUtils.h"
 
 #include <spa/param/video/format-utils.h>

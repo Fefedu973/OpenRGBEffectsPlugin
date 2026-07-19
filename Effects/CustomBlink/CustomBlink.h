@@ -1,5 +1,13 @@
-#ifndef CUSTOMBLINK_H
-#define CUSTOMBLINK_H
+/*---------------------------------------------------------*\
+| CustomBlink.h                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Custom Blink Effect              |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include <QStringListModel>
@@ -83,5 +91,3 @@ private:
     void InitPatterns();
     void GenerateRandomColors();
 };
-
-#endif // CUSTOMBLINK_H

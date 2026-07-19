@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| RotatingRainbow.cpp                                       |
+|                                                           |
+|   OpenRGB Effects Plugin Rotating Rainbow Effect          |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "RotatingRainbow.h"
 
 REGISTER_EFFECT(RotatingRainbow);
@@ -102,4 +111,3 @@ RGBColor RotatingRainbow::GetColor(float x, float y, float cx, float cy, bool re
 
     return RGBColor(hsv2rgb(&hsv));
 }
-

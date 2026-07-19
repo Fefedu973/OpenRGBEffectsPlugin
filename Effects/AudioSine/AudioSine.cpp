@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| AudioSine.cpp                                             |
+|                                                           |
+|   OpenRGB Effects Plugin Audio Sine Effect                |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "AudioSine.h"
 #include "ColorUtils.h"
 #include "Audio/AudioManager.h"

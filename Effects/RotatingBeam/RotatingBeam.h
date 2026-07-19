@@ -1,5 +1,13 @@
-#ifndef ROTATINGBEAM_H
-#define ROTATINGBEAM_H
+/*---------------------------------------------------------*\
+| RotatingBeam.h                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Rotating Beam Effect             |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include <QWidget>
 #include "ui_RotatingBeam.h"
@@ -75,5 +83,3 @@ private:
 
     QLineF Rotate();
 };
-
-#endif // ROTATINGBEAM_H

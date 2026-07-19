@@ -1,5 +1,13 @@
-#ifndef RAIN_H
-#define RAIN_H
+/*---------------------------------------------------------*\
+| Rain.h                                                    |
+|                                                           |
+|   OpenRGB Effects Plugin Rain Effect                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
+#pragma once
 
 #include "RGBEffect.h"
 #include "EffectRegisterer.h"
@@ -55,5 +63,3 @@ private:
 
     std::vector<std::vector<Drop>> drops;
 };
-
-#endif // RAIN_H

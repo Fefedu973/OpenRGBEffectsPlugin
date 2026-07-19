@@ -1,3 +1,12 @@
+/*---------------------------------------------------------*\
+| ShaderPass.cpp                                            |
+|                                                           |
+|   OpenRGB Effects Plugin Shader Pass                      |
+|                                                           |
+|   This file is part of the OpenRGB Effects Plugin project |
+|   SPDX-License-Identifier: GPL-2.0-or-later               |
+\*---------------------------------------------------------*/
+
 #include "ShaderPass.h"
 #include "RGBControllerInterface.h"
 
