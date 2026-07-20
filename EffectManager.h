@@ -28,6 +28,7 @@ public:
     void RemoveMapping(RGBEffect*);
 
     void ClearAssignments();
+    void RemapAssignedZones(const std::vector<ControllerZone*>&);
     void Assign(std::vector<ControllerZone*>, RGBEffect*);
     std::vector<ControllerZone*> GetAssignedZones(RGBEffect*);
     std::map<RGBEffect*, std::vector<ControllerZone*>> GetEffectsMapping();

@@ -191,6 +191,18 @@ void OpenRGBEffectTab::UpdateDeviceList()
     ui->device_list->UpdateDeviceList();
 }
 
+void OpenRGBEffectTab::SyncSelection()
+{
+    OpenRGBEffectPage* page = dynamic_cast<OpenRGBEffectPage*>(ui->EffectTabs->currentWidget());
+
+    if(page == nullptr)
+    {
+        return;
+    }
+
+    ui->device_list->ApplySelection(EffectManager::Get()->GetAssignedZones(page->GetEffect()));
+}
+
 void OpenRGBEffectTab::on_EffectTabs_currentChanged(int current)
 {
     if(current > 0)

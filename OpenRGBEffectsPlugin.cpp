@@ -332,7 +332,21 @@ void OpenRGBEffectsPlugin::UpdateControllers()
     | Update the device list UI                             |
     \*-----------------------------------------------------*/
     ui->UpdateDeviceList();
-    
+
+    /*-----------------------------------------------------*\
+    | Remap effect assignments onto the new zones. Must     |
+    | complete before this function returns; the old        |
+    | controllers are deleted once the update callback      |
+    | returns                                               |
+    \*-----------------------------------------------------*/
+    EffectManager::Get()->RemapAssignedZones(controller_zones);
+
+    /*-----------------------------------------------------*\
+    | Sync the device list selection for the visible        |
+    | effect                                                |
+    \*-----------------------------------------------------*/
+    ui->SyncSelection();
+
     /*-----------------------------------------------------*\
     | Unlock the controller zones mutex                     |
     \*-----------------------------------------------------*/

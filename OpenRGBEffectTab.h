@@ -35,6 +35,7 @@ public:
     
 public slots:
     void UpdateDeviceList();
+    void SyncSelection();
     void StartAll();
     void StopAll();
 

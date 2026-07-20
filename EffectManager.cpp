@@ -63,14 +63,113 @@ bool EffectManager::IsActive(RGBEffect* effect)
 
 void EffectManager::RemoveMapping(RGBEffect* effect)
 {
+    lock.lock();
+
     effect_zones.erase(effect);
     previews.erase(effect);
+
+    lock.unlock();
 }
 
 void EffectManager::ClearAssignments()
 {
+    lock.lock();
+
     effect_zones.clear();
     previews.clear();
+
+    lock.unlock();
+}
+
+/*---------------------------------------------------------*\
+| Match zones by the identity fields the profile loader     |
+| uses. HID locations change between rescans and are not    |
+| compared.                                                 |
+\*---------------------------------------------------------*/
+static bool ZoneIdentityMatches(ControllerZone* old_zone, ControllerZone* new_zone)
+{
+    RGBControllerInterface* old_controller  = old_zone->controller;
+    RGBControllerInterface* new_controller  = new_zone->controller;
+
+    bool old_is_hid         = old_controller->GetLocation().find("HID: ") == 0;
+    bool new_is_hid         = new_controller->GetLocation().find("HID: ") == 0;
+    bool location_matches   = old_is_hid ? new_is_hid : (old_controller->GetLocation() == new_controller->GetLocation());
+
+    return( location_matches                                                     &&
+            old_controller->GetName()        == new_controller->GetName()        &&
+            old_controller->GetSerial()      == new_controller->GetSerial()      &&
+            old_controller->GetDescription() == new_controller->GetDescription() &&
+            old_controller->GetVersion()     == new_controller->GetVersion()     &&
+            old_controller->GetVendor()      == new_controller->GetVendor()      &&
+            old_zone->zone_idx               == new_zone->zone_idx               &&
+            old_zone->is_segment             == new_zone->is_segment             &&
+            old_zone->segment_idx            == new_zone->segment_idx);
+}
+
+void EffectManager::RemapAssignedZones(const std::vector<ControllerZone*>& new_zones)
+{
+    /*-----------------------------------------------------*\
+    | Lock                                                  |
+    \*-----------------------------------------------------*/
+    lock.lock();
+
+    /*-----------------------------------------------------*\
+    | Each new zone can only be claimed once so identical   |
+    | devices keep distinct assignments                     |
+    \*-----------------------------------------------------*/
+    std::set<ControllerZone*> claimed;
+
+    /*-----------------------------------------------------*\
+    | Rebuild each effect's assignment from the new zones   |
+    | list and notify the effect so no stale zone pointers  |
+    | remain                                                |
+    \*-----------------------------------------------------*/
+    std::map<RGBEffect*, std::vector<ControllerZone*>>::iterator effect_zones_iterator;
+
+    for(effect_zones_iterator = effect_zones.begin(); effect_zones_iterator != effect_zones.end(); effect_zones_iterator++)
+    {
+        std::vector<ControllerZone*> remapped_zones;
+
+        for(ControllerZone* old_zone : effect_zones_iterator->second)
+        {
+            /*---------------------------------------------*\
+            | Zone is already part of the new list          |
+            \*---------------------------------------------*/
+            if(std::find(new_zones.begin(), new_zones.end(), old_zone) != new_zones.end())
+            {
+                if(claimed.find(old_zone) == claimed.end())
+                {
+                    claimed.insert(old_zone);
+                    remapped_zones.push_back(old_zone);
+                }
+
+                continue;
+            }
+
+            /*---------------------------------------------*\
+            | Find the matching zone in the new list and    |
+            | carry the per-zone settings over              |
+            \*---------------------------------------------*/
+            for(ControllerZone* new_zone : new_zones)
+            {
+                if(claimed.find(new_zone) == claimed.end() && ZoneIdentityMatches(old_zone, new_zone))
+                {
+                    new_zone->reverse           = old_zone->reverse;
+                    new_zone->self_brightness   = old_zone->self_brightness;
+
+                    claimed.insert(new_zone);
+                    remapped_zones.push_back(new_zone);
+                    break;
+                }
+            }
+        }
+
+        effect_zones_iterator->second = remapped_zones;
+
+        NotifySelectionChanged(effect_zones_iterator->first);
+    }
+
+    lock.unlock();
 }
 
 void EffectManager::Assign(std::vector<ControllerZone*> controller_zones, RGBEffect* effect)
@@ -147,7 +246,13 @@ void EffectManager::Assign(std::vector<ControllerZone*> controller_zones, RGBEff
 
 std::vector<ControllerZone*> EffectManager::GetAssignedZones(RGBEffect* effect)
 {
-    return(effect_zones[effect]);
+    lock.lock();
+
+    std::vector<ControllerZone*> zones = effect_zones[effect];
+
+    lock.unlock();
+
+    return(zones);
 }
 
 std::map<RGBEffect*, std::vector<ControllerZone*>>EffectManager::GetEffectsMapping()
@@ -169,10 +274,11 @@ void EffectManager::EffectThreadFunction(RGBEffect* effect)
         if(!OpenRGBEffectsPlugin::controllers_updating)
         {
             /*---------------------------------------------*\
-            | Lock                                          |
+            | Lock. controller_zones_mutex is taken before  |
+            | lock everywhere both are held                 |
             \*---------------------------------------------*/
-            lock.lock();
             OpenRGBEffectsPlugin::controller_zones_mutex.lock_shared();
+            lock.lock();
 
             /*---------------------------------------------*\
             | Create a list of zones used by this effect    |
@@ -221,8 +327,8 @@ void EffectManager::EffectThreadFunction(RGBEffect* effect)
             /*---------------------------------------------*\
             | Unlock                                        |
             \*---------------------------------------------*/
-            OpenRGBEffectsPlugin::controller_zones_mutex.unlock_shared();
             lock.unlock();
+            OpenRGBEffectsPlugin::controller_zones_mutex.unlock_shared();
 
             /*---------------------------------------------*\
             | Compute FPS and duration                      |
