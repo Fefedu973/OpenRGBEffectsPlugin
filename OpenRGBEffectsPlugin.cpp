@@ -243,7 +243,15 @@ void OpenRGBEffectsPlugin::OpenRGBEffectsPluginRGBControllerCallback(void * this
     {
         case RGBCONTROLLER_UPDATE_REASON_HIDDEN:
         case RGBCONTROLLER_UPDATE_REASON_UNHIDDEN:
-            QMetaObject::invokeMethod(this_obj, "UpdateControllers", Qt::BlockingQueuedConnection );
+            /*---------------------------------------------*\
+            | This runs inside the controller's             |
+            | SignalUpdate. Post the update instead of      |
+            | blocking on the GUI thread: a blocking        |
+            | call here deadlocks against                   |
+            | UnregisterUpdateCallback/WaitSignalCalls      |
+            | when a rescan is tearing callbacks down.      |
+            \*---------------------------------------------*/
+            QMetaObject::invokeMethod(this_obj, "UpdateControllers", Qt::QueuedConnection );
             break;
 
         case RGBCONTROLLER_UPDATE_REASON_DEVICE_CHANGED:
