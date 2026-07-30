@@ -88,6 +88,65 @@ unsigned int ControllerZone::matrix_size()
     return(matrix_map_width() * matrix_map_height());
 }
 
+/*---------------------------------------------------------*\
+| Match this zone against a descriptor from to_json().      |
+|                                                           |
+| Identity is name/serial/description/version/vendor plus   |
+| zone and segment index and the controller location. That  |
+| location is not guaranteed stable for every bus type, so  |
+| it is matched per type:                                   |
+|                                                           |
+|   HID: the device path can change when the device is      |
+|   reconnected, so only require it is still an HID         |
+|   device and rely on the other identity fields.           |
+|                                                           |
+|   I2C: the bus number is not persistent across reboots    |
+|   on Linux, so compare only the device address.           |
+|                                                           |
+| Any other location is stable and compared exactly.        |
+\*---------------------------------------------------------*/
+bool ControllerZone::matches_json(const nlohmann::json& controller_zone_json)
+{
+    if(!controller_zone_json.contains("location"))
+    {
+        return(false);
+    }
+
+    const std::string   saved_location  = controller_zone_json["location"];
+    const std::string   location        = controller->GetLocation();
+
+    bool                location_matches;
+
+    if(saved_location.find("HID: ") == 0)
+    {
+        location_matches = location.find("HID: ") == 0;
+    }
+    else if(saved_location.find("I2C: ") == 0)
+    {
+        std::size_t address_start = saved_location.rfind(", ");
+
+        location_matches = (address_start != std::string::npos) &&
+                           (location.find(saved_location.substr(address_start + 2)) != std::string::npos);
+    }
+    else
+    {
+        location_matches = location == saved_location;
+    }
+
+    bool    saved_is_segment    = controller_zone_json.contains("is_segment")  ? (bool)controller_zone_json["is_segment"]  : false;
+    int     saved_segment_idx   = controller_zone_json.contains("segment_idx") ? (int)controller_zone_json["segment_idx"]  : -1;
+
+    return( location_matches                                                        &&
+            controller->GetName()           == controller_zone_json["name"]         &&
+            controller->GetSerial()         == controller_zone_json["serial"]       &&
+            controller->GetDescription()    == controller_zone_json["description"]  &&
+            controller->GetVersion()        == controller_zone_json["version"]      &&
+            controller->GetVendor()         == controller_zone_json["vendor"]       &&
+            zone_idx                        == controller_zone_json["zone_idx"]     &&
+            is_segment                      == saved_is_segment                     &&
+            segment_idx                     == saved_segment_idx);
+}
+
 void ControllerZone::SetAllZoneLEDs(RGBColor color, int brightness, int temperature, int tint)
 {
     if(is_segment)

@@ -37,6 +37,7 @@ public:
     unsigned int                matrix_map_height();
     unsigned int                matrix_map_width();
     unsigned int                matrix_size();
+    bool                        matches_json(const nlohmann::json& controller_zone_json);
     void                        SetAllZoneLEDs(RGBColor color, int brightness, int temperature, int tint);
     void                        SetLED(int idx, RGBColor color, int brightness, int temperature, int tint);
     unsigned int                size();

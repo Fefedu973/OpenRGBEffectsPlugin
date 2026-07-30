@@ -7,6 +7,7 @@
 |   SPDX-License-Identifier: GPL-2.0-or-later               |
 \*---------------------------------------------------------*/
 
+#include <set>
 #include <QAction>
 #include <QComboBox>
 #include <QDialog>
@@ -294,9 +295,21 @@ json OpenRGBEffectTab::GetProfileJson(bool save_effects_state)
 
         std::vector<json> zones;
 
+        /*-------------------------------------------------*\
+        | Save live zones plus unresolved descriptors, so   |
+        | an assignment whose device is absent at save time |
+        | is kept and rebinds when the device returns. Only |
+        | a profile load or an explicit deselection drops   |
+        | an assignment.                                    |
+        \*-------------------------------------------------*/
         for(ControllerZone* controller_zone: controller_zones)
         {
             zones.push_back(controller_zone->to_json());
+        }
+
+        for(const json& zone_json: EffectManager::Get()->GetUnresolvedZones(effect))
+        {
+            zones.push_back(zone_json);
         }
 
         effect_settings["ControllerZones"] = zones;
@@ -358,76 +371,60 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
         colors.push_back(color);
     }
 
-    std::vector<ControllerZone*> saved_zones;
+    std::vector<ControllerZone*>    saved_zones;
+    std::vector<json>               unresolved_zones;
 
     json zones = effect_settings["ControllerZones"];
 
     LOG_VERBOSE("[OpenRGBEffectsPlugin] Looking for corresponding controllers for auto assignment...");
 
+    /*-----------------------------------------------------*\
+    | Claim each zone once so identical devices stay        |
+    | distinct                                              |
+    \*-----------------------------------------------------*/
+    std::set<ControllerZone*> claimed;
+
     OpenRGBEffectsPlugin::controller_zones_mutex.lock_shared();
-    for(ControllerZone* controller_zone: OpenRGBEffectsPlugin::controller_zones)
+
+    for(const json& zone_json : zones)
     {
-        for(auto j : zones)
+        ControllerZone* matched_zone = nullptr;
+
+        for(ControllerZone* controller_zone: OpenRGBEffectsPlugin::controller_zones)
         {
-            bool location_matches = [&]() {
-                const auto location_str = j["location"].get<std::string>();
-
-                if (location_str.find("HID: ") == 0)
-                {
-                    // We don't compare location of hid device since it changes randomly.
-                    return true;
-                }
-
-                else if(location_str.find("I2C: ") == 0)
-                {
-                    std::size_t loc = location_str.rfind(", ");
-
-                    if(loc == std::string::npos)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        std::string i2c_address = location_str.substr(loc + 2);
-                        return location_str.find(i2c_address) != std::string::npos;
-                    }
-                }
-
-                return controller_zone->controller->GetLocation() == location_str;
-            }();
-
-            bool is_segment = j.contains("is_segment") ? (bool)j["is_segment"] : false;
-            int segment_idx = j.contains("segment_idx") ? (int)j["segment_idx"] : -1;
-
-            if(
-                location_matches &&
-                controller_zone->controller->GetName()        == j["name"] &&
-                controller_zone->controller->GetSerial()      == j["serial"] &&
-                controller_zone->controller->GetDescription() == j["description"] &&
-                controller_zone->controller->GetVersion()     == j["version"] &&
-                controller_zone->controller->GetVendor()      == j["vendor"] &&
-                controller_zone->zone_idx                     == j["zone_idx"]&&
-                controller_zone->is_segment                   == is_segment &&
-                controller_zone->segment_idx                  == segment_idx
-                )
+            if(claimed.find(controller_zone) == claimed.end() && controller_zone->matches_json(zone_json))
             {
-                if(j.contains("self_brightness"))
-                {
-                    controller_zone->self_brightness = j["self_brightness"];
-                }
-                else
-                {
-                    controller_zone->self_brightness = 100;
-                }
+                controller_zone->reverse            = zone_json.contains("reverse")         ? (bool)zone_json["reverse"]                    : false;
+                controller_zone->self_brightness    = zone_json.contains("self_brightness") ? (unsigned int)zone_json["self_brightness"]    : 100;
 
-                controller_zone->reverse = j["reverse"];
+                claimed.insert(controller_zone);
 
-                saved_zones.push_back(controller_zone);
+                matched_zone = controller_zone;
                 break;
             }
         }
+
+        /*-------------------------------------------------*\
+        | Device not present yet; keep the descriptor to    |
+        | resolve on a later controller-list update         |
+        \*-------------------------------------------------*/
+        if(matched_zone != nullptr)
+        {
+            saved_zones.push_back(matched_zone);
+        }
+        else
+        {
+            unresolved_zones.push_back(zone_json);
+        }
     }
+
     OpenRGBEffectsPlugin::controller_zones_mutex.unlock_shared();
+
+    if(!unresolved_zones.empty())
+    {
+        LOG_VERBOSE("[OpenRGBEffectsPlugin] %lu of %lu saved zones are not available yet, waiting for them to appear",
+                    unresolved_zones.size(), zones.size());
+    }
 
     LOG_VERBOSE("[OpenRGBEffectsPlugin] Creating effect: %s", name.c_str());
 
@@ -496,6 +493,7 @@ void OpenRGBEffectTab::LoadEffect(json effect_settings)
         ui->device_list->SetSelectAll(false);
 
         EffectManager::Get()->Assign(saved_zones, effect);
+        EffectManager::Get()->SetUnresolvedZones(effect, unresolved_zones);
         ui->device_list->ApplySelection(saved_zones);
     }
 }

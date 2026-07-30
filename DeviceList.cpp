@@ -51,7 +51,11 @@ void DeviceList::Clear()
         delete child->widget();
     }
 
-    emit SelectionChanged();
+    /*-----------------------------------------------------*\
+    | No SelectionChanged on teardown: an empty selection   |
+    | here would wipe the visible effect's assignment       |
+    | before it is remapped                                 |
+    \*-----------------------------------------------------*/
 }
 
 void DeviceList::UpdateDeviceList()

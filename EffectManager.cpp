@@ -66,6 +66,7 @@ void EffectManager::RemoveMapping(RGBEffect* effect)
     lock.lock();
 
     effect_zones.erase(effect);
+    unresolved_zones.erase(effect);
     previews.erase(effect);
 
     lock.unlock();
@@ -76,34 +77,37 @@ void EffectManager::ClearAssignments()
     lock.lock();
 
     effect_zones.clear();
+    unresolved_zones.clear();
     previews.clear();
 
     lock.unlock();
 }
 
 /*---------------------------------------------------------*\
-| Match zones by the identity fields the profile loader     |
-| uses. HID locations change between rescans and are not    |
-| compared.                                                 |
+| First unclaimed zone matching the descriptor. Claiming    |
+| keeps identical devices as distinct assignments.          |
 \*---------------------------------------------------------*/
-static bool ZoneIdentityMatches(ControllerZone* old_zone, ControllerZone* new_zone)
+static ControllerZone* ResolveZone
+    (
+    const nlohmann::json&                   zone_json,
+    const std::vector<ControllerZone*>&     new_zones,
+    std::set<ControllerZone*>&              claimed
+    )
 {
-    RGBControllerInterface* old_controller  = old_zone->controller;
-    RGBControllerInterface* new_controller  = new_zone->controller;
+    for(ControllerZone* new_zone : new_zones)
+    {
+        if(claimed.find(new_zone) == claimed.end() && new_zone->matches_json(zone_json))
+        {
+            new_zone->reverse           = zone_json.contains("reverse")         ? (bool)zone_json["reverse"]                  : false;
+            new_zone->self_brightness   = zone_json.contains("self_brightness") ? (unsigned int)zone_json["self_brightness"]  : 100;
 
-    bool old_is_hid         = old_controller->GetLocation().find("HID: ") == 0;
-    bool new_is_hid         = new_controller->GetLocation().find("HID: ") == 0;
-    bool location_matches   = old_is_hid ? new_is_hid : (old_controller->GetLocation() == new_controller->GetLocation());
+            claimed.insert(new_zone);
 
-    return( location_matches                                                     &&
-            old_controller->GetName()        == new_controller->GetName()        &&
-            old_controller->GetSerial()      == new_controller->GetSerial()      &&
-            old_controller->GetDescription() == new_controller->GetDescription() &&
-            old_controller->GetVersion()     == new_controller->GetVersion()     &&
-            old_controller->GetVendor()      == new_controller->GetVendor()      &&
-            old_zone->zone_idx               == new_zone->zone_idx               &&
-            old_zone->is_segment             == new_zone->is_segment             &&
-            old_zone->segment_idx            == new_zone->segment_idx);
+            return(new_zone);
+        }
+    }
+
+    return(nullptr);
 }
 
 void EffectManager::RemapAssignedZones(const std::vector<ControllerZone*>& new_zones)
@@ -113,27 +117,30 @@ void EffectManager::RemapAssignedZones(const std::vector<ControllerZone*>& new_z
     \*-----------------------------------------------------*/
     lock.lock();
 
-    /*-----------------------------------------------------*\
-    | Each new zone can only be claimed once so identical   |
-    | devices keep distinct assignments                     |
-    \*-----------------------------------------------------*/
     std::set<ControllerZone*> claimed;
 
     /*-----------------------------------------------------*\
-    | Rebuild each effect's assignment from the new zones   |
-    | list and notify the effect so no stale zone pointers  |
-    | remain                                                |
+    | Rebuild each effect's assignment against the new zone |
+    | list. Zones that don't resolve are kept as            |
+    | descriptors so they can bind on a later update.       |
     \*-----------------------------------------------------*/
     std::map<RGBEffect*, std::vector<ControllerZone*>>::iterator effect_zones_iterator;
 
     for(effect_zones_iterator = effect_zones.begin(); effect_zones_iterator != effect_zones.end(); effect_zones_iterator++)
     {
-        std::vector<ControllerZone*> remapped_zones;
+        RGBEffect*                      effect              = effect_zones_iterator->first;
 
+        std::vector<ControllerZone*>    remapped_zones;
+        std::vector<nlohmann::json>     still_unresolved;
+
+        /*-------------------------------------------------*\
+        | Old controllers are still alive here, so their    |
+        | descriptors can be read for matching              |
+        \*-------------------------------------------------*/
         for(ControllerZone* old_zone : effect_zones_iterator->second)
         {
             /*---------------------------------------------*\
-            | Zone is already part of the new list          |
+            | Zone is already in the new list               |
             \*---------------------------------------------*/
             if(std::find(new_zones.begin(), new_zones.end(), old_zone) != new_zones.end())
             {
@@ -146,30 +153,99 @@ void EffectManager::RemapAssignedZones(const std::vector<ControllerZone*>& new_z
                 continue;
             }
 
-            /*---------------------------------------------*\
-            | Find the matching zone in the new list and    |
-            | carry the per-zone settings over              |
-            \*---------------------------------------------*/
-            for(ControllerZone* new_zone : new_zones)
-            {
-                if(claimed.find(new_zone) == claimed.end() && ZoneIdentityMatches(old_zone, new_zone))
-                {
-                    new_zone->reverse           = old_zone->reverse;
-                    new_zone->self_brightness   = old_zone->self_brightness;
+            nlohmann::json  zone_json   = old_zone->to_json();
+            ControllerZone* new_zone    = ResolveZone(zone_json, new_zones, claimed);
 
-                    claimed.insert(new_zone);
+            if(new_zone != nullptr)
+            {
+                remapped_zones.push_back(new_zone);
+            }
+            else
+            {
+                still_unresolved.push_back(zone_json);
+            }
+        }
+
+        /*-------------------------------------------------*\
+        | Retry descriptors that had no live zone           |
+        \*-------------------------------------------------*/
+        std::map<RGBEffect*, std::vector<nlohmann::json>>::iterator unresolved_iterator = unresolved_zones.find(effect);
+
+        if(unresolved_iterator != unresolved_zones.end())
+        {
+            for(const nlohmann::json& zone_json : unresolved_iterator->second)
+            {
+                ControllerZone* new_zone = ResolveZone(zone_json, new_zones, claimed);
+
+                if(new_zone != nullptr)
+                {
+                    LOG_VERBOSE("[OpenRGBEffectsPlugin] Zone %s is now available, assigning it to %s",
+                                new_zone->display_name().c_str(), effect->EffectDetails.EffectName.c_str());
+
                     remapped_zones.push_back(new_zone);
-                    break;
+                }
+                else
+                {
+                    still_unresolved.push_back(zone_json);
                 }
             }
         }
 
         effect_zones_iterator->second = remapped_zones;
 
-        NotifySelectionChanged(effect_zones_iterator->first);
+        if(still_unresolved.empty())
+        {
+            unresolved_zones.erase(effect);
+        }
+        else
+        {
+            unresolved_zones[effect] = still_unresolved;
+        }
+
+        NotifySelectionChanged(effect);
     }
 
     lock.unlock();
+}
+
+void EffectManager::SetUnresolvedZones(RGBEffect* effect, const std::vector<nlohmann::json>& zones)
+{
+    lock.lock();
+
+    if(zones.empty())
+    {
+        unresolved_zones.erase(effect);
+    }
+    else
+    {
+        unresolved_zones[effect] = zones;
+
+        /*-------------------------------------------------*\
+        | RemapAssignedZones iterates effect_zones, so keep |
+        | an entry even when nothing resolved               |
+        \*-------------------------------------------------*/
+        effect_zones.emplace(effect, std::vector<ControllerZone*>());
+    }
+
+    lock.unlock();
+}
+
+std::vector<nlohmann::json> EffectManager::GetUnresolvedZones(RGBEffect* effect)
+{
+    std::vector<nlohmann::json> zones;
+
+    lock.lock();
+
+    std::map<RGBEffect*, std::vector<nlohmann::json>>::iterator unresolved_iterator = unresolved_zones.find(effect);
+
+    if(unresolved_iterator != unresolved_zones.end())
+    {
+        zones = unresolved_iterator->second;
+    }
+
+    lock.unlock();
+
+    return(zones);
 }
 
 void EffectManager::Assign(std::vector<ControllerZone*> controller_zones, RGBEffect* effect)

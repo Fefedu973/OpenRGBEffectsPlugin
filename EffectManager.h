@@ -30,6 +30,8 @@ public:
     void ClearAssignments();
     void RemapAssignedZones(const std::vector<ControllerZone*>&);
     void Assign(std::vector<ControllerZone*>, RGBEffect*);
+    void SetUnresolvedZones(RGBEffect*, const std::vector<nlohmann::json>&);
+    std::vector<nlohmann::json> GetUnresolvedZones(RGBEffect*);
     std::vector<ControllerZone*> GetAssignedZones(RGBEffect*);
     std::map<RGBEffect*, std::vector<ControllerZone*>> GetEffectsMapping();
 
@@ -52,6 +54,13 @@ private:
     std::chrono::steady_clock* clock;
 
     std::map<RGBEffect*, std::vector<ControllerZone*>> effect_zones;
+
+    /*-----------------------------------------------------*\
+    | Assigned zones with no live ControllerZone, kept      |
+    | as descriptors to resolve when the device shows       |
+    \*-----------------------------------------------------*/
+    std::map<RGBEffect*, std::vector<nlohmann::json>> unresolved_zones;
+
     std::map<RGBEffect*, ControllerZone*> previews;
 
     std::mutex lock;
