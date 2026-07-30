@@ -176,7 +176,9 @@ void Shaders::Resize()
 
 void Shaders::StepEffect(std::vector<ControllerZone*> controller_zones)
 {
-    time += 0.001 * Speed / (float) FPS;
+    float new_time = time + 0.001 * Speed / (float) FPS;
+    // If we run out of precision and time stands still, reset it
+    time = (time == new_time) ? 0 : new_time;
 
     if(use_audio)
     {
