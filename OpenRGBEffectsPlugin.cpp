@@ -245,6 +245,19 @@ void OpenRGBEffectsPlugin::OpenRGBEffectsPluginRGBControllerCallback(void * this
         case RGBCONTROLLER_UPDATE_REASON_UNHIDDEN:
             QMetaObject::invokeMethod(this_obj, "UpdateControllers", Qt::BlockingQueuedConnection );
             break;
+
+        case RGBCONTROLLER_UPDATE_REASON_DEVICE_CHANGED:
+            /*---------------------------------------------*\
+            | The controller's description was replaced in  |
+            | place, so zone lists and unresolved           |
+            | assignments must be re-resolved against it.   |
+            | Post instead of blocking: this runs inside    |
+            | the controller's SignalUpdate and a blocking  |
+            | call deadlocks against the callback teardown  |
+            | drain on a rescan.                            |
+            \*---------------------------------------------*/
+            QMetaObject::invokeMethod(this_obj, "UpdateControllers", Qt::QueuedConnection );
+            break;
     }
 }
 
