@@ -280,7 +280,9 @@ std::string ShaderPass::MakeFragmentShader(std::string pre_processor_version, st
 {
     std::string header =
             "#version " + pre_processor_version +  "\n"
+            "#ifdef GL_ES\n"
             "precision highp float; \n"
+            "#endif\n"
             "#define HW_PERFORMANCE 1 \n"
             "uniform vec3      iResolution;\n"
             "uniform vec4      iMouse;\n"
