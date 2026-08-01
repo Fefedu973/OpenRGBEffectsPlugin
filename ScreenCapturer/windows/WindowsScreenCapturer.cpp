@@ -101,6 +101,9 @@ extern QPixmap qt_pixmapFromWinHBITMAP(HBITMAP bitmap, int format = 0);
 QPixmap WindowsScreenCapturer::grabWindow(quintptr window) const
 {
 
+    QRect screenGeometry;
+    int xIn = 0;
+    int yIn = 0;
     QSize windowSize;
     HWND hwnd = reinterpret_cast<HWND>(window);
     if (hwnd)
@@ -112,14 +115,13 @@ QPixmap WindowsScreenCapturer::grabWindow(quintptr window) const
     else
     {
         hwnd = GetDesktopWindow();
-        const QRect screenGeometry = screen->geometry();
+        screenGeometry = screen->geometry();
+        xIn = screenGeometry.x();
+        yIn = screenGeometry.y();
         windowSize = screenGeometry.size();
         windowSize.setWidth((int)(windowSize.width() * screen->devicePixelRatio()));
         windowSize.setHeight((int)(windowSize.height() * screen->devicePixelRatio()));
     }
-
-    int xIn = 0;
-    int yIn = 0;
     int width = windowSize.width();
     int height = windowSize.height();
 
