@@ -282,25 +282,32 @@ void OpenRGBEffectsPlugin::MigrateLegacyProfiles()
     | Look at each file in the legacy effects profiles      |
     | directory                                             |
     \*-----------------------------------------------------*/
-    for(const filesystem::directory_entry &entry : filesystem::directory_iterator(OpenRGBEffectSettings::ProfilesFolder()))
+    try
     {
-        bool            found        = false;
-        nlohmann::json  profile_json = OpenRGBEffectSettings::load_json_file(entry.path());
-        std::string     profile_name = entry.path().filename().string();
-
-        for(std::size_t profile_idx = 0; profile_idx < profile_list.size(); profile_idx++)
+        for(const filesystem::directory_entry &entry : filesystem::directory_iterator(OpenRGBEffectSettings::ProfilesFolder()))
         {
-            if(profile_name == profile_list[profile_idx])
+            bool            found        = false;
+            nlohmann::json  profile_json = OpenRGBEffectSettings::load_json_file(entry.path());
+            std::string     profile_name = entry.path().filename().string();
+
+            for(std::size_t profile_idx = 0; profile_idx < profile_list.size(); profile_idx++)
             {
-                found = true;
-                break;
+                if(profile_name == profile_list[profile_idx])
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found)
+            {
+                OpenRGBEffectsPlugin::api->SaveProfileFromPlugin(profile_name, GetPluginInfo().Name, profile_json);
             }
         }
-
-        if(!found)
-        {
-            OpenRGBEffectsPlugin::api->SaveProfileFromPlugin(profile_name, GetPluginInfo().Name, profile_json);
-        }
+    }
+    catch(const std::exception& e)
+    {
+        LOG_WARNING("[OpenRGBEffectsPlugin] Exception during profile migration: %s", e.what());
     }
 }
 
