@@ -286,7 +286,7 @@ void OpenRGBEffectsPlugin::MigrateLegacyProfiles()
     {
         bool            found        = false;
         nlohmann::json  profile_json = OpenRGBEffectSettings::load_json_file(entry.path());
-        std::string     profile_name = entry.path().filename();
+        std::string     profile_name = entry.path().filename().string();
 
         for(std::size_t profile_idx = 0; profile_idx < profile_list.size(); profile_idx++)
         {
