@@ -49,11 +49,14 @@ public:
     static json LoadPattern(std::string, std::string);
 
     static filesystem::path PatternsFolder();
+    static filesystem::path ProfilesFolder();
 
     static filesystem::path ShadersFolder();
     static std::vector<std::string> ListShaders();
     static bool SaveShader(std::string, std::string);
 
+    static json load_json_file(filesystem::path);
+    
     static GlobalSettingsStruct globalSettings;
 
 private:
@@ -65,7 +68,6 @@ private:
 
     static bool create_dir(filesystem::path);
     static std::vector<std::string> list_files(filesystem::path, bool full_path = false);
-    static json load_json_file(filesystem::path);
     static bool write_json_to_file(filesystem::path, json);
     static bool write_text_to_file(filesystem::path, std::string);
 

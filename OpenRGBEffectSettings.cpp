@@ -238,3 +238,8 @@ filesystem::path OpenRGBEffectSettings::PatternsFolder()
 {
     return SettingsFolder() / "effect-patterns";
 }
+
+filesystem::path OpenRGBEffectSettings::ProfilesFolder()
+{
+    return SettingsFolder() / "effect-profiles";
+}

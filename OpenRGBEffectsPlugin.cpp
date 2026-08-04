@@ -84,6 +84,11 @@ void OpenRGBEffectsPlugin::Load(OpenRGBPluginAPIInterface* api_interface_ptr)
     | Update the controller list                            |
     \*-----------------------------------------------------*/
     UpdateControllers();
+
+    /*-----------------------------------------------------*\
+    | Migrate legacy plugin profiles                        |
+    \*-----------------------------------------------------*/
+    MigrateLegacyProfiles();
 }
 
 QWidget* OpenRGBEffectsPlugin::GetWidget()
@@ -266,6 +271,36 @@ void OpenRGBEffectsPlugin::OpenRGBEffectsPluginRGBControllerCallback(void * this
             \*---------------------------------------------*/
             QMetaObject::invokeMethod(this_obj, "UpdateControllers", Qt::QueuedConnection );
             break;
+    }
+}
+
+void OpenRGBEffectsPlugin::MigrateLegacyProfiles()
+{
+    std::vector<std::string> profile_list = OpenRGBEffectsPlugin::api->GetProfileList();
+
+    /*-----------------------------------------------------*\
+    | Look at each file in the legacy effects profiles      |
+    | directory                                             |
+    \*-----------------------------------------------------*/
+    for(const filesystem::directory_entry &entry : filesystem::directory_iterator(OpenRGBEffectSettings::ProfilesFolder()))
+    {
+        bool            found        = false;
+        nlohmann::json  profile_json = OpenRGBEffectSettings::load_json_file(entry.path());
+        std::string     profile_name = entry.path().filename();
+
+        for(std::size_t profile_idx = 0; profile_idx < profile_list.size(); profile_idx++)
+        {
+            if(profile_name == profile_list[profile_idx])
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            OpenRGBEffectsPlugin::api->SaveProfileFromPlugin(profile_name, GetPluginInfo().Name, profile_json);
+        }
     }
 }
 
