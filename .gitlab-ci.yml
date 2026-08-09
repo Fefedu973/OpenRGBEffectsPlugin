@@ -349,6 +349,50 @@ before_script:
     - !reference [.upstream_rules, rules]
 
 #-----------------------------------------------------------#
+# Common Flatpak Build Steps                                #
+#-----------------------------------------------------------#
+.hidden_flatpak_script: &flatpak_script_steps
+  image: ghcr.io/flathub-infra/flatpak-github-actions:kde-6.10
+  stage: build
+  tags:
+  - linux
+  - ${TGT_ARCH}
+  before_script:
+  - curl --location --output artifacts.zip ${TGT_UPSTREAM_URL}
+  - unzip artifacts.zip
+  - flatpak install --user --assumeyes org.openrgb.OpenRGB.flatpak
+  script:
+  - flatpak-builder --user --disable-rofiles-fuse --repo=build/repo build/flatpak-build flatpak/org.openrgb.OpenRGB.Plugin.Effects.yaml
+  - flatpak build-bundle --runtime build/repo org.openrgb.OpenRGB.Plugin.Effects.flatpak org.openrgb.OpenRGB.Plugin.Effects 5
+
+  artifacts:
+    name: "${CI_PROJECT_NAME}_Linux_${TGT_ARCH}_Flatpak_${CI_COMMIT_SHORT_SHA}"
+    paths:
+    - org.openrgb.OpenRGB.Plugin.Effects.flatpak
+    expire_in: 30 days
+
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
+# Linux Flatpak amd64 Build Target                          #
+#-----------------------------------------------------------#
+"Linux amd64 Flatpak":
+  variables:
+    TGT_UPSTREAM_URL: "https://gitlab.com/CalcProgrammer1/OpenRGB/-/jobs/artifacts/master/download?job=Linux+amd64+Flatpak"
+    TGT_ARCH: "amd64"
+  <<: *flatpak_script_steps
+
+#-----------------------------------------------------------#
+# Linux Flatpak arm64 Build Target                          #
+#-----------------------------------------------------------#
+"Linux arm64 Flatpak":
+  variables:
+    TGT_UPSTREAM_URL: "https://gitlab.com/CalcProgrammer1/OpenRGB/-/jobs/artifacts/master/download?job=Linux+arm64+Flatpak"
+    TGT_ARCH: "arm64"
+  <<: *flatpak_script_steps
+
+#-----------------------------------------------------------#
 # Windows (32-bit) Qt5 Build Target                         #
 #-----------------------------------------------------------#
 "Windows 32 Qt5":
