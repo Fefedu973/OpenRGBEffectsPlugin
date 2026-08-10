@@ -43,8 +43,12 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://gitlab.com/CalcProgrammer1/OpenRGB/-/raw/master/Documentation/Images/OpenRGB_Screenshot.png</image>
-      <caption>OpenRGB Effects Plugin</caption>
+      <image>https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/raw/master/Documentation/Images/Screenshot_AudioVisualizer.png</image>
+      <caption>OpenRGB Effects Plugin - Audio Visualizer</caption>
+    </screenshot>
+    <screenshot type="default">
+      <image>https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/raw/master/Documentation/Images/Screenshot_Shaders.png</image>
+      <caption>OpenRGB Effects Plugin - Audio Visualizer</caption>
     </screenshot>
   </screenshots>
 
