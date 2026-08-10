@@ -592,8 +592,14 @@ unix:!macx {
     QT += dbus
     LIBS += -lopenal -lGL -lpipewire-0.3
     QMAKE_CXXFLAGS += -std=c++17 -Wno-psabi
+
+    #-------------------------------------------------------------------------------------------#
+    # Add static files to installation                                                          #
+    #-------------------------------------------------------------------------------------------#
     target.path=$$PREFIX/lib/openrgb/plugins/
-    INSTALLS += target
+    metainfo.path=$$PREFIX/share/metainfo/
+    metainfo.files+=org.openrgb.OpenRGB.Plugin.Effects.metainfo.xml
+    INSTALLS += target metainfo
 
     INCLUDEPATH +=                                                                              \
         /usr/include/pipewire-0.3                                                               \

@@ -17,7 +17,8 @@ modules:
     post-install:
       - mv ${FLATPAK_DEST}/lib/openrgb/plugins/libOpenRGBEffectsPlugin.so ${FLATPAK_DEST}/libOpenRGBEffectsPlugin.so
       - rm -rf ${FLATPAK_DEST}/lib
+      - install -Dm644 OpenRGBEffectsPlugin.png ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/openrgb-effects-plugin.png
     sources:
-      - type: git
-        url: https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin
-        branch: master
+      - type: dir
+        path: ../
+
