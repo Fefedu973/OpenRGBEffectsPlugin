@@ -24,7 +24,6 @@
 #include "EffectListManager.h"
 #include "EffectManager.h"
 #include "OpenRGBEffectsPlugin.h"
-#include "PluginInfo.h"
 #include "EffectTabHeader.h"
 #include "OpenRGBEffectPage.h"
 #include "GlobalSettings.h"
@@ -99,12 +98,8 @@ void OpenRGBEffectTab::AddGlobalMenus()
     QAction* global_settings = new QAction(tr("Settings"), this);
     connect(global_settings, &QAction::triggered, this, &OpenRGBEffectTab::GlobalSettingsAction);
 
-    QAction* plugin_info = new QAction(tr("About"), this);
-    connect(plugin_info, &QAction::triggered, this, &OpenRGBEffectTab::PluginInfoAction);
-
     effect_list->AddEffectsMenus();
     effect_list->AddAction(global_settings);
-    effect_list->AddAction(plugin_info);
 }
 
 void OpenRGBEffectTab::InitEffectTabs()
@@ -233,22 +228,6 @@ void OpenRGBEffectTab::on_device_list_SelectionChanged()
     RGBEffect* effect = ((OpenRGBEffectPage*)widget)->GetEffect();
 
     EffectManager::Get()->Assign(ui->device_list->GetSelection(), effect);
-}
-
-void OpenRGBEffectTab::PluginInfoAction()
-{
-    QDialog* dialog = new QDialog();
-    dialog->setWindowTitle("Effects");
-    dialog->setMinimumSize(300,320);
-    dialog->setModal(true);
-
-    QVBoxLayout* dialog_layout = new QVBoxLayout(dialog);
-
-    PluginInfo* plugin_info = new PluginInfo(dialog);
-
-    dialog_layout->addWidget(plugin_info);
-
-    dialog->exec();
 }
 
 void OpenRGBEffectTab::GlobalSettingsAction()

@@ -45,22 +45,22 @@
         <translation>Экран</translation>
     </message>
     <message>
-        <location filename="../Effects/Ambient/Ambient.cpp" line="118"/>
+        <location filename="../Effects/Ambient/Ambient.cpp" line="127"/>
         <source>Takes a portion of the screen and reflect it to your devices</source>
         <translation>Дополняет свет экрана при помощи подсветки устройств</translation>
     </message>
     <message>
-        <location filename="../Effects/Ambient/Ambient.cpp" line="121"/>
+        <location filename="../Effects/Ambient/Ambient.cpp" line="130"/>
         <source>Scaled average</source>
         <translation>Взвешенное среднее</translation>
     </message>
     <message>
-        <location filename="../Effects/Ambient/Ambient.cpp" line="122"/>
+        <location filename="../Effects/Ambient/Ambient.cpp" line="131"/>
         <source>Screen copy</source>
         <translation>Копия экрана</translation>
     </message>
     <message>
-        <location filename="../Effects/Ambient/Ambient.h" line="33"/>
+        <location filename="../Effects/Ambient/Ambient.h" line="41"/>
         <source>Ambient</source>
         <translatorcomment>Does not translate well</translatorcomment>
         <translation>Амбиент</translation>
@@ -124,92 +124,92 @@
         <translation type="unfinished">Появление пузырьков</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="78"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="87"/>
         <source>Bloop bloop</source>
         <translation type="unfinished">Блуп блуп</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="89"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="98"/>
         <source>Random XY</source>
         <translation type="unfinished">Случайные XY</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="90"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="99"/>
         <source>Random X</source>
         <translation type="unfinished">Случайный X</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="91"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="100"/>
         <source>Random Y</source>
         <translation type="unfinished">Случайный Y</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="92"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="101"/>
         <source>Center</source>
         <translation type="unfinished">Центр</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="53"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="61"/>
         <source>Audio Bubbles</source>
         <translation type="unfinished">Аудио пузыри</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="118"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="126"/>
         <source>Unicorn Vomit</source>
         <translation type="unfinished">Раздражающий рисунок</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="129"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="137"/>
         <source>Borealis</source>
         <translation type="unfinished">Бореалис</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="138"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="146"/>
         <source>Ocean</source>
         <translation type="unfinished">Океан</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="146"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="154"/>
         <source>Pink/Blue</source>
         <translation type="unfinished">Розовый/Синий</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="153"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="161"/>
         <source>Pink/Gold</source>
         <translation type="unfinished">Розовый/Золотой</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="160"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="168"/>
         <source>Pulse</source>
         <translation type="unfinished">Импульс</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="168"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="176"/>
         <source>Purple/Orange</source>
         <translation type="unfinished">Фиолетовый/Оранжевый</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="177"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="185"/>
         <source>LightBlue/Purple</source>
         <translation type="unfinished">Светло-голубой/Фиолетовый</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="184"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="192"/>
         <source>Police Beacon</source>
         <translation type="unfinished">Полицейский маяк</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="192"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="200"/>
         <source>Seabed</source>
         <translation type="unfinished">Морское дно</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="200"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="208"/>
         <source>Sunset</source>
         <translation type="unfinished">Закат</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="211"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="219"/>
         <source>Vaporwave</source>
         <translation type="unfinished">Вапорвейв</translation>
     </message>
@@ -237,17 +237,17 @@
         <translation>Настройки аудио</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioParty/AudioParty.cpp" line="87"/>
+        <location filename="../Effects/AudioParty/AudioParty.cpp" line="96"/>
         <source>Movement, color change, effects according to audio zones.&lt;br/&gt;Blue zone: motion&lt;br/&gt;Green zone: colors&lt;br/&gt;Red zone: effects</source>
         <translation type="unfinished">Движение, цвет и анимация сменяются в зависимости от интенсивности звука</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioParty/AudioParty.cpp" line="89"/>
+        <location filename="../Effects/AudioParty/AudioParty.cpp" line="98"/>
         <source>Color change speed</source>
         <translation>Скорость смены цвета</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioParty/AudioParty.h" line="30"/>
+        <location filename="../Effects/AudioParty/AudioParty.h" line="38"/>
         <source>Audio Party</source>
         <translation>Audio Party</translation>
     </message>
@@ -368,22 +368,22 @@
         <translation>Цвет волны</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSine/AudioSine.cpp" line="63"/>
+        <location filename="../Effects/AudioSine/AudioSine.cpp" line="72"/>
         <source>Sinusoidal audio rendering</source>
         <translation>Синусоидальное отображение аудио</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSine/AudioSine.cpp" line="65"/>
+        <location filename="../Effects/AudioSine/AudioSine.cpp" line="74"/>
         <source>Spectrum cycle</source>
         <translation>Цикл по спектру</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSine/AudioSine.cpp" line="66"/>
+        <location filename="../Effects/AudioSine/AudioSine.cpp" line="75"/>
         <source>Static</source>
         <translation>Статический</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSine/AudioSine.h" line="29"/>
+        <location filename="../Effects/AudioSine/AudioSine.h" line="37"/>
         <source>Audio Sine</source>
         <translation type="unfinished">Аудио синусоида</translation>
     </message>
@@ -417,12 +417,12 @@
         <translation>Отражение бита по краю</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioStar/AudioStar.cpp" line="58"/>
+        <location filename="../Effects/AudioStar/AudioStar.cpp" line="67"/>
         <source>Star audio visualizer (frequency based) with an edge beat</source>
         <translation>Отражение аудио по частотам в виде звезды, с отражением ритма по краю</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioStar/AudioStar.h" line="28"/>
+        <location filename="../Effects/AudioStar/AudioStar.h" line="36"/>
         <source>Audio Star</source>
         <translatorcomment>Does not translate well</translatorcomment>
         <translation>Аудио Звезда</translation>
@@ -471,52 +471,52 @@
         <translation>Полосовой фильтр частот</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.h" line="54"/>
+        <location filename="../Effects/AudioSync/AudioSync.h" line="62"/>
         <source>Audio Sync</source>
         <translation>Синхронизация аудио</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="101"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="110"/>
         <source>Display frequency based colors with different modes</source>
         <translation>Отражать цвета в зависимости от частот, с разными режимами</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="107"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="116"/>
         <source>No saturation</source>
         <translation>Без насыщения</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="108"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="117"/>
         <source>Saturate high amplitudes</source>
         <translation>Насыщать цвет при высоких амплитудах</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="109"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="118"/>
         <source>Black and white mode</source>
         <translation>Чёрно-белый режим</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="115"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="124"/>
         <source>Linear horizontal</source>
         <translation>Линейный горизонтальный</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="116"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="125"/>
         <source>No roll</source>
         <translation>Без вращения</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="117"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="126"/>
         <source>Radial</source>
         <translation>Радиальный</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="118"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="127"/>
         <source>Wave</source>
         <translation>Волна</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="119"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="128"/>
         <source>Linear vertical</source>
         <translation>Линейный вертикальный</translation>
     </message>
@@ -550,16 +550,12 @@
         <translation>Насыщение</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioVUMeter/AudioVUMeter.cpp" line="57"/>
+        <location filename="../Effects/AudioVUMeter/AudioVUMeter.cpp" line="66"/>
         <source>Fill your led strip based on audio load</source>
         <translation>Заполняет светодиодную ленту в соответствии с нагрузкой на динамики</translation>
     </message>
     <message>
-        <source></source>
-        <translation type="vanished">Индикатор громкости (VU)</translation>
-    </message>
-    <message>
-        <location filename="../Effects/AudioVUMeter/AudioVUMeter.h" line="28"/>
+        <location filename="../Effects/AudioVUMeter/AudioVUMeter.h" line="36"/>
         <source>Audio VU Meter</source>
         <translation type="unfinished">Аудио VU Метр</translation>
     </message>
@@ -567,12 +563,12 @@
 <context>
     <name>AudioVisualizer</name>
     <message>
-        <location filename="../Effects/AudioVisualizer/AudioVisualizer.cpp" line="96"/>
+        <location filename="../Effects/AudioVisualizer/AudioVisualizer.cpp" line="105"/>
         <source>Display audio equalizer on your devices. A ported version of &lt;a href=&quot;https://gitlab.com/CalcProgrammer1/KeyboardVisualizer&quot;&gt;KeyboardVisualizer&lt;/a&gt;</source>
         <translation>Отображает эквалайзер на RGB-устройствах. Портирован из &lt;a href=&quot;https://gitlab.com/CalcProgrammer1/KeyboardVisualizer&quot;&gt;KeyboardVisualizer&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioVisualizer/AudioVisualizer.h" line="158"/>
+        <location filename="../Effects/AudioVisualizer/AudioVisualizer.h" line="166"/>
         <source>Audio Visualizer</source>
         <translation>Аудио визуализатор</translation>
     </message>
@@ -638,12 +634,12 @@
         <translation>Насыщение</translation>
     </message>
     <message>
-        <location filename="../Effects/Bloom/Bloom.cpp" line="40"/>
+        <location filename="../Effects/Bloom/Bloom.cpp" line="49"/>
         <source>Flower blooming effect</source>
         <translation>Эффект раскрывающегося цветка</translation>
     </message>
     <message>
-        <location filename="../Effects/Bloom/Bloom.h" line="32"/>
+        <location filename="../Effects/Bloom/Bloom.h" line="40"/>
         <source>Bloom</source>
         <translation>Цветок</translation>
     </message>
@@ -686,7 +682,7 @@
         <translation>Тяжесть</translation>
     </message>
     <message>
-        <location filename="../Effects/BouncingBall/BouncingBall.cpp" line="51"/>
+        <location filename="../Effects/BouncingBall/BouncingBall.cpp" line="60"/>
         <source>A ball bounces around your RGB setup</source>
         <translation type="unfinished">Мяч прыгает вокруг вашей RGB настройки</translation>
     </message>
@@ -700,7 +696,7 @@
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../Effects/BouncingBall/BouncingBall.h" line="26"/>
+        <location filename="../Effects/BouncingBall/BouncingBall.h" line="34"/>
         <source>Bouncing Ball</source>
         <translation>Прыгающий мяч</translation>
     </message>
@@ -708,12 +704,12 @@
 <context>
     <name>Breathing</name>
     <message>
-        <location filename="../Effects/Breathing/Breathing.cpp" line="39"/>
+        <location filename="../Effects/Breathing/Breathing.cpp" line="48"/>
         <source>Fading in and out user selected colors across an entire zone</source>
         <translation type="unfinished">Постепенное появление и исчезновение выбранных пользователем цветов по всей зоне</translation>
     </message>
     <message>
-        <location filename="../Effects/Breathing/Breathing.h" line="25"/>
+        <location filename="../Effects/Breathing/Breathing.h" line="33"/>
         <source>Breathing</source>
         <translation type="unfinished">Дыхание</translation>
     </message>
@@ -721,17 +717,17 @@
 <context>
     <name>BreathingCircle</name>
     <message>
-        <location filename="../Effects/BreathingCircle/BreathingCircle.cpp" line="40"/>
+        <location filename="../Effects/BreathingCircle/BreathingCircle.cpp" line="49"/>
         <source>A breathing circle effect</source>
         <translation type="unfinished">Эффект дыхательного круга</translation>
     </message>
     <message>
-        <location filename="../Effects/BreathingCircle/BreathingCircle.cpp" line="41"/>
+        <location filename="../Effects/BreathingCircle/BreathingCircle.cpp" line="50"/>
         <source>Thickness</source>
         <translation type="unfinished">Ширина</translation>
     </message>
     <message>
-        <location filename="../Effects/BreathingCircle/BreathingCircle.h" line="24"/>
+        <location filename="../Effects/BreathingCircle/BreathingCircle.h" line="32"/>
         <source>Breathing Circle</source>
         <translation type="unfinished">Круг дыхания</translation>
     </message>
@@ -769,12 +765,12 @@
         <translation type="unfinished">Толщина пузырьков</translation>
     </message>
     <message>
-        <location filename="../Effects/Bubbles/Bubbles.cpp" line="38"/>
+        <location filename="../Effects/Bubbles/Bubbles.cpp" line="47"/>
         <source>Bloop bloop</source>
         <translation type="unfinished">Блуп блуп</translation>
     </message>
     <message>
-        <location filename="../Effects/Bubbles/Bubbles.h" line="24"/>
+        <location filename="../Effects/Bubbles/Bubbles.h" line="32"/>
         <source>Bubbles</source>
         <translation type="unfinished">Пузырьки</translation>
     </message>
@@ -787,22 +783,22 @@
         <translation type="unfinished">Режим часов</translation>
     </message>
     <message>
-        <location filename="../Effects/Clock/Clock.cpp" line="35"/>
+        <location filename="../Effects/Clock/Clock.cpp" line="44"/>
         <source>Digital Clock</source>
         <translation type="unfinished">Цифровые часы</translation>
     </message>
     <message>
-        <location filename="../Effects/Clock/Clock.cpp" line="37"/>
+        <location filename="../Effects/Clock/Clock.cpp" line="46"/>
         <source>12-hour</source>
         <translation type="unfinished">12-часовой</translation>
     </message>
     <message>
-        <location filename="../Effects/Clock/Clock.cpp" line="38"/>
+        <location filename="../Effects/Clock/Clock.cpp" line="47"/>
         <source>24-hour</source>
         <translation type="unfinished">24-часовой</translation>
     </message>
     <message>
-        <location filename="../Effects/Clock/Clock.h" line="30"/>
+        <location filename="../Effects/Clock/Clock.h" line="38"/>
         <source>Clock</source>
         <translation type="unfinished">Часы</translation>
     </message>
@@ -878,22 +874,22 @@
         <translation type="unfinished">Позиция Y</translation>
     </message>
     <message>
-        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="39"/>
+        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="48"/>
         <source>A rotating rainbow</source>
         <translation type="unfinished">Вращающийся радуга</translation>
     </message>
     <message>
-        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="41"/>
+        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="50"/>
         <source>Clockwise</source>
         <translation type="unfinished">По часовой стрелке</translation>
     </message>
     <message>
-        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="42"/>
+        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="51"/>
         <source>Counter-clockwise</source>
         <translation type="unfinished">Против часовой стрелки</translation>
     </message>
     <message>
-        <location filename="../Effects/ColorWheel/ColorWheel.h" line="24"/>
+        <location filename="../Effects/ColorWheel/ColorWheel.h" line="32"/>
         <source>Color Wheel</source>
         <translation type="unfinished">Цветовой колесо</translation>
     </message>
@@ -909,17 +905,17 @@
 <context>
     <name>Comet</name>
     <message>
-        <location filename="../Effects/Comet/Comet.cpp" line="42"/>
+        <location filename="../Effects/Comet/Comet.cpp" line="51"/>
         <source>A comet that travels through your devices</source>
         <translation type="unfinished">Комета, которая путешествует по вашим устройствам</translation>
     </message>
     <message>
-        <location filename="../Effects/Comet/Comet.cpp" line="43"/>
+        <location filename="../Effects/Comet/Comet.cpp" line="52"/>
         <source>Comet size</source>
         <translation type="unfinished">Размер кометы</translation>
     </message>
     <message>
-        <location filename="../Effects/Comet/Comet.h" line="25"/>
+        <location filename="../Effects/Comet/Comet.h" line="33"/>
         <source>Comet</source>
         <translation type="unfinished">Комета</translation>
     </message>
@@ -947,12 +943,12 @@
         <translation type="unfinished">Горизонтальная скорость</translation>
     </message>
     <message>
-        <location filename="../Effects/CrossingBeams/CrossingBeams.cpp" line="40"/>
+        <location filename="../Effects/CrossingBeams/CrossingBeams.cpp" line="49"/>
         <source>Two beams that move horizontally and vertically</source>
         <translation type="unfinished">Два луча, которые двигаются горизонтально и вертикально</translation>
     </message>
     <message>
-        <location filename="../Effects/CrossingBeams/CrossingBeams.h" line="25"/>
+        <location filename="../Effects/CrossingBeams/CrossingBeams.h" line="33"/>
         <source>Crossing Beams</source>
         <translation type="unfinished">Пересечение лучей</translation>
     </message>
@@ -995,12 +991,12 @@
         <translation type="unfinished">Удалить выделенное</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomBlink/CustomBlink.cpp" line="54"/>
+        <location filename="../Effects/CustomBlink/CustomBlink.cpp" line="63"/>
         <source>Make your own blinking sequence</source>
         <translation type="unfinished">Создайте собственную последовательность мигания</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomBlink/CustomBlink.h" line="41"/>
+        <location filename="../Effects/CustomBlink/CustomBlink.h" line="49"/>
         <source>Custom Blink</source>
         <translation type="unfinished">Пользовательский миг</translation>
     </message>
@@ -1033,92 +1029,92 @@
         <translation type="unfinished">Ширина</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="81"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="90"/>
         <source>Create your own gradient wave or use predefined color set</source>
         <translation type="unfinished">Создайте собственную градиентную волну или используйте предопределенное цветовое сочетание</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="90"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="99"/>
         <source>Horizontal</source>
         <translation type="unfinished">Горизонтальный</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="91"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="100"/>
         <source>Vertical</source>
         <translation type="unfinished">Вертикальный</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="92"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="101"/>
         <source>Radial out</source>
         <translation type="unfinished">Радиальное излучение</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="93"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="102"/>
         <source>Radial in</source>
         <translation type="unfinished">Радиальный в</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="73"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="81"/>
         <source>Unicorn Vomit</source>
         <translation type="unfinished">Рвота единорога</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="84"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="92"/>
         <source>Borealis</source>
         <translation type="unfinished">Бореалис</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="93"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="101"/>
         <source>Ocean</source>
         <translation type="unfinished">Океан</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="101"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="109"/>
         <source>Pink/Blue</source>
         <translation type="unfinished">Розовый/Синий</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="108"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="116"/>
         <source>Pink/Gold</source>
         <translation type="unfinished">Розовый/Золотой</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="115"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="123"/>
         <source>Pulse</source>
         <translation type="unfinished">Импульс</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="123"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="131"/>
         <source>Purple/Orange</source>
         <translation type="unfinished">Фиолетовый/Оранжевый</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="132"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="140"/>
         <source>LightBlue/Purple</source>
         <translation type="unfinished">Светло-синий/Фиолетовый</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="139"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="147"/>
         <source>Police Beacon</source>
         <translation type="unfinished">Мигалка полиции</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="147"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="155"/>
         <source>Seabed</source>
         <translation type="unfinished">Морское дно</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="155"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="163"/>
         <source>Sunset</source>
         <translation type="unfinished">Закат</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="166"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="174"/>
         <source>Vaporwave</source>
         <translation type="unfinished">Вапорвейв</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="40"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="48"/>
         <source>Custom Gradient Wave</source>
         <translation type="unfinished">Пользовательский градиентный волновой</translation>
     </message>
@@ -1126,12 +1122,12 @@
 <context>
     <name>CustomMarquee</name>
     <message>
-        <location filename="../Effects/CustomMarquee/CustomMarquee.cpp" line="39"/>
+        <location filename="../Effects/CustomMarquee/CustomMarquee.cpp" line="48"/>
         <source>Create your own marquee effect</source>
         <translation>Создаёт бегущую строку из нескольких цветов, движущихся в одном направлении</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomMarquee/CustomMarquee.h" line="24"/>
+        <location filename="../Effects/CustomMarquee/CustomMarquee.h" line="32"/>
         <source>Custom Marquee</source>
         <translation>Бегущая строка</translation>
     </message>
@@ -1182,17 +1178,17 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Частота</translation>
     </message>
     <message>
-        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.cpp" line="43"/>
+        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.cpp" line="52"/>
         <source>Two rainbows that rotate synchronously</source>
         <translation type="unfinished">Два радуги, вращающиеся синхронно</translation>
     </message>
     <message>
-        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.cpp" line="44"/>
+        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.cpp" line="53"/>
         <source>Color speed</source>
         <translation type="unfinished">Скорость цвета</translation>
     </message>
     <message>
-        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.h" line="25"/>
+        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.h" line="33"/>
         <source>Double Rotating Rainbow</source>
         <translation type="unfinished">Двойной вращающийся радуга</translation>
     </message>
@@ -1245,12 +1241,12 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>Fill</name>
     <message>
-        <location filename="../Effects/Fill/Fill.cpp" line="41"/>
+        <location filename="../Effects/Fill/Fill.cpp" line="50"/>
         <source>Progressivly fills your devices with a defined color</source>
         <translation type="unfinished">Постепенно заполняет ваши устройства определенным цветом</translation>
     </message>
     <message>
-        <location filename="../Effects/Fill/Fill.h" line="24"/>
+        <location filename="../Effects/Fill/Fill.h" line="32"/>
         <source>Fill</source>
         <translation type="unfinished">Заполнить</translation>
     </message>
@@ -1343,12 +1339,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Частота m8</translation>
     </message>
     <message>
-        <location filename="../Effects/FractalMotion/FractalMotion.cpp" line="44"/>
+        <location filename="../Effects/FractalMotion/FractalMotion.cpp" line="53"/>
         <source>Psychedelic sinusoid</source>
         <translation type="unfinished">Психеделический синусоид</translation>
     </message>
     <message>
-        <location filename="../Effects/FractalMotion/FractalMotion.h" line="25"/>
+        <location filename="../Effects/FractalMotion/FractalMotion.h" line="33"/>
         <source>Fractal Motion</source>
         <translation type="unfinished">Фрактальное движение</translation>
     </message>
@@ -1393,12 +1389,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">110</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/GLSLCodeEditor.cpp" line="55"/>
+        <location filename="../Effects/Shaders/GLSLCodeEditor.cpp" line="64"/>
         <source>Shader editor</source>
         <translation type="unfinished">Редактор шейдеров</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/GLSLCodeEditor.cpp" line="119"/>
+        <location filename="../Effects/Shaders/GLSLCodeEditor.cpp" line="128"/>
         <source>Main shader</source>
         <translation type="unfinished">Основной шейдер</translation>
     </message>
@@ -1411,22 +1407,22 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Выбрать файл GIF</translation>
     </message>
     <message>
-        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="109"/>
+        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="118"/>
         <source>Open GIF file</source>
         <translation type="unfinished">Открыть GIF-файл</translation>
     </message>
     <message>
-        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="109"/>
+        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="118"/>
         <source>GIF Files (*.gif)</source>
         <translation type="unfinished">Файлы GIF (*.gif)</translation>
     </message>
     <message>
-        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="43"/>
+        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="52"/>
         <source>Use GIFs to create your own effect</source>
         <translation type="unfinished">Используйте GIF-файлы, чтобы создать собственный эффект</translation>
     </message>
     <message>
-        <location filename="../Effects/GifPlayer/GifPlayer.h" line="27"/>
+        <location filename="../Effects/GifPlayer/GifPlayer.h" line="35"/>
         <source>Gif Player</source>
         <translation type="unfinished">Плеер GIF</translation>
     </message>
@@ -1577,42 +1573,42 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="50"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="59"/>
         <source>You wont escape this</source>
         <translation type="unfinished">Вы не убежите от этого</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="52"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="61"/>
         <source>Rainbow</source>
         <translation type="unfinished">Радуга</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="53"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="62"/>
         <source>Custom</source>
         <translation type="unfinished">Пользовательский</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="55"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="64"/>
         <source>Clockwise</source>
         <translation type="unfinished">По часовой стрелке</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="56"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="65"/>
         <source>Counter-clockwise</source>
         <translation type="unfinished">Против часовой стрелки</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="58"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="67"/>
         <source>To the inside</source>
         <translation type="unfinished">Внутрь</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="59"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="68"/>
         <source>To the outside</source>
         <translation type="unfinished">Наружу</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.h" line="30"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.h" line="38"/>
         <source>Hypnotoad</source>
         <translation type="unfinished">Гипнотоад</translation>
     </message>
@@ -1661,27 +1657,27 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Вкладка 2</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.cpp" line="45"/>
+        <location filename="../Effects/Layers/Layers.cpp" line="54"/>
         <source>Combine effects together.&lt;br /&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Blend_modes&quot;&gt;Help about blend modes&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.cpp" line="59"/>
+        <location filename="../Effects/Layers/Layers.cpp" line="68"/>
         <source>Group</source>
         <translation type="unfinished">Группа</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.cpp" line="76"/>
+        <location filename="../Effects/Layers/Layers.cpp" line="85"/>
         <source>New group</source>
         <translation type="unfinished">Новая группа</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.cpp" line="78"/>
+        <location filename="../Effects/Layers/Layers.cpp" line="87"/>
         <source>Combine multiple effects within a group, and combine groups together</source>
         <translation type="unfinished">Объединяйте несколько эффектов в группе и объединяйте группы вместе</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.h" line="26"/>
+        <location filename="../Effects/Layers/Layers.h" line="34"/>
         <source>Layers</source>
         <translation type="unfinished">Слои</translation>
     </message>
@@ -1694,12 +1690,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Режим</translation>
     </message>
     <message>
-        <location filename="../Effects/Lightning/Lightning.cpp" line="44"/>
+        <location filename="../Effects/Lightning/Lightning.cpp" line="53"/>
         <source>Prepare yourself for thunderstorm</source>
         <translation type="unfinished">Подготовьтесь к грозе</translation>
     </message>
     <message>
-        <location filename="../Effects/Lightning/Lightning.h" line="27"/>
+        <location filename="../Effects/Lightning/Lightning.h" line="35"/>
         <source>Lightning</source>
         <translation type="unfinished">Молния</translation>
     </message>
@@ -1736,17 +1732,17 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>Marquee</name>
     <message>
-        <location filename="../Effects/Marquee/Marquee.cpp" line="45"/>
+        <location filename="../Effects/Marquee/Marquee.cpp" line="54"/>
         <source>A simple marquee for your devices</source>
         <translation type="unfinished">Простой маркированный текст для ваших устройств</translation>
     </message>
     <message>
-        <location filename="../Effects/Marquee/Marquee.cpp" line="46"/>
+        <location filename="../Effects/Marquee/Marquee.cpp" line="55"/>
         <source>Spacing</source>
         <translation type="unfinished">Шаг</translation>
     </message>
     <message>
-        <location filename="../Effects/Marquee/Marquee.h" line="25"/>
+        <location filename="../Effects/Marquee/Marquee.h" line="33"/>
         <source>Marquee</source>
         <translation type="unfinished">Маркировка</translation>
     </message>
@@ -1779,12 +1775,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Инвертировать цвета</translation>
     </message>
     <message>
-        <location filename="../Effects/Mask/Mask.cpp" line="35"/>
+        <location filename="../Effects/Mask/Mask.cpp" line="44"/>
         <source>A simple mask for using in layers</source>
         <translation type="unfinished">Простая маска для использования в слоях</translation>
     </message>
     <message>
-        <location filename="../Effects/Mask/Mask.h" line="24"/>
+        <location filename="../Effects/Mask/Mask.h" line="32"/>
         <source>Mask</source>
         <translation type="unfinished">Маска</translation>
     </message>
@@ -1798,12 +1794,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Редкость</translation>
     </message>
     <message>
-        <location filename="../Effects/Mosaic/Mosaic.cpp" line="39"/>
+        <location filename="../Effects/Mosaic/Mosaic.cpp" line="48"/>
         <source>Tiles randomly spawning across your devices</source>
         <translation type="unfinished">Камни случайным образом появляются на ваших устройствах</translation>
     </message>
     <message>
-        <location filename="../Effects/Mosaic/Mosaic.h" line="31"/>
+        <location filename="../Effects/Mosaic/Mosaic.h" line="39"/>
         <source>Mosaic</source>
         <translation type="unfinished">Мозаика</translation>
     </message>
@@ -1816,12 +1812,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Фоновый цвет:</translation>
     </message>
     <message>
-        <location filename="../Effects/MotionPoint/MotionPoint.cpp" line="40"/>
+        <location filename="../Effects/MotionPoint/MotionPoint.cpp" line="49"/>
         <source>A point that moves forth and back on your devices</source>
         <translation type="unfinished">Точка, которая двигается взад и вперед на ваших устройствах</translation>
     </message>
     <message>
-        <location filename="../Effects/MotionPoint/MotionPoint.h" line="25"/>
+        <location filename="../Effects/MotionPoint/MotionPoint.h" line="33"/>
         <source>Motion Point</source>
         <translation type="unfinished">Точка движения</translation>
     </message>
@@ -1829,17 +1825,17 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>MotionPoints</name>
     <message>
-        <location filename="../Effects/MotionPoints/MotionPoints.cpp" line="42"/>
+        <location filename="../Effects/MotionPoints/MotionPoints.cpp" line="51"/>
         <source>Multiple points that moves in all directions on your devices</source>
         <translation type="unfinished">Несколько точек, которые двигаются во всех направлениях на вашем устройстве</translation>
     </message>
     <message>
-        <location filename="../Effects/MotionPoints/MotionPoints.cpp" line="43"/>
+        <location filename="../Effects/MotionPoints/MotionPoints.cpp" line="52"/>
         <source>Number of points</source>
         <translation type="unfinished">Количество точек</translation>
     </message>
     <message>
-        <location filename="../Effects/MotionPoints/MotionPoints.h" line="116"/>
+        <location filename="../Effects/MotionPoints/MotionPoints.h" line="124"/>
         <source>Motion Points</source>
         <translation type="unfinished">Точки движения</translation>
     </message>
@@ -1847,17 +1843,17 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>MovingPanes</name>
     <message>
-        <location filename="../Effects/MovingPanes/MovingPanes.cpp" line="43"/>
+        <location filename="../Effects/MovingPanes/MovingPanes.cpp" line="52"/>
         <source>Parts of your devices in symmetrical motion</source>
         <translation type="unfinished">Части ваших устройств в симметричном движении</translation>
     </message>
     <message>
-        <location filename="../Effects/MovingPanes/MovingPanes.cpp" line="44"/>
+        <location filename="../Effects/MovingPanes/MovingPanes.cpp" line="53"/>
         <source>Divisions</source>
         <translation type="unfinished">Деления</translation>
     </message>
     <message>
-        <location filename="../Effects/MovingPanes/MovingPanes.h" line="24"/>
+        <location filename="../Effects/MovingPanes/MovingPanes.h" line="32"/>
         <source>Moving Panes</source>
         <translation type="unfinished">Перемещаемые панели</translation>
     </message>
@@ -1870,17 +1866,17 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="30"/>
+        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="39"/>
         <source>Texture</source>
         <translation type="unfinished">Текстура</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="31"/>
+        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="40"/>
         <source>Audio</source>
         <translation type="unfinished">Аудио</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="32"/>
+        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="41"/>
         <source>Buffer</source>
         <translation type="unfinished">Буфер</translation>
     </message>
@@ -1938,67 +1934,67 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Режим</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="53"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="62"/>
         <source>Floor is lava</source>
         <translation type="unfinished">Пол - лава</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="62"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="71"/>
         <source>Rainbow</source>
         <translation type="unfinished">Радуга</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="63"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="72"/>
         <source>Inverse rainbow</source>
         <translation type="unfinished">Обратный радуга</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="64"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="73"/>
         <source>Custom</source>
         <translation type="unfinished">Пользовательский</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="66"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="75"/>
         <source>Up</source>
         <translation type="unfinished">Вверх</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="67"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="76"/>
         <source>Down</source>
         <translation type="unfinished">Вниз</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="68"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="77"/>
         <source>Left</source>
         <translation type="unfinished">Слева</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="69"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="78"/>
         <source>Right</source>
         <translation type="unfinished">Право</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="92"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="100"/>
         <source>Lava</source>
         <translation type="unfinished">Лава</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="98"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="106"/>
         <source>Borealis</source>
         <translation type="unfinished">Бореалис</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="106"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="114"/>
         <source>Ocean</source>
         <translation type="unfinished">Океан</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="113"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="121"/>
         <source>Chemicals</source>
         <translation type="unfinished">Химикаты</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="33"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="41"/>
         <source>Noise Map</source>
         <translation type="unfinished">Карта шума</translation>
     </message>
@@ -2089,21 +2085,12 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>OpenRGBEffectTab</name>
     <message>
-        <source>Save</source>
-        <translation type="obsolete">Сохранить</translation>
-    </message>
-    <message>
         <location filename="../OpenRGBEffectTab.cpp" line="98"/>
         <source>Settings</source>
         <translation type="unfinished">Настройки</translation>
     </message>
     <message>
-        <location filename="../OpenRGBEffectTab.cpp" line="101"/>
-        <source>About</source>
-        <translation type="unfinished">О программе</translation>
-    </message>
-    <message>
-        <location filename="../OpenRGBEffectTab.cpp" line="111"/>
+        <location filename="../OpenRGBEffectTab.cpp" line="107"/>
         <source>No effects added yet.
  Please select one from the list to get started.</source>
         <translation type="unfinished">Еще не добавлено ни одного эффекта.
@@ -2111,67 +2098,19 @@ Using an effect on a device WILL damage the flash or controller</source>
     </message>
 </context>
 <context>
-    <name>PluginInfo</name>
-    <message>
-        <location filename="../PluginInfo.ui" line="26"/>
-        <source>Download lastest build</source>
-        <translation type="unfinished">Скачать последнюю сборку</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="63"/>
-        <source>Git branch:</source>
-        <translation type="unfinished">Ветка Git: </translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="82"/>
-        <source>Git commit date:</source>
-        <translation type="unfinished">Дата коммита Git:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="101"/>
-        <source>Git commit ID:</source>
-        <translation type="unfinished">Идентификатор коммита Git:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="120"/>
-        <source>Version:</source>
-        <translation type="unfinished">Версия:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="139"/>
-        <source>Build date:</source>
-        <translation type="unfinished">Дата сборки:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="152"/>
-        <source>Documentation:</source>
-        <translation type="unfinished">Документация:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="159"/>
-        <source>&lt;a href=&quot;https://gitlab.com/OpenRGBDevelopers/OpenRGB-Wiki/-/blob/stable/Plugins/Effects/Effects.md&quot;&gt;help&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="237"/>
-        <source>Open plugin folder</source>
-        <translation type="unfinished">Открыть папку с плагинами</translation>
-    </message>
-</context>
-<context>
     <name>Policing</name>
     <message>
-        <location filename="../Effects/Policing/Policing.cpp" line="33"/>
+        <location filename="../Effects/Policing/Policing.cpp" line="42"/>
         <source>A back and forth effect motion with a flash before changing direction</source>
         <translation type="unfinished">Эффект движения туда и обратно с вспышкой перед изменением направления</translation>
     </message>
     <message>
-        <location filename="../Effects/Policing/Policing.cpp" line="34"/>
+        <location filename="../Effects/Policing/Policing.cpp" line="43"/>
         <source>Width</source>
         <translation type="unfinished">Ширина</translation>
     </message>
     <message>
-        <location filename="../Effects/Policing/Policing.h" line="19"/>
+        <location filename="../Effects/Policing/Policing.h" line="27"/>
         <source>Policing</source>
         <translation type="unfinished">Полицейская деятельность</translation>
     </message>
@@ -2179,37 +2118,37 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>RGBEffect</name>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="9"/>
+        <location filename="../Effects/RGBEffect.h" line="17"/>
         <source>Advanced</source>
         <translation type="unfinished">Расширенные</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="10"/>
+        <location filename="../Effects/RGBEffect.h" line="18"/>
         <source>Audio</source>
         <translation type="unfinished">Аудио</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="11"/>
+        <location filename="../Effects/RGBEffect.h" line="19"/>
         <source>Beams</source>
         <translation type="unfinished">Пучки</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="12"/>
+        <location filename="../Effects/RGBEffect.h" line="20"/>
         <source>Rainbow</source>
         <translation type="unfinished">Радуга</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="13"/>
+        <location filename="../Effects/RGBEffect.h" line="21"/>
         <source>Random</source>
         <translation type="unfinished">Случайный</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="14"/>
+        <location filename="../Effects/RGBEffect.h" line="22"/>
         <source>Simple</source>
         <translation type="unfinished">Простой</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="15"/>
+        <location filename="../Effects/RGBEffect.h" line="23"/>
         <source>Special</source>
         <translation type="unfinished">Специальный</translation>
     </message>
@@ -2232,27 +2171,27 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Позиция Y</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="44"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="53"/>
         <source>Dive into the RGB tunnel</source>
         <translation type="unfinished">Погрузитесь в RGB-туннель</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="45"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="54"/>
         <source>Frequency</source>
         <translation type="unfinished">Частота</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="47"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="56"/>
         <source>Circles</source>
         <translation type="unfinished">Круги</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="48"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="57"/>
         <source>Squares</source>
         <translation type="unfinished">Квадраты</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.h" line="24"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.h" line="32"/>
         <source>Radial Rainbow</source>
         <translation type="unfinished">Радиальный Радуга</translation>
     </message>
@@ -2265,17 +2204,17 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Размер капли</translation>
     </message>
     <message>
-        <location filename="../Effects/Rain/Rain.cpp" line="44"/>
+        <location filename="../Effects/Rain/Rain.cpp" line="53"/>
         <source>Droplet effect</source>
         <translation type="unfinished">Эффект капли</translation>
     </message>
     <message>
-        <location filename="../Effects/Rain/Rain.cpp" line="45"/>
+        <location filename="../Effects/Rain/Rain.cpp" line="54"/>
         <source>Drops</source>
         <translation type="unfinished">Капли</translation>
     </message>
     <message>
-        <location filename="../Effects/Rain/Rain.h" line="33"/>
+        <location filename="../Effects/Rain/Rain.h" line="41"/>
         <source>Rain</source>
         <translation type="unfinished">Дождь</translation>
     </message>
@@ -2283,17 +2222,17 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>RainbowWave</name>
     <message>
-        <location filename="../Effects/RainbowWave/RainbowWave.cpp" line="33"/>
+        <location filename="../Effects/RainbowWave/RainbowWave.cpp" line="42"/>
         <source>A sliding Rainbow</source>
         <translation type="unfinished">Скользящий Радуга</translation>
     </message>
     <message>
-        <location filename="../Effects/RainbowWave/RainbowWave.cpp" line="34"/>
+        <location filename="../Effects/RainbowWave/RainbowWave.cpp" line="43"/>
         <source>Frequency</source>
         <translation type="unfinished">Частота</translation>
     </message>
     <message>
-        <location filename="../Effects/RainbowWave/RainbowWave.h" line="19"/>
+        <location filename="../Effects/RainbowWave/RainbowWave.h" line="27"/>
         <source>Rainbow Wave</source>
         <translation type="unfinished">Радужная волна</translation>
     </message>
@@ -2301,12 +2240,12 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>RandomMarquee</name>
     <message>
-        <location filename="../Effects/RandomMarquee/RandomMarquee.cpp" line="43"/>
+        <location filename="../Effects/RandomMarquee/RandomMarquee.cpp" line="52"/>
         <source>A simple Random Marquee for your devices</source>
         <translation type="unfinished">Простой случайный маркированный элемент для ваших устройств</translation>
     </message>
     <message>
-        <location filename="../Effects/RandomMarquee/RandomMarquee.h" line="25"/>
+        <location filename="../Effects/RandomMarquee/RandomMarquee.h" line="33"/>
         <source>Random Marquee</source>
         <translation type="unfinished">Случайный маркированный текст</translation>
     </message>
@@ -2314,12 +2253,12 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>RandomSpin</name>
     <message>
-        <location filename="../Effects/RandomSpin/RandomSpin.cpp" line="42"/>
+        <location filename="../Effects/RandomSpin/RandomSpin.cpp" line="51"/>
         <source>A simple Random Spin for your devices</source>
         <translation type="unfinished">Простой случайный спин для ваших устройств</translation>
     </message>
     <message>
-        <location filename="../Effects/RandomSpin/RandomSpin.h" line="34"/>
+        <location filename="../Effects/RandomSpin/RandomSpin.h" line="42"/>
         <source>Random Spin</source>
         <translation type="unfinished">Случайный спин</translation>
     </message>
@@ -2337,47 +2276,47 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.cpp" line="44"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.cpp" line="53"/>
         <source>A beam that rotates in different ways</source>
         <translation type="unfinished">Пучок, вращающийся различными способами</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.cpp" line="45"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.cpp" line="54"/>
         <source>Glow</source>
         <translation type="unfinished">Свечение</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="66"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="74"/>
         <source>Clockwise</source>
         <translation type="unfinished">По часовой стрелке</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="67"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="75"/>
         <source>Counter clockwise</source>
         <translation type="unfinished">Против часовой стрелки</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="68"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="76"/>
         <source>Pendulum</source>
         <translation type="unfinished">Маятник</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="69"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="77"/>
         <source>Wipers</source>
         <translation type="unfinished">Счищалки</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="70"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="78"/>
         <source>Swing H</source>
         <translation type="unfinished">Свинг H</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="71"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="79"/>
         <source>Swing V</source>
         <translation type="unfinished">Свинг V</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="25"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="33"/>
         <source>Rotating Beam</source>
         <translation type="unfinished">Вращающийся луч</translation>
     </message>
@@ -2385,70 +2324,35 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>RotatingRainbow</name>
     <message>
-        <location filename="../Effects/RotatingRainbow/RotatingRainbow.cpp" line="41"/>
+        <location filename="../Effects/RotatingRainbow/RotatingRainbow.cpp" line="50"/>
         <source>Color speed</source>
         <translation type="unfinished">Скорость цвета</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingRainbow/RotatingRainbow.cpp" line="40"/>
+        <location filename="../Effects/RotatingRainbow/RotatingRainbow.cpp" line="49"/>
         <source>A rainbow that rotates around the center of your devices</source>
         <translation type="unfinished">Радуга, вращающаяся вокруг центра вашего устройства</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingRainbow/RotatingRainbow.h" line="25"/>
+        <location filename="../Effects/RotatingRainbow/RotatingRainbow.h" line="33"/>
         <source>Rotating Rainbow</source>
         <translation type="unfinished">Вращающийся Радуга</translation>
     </message>
 </context>
 <context>
-    <name>SaveProfilePopup</name>
-    <message>
-        <source>Save effects state</source>
-        <translation type="vanished">Сохранить состояние эффектов</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="vanished">Сохранить</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Отмена</translation>
-    </message>
-    <message>
-        <source>Or create a new one:</source>
-        <translation type="vanished">Или создайте новый:</translation>
-    </message>
-    <message>
-        <source>Load profile at startup</source>
-        <translation type="vanished">Загрузить профиль при запуске</translation>
-    </message>
-    <message>
-        <source>Choose an existing profile:</source>
-        <translation type="vanished">Выберите существующий профиль:</translation>
-    </message>
-    <message>
-        <source>Enter a profile name:</source>
-        <translation type="vanished">Введите название профиля:</translation>
-    </message>
-    <message>
-        <source>Save profile</source>
-        <translation type="vanished">Сохранить профиль</translation>
-    </message>
-</context>
-<context>
     <name>Sequence</name>
     <message>
-        <location filename="../Effects/Sequence/Sequence.cpp" line="41"/>
+        <location filename="../Effects/Sequence/Sequence.cpp" line="50"/>
         <source>Alternates colors with a fade effect</source>
         <translation type="unfinished">Переключает цвета с эффектом затухания</translation>
     </message>
     <message>
-        <location filename="../Effects/Sequence/Sequence.cpp" line="42"/>
+        <location filename="../Effects/Sequence/Sequence.cpp" line="51"/>
         <source>Fade time</source>
         <translation type="unfinished">Время затухания</translation>
     </message>
     <message>
-        <location filename="../Effects/Sequence/Sequence.h" line="24"/>
+        <location filename="../Effects/Sequence/Sequence.h" line="32"/>
         <source>Sequence</source>
         <translation type="unfinished">Последовательность</translation>
     </message>
@@ -2474,12 +2378,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Выберите текстуру</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/ShaderPassEditor.cpp" line="71"/>
+        <location filename="../Effects/Shaders/ShaderPassEditor.cpp" line="80"/>
         <source>Open Image</source>
         <translation>Открыть изображение</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/ShaderPassEditor.cpp" line="69"/>
+        <location filename="../Effects/Shaders/ShaderPassEditor.cpp" line="78"/>
         <source>Image Files</source>
         <translation>Файлы изображений</translation>
     </message>
@@ -2537,49 +2441,49 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Показать рендер</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="114"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="123"/>
         <source>Unleash the power of OpenRGB with GL shaders</source>
         <translation type="unfinished">Раскройте мощь OpenRGB с использованием GL-шейдеров</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="343"/>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="351"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="354"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="362"/>
         <source>Save shader to file...</source>
         <translation type="unfinished">Сохранить шейдер в файл...</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="343"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="354"/>
         <source>Choose a filename</source>
         <translation type="unfinished">Выберите имя файла</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="344"/>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="367"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="355"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="378"/>
         <source>my-shader</source>
         <translation type="unfinished">мой-шейдер</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="353"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="364"/>
         <source>Overwrite existing shader:</source>
         <translation type="unfinished">Перезаписать существующий шейдер: </translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="354"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="365"/>
         <source>Or create a new one:</source>
         <translation type="unfinished">Или создайте новый:</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="377"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="388"/>
         <source>OK</source>
         <translation type="unfinished">ОК</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="381"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="392"/>
         <source>Cancel</source>
         <translation type="unfinished">Отмена</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.h" line="38"/>
+        <location filename="../Effects/Shaders/Shaders.h" line="46"/>
         <source>Shaders</source>
         <translation type="unfinished">Шейдеры</translation>
     </message>
@@ -2627,22 +2531,22 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="50"/>
+        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="59"/>
         <source>Create your own breathing sequences</source>
         <translation type="unfinished">Создавайте собственные последовательности дыхания</translation>
     </message>
     <message>
-        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="52"/>
+        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="61"/>
         <source>Solid</source>
         <translation type="unfinished">Твердый</translation>
     </message>
     <message>
-        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="53"/>
+        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="62"/>
         <source>Circle</source>
         <translation type="unfinished">Круг</translation>
     </message>
     <message>
-        <location filename="../Effects/SmoothBlink/SmoothBlink.h" line="25"/>
+        <location filename="../Effects/SmoothBlink/SmoothBlink.h" line="33"/>
         <source>Smooth Blink</source>
         <translation type="unfinished">Плавный мигание</translation>
     </message>
@@ -2665,12 +2569,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Время появления (миллисекунды):</translation>
     </message>
     <message>
-        <location filename="../Effects/SparkleFade/SparkleFade.cpp" line="190"/>
+        <location filename="../Effects/SparkleFade/SparkleFade.cpp" line="199"/>
         <source>Fading in and fade out with sparkles</source>
         <translation type="unfinished">Появление и исчезновение с искрами</translation>
     </message>
     <message>
-        <location filename="../Effects/SparkleFade/SparkleFade.h" line="45"/>
+        <location filename="../Effects/SparkleFade/SparkleFade.h" line="53"/>
         <source>Sparkle Fade</source>
         <translation type="unfinished">Сияние и затухание</translation>
     </message>
@@ -2683,12 +2587,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Насыщенность</translation>
     </message>
     <message>
-        <location filename="../Effects/SpectrumCycling/SpectrumCycling.cpp" line="40"/>
+        <location filename="../Effects/SpectrumCycling/SpectrumCycling.cpp" line="49"/>
         <source>Goes through every solid color of the rainbow</source>
         <translation type="unfinished">Проходит через каждый сплошной цвет радуги</translation>
     </message>
     <message>
-        <location filename="../Effects/SpectrumCycling/SpectrumCycling.h" line="22"/>
+        <location filename="../Effects/SpectrumCycling/SpectrumCycling.h" line="30"/>
         <source>Spectrum Cycling</source>
         <translation type="unfinished">Спектр Велосипед</translation>
     </message>
@@ -2696,17 +2600,17 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>Spiral</name>
     <message>
-        <location filename="../Effects/Spiral/Spiral.cpp" line="41"/>
+        <location filename="../Effects/Spiral/Spiral.cpp" line="50"/>
         <source>Draws a hypnotic spiral on your devices</source>
         <translation type="unfinished">Рисует гипнотический спираль на ваших устройствах</translation>
     </message>
     <message>
-        <location filename="../Effects/Spiral/Spiral.cpp" line="42"/>
+        <location filename="../Effects/Spiral/Spiral.cpp" line="51"/>
         <source>Spiral shape</source>
         <translation type="unfinished">Форма спирали</translation>
     </message>
     <message>
-        <location filename="../Effects/Spiral/Spiral.h" line="24"/>
+        <location filename="../Effects/Spiral/Spiral.h" line="32"/>
         <source>Spiral</source>
         <translation type="unfinished">Спираль</translation>
     </message>
@@ -2719,22 +2623,22 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation>Направление по матрице</translation>
     </message>
     <message>
-        <location filename="../Effects/Stack/Stack.cpp" line="40"/>
+        <location filename="../Effects/Stack/Stack.cpp" line="49"/>
         <source>Fills and stack your devices with a solid color</source>
         <translation type="unfinished">Заполняет и стекает ваши устройства сплошным цветом</translation>
     </message>
     <message>
-        <location filename="../Effects/Stack/Stack.cpp" line="42"/>
+        <location filename="../Effects/Stack/Stack.cpp" line="51"/>
         <source>Horizontal</source>
         <translation type="unfinished">Горизонтальный</translation>
     </message>
     <message>
-        <location filename="../Effects/Stack/Stack.cpp" line="43"/>
+        <location filename="../Effects/Stack/Stack.cpp" line="52"/>
         <source>Vertical</source>
         <translation type="unfinished">Вертикальный</translation>
     </message>
     <message>
-        <location filename="../Effects/Stack/Stack.h" line="24"/>
+        <location filename="../Effects/Stack/Stack.h" line="32"/>
         <source>Stack</source>
         <translation type="unfinished">Стек</translation>
     </message>
@@ -2742,17 +2646,17 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>StarryNight</name>
     <message>
-        <location filename="../Effects/StarryNight/StarryNight.cpp" line="38"/>
+        <location filename="../Effects/StarryNight/StarryNight.cpp" line="47"/>
         <source>Selects a random LED and fades it in an out</source>
         <translation type="unfinished">Выбирает случайный светодиод и плавно включает и выключает его</translation>
     </message>
     <message>
-        <location filename="../Effects/StarryNight/StarryNight.cpp" line="39"/>
+        <location filename="../Effects/StarryNight/StarryNight.cpp" line="48"/>
         <source>Star Count</source>
         <translation type="unfinished">Количество звёзд</translation>
     </message>
     <message>
-        <location filename="../Effects/StarryNight/StarryNight.h" line="80"/>
+        <location filename="../Effects/StarryNight/StarryNight.h" line="88"/>
         <source>Starry Night</source>
         <translation type="unfinished">Созвездия</translation>
     </message>
@@ -2820,12 +2724,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Скорость роста</translation>
     </message>
     <message>
-        <location filename="../Effects/Sunrise/Sunrise.cpp" line="46"/>
+        <location filename="../Effects/Sunrise/Sunrise.cpp" line="55"/>
         <source>Sunrise / Sunset effect</source>
         <translation type="unfinished">Эффект восхода / заката</translation>
     </message>
     <message>
-        <location filename="../Effects/Sunrise/Sunrise.h" line="24"/>
+        <location filename="../Effects/Sunrise/Sunrise.h" line="32"/>
         <source>Sunrise</source>
         <translation type="unfinished">Закат</translation>
     </message>
@@ -2833,12 +2737,12 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>Swap</name>
     <message>
-        <location filename="../Effects/Swap/Swap.cpp" line="42"/>
+        <location filename="../Effects/Swap/Swap.cpp" line="51"/>
         <source>Alternate two colors on your devices from left to right</source>
         <translation type="unfinished">Переключайте два цвета на ваших устройствах слева направо</translation>
     </message>
     <message>
-        <location filename="../Effects/Swap/Swap.h" line="24"/>
+        <location filename="../Effects/Swap/Swap.h" line="32"/>
         <source>Swap</source>
         <translation type="unfinished">Свап</translation>
     </message>
@@ -2851,17 +2755,17 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Радиус</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCircles/SwirlCircles.cpp" line="42"/>
+        <location filename="../Effects/SwirlCircles/SwirlCircles.cpp" line="51"/>
         <source>Rotating circles around the center of your devices</source>
         <translation type="unfinished">Вращающиеся окружности вокруг центра ваших устройств</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCircles/SwirlCircles.cpp" line="43"/>
+        <location filename="../Effects/SwirlCircles/SwirlCircles.cpp" line="52"/>
         <source>Glow</source>
         <translation type="unfinished">Свечение</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCircles/SwirlCircles.h" line="25"/>
+        <location filename="../Effects/SwirlCircles/SwirlCircles.h" line="33"/>
         <source>Swirl Circles</source>
         <translation type="unfinished">Вихревые окружности</translation>
     </message>
@@ -2879,17 +2783,17 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Радиус</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.cpp" line="60"/>
+        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.cpp" line="69"/>
         <source>Rotating circles reacting to audio</source>
         <translation type="unfinished">Вращающиеся окружности, реагирующие на аудио</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.cpp" line="61"/>
+        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.cpp" line="70"/>
         <source>Glow</source>
         <translation type="unfinished">Свечение</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.h" line="29"/>
+        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.h" line="37"/>
         <source>Swirl Circles Audio</source>
         <translation type="unfinished">Аудио с вращающимися кругами</translation>
     </message>
@@ -2897,17 +2801,17 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>Visor</name>
     <message>
-        <location filename="../Effects/Visor/Visor.cpp" line="34"/>
+        <location filename="../Effects/Visor/Visor.cpp" line="43"/>
         <source>A back and forth effect motion, flipping colors</source>
         <translation type="unfinished">Эффект движения взад и вперед с переключением цветов</translation>
     </message>
     <message>
-        <location filename="../Effects/Visor/Visor.cpp" line="35"/>
+        <location filename="../Effects/Visor/Visor.cpp" line="44"/>
         <source>Width</source>
         <translation type="unfinished">Ширина</translation>
     </message>
     <message>
-        <location filename="../Effects/Visor/Visor.h" line="19"/>
+        <location filename="../Effects/Visor/Visor.h" line="27"/>
         <source>Visor</source>
         <translation type="unfinished">Визор</translation>
     </message>
@@ -2945,12 +2849,12 @@ Using an effect on a device WILL damage the flash or controller</source>
         <translation type="unfinished">Скорость колебаний</translation>
     </message>
     <message>
-        <location filename="../Effects/Wavy/Wavy.cpp" line="48"/>
+        <location filename="../Effects/Wavy/Wavy.cpp" line="57"/>
         <source>Alternate colors like waves</source>
         <translation type="unfinished">Цвета, чередующиеся как волны</translation>
     </message>
     <message>
-        <location filename="../Effects/Wavy/Wavy.h" line="28"/>
+        <location filename="../Effects/Wavy/Wavy.h" line="35"/>
         <source>Wavy</source>
         <translation type="unfinished">Волновой</translation>
     </message>
@@ -2958,12 +2862,12 @@ Using an effect on a device WILL damage the flash or controller</source>
 <context>
     <name>ZigZag</name>
     <message>
-        <location filename="../Effects/ZigZag/ZigZag.cpp" line="39"/>
+        <location filename="../Effects/ZigZag/ZigZag.cpp" line="48"/>
         <source>A snake moving on your matrix typed devices</source>
         <translation type="unfinished">Змея, движущаяся по вашим матричным клавишам</translation>
     </message>
     <message>
-        <location filename="../Effects/ZigZag/ZigZag.h" line="24"/>
+        <location filename="../Effects/ZigZag/ZigZag.h" line="32"/>
         <source>ZigZag</source>
         <translation type="unfinished">ЗигЗаг</translation>
     </message>

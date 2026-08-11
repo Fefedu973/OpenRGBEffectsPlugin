@@ -44,7 +44,6 @@ private slots:
     void on_EffectTabs_currentChanged(int);
 
     void OnStopEffects();
-    void PluginInfoAction();
     void GlobalSettingsAction();
 
 private:

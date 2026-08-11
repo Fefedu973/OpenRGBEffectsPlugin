@@ -44,22 +44,22 @@
         <translation>Bildschirm</translation>
     </message>
     <message>
-        <location filename="../Effects/Ambient/Ambient.cpp" line="118"/>
+        <location filename="../Effects/Ambient/Ambient.cpp" line="127"/>
         <source>Takes a portion of the screen and reflect it to your devices</source>
         <translation>Nimmt einen Teil des Bildschirms und spiegelt ihn auf Ihre Geräte</translation>
     </message>
     <message>
-        <location filename="../Effects/Ambient/Ambient.cpp" line="121"/>
+        <location filename="../Effects/Ambient/Ambient.cpp" line="130"/>
         <source>Scaled average</source>
         <translation>Skaliertes Durchschnitt</translation>
     </message>
     <message>
-        <location filename="../Effects/Ambient/Ambient.cpp" line="122"/>
+        <location filename="../Effects/Ambient/Ambient.cpp" line="131"/>
         <source>Screen copy</source>
         <translation>Bildschirmkopie</translation>
     </message>
     <message>
-        <location filename="../Effects/Ambient/Ambient.h" line="33"/>
+        <location filename="../Effects/Ambient/Ambient.h" line="41"/>
         <source>Ambient</source>
         <translation>Ambient</translation>
     </message>
@@ -122,92 +122,92 @@
         <translation>Blasen erscheinen</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="78"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="87"/>
         <source>Bloop bloop</source>
         <translation>Blub blub</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="89"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="98"/>
         <source>Random XY</source>
         <translation>Zufällig XY</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="90"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="99"/>
         <source>Random X</source>
         <translation>&apos;Zufällig X&apos;</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="91"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="100"/>
         <source>Random Y</source>
         <translation>Zufällig Y</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="92"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.cpp" line="101"/>
         <source>Center</source>
         <translation>Zentrum</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="53"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="61"/>
         <source>Audio Bubbles</source>
         <translation>Audio Blasen</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="118"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="126"/>
         <source>Unicorn Vomit</source>
         <translation>Einhornbrei</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="129"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="137"/>
         <source>Borealis</source>
         <translation>Borealis</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="138"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="146"/>
         <source>Ocean</source>
         <translation>Ozean</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="146"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="154"/>
         <source>Pink/Blue</source>
         <translation>Rosa/Blau</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="153"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="161"/>
         <source>Pink/Gold</source>
         <translation>Rosa/Gold</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="160"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="168"/>
         <source>Pulse</source>
         <translation>Impuls</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="168"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="176"/>
         <source>Purple/Orange</source>
         <translation>Lila/Orange</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="177"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="185"/>
         <source>LightBlue/Purple</source>
         <translation>Hellblau/Rosa</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="184"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="192"/>
         <source>Police Beacon</source>
         <translation>Polizei-Leuchte</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="192"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="200"/>
         <source>Seabed</source>
         <translation>Meeresboden</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="200"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="208"/>
         <source>Sunset</source>
         <translation>Sonnenuntergang</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="211"/>
+        <location filename="../Effects/AudioBubbles/AudioBubbles.h" line="219"/>
         <source>Vaporwave</source>
         <translation>Vaporwave</translation>
     </message>
@@ -235,17 +235,17 @@
         <translation>Audioeinstellungen</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioParty/AudioParty.cpp" line="87"/>
+        <location filename="../Effects/AudioParty/AudioParty.cpp" line="96"/>
         <source>Movement, color change, effects according to audio zones.&lt;br/&gt;Blue zone: motion&lt;br/&gt;Green zone: colors&lt;br/&gt;Red zone: effects</source>
         <translation>Bewegung, Farbwechsel, Effekte entsprechend den Audiobereichen.&lt;br/&gt;Blauer Bereich: Bewegung&lt;br/&gt;Grüner Bereich: Farben&lt;br/&gt;Roter Bereich: Effekte</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioParty/AudioParty.cpp" line="89"/>
+        <location filename="../Effects/AudioParty/AudioParty.cpp" line="98"/>
         <source>Color change speed</source>
         <translation>Farbwechselgeschwindigkeit</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioParty/AudioParty.h" line="30"/>
+        <location filename="../Effects/AudioParty/AudioParty.h" line="38"/>
         <source>Audio Party</source>
         <translation>Audio Party</translation>
     </message>
@@ -366,22 +366,22 @@
         <translation>Wellenfarbe</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSine/AudioSine.cpp" line="63"/>
+        <location filename="../Effects/AudioSine/AudioSine.cpp" line="72"/>
         <source>Sinusoidal audio rendering</source>
         <translation>Sinusförmige Audiowiedergabe</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSine/AudioSine.cpp" line="65"/>
+        <location filename="../Effects/AudioSine/AudioSine.cpp" line="74"/>
         <source>Spectrum cycle</source>
         <translation>Spektrumzyklus</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSine/AudioSine.cpp" line="66"/>
+        <location filename="../Effects/AudioSine/AudioSine.cpp" line="75"/>
         <source>Static</source>
         <translation>Statisch</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSine/AudioSine.h" line="29"/>
+        <location filename="../Effects/AudioSine/AudioSine.h" line="37"/>
         <source>Audio Sine</source>
         <translation>Audio Sine</translation>
     </message>
@@ -414,12 +414,12 @@
         <translation>Kantenschlag</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioStar/AudioStar.cpp" line="58"/>
+        <location filename="../Effects/AudioStar/AudioStar.cpp" line="67"/>
         <source>Star audio visualizer (frequency based) with an edge beat</source>
         <translation>Sternaudiovisuellizer (frequenzbasiert) mit Kantenbeat</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioStar/AudioStar.h" line="28"/>
+        <location filename="../Effects/AudioStar/AudioStar.h" line="36"/>
         <source>Audio Star</source>
         <translation>Audio Star</translation>
     </message>
@@ -467,52 +467,52 @@
         <translation>Bandpass-Filter</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="101"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="110"/>
         <source>Display frequency based colors with different modes</source>
         <translation>Farben basierend auf der Frequenz mit verschiedenen Modi anzeigen</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="107"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="116"/>
         <source>No saturation</source>
         <translation>Keine Sättigung</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="108"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="117"/>
         <source>Saturate high amplitudes</source>
         <translation>Hohe Amplituden sättigen</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="109"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="118"/>
         <source>Black and white mode</source>
         <translation>Schwarz-Weiß-Modus</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="115"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="124"/>
         <source>Linear horizontal</source>
         <translation>Linear horizontal</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="116"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="125"/>
         <source>No roll</source>
         <translation>Kein Rollen</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="117"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="126"/>
         <source>Radial</source>
         <translation>Radial</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="118"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="127"/>
         <source>Wave</source>
         <translation>Welle</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.cpp" line="119"/>
+        <location filename="../Effects/AudioSync/AudioSync.cpp" line="128"/>
         <source>Linear vertical</source>
         <translation>Linear vertikal</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioSync/AudioSync.h" line="54"/>
+        <location filename="../Effects/AudioSync/AudioSync.h" line="62"/>
         <source>Audio Sync</source>
         <translation>Audio Sync</translation>
     </message>
@@ -545,12 +545,12 @@
         <translation>Sättigung</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioVUMeter/AudioVUMeter.cpp" line="57"/>
+        <location filename="../Effects/AudioVUMeter/AudioVUMeter.cpp" line="66"/>
         <source>Fill your led strip based on audio load</source>
         <translation>Füllen Sie Ihre LED-Leiste basierend auf der Audiobelastung</translation>
     </message>
     <message>
-        <location filename="../Effects/AudioVUMeter/AudioVUMeter.h" line="28"/>
+        <location filename="../Effects/AudioVUMeter/AudioVUMeter.h" line="36"/>
         <source>Audio VU Meter</source>
         <translation>Audio-VU-Meter</translation>
     </message>
@@ -558,12 +558,12 @@
 <context>
     <name>AudioVisualizer</name>
     <message>
-        <location filename="../Effects/AudioVisualizer/AudioVisualizer.cpp" line="96"/>
+        <location filename="../Effects/AudioVisualizer/AudioVisualizer.cpp" line="105"/>
         <source>Display audio equalizer on your devices. A ported version of &lt;a href=&quot;https://gitlab.com/CalcProgrammer1/KeyboardVisualizer&quot;&gt;KeyboardVisualizer&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../Effects/AudioVisualizer/AudioVisualizer.h" line="158"/>
+        <location filename="../Effects/AudioVisualizer/AudioVisualizer.h" line="166"/>
         <source>Audio Visualizer</source>
         <translation>Audiovisualisierer</translation>
     </message>
@@ -629,12 +629,12 @@
         <translation>Sättigung</translation>
     </message>
     <message>
-        <location filename="../Effects/Bloom/Bloom.cpp" line="40"/>
+        <location filename="../Effects/Bloom/Bloom.cpp" line="49"/>
         <source>Flower blooming effect</source>
         <translation>Blütenblatt-Blühen-Effekt</translation>
     </message>
     <message>
-        <location filename="../Effects/Bloom/Bloom.h" line="32"/>
+        <location filename="../Effects/Bloom/Bloom.h" line="40"/>
         <source>Bloom</source>
         <translation>Blüte</translation>
     </message>
@@ -677,7 +677,7 @@
         <translation>Schwerkraft</translation>
     </message>
     <message>
-        <location filename="../Effects/BouncingBall/BouncingBall.cpp" line="51"/>
+        <location filename="../Effects/BouncingBall/BouncingBall.cpp" line="60"/>
         <source>A ball bounces around your RGB setup</source>
         <translation>Eine Kugel springt um Ihre RGB-Anlage herum</translation>
     </message>
@@ -691,7 +691,7 @@
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../Effects/BouncingBall/BouncingBall.h" line="26"/>
+        <location filename="../Effects/BouncingBall/BouncingBall.h" line="34"/>
         <source>Bouncing Ball</source>
         <translation>Bouncende Kugel</translation>
     </message>
@@ -699,12 +699,12 @@
 <context>
     <name>Breathing</name>
     <message>
-        <location filename="../Effects/Breathing/Breathing.cpp" line="39"/>
+        <location filename="../Effects/Breathing/Breathing.cpp" line="48"/>
         <source>Fading in and out user selected colors across an entire zone</source>
         <translation>Ein- und Ausblenden der von dem Benutzer ausgewählten Farben über den gesamten Bereich</translation>
     </message>
     <message>
-        <location filename="../Effects/Breathing/Breathing.h" line="25"/>
+        <location filename="../Effects/Breathing/Breathing.h" line="33"/>
         <source>Breathing</source>
         <translation>Atmung</translation>
     </message>
@@ -712,17 +712,17 @@
 <context>
     <name>BreathingCircle</name>
     <message>
-        <location filename="../Effects/BreathingCircle/BreathingCircle.cpp" line="40"/>
+        <location filename="../Effects/BreathingCircle/BreathingCircle.cpp" line="49"/>
         <source>A breathing circle effect</source>
         <translation>Ein Atemkreis-Effekt</translation>
     </message>
     <message>
-        <location filename="../Effects/BreathingCircle/BreathingCircle.cpp" line="41"/>
+        <location filename="../Effects/BreathingCircle/BreathingCircle.cpp" line="50"/>
         <source>Thickness</source>
         <translation>Dicke</translation>
     </message>
     <message>
-        <location filename="../Effects/BreathingCircle/BreathingCircle.h" line="24"/>
+        <location filename="../Effects/BreathingCircle/BreathingCircle.h" line="32"/>
         <source>Breathing Circle</source>
         <translation>Atemkreis</translation>
     </message>
@@ -760,12 +760,12 @@
         <translation>Dicke der Blasen</translation>
     </message>
     <message>
-        <location filename="../Effects/Bubbles/Bubbles.cpp" line="38"/>
+        <location filename="../Effects/Bubbles/Bubbles.cpp" line="47"/>
         <source>Bloop bloop</source>
         <translation>Blub blub</translation>
     </message>
     <message>
-        <location filename="../Effects/Bubbles/Bubbles.h" line="24"/>
+        <location filename="../Effects/Bubbles/Bubbles.h" line="32"/>
         <source>Bubbles</source>
         <translation>Blasen</translation>
     </message>
@@ -778,22 +778,22 @@
         <translation>Uhrmodus</translation>
     </message>
     <message>
-        <location filename="../Effects/Clock/Clock.cpp" line="35"/>
+        <location filename="../Effects/Clock/Clock.cpp" line="44"/>
         <source>Digital Clock</source>
         <translation>Digitale Uhr</translation>
     </message>
     <message>
-        <location filename="../Effects/Clock/Clock.cpp" line="37"/>
+        <location filename="../Effects/Clock/Clock.cpp" line="46"/>
         <source>12-hour</source>
         <translation>12-Stunden</translation>
     </message>
     <message>
-        <location filename="../Effects/Clock/Clock.cpp" line="38"/>
+        <location filename="../Effects/Clock/Clock.cpp" line="47"/>
         <source>24-hour</source>
         <translation>24-Stunden</translation>
     </message>
     <message>
-        <location filename="../Effects/Clock/Clock.h" line="30"/>
+        <location filename="../Effects/Clock/Clock.h" line="38"/>
         <source>Clock</source>
         <translation>Uhr</translation>
     </message>
@@ -869,22 +869,22 @@
         <translation>Y-Position</translation>
     </message>
     <message>
-        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="39"/>
+        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="48"/>
         <source>A rotating rainbow</source>
         <translation>Eine rotierende Regenbogen</translation>
     </message>
     <message>
-        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="41"/>
+        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="50"/>
         <source>Clockwise</source>
         <translation>Im Uhrzeigersinn</translation>
     </message>
     <message>
-        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="42"/>
+        <location filename="../Effects/ColorWheel/ColorWheel.cpp" line="51"/>
         <source>Counter-clockwise</source>
         <translation>Gegen den Uhrzeigersinn</translation>
     </message>
     <message>
-        <location filename="../Effects/ColorWheel/ColorWheel.h" line="24"/>
+        <location filename="../Effects/ColorWheel/ColorWheel.h" line="32"/>
         <source>Color Wheel</source>
         <translation>FarbRad</translation>
     </message>
@@ -900,17 +900,17 @@
 <context>
     <name>Comet</name>
     <message>
-        <location filename="../Effects/Comet/Comet.cpp" line="42"/>
+        <location filename="../Effects/Comet/Comet.cpp" line="51"/>
         <source>A comet that travels through your devices</source>
         <translation>Ein Komet, der durch Ihre Geräte reist</translation>
     </message>
     <message>
-        <location filename="../Effects/Comet/Comet.cpp" line="43"/>
+        <location filename="../Effects/Comet/Comet.cpp" line="52"/>
         <source>Comet size</source>
         <translation>Cometengröße</translation>
     </message>
     <message>
-        <location filename="../Effects/Comet/Comet.h" line="25"/>
+        <location filename="../Effects/Comet/Comet.h" line="33"/>
         <source>Comet</source>
         <translation>Komet</translation>
     </message>
@@ -938,12 +938,12 @@
         <translation>Horizontale Geschwindigkeit</translation>
     </message>
     <message>
-        <location filename="../Effects/CrossingBeams/CrossingBeams.cpp" line="40"/>
+        <location filename="../Effects/CrossingBeams/CrossingBeams.cpp" line="49"/>
         <source>Two beams that move horizontally and vertically</source>
         <translation>Zwei Strahlen, die sich horizontal und vertikal bewegen</translation>
     </message>
     <message>
-        <location filename="../Effects/CrossingBeams/CrossingBeams.h" line="25"/>
+        <location filename="../Effects/CrossingBeams/CrossingBeams.h" line="33"/>
         <source>Crossing Beams</source>
         <translation>Kreuzende Strahlen</translation>
     </message>
@@ -986,12 +986,12 @@
         <translation>Ausgewähltes entfernen</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomBlink/CustomBlink.cpp" line="54"/>
+        <location filename="../Effects/CustomBlink/CustomBlink.cpp" line="63"/>
         <source>Make your own blinking sequence</source>
         <translation>Erstellen Sie Ihre eigene Blinkfolge</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomBlink/CustomBlink.h" line="41"/>
+        <location filename="../Effects/CustomBlink/CustomBlink.h" line="49"/>
         <source>Custom Blink</source>
         <translation>Benutzerdefiniertes Blinken</translation>
     </message>
@@ -1024,92 +1024,92 @@
         <translation>Breite</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="81"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="90"/>
         <source>Create your own gradient wave or use predefined color set</source>
         <translation>Erstellen Sie Ihre eigene Farbverlaufswelle oder verwenden Sie eine vordefinierte Farbkombination</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="90"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="99"/>
         <source>Horizontal</source>
         <translation>Horizontal</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="91"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="100"/>
         <source>Vertical</source>
         <translation>Vertikal</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="92"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="101"/>
         <source>Radial out</source>
         <translation>Radial nach außen</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="93"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.cpp" line="102"/>
         <source>Radial in</source>
         <translation>Radial in</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="73"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="81"/>
         <source>Unicorn Vomit</source>
         <translation>Einhornbrei</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="84"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="92"/>
         <source>Borealis</source>
         <translation>Borealis</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="93"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="101"/>
         <source>Ocean</source>
         <translation>Ozean</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="101"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="109"/>
         <source>Pink/Blue</source>
         <translation>Rosa/Blau</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="108"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="116"/>
         <source>Pink/Gold</source>
         <translation>Rosa/Gold</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="115"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="123"/>
         <source>Pulse</source>
         <translation>Impuls</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="123"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="131"/>
         <source>Purple/Orange</source>
         <translation>Lila/Orange</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="132"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="140"/>
         <source>LightBlue/Purple</source>
         <translation>Hellblau/Rosa</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="139"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="147"/>
         <source>Police Beacon</source>
         <translation>Polizei Leuchtturm</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="147"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="155"/>
         <source>Seabed</source>
         <translation>Meeresboden</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="155"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="163"/>
         <source>Sunset</source>
         <translation>Sonnenuntergang</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="166"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="174"/>
         <source>Vaporwave</source>
         <translation>Vaporwave</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="40"/>
+        <location filename="../Effects/CustomGradientWave/CustomGradientWave.h" line="48"/>
         <source>Custom Gradient Wave</source>
         <translation>Benutzerdefinierte Farbverlaufswelle</translation>
     </message>
@@ -1117,12 +1117,12 @@
 <context>
     <name>CustomMarquee</name>
     <message>
-        <location filename="../Effects/CustomMarquee/CustomMarquee.cpp" line="39"/>
+        <location filename="../Effects/CustomMarquee/CustomMarquee.cpp" line="48"/>
         <source>Create your own marquee effect</source>
         <translation>Erstellen Sie Ihren eigenen Laufeffekt</translation>
     </message>
     <message>
-        <location filename="../Effects/CustomMarquee/CustomMarquee.h" line="24"/>
+        <location filename="../Effects/CustomMarquee/CustomMarquee.h" line="32"/>
         <source>Custom Marquee</source>
         <translation>Benutzerdefinierter Laufbahn</translation>
     </message>
@@ -1173,17 +1173,17 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Frequenz</translation>
     </message>
     <message>
-        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.cpp" line="43"/>
+        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.cpp" line="52"/>
         <source>Two rainbows that rotate synchronously</source>
         <translation>Zwei Regenbogen, die synchron rotieren</translation>
     </message>
     <message>
-        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.cpp" line="44"/>
+        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.cpp" line="53"/>
         <source>Color speed</source>
         <translation>Farbgeschwindigkeit</translation>
     </message>
     <message>
-        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.h" line="25"/>
+        <location filename="../Effects/DoubleRotatingRainbow/DoubleRotatingRainbow.h" line="33"/>
         <source>Double Rotating Rainbow</source>
         <translation>Doppeltes rotierendes Regenbogen</translation>
     </message>
@@ -1236,12 +1236,12 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
 <context>
     <name>Fill</name>
     <message>
-        <location filename="../Effects/Fill/Fill.cpp" line="41"/>
+        <location filename="../Effects/Fill/Fill.cpp" line="50"/>
         <source>Progressivly fills your devices with a defined color</source>
         <translation>Füllt Ihre Geräte schrittweise mit einer definierten Farbe</translation>
     </message>
     <message>
-        <location filename="../Effects/Fill/Fill.h" line="24"/>
+        <location filename="../Effects/Fill/Fill.h" line="32"/>
         <source>Fill</source>
         <translation>Ausfüllen</translation>
     </message>
@@ -1334,12 +1334,12 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Freq m8</translation>
     </message>
     <message>
-        <location filename="../Effects/FractalMotion/FractalMotion.cpp" line="44"/>
+        <location filename="../Effects/FractalMotion/FractalMotion.cpp" line="53"/>
         <source>Psychedelic sinusoid</source>
         <translation>Psychedelischer Sinusoid</translation>
     </message>
     <message>
-        <location filename="../Effects/FractalMotion/FractalMotion.h" line="25"/>
+        <location filename="../Effects/FractalMotion/FractalMotion.h" line="33"/>
         <source>Fractal Motion</source>
         <translation>Fraktalbewegung</translation>
     </message>
@@ -1384,12 +1384,12 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>110</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/GLSLCodeEditor.cpp" line="55"/>
+        <location filename="../Effects/Shaders/GLSLCodeEditor.cpp" line="64"/>
         <source>Shader editor</source>
         <translation>Shader-Editor</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/GLSLCodeEditor.cpp" line="119"/>
+        <location filename="../Effects/Shaders/GLSLCodeEditor.cpp" line="128"/>
         <source>Main shader</source>
         <translation>Hauptshader</translation>
     </message>
@@ -1402,22 +1402,22 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>GIF-Datei auswählen</translation>
     </message>
     <message>
-        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="109"/>
+        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="118"/>
         <source>Open GIF file</source>
         <translation>GIF-Datei öffnen</translation>
     </message>
     <message>
-        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="109"/>
+        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="118"/>
         <source>GIF Files (*.gif)</source>
         <translation>GIF-Dateien (*.gif)</translation>
     </message>
     <message>
-        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="43"/>
+        <location filename="../Effects/GifPlayer/GifPlayer.cpp" line="52"/>
         <source>Use GIFs to create your own effect</source>
         <translation>Verwenden Sie GIFs, um Ihren eigenen Effekt zu erstellen</translation>
     </message>
     <message>
-        <location filename="../Effects/GifPlayer/GifPlayer.h" line="27"/>
+        <location filename="../Effects/GifPlayer/GifPlayer.h" line="35"/>
         <source>Gif Player</source>
         <translation>GIF-Player</translation>
     </message>
@@ -1568,42 +1568,42 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Dicke</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="50"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="59"/>
         <source>You wont escape this</source>
         <translation>Du wirst nicht aus diesem entkommen</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="52"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="61"/>
         <source>Rainbow</source>
         <translation>Regenbogen</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="53"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="62"/>
         <source>Custom</source>
         <translation>Benutzerdefiniert</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="55"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="64"/>
         <source>Clockwise</source>
         <translation>Im Uhrzeigersinn</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="56"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="65"/>
         <source>Counter-clockwise</source>
         <translation>Gegen den Uhrzeigersinn</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="58"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="67"/>
         <source>To the inside</source>
         <translation>Nach innen</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="59"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.cpp" line="68"/>
         <source>To the outside</source>
         <translation>Nach außen</translation>
     </message>
     <message>
-        <location filename="../Effects/Hypnotoad/Hypnotoad.h" line="30"/>
+        <location filename="../Effects/Hypnotoad/Hypnotoad.h" line="38"/>
         <source>Hypnotoad</source>
         <translation>Hypnotoad</translation>
     </message>
@@ -1652,27 +1652,27 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Registerkarte 2</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.cpp" line="45"/>
+        <location filename="../Effects/Layers/Layers.cpp" line="54"/>
         <source>Combine effects together.&lt;br /&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Blend_modes&quot;&gt;Help about blend modes&lt;/a&gt;</source>
         <translation>Effekte kombinieren.&lt;br /&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Blend_modes&quot;&gt;Hilfe zu Verknüpfungsmodi&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.cpp" line="59"/>
+        <location filename="../Effects/Layers/Layers.cpp" line="68"/>
         <source>Group</source>
         <translation>Gruppe</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.cpp" line="76"/>
+        <location filename="../Effects/Layers/Layers.cpp" line="85"/>
         <source>New group</source>
         <translation>Neue Gruppe</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.cpp" line="78"/>
+        <location filename="../Effects/Layers/Layers.cpp" line="87"/>
         <source>Combine multiple effects within a group, and combine groups together</source>
         <translation>Kombinieren Sie mehrere Effekte innerhalb einer Gruppe und kombinieren Sie Gruppen miteinander</translation>
     </message>
     <message>
-        <location filename="../Effects/Layers/Layers.h" line="26"/>
+        <location filename="../Effects/Layers/Layers.h" line="34"/>
         <source>Layers</source>
         <translation>Ebenen</translation>
     </message>
@@ -1685,12 +1685,12 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Modus</translation>
     </message>
     <message>
-        <location filename="../Effects/Lightning/Lightning.cpp" line="44"/>
+        <location filename="../Effects/Lightning/Lightning.cpp" line="53"/>
         <source>Prepare yourself for thunderstorm</source>
         <translation>Machen Sie sich auf einen Gewittersturm gefasst</translation>
     </message>
     <message>
-        <location filename="../Effects/Lightning/Lightning.h" line="27"/>
+        <location filename="../Effects/Lightning/Lightning.h" line="35"/>
         <source>Lightning</source>
         <translation>Blitz</translation>
     </message>
@@ -1727,17 +1727,17 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
 <context>
     <name>Marquee</name>
     <message>
-        <location filename="../Effects/Marquee/Marquee.cpp" line="45"/>
+        <location filename="../Effects/Marquee/Marquee.cpp" line="54"/>
         <source>A simple marquee for your devices</source>
         <translation>Eine einfache Laufschrift für Ihre Geräte</translation>
     </message>
     <message>
-        <location filename="../Effects/Marquee/Marquee.cpp" line="46"/>
+        <location filename="../Effects/Marquee/Marquee.cpp" line="55"/>
         <source>Spacing</source>
         <translation>Abstand</translation>
     </message>
     <message>
-        <location filename="../Effects/Marquee/Marquee.h" line="25"/>
+        <location filename="../Effects/Marquee/Marquee.h" line="33"/>
         <source>Marquee</source>
         <translation>Laufleiste</translation>
     </message>
@@ -1770,12 +1770,12 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Farben invertieren</translation>
     </message>
     <message>
-        <location filename="../Effects/Mask/Mask.cpp" line="35"/>
+        <location filename="../Effects/Mask/Mask.cpp" line="44"/>
         <source>A simple mask for using in layers</source>
         <translation>Eine einfache Maske zur Verwendung in Schichten</translation>
     </message>
     <message>
-        <location filename="../Effects/Mask/Mask.h" line="24"/>
+        <location filename="../Effects/Mask/Mask.h" line="32"/>
         <source>Mask</source>
         <translation>Maske</translation>
     </message>
@@ -1788,12 +1788,12 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Seltenheit</translation>
     </message>
     <message>
-        <location filename="../Effects/Mosaic/Mosaic.cpp" line="39"/>
+        <location filename="../Effects/Mosaic/Mosaic.cpp" line="48"/>
         <source>Tiles randomly spawning across your devices</source>
         <translation>Kacheln, die zufällig auf Ihren Geräten erscheinen</translation>
     </message>
     <message>
-        <location filename="../Effects/Mosaic/Mosaic.h" line="31"/>
+        <location filename="../Effects/Mosaic/Mosaic.h" line="39"/>
         <source>Mosaic</source>
         <translation>Mosaik</translation>
     </message>
@@ -1806,12 +1806,12 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Hintergrundfarbe:</translation>
     </message>
     <message>
-        <location filename="../Effects/MotionPoint/MotionPoint.cpp" line="40"/>
+        <location filename="../Effects/MotionPoint/MotionPoint.cpp" line="49"/>
         <source>A point that moves forth and back on your devices</source>
         <translation>Ein Punkt, der auf Ihren Geräten hin und her bewegt wird</translation>
     </message>
     <message>
-        <location filename="../Effects/MotionPoint/MotionPoint.h" line="25"/>
+        <location filename="../Effects/MotionPoint/MotionPoint.h" line="33"/>
         <source>Motion Point</source>
         <translation>Motion Point</translation>
     </message>
@@ -1819,17 +1819,17 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
 <context>
     <name>MotionPoints</name>
     <message>
-        <location filename="../Effects/MotionPoints/MotionPoints.cpp" line="42"/>
+        <location filename="../Effects/MotionPoints/MotionPoints.cpp" line="51"/>
         <source>Multiple points that moves in all directions on your devices</source>
         <translation>Mehrere Punkte, die sich in alle Richtungen auf Ihren Geräten bewegen</translation>
     </message>
     <message>
-        <location filename="../Effects/MotionPoints/MotionPoints.cpp" line="43"/>
+        <location filename="../Effects/MotionPoints/MotionPoints.cpp" line="52"/>
         <source>Number of points</source>
         <translation>Anzahl der Punkte</translation>
     </message>
     <message>
-        <location filename="../Effects/MotionPoints/MotionPoints.h" line="116"/>
+        <location filename="../Effects/MotionPoints/MotionPoints.h" line="124"/>
         <source>Motion Points</source>
         <translation>Bewegungspunkte</translation>
     </message>
@@ -1837,17 +1837,17 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
 <context>
     <name>MovingPanes</name>
     <message>
-        <location filename="../Effects/MovingPanes/MovingPanes.cpp" line="43"/>
+        <location filename="../Effects/MovingPanes/MovingPanes.cpp" line="52"/>
         <source>Parts of your devices in symmetrical motion</source>
         <translation>Teile Ihrer Geräte in symmetrischer Bewegung</translation>
     </message>
     <message>
-        <location filename="../Effects/MovingPanes/MovingPanes.cpp" line="44"/>
+        <location filename="../Effects/MovingPanes/MovingPanes.cpp" line="53"/>
         <source>Divisions</source>
         <translation>Divisions</translation>
     </message>
     <message>
-        <location filename="../Effects/MovingPanes/MovingPanes.h" line="24"/>
+        <location filename="../Effects/MovingPanes/MovingPanes.h" line="32"/>
         <source>Moving Panes</source>
         <translation>Bewegliche Flächen</translation>
     </message>
@@ -1860,17 +1860,17 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="30"/>
+        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="39"/>
         <source>Texture</source>
         <translation>Textur</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="31"/>
+        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="40"/>
         <source>Audio</source>
         <translation>Audio</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="32"/>
+        <location filename="../Effects/Shaders/NewShaderPassTabHeader.cpp" line="41"/>
         <source>Buffer</source>
         <translation>Puffer</translation>
     </message>
@@ -1928,67 +1928,67 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
         <translation>Modus</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="53"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="62"/>
         <source>Floor is lava</source>
         <translation>Der Boden ist Lava</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="62"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="71"/>
         <source>Rainbow</source>
         <translation>Regenbogen</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="63"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="72"/>
         <source>Inverse rainbow</source>
         <translation>Umgekehrter Regenbogen</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="64"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="73"/>
         <source>Custom</source>
         <translation>Benutzerdefiniert</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="66"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="75"/>
         <source>Up</source>
         <translation>Hoch</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="67"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="76"/>
         <source>Down</source>
         <translation>Runter</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="68"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="77"/>
         <source>Left</source>
         <translation>Links</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="69"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.cpp" line="78"/>
         <source>Right</source>
         <translation>Rechts</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="92"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="100"/>
         <source>Lava</source>
         <translation>Lava</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="98"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="106"/>
         <source>Borealis</source>
         <translation>Borealis</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="106"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="114"/>
         <source>Ocean</source>
         <translation>Ozean</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="113"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="121"/>
         <source>Chemicals</source>
         <translation>Chemikalien</translation>
     </message>
     <message>
-        <location filename="../Effects/NoiseMap/NoiseMap.h" line="33"/>
+        <location filename="../Effects/NoiseMap/NoiseMap.h" line="41"/>
         <source>Noise Map</source>
         <translation>Geräuschkarte</translation>
     </message>
@@ -2079,33 +2079,12 @@ Die Verwendung eines Effekts auf einem Gerät WIRD den Flash oder den Controller
 <context>
     <name>OpenRGBEffectTab</name>
     <message>
-        <source>Profiles</source>
-        <translation type="vanished">Profile</translation>
-    </message>
-    <message>
-        <source>Load profile</source>
-        <translation type="vanished">Profil laden</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="vanished">Speichern</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Löschen</translation>
-    </message>
-    <message>
         <location filename="../OpenRGBEffectTab.cpp" line="98"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../OpenRGBEffectTab.cpp" line="101"/>
-        <source>About</source>
-        <translation>Über</translation>
-    </message>
-    <message>
-        <location filename="../OpenRGBEffectTab.cpp" line="111"/>
+        <location filename="../OpenRGBEffectTab.cpp" line="107"/>
         <source>No effects added yet.
  Please select one from the list to get started.</source>
         <translation>Noch keine Effekte hinzugefügt.
@@ -2113,67 +2092,19 @@ Bitte wählen Sie eins von der Liste.</translation>
     </message>
 </context>
 <context>
-    <name>PluginInfo</name>
-    <message>
-        <location filename="../PluginInfo.ui" line="26"/>
-        <source>Download lastest build</source>
-        <translation>Neuestes Build herunterladen</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="63"/>
-        <source>Git branch:</source>
-        <translation>Git branch:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="82"/>
-        <source>Git commit date:</source>
-        <translation>Git commit datum:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="101"/>
-        <source>Git commit ID:</source>
-        <translation>Git commit ID:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="120"/>
-        <source>Version:</source>
-        <translation>Version:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="139"/>
-        <source>Build date:</source>
-        <translation>Build datum:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="152"/>
-        <source>Documentation:</source>
-        <translation>Dokumentation:</translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="159"/>
-        <source>&lt;a href=&quot;https://gitlab.com/OpenRGBDevelopers/OpenRGB-Wiki/-/blob/stable/Plugins/Effects/Effects.md&quot;&gt;help&lt;/a&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../PluginInfo.ui" line="237"/>
-        <source>Open plugin folder</source>
-        <translation>Pluginordner öffnen</translation>
-    </message>
-</context>
-<context>
     <name>Policing</name>
     <message>
-        <location filename="../Effects/Policing/Policing.cpp" line="33"/>
+        <location filename="../Effects/Policing/Policing.cpp" line="42"/>
         <source>A back and forth effect motion with a flash before changing direction</source>
         <translation>Eine hin und her bewegende Wirkung mit einem Blitz vor der Richtungsänderung</translation>
     </message>
     <message>
-        <location filename="../Effects/Policing/Policing.cpp" line="34"/>
+        <location filename="../Effects/Policing/Policing.cpp" line="43"/>
         <source>Width</source>
         <translation>Breite</translation>
     </message>
     <message>
-        <location filename="../Effects/Policing/Policing.h" line="19"/>
+        <location filename="../Effects/Policing/Policing.h" line="27"/>
         <source>Policing</source>
         <translation>Polizeiarbeit</translation>
     </message>
@@ -2181,37 +2112,37 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>RGBEffect</name>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="9"/>
+        <location filename="../Effects/RGBEffect.h" line="17"/>
         <source>Advanced</source>
         <translation>Erweitert</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="10"/>
+        <location filename="../Effects/RGBEffect.h" line="18"/>
         <source>Audio</source>
         <translation>Audio</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="11"/>
+        <location filename="../Effects/RGBEffect.h" line="19"/>
         <source>Beams</source>
         <translation>Strahlen</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="12"/>
+        <location filename="../Effects/RGBEffect.h" line="20"/>
         <source>Rainbow</source>
         <translation>Regenbogen</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="13"/>
+        <location filename="../Effects/RGBEffect.h" line="21"/>
         <source>Random</source>
         <translation>Zufällig</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="14"/>
+        <location filename="../Effects/RGBEffect.h" line="22"/>
         <source>Simple</source>
         <translation>Einfach</translation>
     </message>
     <message>
-        <location filename="../Effects/RGBEffect.h" line="15"/>
+        <location filename="../Effects/RGBEffect.h" line="23"/>
         <source>Special</source>
         <translation>Speziell</translation>
     </message>
@@ -2234,27 +2165,27 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Y-Position</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="44"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="53"/>
         <source>Dive into the RGB tunnel</source>
         <translation>In den RGB-Tunnel eintauchen</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="45"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="54"/>
         <source>Frequency</source>
         <translation>Frequenz</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="47"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="56"/>
         <source>Circles</source>
         <translation>Kreise</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="48"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.cpp" line="57"/>
         <source>Squares</source>
         <translation>Quadrate</translation>
     </message>
     <message>
-        <location filename="../Effects/RadialRainbow/RadialRainbow.h" line="24"/>
+        <location filename="../Effects/RadialRainbow/RadialRainbow.h" line="32"/>
         <source>Radial Rainbow</source>
         <translation>Radialer Regenbogen</translation>
     </message>
@@ -2267,17 +2198,17 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Tropfengröße</translation>
     </message>
     <message>
-        <location filename="../Effects/Rain/Rain.cpp" line="44"/>
+        <location filename="../Effects/Rain/Rain.cpp" line="53"/>
         <source>Droplet effect</source>
         <translation>Tropfeneffekt</translation>
     </message>
     <message>
-        <location filename="../Effects/Rain/Rain.cpp" line="45"/>
+        <location filename="../Effects/Rain/Rain.cpp" line="54"/>
         <source>Drops</source>
         <translation>Tropfen</translation>
     </message>
     <message>
-        <location filename="../Effects/Rain/Rain.h" line="33"/>
+        <location filename="../Effects/Rain/Rain.h" line="41"/>
         <source>Rain</source>
         <translation>Regen</translation>
     </message>
@@ -2285,17 +2216,17 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>RainbowWave</name>
     <message>
-        <location filename="../Effects/RainbowWave/RainbowWave.cpp" line="33"/>
+        <location filename="../Effects/RainbowWave/RainbowWave.cpp" line="42"/>
         <source>A sliding Rainbow</source>
         <translation>Ein gleitender Regenbogen</translation>
     </message>
     <message>
-        <location filename="../Effects/RainbowWave/RainbowWave.cpp" line="34"/>
+        <location filename="../Effects/RainbowWave/RainbowWave.cpp" line="43"/>
         <source>Frequency</source>
         <translation>Frequenz</translation>
     </message>
     <message>
-        <location filename="../Effects/RainbowWave/RainbowWave.h" line="19"/>
+        <location filename="../Effects/RainbowWave/RainbowWave.h" line="27"/>
         <source>Rainbow Wave</source>
         <translation>Regenbogenwelle</translation>
     </message>
@@ -2303,12 +2234,12 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>RandomMarquee</name>
     <message>
-        <location filename="../Effects/RandomMarquee/RandomMarquee.cpp" line="43"/>
+        <location filename="../Effects/RandomMarquee/RandomMarquee.cpp" line="52"/>
         <source>A simple Random Marquee for your devices</source>
         <translation>Eine einfache zufällige Laufschrift für Ihre Geräte</translation>
     </message>
     <message>
-        <location filename="../Effects/RandomMarquee/RandomMarquee.h" line="25"/>
+        <location filename="../Effects/RandomMarquee/RandomMarquee.h" line="33"/>
         <source>Random Marquee</source>
         <translation>Zufälliger Laufbalken</translation>
     </message>
@@ -2316,12 +2247,12 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>RandomSpin</name>
     <message>
-        <location filename="../Effects/RandomSpin/RandomSpin.cpp" line="42"/>
+        <location filename="../Effects/RandomSpin/RandomSpin.cpp" line="51"/>
         <source>A simple Random Spin for your devices</source>
         <translation>Eine einfache Zufallsdrehung für Ihre Geräte</translation>
     </message>
     <message>
-        <location filename="../Effects/RandomSpin/RandomSpin.h" line="34"/>
+        <location filename="../Effects/RandomSpin/RandomSpin.h" line="42"/>
         <source>Random Spin</source>
         <translation>Zufallsdrehung</translation>
     </message>
@@ -2339,47 +2270,47 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Dicke</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.cpp" line="44"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.cpp" line="53"/>
         <source>A beam that rotates in different ways</source>
         <translation>Ein Strahl, der sich auf verschiedene Weisen dreht</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.cpp" line="45"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.cpp" line="54"/>
         <source>Glow</source>
         <translation>Leuchten</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="66"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="74"/>
         <source>Clockwise</source>
         <translation>Im Uhrzeigersinn</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="67"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="75"/>
         <source>Counter clockwise</source>
         <translation>Gegen den Uhrzeigersinn</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="68"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="76"/>
         <source>Pendulum</source>
         <translation>Pendel</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="69"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="77"/>
         <source>Wipers</source>
         <translation>Wischarme</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="70"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="78"/>
         <source>Swing H</source>
         <translation>Schwingung H</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="71"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="79"/>
         <source>Swing V</source>
         <translation>Schwingung V</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="25"/>
+        <location filename="../Effects/RotatingBeam/RotatingBeam.h" line="33"/>
         <source>Rotating Beam</source>
         <translation>Drehender Strahl</translation>
     </message>
@@ -2387,70 +2318,35 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>RotatingRainbow</name>
     <message>
-        <location filename="../Effects/RotatingRainbow/RotatingRainbow.cpp" line="41"/>
+        <location filename="../Effects/RotatingRainbow/RotatingRainbow.cpp" line="50"/>
         <source>Color speed</source>
         <translation>Farbgeschwindigkeit</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingRainbow/RotatingRainbow.cpp" line="40"/>
+        <location filename="../Effects/RotatingRainbow/RotatingRainbow.cpp" line="49"/>
         <source>A rainbow that rotates around the center of your devices</source>
         <translation>Ein Regenbogen, der sich um den Mittelpunkt Ihres Geräts dreht</translation>
     </message>
     <message>
-        <location filename="../Effects/RotatingRainbow/RotatingRainbow.h" line="25"/>
+        <location filename="../Effects/RotatingRainbow/RotatingRainbow.h" line="33"/>
         <source>Rotating Rainbow</source>
         <translation>Drehender Regenbogen</translation>
     </message>
 </context>
 <context>
-    <name>SaveProfilePopup</name>
-    <message>
-        <source>Save effects state</source>
-        <translation type="vanished">Speichere Effektzustand</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="vanished">Speichern</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Or create a new one:</source>
-        <translation type="vanished">Oder erstelle ein neues:</translation>
-    </message>
-    <message>
-        <source>Load profile at startup</source>
-        <translation type="vanished">Lade Profil beim starten</translation>
-    </message>
-    <message>
-        <source>Choose an existing profile:</source>
-        <translation type="vanished">Eksistierendes Profil wählen:</translation>
-    </message>
-    <message>
-        <source>Enter a profile name:</source>
-        <translation type="vanished">Profilname eingeben:</translation>
-    </message>
-    <message>
-        <source>Save profile</source>
-        <translation type="vanished">Profil speichern</translation>
-    </message>
-</context>
-<context>
     <name>Sequence</name>
     <message>
-        <location filename="../Effects/Sequence/Sequence.cpp" line="41"/>
+        <location filename="../Effects/Sequence/Sequence.cpp" line="50"/>
         <source>Alternates colors with a fade effect</source>
         <translation>Wechselt die Farben mit einem Schatteneffekt</translation>
     </message>
     <message>
-        <location filename="../Effects/Sequence/Sequence.cpp" line="42"/>
+        <location filename="../Effects/Sequence/Sequence.cpp" line="51"/>
         <source>Fade time</source>
         <translation>Verfadezeit</translation>
     </message>
     <message>
-        <location filename="../Effects/Sequence/Sequence.h" line="24"/>
+        <location filename="../Effects/Sequence/Sequence.h" line="32"/>
         <source>Sequence</source>
         <translation>Sequenz</translation>
     </message>
@@ -2476,12 +2372,12 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Texture auswählen</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/ShaderPassEditor.cpp" line="71"/>
+        <location filename="../Effects/Shaders/ShaderPassEditor.cpp" line="80"/>
         <source>Open Image</source>
         <translation>Bild öffnen</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/ShaderPassEditor.cpp" line="69"/>
+        <location filename="../Effects/Shaders/ShaderPassEditor.cpp" line="78"/>
         <source>Image Files</source>
         <translation>Bilddateien</translation>
     </message>
@@ -2539,49 +2435,49 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Rendern anzeigen</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="114"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="123"/>
         <source>Unleash the power of OpenRGB with GL shaders</source>
         <translation>Entfesseln Sie die Kraft von OpenRGB mit GL-Shader</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="343"/>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="351"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="354"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="362"/>
         <source>Save shader to file...</source>
         <translation>Shader in Datei speichern...</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="343"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="354"/>
         <source>Choose a filename</source>
         <translation>Dateiname auswählen</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="344"/>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="367"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="355"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="378"/>
         <source>my-shader</source>
         <translation>mein-Shader</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="353"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="364"/>
         <source>Overwrite existing shader:</source>
         <translation type="unfinished">Bestehenden Shader überschreiben:</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="354"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="365"/>
         <source>Or create a new one:</source>
         <translation>Oder erstelle ein neues:</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="377"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="388"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.cpp" line="381"/>
+        <location filename="../Effects/Shaders/Shaders.cpp" line="392"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../Effects/Shaders/Shaders.h" line="38"/>
+        <location filename="../Effects/Shaders/Shaders.h" line="46"/>
         <source>Shaders</source>
         <translation>Shader</translation>
     </message>
@@ -2629,22 +2525,22 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Standardwerte</translation>
     </message>
     <message>
-        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="50"/>
+        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="59"/>
         <source>Create your own breathing sequences</source>
         <translation>Erstellen Sie eigene Atemsequenzen</translation>
     </message>
     <message>
-        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="52"/>
+        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="61"/>
         <source>Solid</source>
         <translation>Fest</translation>
     </message>
     <message>
-        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="53"/>
+        <location filename="../Effects/SmoothBlink/SmoothBlink.cpp" line="62"/>
         <source>Circle</source>
         <translation>Kreis</translation>
     </message>
     <message>
-        <location filename="../Effects/SmoothBlink/SmoothBlink.h" line="25"/>
+        <location filename="../Effects/SmoothBlink/SmoothBlink.h" line="33"/>
         <source>Smooth Blink</source>
         <translation>Glatter Blink</translation>
     </message>
@@ -2667,12 +2563,12 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Einblenden (Millisekunden):</translation>
     </message>
     <message>
-        <location filename="../Effects/SparkleFade/SparkleFade.cpp" line="190"/>
+        <location filename="../Effects/SparkleFade/SparkleFade.cpp" line="199"/>
         <source>Fading in and fade out with sparkles</source>
         <translation>Einfahren und ausfahren mit Funken</translation>
     </message>
     <message>
-        <location filename="../Effects/SparkleFade/SparkleFade.h" line="45"/>
+        <location filename="../Effects/SparkleFade/SparkleFade.h" line="53"/>
         <source>Sparkle Fade</source>
         <translation>Sparkle Fade</translation>
     </message>
@@ -2685,12 +2581,12 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Sättigung</translation>
     </message>
     <message>
-        <location filename="../Effects/SpectrumCycling/SpectrumCycling.cpp" line="40"/>
+        <location filename="../Effects/SpectrumCycling/SpectrumCycling.cpp" line="49"/>
         <source>Goes through every solid color of the rainbow</source>
         <translation>Durchläuft jede einzelne Farbe des Regenbogens</translation>
     </message>
     <message>
-        <location filename="../Effects/SpectrumCycling/SpectrumCycling.h" line="22"/>
+        <location filename="../Effects/SpectrumCycling/SpectrumCycling.h" line="30"/>
         <source>Spectrum Cycling</source>
         <translation>Spectrum Cycling</translation>
     </message>
@@ -2698,17 +2594,17 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>Spiral</name>
     <message>
-        <location filename="../Effects/Spiral/Spiral.cpp" line="41"/>
+        <location filename="../Effects/Spiral/Spiral.cpp" line="50"/>
         <source>Draws a hypnotic spiral on your devices</source>
         <translation>Zeichnet eine hypnotische Spirale auf Ihren Geräten</translation>
     </message>
     <message>
-        <location filename="../Effects/Spiral/Spiral.cpp" line="42"/>
+        <location filename="../Effects/Spiral/Spiral.cpp" line="51"/>
         <source>Spiral shape</source>
         <translation>Spiralenform</translation>
     </message>
     <message>
-        <location filename="../Effects/Spiral/Spiral.h" line="24"/>
+        <location filename="../Effects/Spiral/Spiral.h" line="32"/>
         <source>Spiral</source>
         <translation>Spirale</translation>
     </message>
@@ -2721,22 +2617,22 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Matrix-Zonenausrichtung</translation>
     </message>
     <message>
-        <location filename="../Effects/Stack/Stack.cpp" line="40"/>
+        <location filename="../Effects/Stack/Stack.cpp" line="49"/>
         <source>Fills and stack your devices with a solid color</source>
         <translation>Füllen Sie Ihre Geräte mit einer festen Farbe und stapeln Sie sie</translation>
     </message>
     <message>
-        <location filename="../Effects/Stack/Stack.cpp" line="42"/>
+        <location filename="../Effects/Stack/Stack.cpp" line="51"/>
         <source>Horizontal</source>
         <translation>Horizontal</translation>
     </message>
     <message>
-        <location filename="../Effects/Stack/Stack.cpp" line="43"/>
+        <location filename="../Effects/Stack/Stack.cpp" line="52"/>
         <source>Vertical</source>
         <translation>Vertikal</translation>
     </message>
     <message>
-        <location filename="../Effects/Stack/Stack.h" line="24"/>
+        <location filename="../Effects/Stack/Stack.h" line="32"/>
         <source>Stack</source>
         <translation>Stapel</translation>
     </message>
@@ -2744,17 +2640,17 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>StarryNight</name>
     <message>
-        <location filename="../Effects/StarryNight/StarryNight.cpp" line="38"/>
+        <location filename="../Effects/StarryNight/StarryNight.cpp" line="47"/>
         <source>Selects a random LED and fades it in an out</source>
         <translation>Wählt eine zufällige LED aus und blendet sie ein und aus</translation>
     </message>
     <message>
-        <location filename="../Effects/StarryNight/StarryNight.cpp" line="39"/>
+        <location filename="../Effects/StarryNight/StarryNight.cpp" line="48"/>
         <source>Star Count</source>
         <translation>Sternanzahl</translation>
     </message>
     <message>
-        <location filename="../Effects/StarryNight/StarryNight.h" line="80"/>
+        <location filename="../Effects/StarryNight/StarryNight.h" line="88"/>
         <source>Starry Night</source>
         <translation>Starry Night</translation>
     </message>
@@ -2822,12 +2718,12 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Wachstumsgeschwindigkeit</translation>
     </message>
     <message>
-        <location filename="../Effects/Sunrise/Sunrise.cpp" line="46"/>
+        <location filename="../Effects/Sunrise/Sunrise.cpp" line="55"/>
         <source>Sunrise / Sunset effect</source>
         <translation>Sonnenaufgang / Sonnenuntergangseffekt</translation>
     </message>
     <message>
-        <location filename="../Effects/Sunrise/Sunrise.h" line="24"/>
+        <location filename="../Effects/Sunrise/Sunrise.h" line="32"/>
         <source>Sunrise</source>
         <translation>Sonnenaufgang</translation>
     </message>
@@ -2835,12 +2731,12 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>Swap</name>
     <message>
-        <location filename="../Effects/Swap/Swap.cpp" line="42"/>
+        <location filename="../Effects/Swap/Swap.cpp" line="51"/>
         <source>Alternate two colors on your devices from left to right</source>
         <translation>Wechseln Sie zwei Farben auf Ihren Geräten von links nach rechts</translation>
     </message>
     <message>
-        <location filename="../Effects/Swap/Swap.h" line="24"/>
+        <location filename="../Effects/Swap/Swap.h" line="32"/>
         <source>Swap</source>
         <translation>Swap</translation>
     </message>
@@ -2853,17 +2749,17 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Radius</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCircles/SwirlCircles.cpp" line="42"/>
+        <location filename="../Effects/SwirlCircles/SwirlCircles.cpp" line="51"/>
         <source>Rotating circles around the center of your devices</source>
         <translation>Drehende Kreise um den Mittelpunkt deiner Geräte</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCircles/SwirlCircles.cpp" line="43"/>
+        <location filename="../Effects/SwirlCircles/SwirlCircles.cpp" line="52"/>
         <source>Glow</source>
         <translation>Leuchten</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCircles/SwirlCircles.h" line="25"/>
+        <location filename="../Effects/SwirlCircles/SwirlCircles.h" line="33"/>
         <source>Swirl Circles</source>
         <translation>Swirl Circles</translation>
     </message>
@@ -2881,17 +2777,17 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Radius</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.cpp" line="60"/>
+        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.cpp" line="69"/>
         <source>Rotating circles reacting to audio</source>
         <translation>Drehende Kreise, die auf Audio reagieren</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.cpp" line="61"/>
+        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.cpp" line="70"/>
         <source>Glow</source>
         <translation>Leuchten</translation>
     </message>
     <message>
-        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.h" line="29"/>
+        <location filename="../Effects/SwirlCirclesAudio/SwirlCirclesAudio.h" line="37"/>
         <source>Swirl Circles Audio</source>
         <translation>Swirl Circles Audio</translation>
     </message>
@@ -2899,17 +2795,17 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>Visor</name>
     <message>
-        <location filename="../Effects/Visor/Visor.cpp" line="34"/>
+        <location filename="../Effects/Visor/Visor.cpp" line="43"/>
         <source>A back and forth effect motion, flipping colors</source>
         <translation>Eine hin und her bewegende Wirkung, die Farben umkehrt</translation>
     </message>
     <message>
-        <location filename="../Effects/Visor/Visor.cpp" line="35"/>
+        <location filename="../Effects/Visor/Visor.cpp" line="44"/>
         <source>Width</source>
         <translation>Breite</translation>
     </message>
     <message>
-        <location filename="../Effects/Visor/Visor.h" line="19"/>
+        <location filename="../Effects/Visor/Visor.h" line="27"/>
         <source>Visor</source>
         <translation>Visor</translation>
     </message>
@@ -2947,12 +2843,12 @@ Bitte wählen Sie eins von der Liste.</translation>
         <translation>Schwingungsgeschwindigkeit</translation>
     </message>
     <message>
-        <location filename="../Effects/Wavy/Wavy.cpp" line="48"/>
+        <location filename="../Effects/Wavy/Wavy.cpp" line="57"/>
         <source>Alternate colors like waves</source>
         <translation>Farben wechseln wie Wellen</translation>
     </message>
     <message>
-        <location filename="../Effects/Wavy/Wavy.h" line="28"/>
+        <location filename="../Effects/Wavy/Wavy.h" line="35"/>
         <source>Wavy</source>
         <translation>Wavy</translation>
     </message>
@@ -2960,12 +2856,12 @@ Bitte wählen Sie eins von der Liste.</translation>
 <context>
     <name>ZigZag</name>
     <message>
-        <location filename="../Effects/ZigZag/ZigZag.cpp" line="39"/>
+        <location filename="../Effects/ZigZag/ZigZag.cpp" line="48"/>
         <source>A snake moving on your matrix typed devices</source>
         <translation>Eine Schlange, die sich auf Ihren Matrix-typischen Geräten bewegt</translation>
     </message>
     <message>
-        <location filename="../Effects/ZigZag/ZigZag.h" line="24"/>
+        <location filename="../Effects/ZigZag/ZigZag.h" line="32"/>
         <source>ZigZag</source>
         <translation>ZigZag</translation>
     </message>

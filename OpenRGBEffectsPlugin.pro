@@ -84,8 +84,6 @@ GIT_BRANCH      = $$system(git branch --show-current)
 PROJECT_DESC                = "Provides a variety of custom effects"
 PROJECT_NAME                = "OpenRGB Effects Plugin"
 PROJECT_URL                 = "https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin"
-win32:LATEST_BUILD_URL      = "https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Windows 64"
-unix:!macx:LATEST_BUILD_URL = "https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Linux 64"
 
 #-----------------------------------------------------------------------------------------------#
 # Inject vars in defines                                                                        #
@@ -252,7 +250,6 @@ HEADERS +=                                                                      
     OpenRGBEffectsPlugin.h                                                                      \
     OpenRGBEffectSettings.h                                                                     \
     OpenRGBEffectTab.h                                                                          \
-    PluginInfo.h                                                                                \
     PreviewWidget.h                                                                             \
     QTooltipedSlider.h                                                                          \
     ZoneListItem.h                                                                              \
@@ -283,7 +280,6 @@ SOURCES +=                                                                      
     OpenRGBEffectsPlugin.cpp                                                                    \
     OpenRGBEffectSettings.cpp                                                                   \
     OpenRGBEffectTab.cpp                                                                        \
-    PluginInfo.cpp                                                                              \
     QTooltipedSlider.cpp                                                                        \
     PreviewWidget.cpp                                                                           \
     ZoneListItem.cpp                                                                            \
@@ -304,7 +300,6 @@ FORMS +=                                                                        
     LivePreviewController.ui                                                                    \
     OpenRGBEffectPage.ui                                                                        \
     OpenRGBEffectTab.ui                                                                         \
-    PluginInfo.ui                                                                               \
     ZoneListItem.ui                                                                             \
     GlobalSettings.ui
 
