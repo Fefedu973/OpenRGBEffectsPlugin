@@ -57,7 +57,7 @@ before_script:
 #-----------------------------------------------------------#
 "Linux i386 Qt5":
   <<: *ccache_init
-  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-i386
+  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:trixie-i386
   tags:
   - linux
   - i386
@@ -80,7 +80,7 @@ before_script:
 #-----------------------------------------------------------#
 "Linux i386":
   <<: *ccache_init
-  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-i386
+  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:trixie-i386
   tags:
   - linux
   - i386
@@ -103,7 +103,7 @@ before_script:
 #-----------------------------------------------------------#
 "Linux amd64 Qt5":
   <<: *ccache_init
-  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-amd64
+  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:trixie-amd64
   tags:
   - linux
   - amd64
@@ -126,7 +126,7 @@ before_script:
 #-----------------------------------------------------------#
 "Linux amd64":
   <<: *ccache_init
-  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-amd64
+  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:trixie-amd64
   tags:
   - linux
   - amd64
@@ -149,7 +149,7 @@ before_script:
 #-----------------------------------------------------------#
 "Linux armhf Qt5":
   <<: *ccache_init
-  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-armhf
+  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:trixie-armhf
   tags:
   - linux
   - armhf
@@ -172,7 +172,7 @@ before_script:
 #-----------------------------------------------------------#
 "Linux armhf":
   <<: *ccache_init
-  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-armhf
+  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:trixie-armhf
   tags:
   - linux
   - armhf
@@ -195,7 +195,7 @@ before_script:
 #-----------------------------------------------------------#
 "Linux arm64 Qt5":
   <<: *ccache_init
-  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-arm64
+  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:trixie-arm64
   tags:
   - linux
   - arm64
@@ -218,7 +218,7 @@ before_script:
 #-----------------------------------------------------------#
 "Linux arm64":
   <<: *ccache_init
-  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:bookworm-arm64
+  image: registry.gitlab.com/openrgbdevelopers/openrgb-linux-ci-deb-builder:trixie-arm64
   tags:
   - linux
   - arm64
