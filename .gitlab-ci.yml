@@ -263,6 +263,34 @@ before_script:
   <<: *debian_script_steps
 
 #-----------------------------------------------------------#
+# Linux (.rpm) Fedora 44 amd64 Build Target                 #
+#-----------------------------------------------------------#
+"Linux amd64 .rpm (Fedora 44)":
+  image: fedora:44
+  stage: build
+  script:
+  - dnf install rpmdevtools dnf-plugins-core libcurl-devel qt6-qtbase-devel git wget -y
+  - rpmdev-setuptree
+  - ./scripts/build-package-files.sh fedora/OpenRGBEffectsPlugin.spec
+  - cp fedora/OpenRGBEffectsPlugin.spec /root/rpmbuild/SPECS
+  - cp -rp . /root/rpmbuild/SOURCES/OpenRGBEffectsPlugin
+  - cd /root/rpmbuild
+  - dnf builddep SPECS/OpenRGBEffectsPlugin.spec -y
+  - rpmbuild -ba SPECS/OpenRGBEffectsPlugin.spec
+  - cd RPMS/x86_64/
+  - mv openrgb*.rpm ${CI_PROJECT_DIR}/
+  - cd ${CI_PROJECT_DIR}
+
+  artifacts:
+    name: "${CI_PROJECT_NAME}_Linux_amd64_rpm_${CI_COMMIT_SHORT_SHA}"
+    paths:
+    - openrgb-plugin-effects*.rpm
+    expire_in: 30 days
+
+  rules:
+    - !reference [.upstream_rules, rules]
+
+#-----------------------------------------------------------#
 # Common Flatpak Build Steps                                #
 #-----------------------------------------------------------#
 .hidden_flatpak_script: &flatpak_script_steps
