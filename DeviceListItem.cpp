@@ -15,8 +15,8 @@
 DeviceListItem::DeviceListItem(std::vector<ControllerZone*> controller_zones, bool has_direct) :
     QWidget(nullptr),
     ui(new Ui::DeviceListItem),
-    controller_zones(controller_zones),
-    controller(controller_zones.front()->controller)
+    controller(controller_zones.front()->controller),
+    controller_zones(controller_zones)
 {
     ui->setupUi(this);
     ui->brightness->setVisible(false);

@@ -164,7 +164,7 @@ void ControllerZone::SetAllZoneLEDs(RGBColor color, int brightness, int temperat
 
 void ControllerZone::SetLED(int idx, RGBColor color, int brightness, int temperature, int tint)
 {
-    if(idx != 0xFFFFFFFF)
+    if(idx != (int)0xFFFFFFFF)
     {
         controller->SetColor(start_idx() + idx, ColorUtils::apply_adjustments(color, (self_brightness / 100.f) * (brightness / 100.f), temperature, tint));
     }
