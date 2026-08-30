@@ -300,7 +300,10 @@ void Shaders::on_shaders_currentIndexChanged(int idx)
 
     QFile frag(shader_paths[current_shader_idx]);
 
-    frag.open(QFile::ReadOnly | QFile::Text);
+    if(frag.open(QFile::ReadOnly | QFile::Text) == false)
+    {
+        LOG_ERROR("[Shaders] Could not open shader file");
+    }
 
     QTextStream frag_in(&frag);
 

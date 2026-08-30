@@ -15,7 +15,8 @@
 
 // doc https://webrtc.googlesource.com/src/+/refs/heads/main/modules/desktop_capture/linux/wayland/
 
-PipeWireCapturer::PipeWireCapturer(QObject* parent) :  QObject(parent)  {
+PipeWireCapturer::PipeWireCapturer(QObject* parent) : QObject(parent)
+{
     pw_init(NULL,NULL);
     qDebug() << "Compiled with libpipewire " << pw_get_headers_version();
     qDebug() << "Linked with libpipewire " << pw_get_library_version();
@@ -31,8 +32,8 @@ void PipeWireCapturer::OnCoreError(void* /*data*/, uint32_t /*id*/, int /*seq*/,
     qDebug() << "OnCoreError " << message;
 }
 
-void PipeWireCapturer::OnStreamStateChanged(void* /*data*/, pw_stream_state old_state, pw_stream_state state, const char* /*error_message*/) {
-
+void PipeWireCapturer::OnStreamStateChanged(void* /*data*/, pw_stream_state old_state, pw_stream_state state, const char* /*error_message*/)
+{
     qDebug() << "stream state changed from " << old_state << " to " << state;
 }
 
@@ -41,7 +42,7 @@ void PipeWireCapturer::OnStreamParamChanged(void* data, uint32_t id, const struc
 
     qDebug() << "PipeWire stream format changed.";
 
-    if (!format || id != SPA_PARAM_Format)
+    if(!format || id != SPA_PARAM_Format)
     {
         return;
     }
@@ -54,15 +55,15 @@ void PipeWireCapturer::OnStreamParamChanged(void* data, uint32_t id, const struc
 }
 
 // static
-void PipeWireCapturer::OnStreamProcess(void* data) {
-
+void PipeWireCapturer::OnStreamProcess(void* data)
+{
     PipeWireCapturer* _this = static_cast<PipeWireCapturer*>(data);
 
     struct pw_buffer* next_buffer;
     struct pw_buffer* buffer = nullptr;
     next_buffer = pw_stream_dequeue_buffer(_this->stream);
 
-    while (next_buffer)
+    while(next_buffer)
     {
         buffer = next_buffer;
         next_buffer = pw_stream_dequeue_buffer(_this->stream);
@@ -73,7 +74,7 @@ void PipeWireCapturer::OnStreamProcess(void* data) {
         }
     }
 
-    if (!buffer)
+    if(!buffer)
     {
         return;
     }
@@ -83,19 +84,20 @@ void PipeWireCapturer::OnStreamProcess(void* data) {
     pw_stream_queue_buffer(_this->stream, buffer);
 }
 
-void PipeWireCapturer::HandleBuffer(pw_buffer* buffer) {
+void PipeWireCapturer::HandleBuffer(pw_buffer* buffer)
+{
     spa_buffer* spa_buffer = buffer->buffer;
     ScopedBuf map;
     std::unique_ptr<uint8_t[]> src_unique_ptr;
     uint8_t* src = nullptr;
 
-    if (spa_buffer->datas[0].chunk->size == 0)
+    if(spa_buffer->datas[0].chunk->size == 0)
     {
         qDebug() << "Failed to get video stream: Zero size.";
         return;
     }
 
-    if (spa_buffer->datas[0].type == SPA_DATA_MemFd)
+    if(spa_buffer->datas[0].type == SPA_DATA_MemFd)
     {
         map.initialize(static_cast<uint8_t*>(
                            mmap(nullptr,
@@ -104,7 +106,7 @@ void PipeWireCapturer::HandleBuffer(pw_buffer* buffer) {
                        spa_buffer->datas[0].maxsize + spa_buffer->datas[0].mapoffset,
                        spa_buffer->datas[0].fd);
 
-        if (!map)
+        if(!map)
         {
             qDebug() << "Failed to mmap the memory: " << std::strerror(errno);
             return;
@@ -113,7 +115,7 @@ void PipeWireCapturer::HandleBuffer(pw_buffer* buffer) {
         src = SPA_MEMBER(map.get(), spa_buffer->datas[0].mapoffset, uint8_t);
     }
 
-    if (!src)
+    if(!src)
     {
         return;
     }
@@ -136,7 +138,8 @@ void PipeWireCapturer::HandleBuffer(pw_buffer* buffer) {
     }
 }
 
-pw_stream* PipeWireCapturer::CreateReceivingStream() {
+pw_stream* PipeWireCapturer::CreateReceivingStream()
+{
     pw_properties* reuseProps = pw_properties_new_string("pipewire.client.reuse=1");
     auto stream = pw_stream_new(core, "webrtc-consume-stream", reuseProps);
     uint8_t buffer[2048] = {};
@@ -149,7 +152,7 @@ pw_stream* PipeWireCapturer::CreateReceivingStream() {
     params.push_back(SpaPodUtils::CreateFormatOptions(&builder, &resolution, framerate));
     pw_stream_add_listener(stream, &stream_listener, &stream_events, this);
 
-    if (pw_stream_connect(stream, PW_DIRECTION_INPUT, node_id,
+    if(pw_stream_connect(stream, PW_DIRECTION_INPUT, node_id,
                           (pw_stream_flags)(PW_STREAM_FLAG_AUTOCONNECT | PW_STREAM_FLAG_MAP_BUFFERS), params.data(), params.size()) != 0)
     {
         qDebug() << "Could not connect receiving stream.";
@@ -158,8 +161,8 @@ pw_stream* PipeWireCapturer::CreateReceivingStream() {
 
     return stream;
 }
-void PipeWireCapturer::StartStream(quint32 id, int fd, unsigned int width, unsigned int height, unsigned int framerate){
-
+void PipeWireCapturer::StartStream(quint32 id, int fd, unsigned int width, unsigned int height, unsigned int framerate)
+{
     qDebug() << "PipeWireCapturer::StartStream";
 
     this->width = width;
@@ -174,7 +177,7 @@ void PipeWireCapturer::StartStream(quint32 id, int fd, unsigned int width, unsig
 
     context = pw_context_new(pw_thread_loop_get_loop(main_loop), nullptr, 0);
 
-    if (!context)
+    if(!context)
     {
         qDebug() << "Failed to create PipeWire context";
         return;
@@ -182,7 +185,7 @@ void PipeWireCapturer::StartStream(quint32 id, int fd, unsigned int width, unsig
 
     core = pw_context_connect_fd(context, fd, nullptr, 0);
 
-    if (!core)
+    if(!core)
     {
         qDebug() << "Failed to connect PipeWire context";
         return;
@@ -199,13 +202,13 @@ void PipeWireCapturer::StartStream(quint32 id, int fd, unsigned int width, unsig
 
     stream = CreateReceivingStream();
 
-    if (!stream)
+    if(!stream)
     {
         qDebug() << "Failed to create PipeWire stream";
         return;
     }
 
-    if (pw_thread_loop_start(main_loop) < 0)
+    if(pw_thread_loop_start(main_loop) < 0)
     {
         qDebug()  << "Failed to start main PipeWire loop";
         return;
