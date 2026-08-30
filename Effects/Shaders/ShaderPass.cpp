@@ -99,7 +99,11 @@ QString ShaderPass::Recompile(std::string version)
             img = QImage(fbo->size(), QImage::Format_RGBA8888);
             img.load(QString::fromStdString(data.texture_path));
             texture = new QOpenGLTexture(
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+                        img.flipped(Qt::Vertical),
+#else
                         img.mirrored(false, true),
+#endif
                         QOpenGLTexture::GenerateMipMaps
                         );
             texture->create();
@@ -248,7 +252,7 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
             texture->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
             texture->setSize(512, 2, 1);
             texture->setFormat(QOpenGLTexture::R32F);
-            texture->setData(img.mirrored(false, false));
+            texture->setData(img);
 
             gl->glActiveTexture(unit);
             gl->glBindTexture(GL_TEXTURE_2D, texture->textureId());
