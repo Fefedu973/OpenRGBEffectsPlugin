@@ -1,59 +1,37 @@
-# Effects Plugin
+# <img src="OpenRGBEffectsPlugin.png" width="48" height="48" style="vertical-align: middle;"/> OpenRGB Effects Plugin
 
-[![pipeline status](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/badges/master/pipeline.svg)](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/commits/master)
+[![Pipeline Status](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/badges/master/pipeline.svg)](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/commits/master)
 
-## What is this?
+Synchronize your [OpenRGB](https://gitlab.com/CalcProgrammer1/OpenRGB) lighting with a wide variety of customizable effects including audio visualizations, screen mirroring (Ambilight), OpenGL shaders, and many more.
 
-This is a plugin for [OpenRGB](https://gitlab.com/CalcProgrammer1/OpenRGB) that provides various effects that can be synced across devices.
+## Features
 
-## Experimental (Master)
+* Apply custom, software-driven effects to any OpenRGB device that supports Direct mode
+* Choose from a wide variety of effects
+* Synchronize your lights to your music
+* Synchronize your lights to match what's on screen
+* Use OpenGL shaders such as those from [ShaderToy](https://shadertoy.com) as RGB effects
 
-* [Windows 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Windows%2064)
-* [Buster 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Buster%2064)
-* [Bullseye 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Bullseye%2064)
-* [Bookworm 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=Bookworm%2064)
-* [MacOS ARM64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=MacOS%20ARM64)
-* [MacOS Intel](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/artifacts/master/download?job=MacOS%20Intel)
+## Website
 
-## Stable (0.9)
+* Check out our website at [openrgb.org/plugin_effects](https://openrgb.org/plugin_effects.html)
 
-* [Windows 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/4632324527/artifacts/download)
-* [Linux 64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/4632324432/artifacts/download)
-* [MacOS ARM64](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/4632601567/artifacts/download)
-* [MacOS Intel](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/jobs/4632324711/artifacts/download)
+## Supported Devices
 
-You can get older releases [here](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/releases).
+* Supports any OpenRGB device that has Direct mode
 
-## How do I install it?
+## Installation
 
-* Download and extract the correct files depending on your system
-* Launch OpenRGB
-* From the Settings -> Plugins menu, click the "Install plugin" button
-
-
-
-### Linux
-
-You need `libopenal` and `pipewire` installed.
-
-#### Fedora
-
-You need `openal-soft` installed.
-```
-sudo dnf install openal-soft
-
-```
-
-### OSX
-
-Install openal-soft
-
-```
-brew install openal-soft
-```
-
-
-## What Effects do you have?
+  * Pre-built binaries are available for the following platforms:
+    * Windows
+    * Linux (.so, .deb, and .rpm)
+    * MacOS
+  * Released versions are available to download on [OpenRGB.org](https://openrgb.org/plugin_effects.html).
+  * Experimental (aka Pipeline) versions are available to download on [OpenRGB.org](https://openrgb.org/plugin_effects.html#pl).
+  * The pre-built .so binaries are intended to be used with the OpenRGB AppImage builds and may not be compatible with OpenRGB installed from other sources.
+  * Arch users can also install from the AUR for the [release](https://aur.archlinux.org/packages/openrgb-plugin-effects/) or [pipeline](https://aur.archlinux.org/packages/openrgb-plugin-effects-git/) version.
+ 
+## Effects List
 
 ```
 ├── Ambient
@@ -113,10 +91,6 @@ This plugin is supported by the OpenRGB SDK, see [SDK docs](./Documentation/SDK.
 
 ## Common Issues
 
-### OpenRGB does not start with the plugin
-
-OpenRGB and EffectsPLugin are under heavy development, make sure to run latest pipeline from both.
-
 ### My CPU usage is really high
 
 There are a few effects that cause this:
@@ -133,4 +107,3 @@ The very nature of ambient is to do massive calulation to get the average or mos
 Check out the [compilation instructions](./Documentation/Compilation.md) to build this project locally.
 
 Please read the [contributing guide](./Documentation/CONTRIBUTING.md) if you want to add effects or bring new features.
-
