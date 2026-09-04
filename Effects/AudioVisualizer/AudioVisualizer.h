@@ -3,23 +3,27 @@
 |                                                           |
 |   OpenRGB Effects Plugin Audio Visualizer Effect          |
 |                                                           |
+|   Adam Honse <calcprogrammer1@gmail.com>      11 Dec 2016 |
+|   Modded by CoffeeIsLife (gitlab.com/CoffeeIsLife)        |
+|                                                           |
 |   This file is part of the OpenRGB Effects Plugin project |
 |   SPDX-License-Identifier: GPL-2.0-or-later               |
 \*---------------------------------------------------------*/
 
 #pragma once
 
-#include "AudioSignalProcessor.h"
+#include <vector>
+#include <QWidget>
 #include "AudioSettings.h"
 #include "AudioSettingsStruct.h"
-#include "RGBEffect.h"
+#include "AudioSignalProcessor.h"
 #include "EffectRegisterer.h"
-
+#include "RGBEffect.h"
 #include "ui_AudioVisualizer.h"
-#include <QWidget>
-#include <vector>
 
-//Special purpose row indices
+/*---------------------------------------------------------*\
+| Special purpose row indices                               |
+\*---------------------------------------------------------*/
 #define ROW_IDX_BAR_GRAPH           0
 #define ROW_IDX_SINGLE_COLOR        1
 #define ROW_IDX_SPECTROGRAPH_TOP    2
@@ -148,8 +152,9 @@ struct ZoneIndexType
     int*  y_index;
 };
 
-namespace Ui {
-class AudioVisualizer;
+namespace Ui
+{
+    class AudioVisualizer;
 }
 
 class AudioVisualizer: public RGBEffect
@@ -171,9 +176,9 @@ public:
     json SaveCustomSettings() override;
 
 private slots:
-    /*-------------*\
-    | GUI Handling  |
-    \*-------------*/
+    /*-----------------------------------------------------*\
+    | GUI Handling                                          |
+    \*-----------------------------------------------------*/
     void Update();
     void OnAudioDeviceChanged(int);
     void changeEvent(QEvent *event) override;
@@ -194,76 +199,75 @@ signals:
 private:
     void SetDynamicStrings();
 
-    /*---------*\
-    | GUI bits  |
-    \*---------*/
-    QPixmap pixmap;
-    QImage* image;
-    QTimer* timer;
+    /*-----------------------------------------------------*\
+    | GUI bits                                              |
+    \*-----------------------------------------------------*/
+    QPixmap                         pixmap;
+    QImage*                         image;
+    QTimer*                         timer;
 
-    /*--------------*\
-    | State changes  |
-    \*--------------*/
+    /*-----------------------------------------------------*\
+    | State changes                                         |
+    \*-----------------------------------------------------*/
     void Start();
     void Stop();
 
-    /*-----------------------*\
-    | Pointers                |
-    \*-----------------------*/
-    Ui::AudioVisualizerUi *ui;
+    /*-----------------------------------------------------*\
+    | Pointers                                              |
+    \*-----------------------------------------------------*/
+    Ui::AudioVisualizerUi*          ui;
 
-    /*-------------------------------*\
-    | Visualizer implementation bits  |
-    \*-------------------------------*/
+    /*-----------------------------------------------------*\
+    | Visualizer implementation bits                        |
+    \*-----------------------------------------------------*/
     void LEDUpdateThreadFunction();
     void VisThreadFunction();
 
-    /*--------*\
-    | Drawing  |
-    \*--------*/
-    //void Update();
+    /*-----------------------------------------------------*\
+    | Drawing                                               |
+    \*-----------------------------------------------------*/
     void DrawPattern(VISUALIZER_PATTERN pattern, int bright, vis_pixels *pixels);
 
-    vis_pixels pixels_bg;
-    vis_pixels pixels_fg;
+    vis_pixels                      pixels_bg;
+    vis_pixels                      pixels_fg;
 
-    vis_pixels pixels_vs1;
-    vis_pixels pixels_vs2;
+    vis_pixels                      pixels_vs1;
+    vis_pixels                      pixels_vs2;
 
-    vis_pixels *pixels_out;
-    vis_pixels *pixels_render;
+    vis_pixels*                     pixels_out;
+    vis_pixels*                     pixels_render;
 
-    float anim_speed;
-    int bkgd_bright;
-    int bkgd_mode;
-    bool reactive_bkgd = false;
-    bool silent_bkgd = false;
-    float background_timeout;
-    float background_timer;
-    int single_color_mode;
-    int frgd_mode;
+    float                           anim_speed              = 100.0f;
+    int                             bkgd_bright             = 100;
+    int                             bkgd_mode               = VISUALIZER_PATTERN_ANIM_RAINBOW_SINUSOIDAL;
+    bool                            reactive_bkgd           = false;
+    bool                            silent_bkgd             = false;
+    float                           background_timeout      = 120.0f;
+    float                           background_timer        = 0.0f;
+    int                             single_color_mode       = VISUALIZER_SINGLE_COLOR_FOLLOW_FOREGROUND;
+    int                             frgd_mode               = VISUALIZER_PATTERN_STATIC_GREEN_YELLOW_RED;
 
-    int     ledstrip_sections_size  = 1;
-    int     matrix_setup_pos;
-    int     matrix_setup_size;
-    bool    ledstrip_mirror_x       = false;
-    bool    ledstrip_mirror_y       = false;
-    bool    ledstrip_single_color   = false;
-    int     ledstrip_rotate_x       = 0;
+    int                             ledstrip_sections_size  = 1;
+    int                             matrix_setup_pos        = 0;
+    int                             matrix_setup_size       = 0;
+    bool                            ledstrip_mirror_x       = false;
+    bool                            ledstrip_mirror_y       = false;
+    bool                            ledstrip_single_color   = false;
+    int                             ledstrip_rotate_x       = 0;
 
-    std::vector<char *> audio_devices;
-    float bkgd_step;
-    bool shutdown_flag;
+    std::vector<char *>             audio_devices;
+    float                           bkgd_step               = 0.0f;
+    bool                            shutdown_flag           = false;
 
-    std::vector<ZoneIndexType*> ZoneMaps;
+    std::vector<ZoneIndexType*>     ZoneMaps;
 
     AudioSettings                   audio_settings;
     Audio::AudioSettingsStruct      audio_settings_struct;
     AudioSignalProcessor            audio_signal_processor;
 
-    /*------------------*\
-    | Drawing Functions  |
-    \*------------------*/
+    /*-----------------------------------------------------*\
+    | Drawing Functions                                     |
+    \*-----------------------------------------------------*/
     void DrawSolidColor(int bright, RGBColor color, vis_pixels *pixels);
     void DrawSingleColorStatic(float amplitude, RGBColor in_color, vis_pixels *out_pixels);
     void DrawSingleColorForeground(float amplitude, vis_pixels *fg_pixels, vis_pixels *out_pixels);
@@ -276,9 +280,9 @@ private:
     void DrawVerticalBars(int bright, RGBColor * colors, int num_colors, vis_pixels *pixels);
     void DrawHorizontalBars(int bright, RGBColor * colors, int num_colors, vis_pixels *pixels);
 
-    /*-----------*\
-    | Zone Setup  |
-    \*-----------*/
+    /*-----------------------------------------------------*\
+    | Zone Setup                                            |
+    \*-----------------------------------------------------*/
     void SetupMatrixGrid(int x_count, int y_count, int * x_idx_list, int * y_idx_list);
     void SetupLinearGrid(int x_count, int * x_idx_list);
 };
