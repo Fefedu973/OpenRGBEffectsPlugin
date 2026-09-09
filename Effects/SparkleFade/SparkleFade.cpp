@@ -162,33 +162,35 @@ void SparkleFade::StepEffect(std::vector<ControllerZone*> controller_zones)
             ledInfo[i].resize(controller_zones[i]->size());
         }
 
-        if (ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
+        if((ZT == ZONE_TYPE_SINGLE)
+        || (ZT == ZONE_TYPE_LINEAR)
+        || (ZT == ZONE_TYPE_LINEAR_LOOP))
         {
             unsigned int leds_count = controller_zones[i]->leds_count();
 
-            for (unsigned int LedID = 0; LedID < leds_count; LedID++)
+            for(unsigned int LedID = 0; LedID < leds_count; LedID++)
             {
                 controller_zones[i]->SetLED(LedID, ledInfo[i][LedID].color, Brightness, Temperature, Tint);
             }
         }
 
-        else if (ZT == ZONE_TYPE_MATRIX)
+        else if((ZT == ZONE_TYPE_MATRIX)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_X)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_Y))
         {
             int cols = controller_zones[i]->matrix_map_width();
             int rows = controller_zones[i]->matrix_map_height();
 
-            for (int col_id = 0; col_id < cols; col_id++)
+            for(int col_id = 0; col_id < cols; col_id++)
             {
-                for (int row_id = 0; row_id < rows; row_id++)
+                for(int row_id = 0; row_id < rows; row_id++)
                 {
                     int idx = (row_id * cols) + col_id;
                     int LedID = controller_zones[i]->map()[idx];
                     controller_zones[i]->SetLED(LedID, ledInfo[i][LedID].color, Brightness, Temperature, Tint);
                 }
             }
-
         }
-
     }
 }
 

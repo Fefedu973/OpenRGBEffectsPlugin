@@ -172,7 +172,16 @@ void ControllerZone::SetLED(int idx, RGBColor color, int brightness, int tempera
 
 unsigned int ControllerZone::size()
 {
-    return(type() == ZONE_TYPE_MATRIX ? matrix_size() : leds_count());
+    if((type() == ZONE_TYPE_MATRIX)
+    || (type() == ZONE_TYPE_MATRIX_LOOP_X)
+    || (type() == ZONE_TYPE_MATRIX_LOOP_Y))
+    {
+        return(matrix_size());
+    }
+    else
+    {
+        leds_count();
+    }
 }
 
 unsigned int ControllerZone::start_idx()

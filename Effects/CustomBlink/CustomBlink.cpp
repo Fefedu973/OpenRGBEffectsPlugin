@@ -101,28 +101,31 @@ void CustomBlink::StepEffect(std::vector<ControllerZone*> controller_zones)
         zone_type ZT = controller_zone->type();
         int leds_count = controller_zone->leds_count();
 
-        if (ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
+        if((ZT == ZONE_TYPE_SINGLE)
+        || (ZT == ZONE_TYPE_LINEAR)
+        || (ZT == ZONE_TYPE_LINEAR_LOOP))
         {
-            for (int LedID = 0; LedID < leds_count; LedID++)
+            for(int LedID = 0; LedID < leds_count; LedID++)
             {
                 controller_zone->SetLED(LedID, GetColor(LedID, 0, leds_count, 1), Brightness, Temperature, Tint);
             }
         }
 
-        else if (ZT == ZONE_TYPE_MATRIX)
+        else if((ZT == ZONE_TYPE_MATRIX)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_X)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_Y))
         {
             int cols = controller_zone->matrix_map_width();
             int rows = controller_zone->matrix_map_height();
 
-            for (int col_id = 0; col_id < cols; col_id++)
+            for(int col_id = 0; col_id < cols; col_id++)
             {
-                for (int row_id = 0; row_id < rows; row_id++)
+                for(int row_id = 0; row_id < rows; row_id++)
                 {
                     int LedID = controller_zone->map()[((row_id * cols) + col_id)];
                     controller_zone->SetLED(LedID, GetColor(col_id, row_id, cols, rows), Brightness, Temperature, Tint);
                 }
             }
-
         }
     }
 

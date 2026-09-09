@@ -30,7 +30,9 @@ BouncingBallSimulation::BouncingBallSimulation(
     dropHeightPercent(dropHeightPercent),
     spectrumVelocity(spectrumVelocity)
 {
-    if (controllerZone->type() == ZONE_TYPE_MATRIX)
+    if((controllerZone->type() == ZONE_TYPE_MATRIX)
+    || (controllerZone->type() == ZONE_TYPE_MATRIX_LOOP_X)
+    || (controllerZone->type() == ZONE_TYPE_MATRIX_LOOP_Y))
     {
         width = controllerZone->matrix_map_width();
         height = controllerZone->matrix_map_height();
@@ -64,18 +66,23 @@ BouncingBallSimulation::BouncingBallSimulation(
 
 void BouncingBallSimulation::DetectSizesChanges()
 {
-    if (controllerZone->type() == ZONE_TYPE_MATRIX) {
+    if((controllerZone->type() == ZONE_TYPE_MATRIX)
+    || (controllerZone->type() == ZONE_TYPE_MATRIX_LOOP_X)
+    || (controllerZone->type() == ZONE_TYPE_MATRIX_LOOP_Y))
+    {
         // Manually check for on-the-fly changes in matrix width or height.
         // Width and height are not updated via slots through the UI.
         int newWidth = controllerZone->matrix_map_width();
 
-        if (width != newWidth) {
+        if(width != newWidth)
+        {
             SetWidth(newWidth);
         }
 
         int newHeight = controllerZone->matrix_map_height();
 
-        if (height != newHeight) {
+        if(height != newHeight)
+        {
             SetHeight(newHeight);
         }
     }
@@ -129,7 +136,9 @@ void BouncingBallSimulation::StepEffect()
     // New LEDs changed this frame will be old LEDs next frame
     oldLedIds.swap(newLedIds);
 
-    if (controllerZone->type() == ZONE_TYPE_MATRIX)
+    if((controllerZone->type() == ZONE_TYPE_MATRIX)
+    || (controllerZone->type() == ZONE_TYPE_MATRIX_LOOP_X)
+    || (controllerZone->type() == ZONE_TYPE_MATRIX_LOOP_Y))
     {
         // Update horizontal velocity and position of ball
         float dxp = dx + ddx * dt;

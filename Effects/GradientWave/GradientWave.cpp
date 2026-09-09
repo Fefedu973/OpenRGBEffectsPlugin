@@ -59,19 +59,21 @@ void GradientWave::StepEffect(std::vector<ControllerZone*> controller_zones)
 
     int i = 0;
 
-    for (ControllerZone* controller_zone: controller_zones)
+    for(ControllerZone* controller_zone: controller_zones)
     {
         zone_type ZT = controller_zone->type();
         int LEDCount = controller_zone->leds_count();
         bool RVRS = controller_zone->reverse;
 
-        if (ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
+        if((ZT == ZONE_TYPE_SINGLE)
+        || (ZT == ZONE_TYPE_LINEAR)
+        || (ZT == ZONE_TYPE_LINEAR_LOOP))
         {
-            for (int LedID = 0; LedID < LEDCount; LedID++)
+            for(int LedID = 0; LedID < LEDCount; LedID++)
             {
                 float GetGradientPos;
 
-                if ((Progress[i] + LedID) > LEDCount)
+                if((Progress[i] + LedID) > LEDCount)
                 {
                     GetGradientPos = (LEDCount - ( (Progress[i] + LedID) - LEDCount));
                 }
@@ -80,14 +82,14 @@ void GradientWave::StepEffect(std::vector<ControllerZone*> controller_zones)
                     GetGradientPos = (Progress[i] + LedID);
                 }
 
-                if (GetGradientPos <= 0)
+                if(GetGradientPos <= 0)
                 {
                     GetGradientPos *= -1;
                 }
 
                 int RGBCol[3];
 
-                for (int CVal = 0; CVal < 3; CVal++)
+                for(int CVal = 0; CVal < 3; CVal++)
                 {
                     RGBCol[CVal] = int(S[CVal] + (float(GetGradientPos)/float(LEDCount))*(F[CVal]-S[CVal]));
                 }
@@ -97,26 +99,28 @@ void GradientWave::StepEffect(std::vector<ControllerZone*> controller_zones)
 
             float speed_mult = LEDCount > 0 ? 0.1 * (float) LEDCount : 1.f;
 
-            if (Progress[i] < (LEDCount*2))
+            if(Progress[i] < (LEDCount*2))
             {
                 Progress[i] += speed_mult * ((float)Speed / (float)FPS);
             }
-            else if (Progress[i] >= (LEDCount*2))
+            else if(Progress[i] >= (LEDCount*2))
             {
                 Progress[i] = 0;
             }
         }
 
-        else if (ZT == ZONE_TYPE_MATRIX)
+        else if((ZT == ZONE_TYPE_MATRIX)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_X)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_Y))
         {
             int ColumnCount = controller_zone->matrix_map_width();
             int RowCount = controller_zone->matrix_map_height();
 
-            for (int ColumnID = 0; ColumnID < ColumnCount; ColumnID++)
+            for(int ColumnID = 0; ColumnID < ColumnCount; ColumnID++)
             {
                 float GetGradientPos;
 
-                if ((Progress[i] + ColumnID) > ColumnCount)
+                if((Progress[i] + ColumnID) > ColumnCount)
                 {
                     GetGradientPos = (ColumnCount - ( (Progress[i] + ColumnID) - ColumnCount));
                 }
@@ -125,30 +129,30 @@ void GradientWave::StepEffect(std::vector<ControllerZone*> controller_zones)
                     GetGradientPos = (Progress[i] + ColumnID);
                 }
 
-                if (GetGradientPos <= 0)
+                if(GetGradientPos <= 0)
                 {
                     GetGradientPos *= -1;
                 }
 
                 int RGBCol[3];
 
-                for (int CVal = 0; CVal < 3; CVal++)
+                for(int CVal = 0; CVal < 3; CVal++)
                 {
                     RGBCol[CVal] = int(S[CVal] + (float(GetGradientPos)/float(ColumnCount))*(F[CVal]-S[CVal]));
                 }
 
-                for (int RowID = 0; RowID < RowCount; RowID++)
+                for(int RowID = 0; RowID < RowCount; RowID++)
                 {
                     int LedID = controller_zone->map()[((RowID * ColumnCount) + (RVRS ? (ColumnCount - 1) - ColumnID: ColumnID ) )];
                     controller_zone->SetLED(LedID,ToRGBColor(RGBCol[0],RGBCol[1],RGBCol[2]), Brightness, Temperature, Tint);
                 }
             }
 
-            if (Progress[i] < (ColumnCount*2))
+            if(Progress[i] < (ColumnCount*2))
             {
                 Progress[i] += ((float)Speed / (float)FPS);
             }
-            else if (Progress[i] >= (ColumnCount*2))
+            else if(Progress[i] >= (ColumnCount*2))
             {
                 Progress[i] = 0;
             }

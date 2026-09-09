@@ -63,19 +63,19 @@ void RainbowWave::StepEffect(std::vector<ControllerZone*> controller_zones)
         /*----------------------------------------------------*\
         | Adjust how it applies for the specific type of zone  |
         \*----------------------------------------------------*/
-        if (ZT == ZONE_TYPE_SINGLE)
+        if(ZT == ZONE_TYPE_SINGLE)
         {
             int HUE = (Progress * Width);
             HSVVal.hue = HUE;
-            for (int LedID = 0; LedID < leds_count; LedID++)
+            for(int LedID = 0; LedID < leds_count; LedID++)
             {
                 controller_zone->SetLED(LedID, RGBColor(hsv2rgb(&HSVVal)), Brightness, Temperature, Tint);
             }
         }
-
-        else if (ZT == ZONE_TYPE_LINEAR)
+        else if((ZT == ZONE_TYPE_LINEAR)
+             || (ZT == ZONE_TYPE_LINEAR_LOOP))
         {
-            for (int LedID = 0; LedID < leds_count; LedID++)
+            for(int LedID = 0; LedID < leds_count; LedID++)
             {
                 int HUE;
                 if (RVRS) HUE = ((Progress + ( (leds_count - 1) - LedID) ) * Width);
@@ -86,17 +86,18 @@ void RainbowWave::StepEffect(std::vector<ControllerZone*> controller_zones)
                 controller_zone->SetLED(LedID, RGBColor(hsv2rgb(&HSVVal)), Brightness, Temperature, Tint);
             }
         }
-
-        else if (ZT == ZONE_TYPE_MATRIX)
+        else if((ZT == ZONE_TYPE_MATRIX)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_X)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_Y))
         {
             int ColumnCount = controller_zone->matrix_map_width();
             int RowCount = controller_zone->matrix_map_height();
 
-            for (int ColumnID = 0; ColumnID < ColumnCount; ColumnID++)
+            for(int ColumnID = 0; ColumnID < ColumnCount; ColumnID++)
             {
                 int HUE;
 
-                if (RVRS)
+                if(RVRS)
                 {
                     HUE = ((Progress + (int)( (ColumnCount - 1) - ColumnID)) * Width);
                 }
@@ -107,7 +108,7 @@ void RainbowWave::StepEffect(std::vector<ControllerZone*> controller_zones)
 
                 HSVVal.hue = HUE;
 
-                for (int RowID = 0; RowID < RowCount; RowID++)
+                for(int RowID = 0; RowID < RowCount; RowID++)
                 {
                     int LedID = controller_zone->map()[((RowID * ColumnCount) + ColumnID)];
                     controller_zone->SetLED(LedID, RGBColor(hsv2rgb(&HSVVal)), Brightness, Temperature, Tint);
@@ -116,11 +117,11 @@ void RainbowWave::StepEffect(std::vector<ControllerZone*> controller_zones)
         }
     }
 
-    if (Progress < 360)
+    if(Progress < 360)
     {
         Progress += float(float(Speed) / float(FPS));
     }
-    else if (Progress >= 360)
+    else if(Progress >= 360)
     {
         Progress = 0;
     }

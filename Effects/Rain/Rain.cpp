@@ -65,19 +65,23 @@ void Rain::StepEffect(std::vector<ControllerZone*> controller_zones)
         unsigned int w;
         unsigned int h;
 
-        if (ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
+        if((ZT == ZONE_TYPE_SINGLE)
+        || (ZT == ZONE_TYPE_LINEAR)
+        || (ZT == ZONE_TYPE_LINEAR_LOOP))
         {
             w = 1;
             h = leds_count;
 
-            for (int LedID = 0; LedID < leds_count; LedID++)
+            for(int LedID = 0; LedID < leds_count; LedID++)
             {
                 RGBColor color = GetColor(i, 0, reverse ? leds_count - LedID - 1 : LedID);
                 controller_zones[i]->SetLED(LedID, color, Brightness, Temperature, Tint);
             }
         }
 
-        else if (ZT == ZONE_TYPE_MATRIX)
+        else if((ZT == ZONE_TYPE_MATRIX)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_X)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_Y))
         {
             int cols = controller_zones[i]->matrix_map_width();
             int rows = controller_zones[i]->matrix_map_height();
@@ -85,9 +89,9 @@ void Rain::StepEffect(std::vector<ControllerZone*> controller_zones)
             w = cols;
             h = rows;
 
-            for (int col_id = 0; col_id < cols; col_id++)
+            for(int col_id = 0; col_id < cols; col_id++)
             {
-                for (int row_id = 0; row_id < rows; row_id++)
+                for(int row_id = 0; row_id < rows; row_id++)
                 {
                     int LedID = controller_zones[i]->map()[((row_id * cols) + col_id)];
                     RGBColor color = GetColor(i, col_id, reverse ? rows - row_id - 1: row_id);
@@ -104,7 +108,6 @@ void Rain::StepEffect(std::vector<ControllerZone*> controller_zones)
         RunDrops(i);
         CleanDrops(i, h);
     }
-
 }
 
 void Rain::TriggerDrop(unsigned int controller_zone_index, unsigned int w)

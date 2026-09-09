@@ -72,9 +72,11 @@ void Stack::StepEffect(std::vector<ControllerZone*> controller_zones)
         int leds_count = controller_zones[i]->leds_count();
         bool reverse = controller_zones[i]->reverse;
 
-        if (ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
+        if((ZT == ZONE_TYPE_SINGLE)
+        || (ZT == ZONE_TYPE_LINEAR)
+        || (ZT == ZONE_TYPE_LINEAR_LOOP))
         {
-            for (int LedID = 0; LedID < leds_count; LedID++)
+            for(int LedID = 0; LedID < leds_count; LedID++)
             {
                 RGBColor color = GetColor(i, reverse ? leds_count - LedID - 1 : LedID);
                 current_colors[i][LedID] = color;
@@ -82,7 +84,9 @@ void Stack::StepEffect(std::vector<ControllerZone*> controller_zones)
             }
         }
 
-        else if (ZT == ZONE_TYPE_MATRIX)
+        else if((ZT == ZONE_TYPE_MATRIX)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_X)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_Y))
         {
             int cols = controller_zones[i]->matrix_map_width();
             int rows = controller_zones[i]->matrix_map_height();
@@ -90,12 +94,12 @@ void Stack::StepEffect(std::vector<ControllerZone*> controller_zones)
             // horizontal
             if(ui->direction->currentIndex() == 0)
             {
-                for (int col_id = 0; col_id < cols; col_id++)
+                for(int col_id = 0; col_id < cols; col_id++)
                 {
                     RGBColor color = GetColor(i, reverse ? cols - col_id - 1: col_id);
                     current_colors[i][col_id] = color;
 
-                    for (int row_id = 0; row_id < rows; row_id++)
+                    for(int row_id = 0; row_id < rows; row_id++)
                     {
                         int LedID = controller_zones[i]->map()[((row_id * cols) + col_id)];
                         controller_zones[i]->SetLED(LedID, color, Brightness, Temperature, Tint);
@@ -105,12 +109,12 @@ void Stack::StepEffect(std::vector<ControllerZone*> controller_zones)
             // vertical
             else
             {
-                for (int row_id = 0; row_id < rows; row_id++)
+                for(int row_id = 0; row_id < rows; row_id++)
                 {
                     RGBColor color = GetColor(i, reverse ? rows - row_id - 1: row_id);
                     current_colors[i][row_id] = color;
 
-                    for (int col_id = 0; col_id < cols; col_id++)
+                    for(int col_id = 0; col_id < cols; col_id++)
                     {
                         int LedID = controller_zones[i]->map()[((row_id * cols) + col_id)];
                         controller_zones[i]->SetLED(LedID, color, Brightness, Temperature, Tint);

@@ -435,7 +435,9 @@ void AudioVisualizer::StepEffect(std::vector<ControllerZone*> controller_zones)
         | If matrix type and matrix mapping is valid, get X |
         | and Y count                                       |
         \*-------------------------------------------------*/
-        if(type == ZONE_TYPE_MATRIX)
+        if((type == ZONE_TYPE_MATRIX)
+        || (type == ZONE_TYPE_MATRIX_LOOP_X)
+        || (type == ZONE_TYPE_MATRIX_LOOP_Y))
         {
             x_count                                 = controller_zone->matrix_map_width();
             y_count                                 = controller_zone->matrix_map_height();
@@ -447,14 +449,17 @@ void AudioVisualizer::StepEffect(std::vector<ControllerZone*> controller_zones)
             new_index_map->x_count                  = x_count;
             new_index_map->y_count                  = y_count;
 
-            if(type == ZONE_TYPE_MATRIX)
+            if((type == ZONE_TYPE_MATRIX)
+            || (type == ZONE_TYPE_MATRIX_LOOP_X)
+            || (type == ZONE_TYPE_MATRIX_LOOP_Y))
             {
                 new_index_map->x_index              = new int[x_count];
                 new_index_map->y_index              = new int[y_count];
 
                 SetupMatrixGrid(x_count, y_count, new_index_map->x_index, new_index_map->y_index);
             }
-            else if(type == ZONE_TYPE_LINEAR)
+            else if((type == ZONE_TYPE_LINEAR)
+                 || (type == ZONE_TYPE_LINEAR_LOOP))
             {
                 new_index_map->x_index              = new int[x_count];
 
@@ -469,6 +474,8 @@ void AudioVisualizer::StepEffect(std::vector<ControllerZone*> controller_zones)
         switch(controller_zone->type())
         {
             case ZONE_TYPE_MATRIX:
+            case ZONE_TYPE_MATRIX_LOOP_X:
+            case ZONE_TYPE_MATRIX_LOOP_Y:
                 for(int y = 0; y < y_count; y++)
                 {
                     for(int x = 0; x < x_count; x++)
@@ -492,6 +499,7 @@ void AudioVisualizer::StepEffect(std::vector<ControllerZone*> controller_zones)
                 break;
 
             case ZONE_TYPE_LINEAR:
+            case ZONE_TYPE_LINEAR_LOOP:
                 for(int x = 0; x < x_count; x++)
                 {
                     controller_zone->SetLED(x, pixels_out->pixels[ROW_IDX_BAR_GRAPH][zone_index_map->x_index[x]], Brightness, Temperature, Tint);

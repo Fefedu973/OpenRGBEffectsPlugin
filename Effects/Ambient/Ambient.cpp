@@ -196,7 +196,9 @@ void Ambient::StepEffect(std::vector<ControllerZone*> controller_zones)
             unsigned int leds_count = controller_zone->leds_count();
             bool reverse = controller_zone->reverse;
 
-            if(controller_zone->type() == ZONE_TYPE_SINGLE || controller_zone->type() == ZONE_TYPE_LINEAR)
+            if((controller_zone->type() == ZONE_TYPE_SINGLE)
+            || (controller_zone->type() == ZONE_TYPE_LINEAR)
+            || (controller_zone->type() == ZONE_TYPE_LINEAR_LOOP))
             {
                 unsigned int            width   = controller_zone->leds_count();
                 unsigned int            height  = 1;
@@ -212,7 +214,9 @@ void Ambient::StepEffect(std::vector<ControllerZone*> controller_zones)
                 }
 
             }
-            else if(controller_zone->type() == ZONE_TYPE_MATRIX)
+            else if((controller_zone->type() == ZONE_TYPE_MATRIX)
+                 || (controller_zone->type() == ZONE_TYPE_MATRIX_LOOP_X)
+                 || (controller_zone->type() == ZONE_TYPE_MATRIX_LOOP_Y))
             {
                 unsigned int            width   = controller_zone->matrix_map_width();
                 unsigned int            height  = controller_zone->matrix_map_height();

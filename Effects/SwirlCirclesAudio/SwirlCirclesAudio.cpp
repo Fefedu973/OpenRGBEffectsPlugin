@@ -125,7 +125,9 @@ void SwirlCirclesAudio::StepEffect(std::vector<ControllerZone*> controller_zones
         bool reverse = controller_zone->reverse;
         zone_type ZT = controller_zone->type();
 
-        if(ZT == ZONE_TYPE_SINGLE || ZT == ZONE_TYPE_LINEAR)
+        if((ZT == ZONE_TYPE_SINGLE)
+        || (ZT == ZONE_TYPE_LINEAR)
+        || (ZT == ZONE_TYPE_LINEAR_LOOP))
         {
             unsigned int width = controller_zone->leds_count();
             unsigned int height = 1;
@@ -143,7 +145,9 @@ void SwirlCirclesAudio::StepEffect(std::vector<ControllerZone*> controller_zones
             }
 
         }
-        else if(ZT == ZONE_TYPE_MATRIX)
+        else if((ZT == ZONE_TYPE_MATRIX)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_X)
+             || (ZT == ZONE_TYPE_MATRIX_LOOP_Y))
         {
             unsigned int width = controller_zone->matrix_map_width();
             unsigned int height = controller_zone->matrix_map_height();
@@ -164,7 +168,6 @@ void SwirlCirclesAudio::StepEffect(std::vector<ControllerZone*> controller_zones
                     controller_zone->SetLED(led_num,color, Brightness, Temperature, Tint);
                 }
             }
-
         }
     }
 
