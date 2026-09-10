@@ -145,7 +145,11 @@ void RectangleSelectorOverlay::mousePressEvent(QMouseEvent* event) {
     {
         if(event->button() == Qt::LeftButton)
         {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            QPoint mouse_global = {(int)event->globalPosition().x(), (int)event->globalPosition().y()};
+#else
             QPoint mouse_global = {(int)event->screenPos().x(), (int)event->screenPos().y()};
+#endif
 
             selection_rect = QRect(mouse_global, mouse_global);
             QRect normalized = MapToCurrentScreen(selection_rect.normalized());
@@ -168,7 +172,11 @@ void RectangleSelectorOverlay::mouseMoveEvent(QMouseEvent* event) {
     {
         if(rectangle_selector != NULL)
         {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            QPoint mouse_global = {(int)event->globalPosition().x(), (int)event->globalPosition().y()};
+#else
             QPoint mouse_global = {(int)event->screenPos().x(), (int)event->screenPos().y()};
+#endif
             selection_rect.setBottomRight(mouse_global);
             QRect normalized = MapToCurrentScreen(selection_rect.normalized());
             emit SelectionUpdated(normalized);
