@@ -180,7 +180,7 @@ unsigned int ControllerZone::size()
     }
     else
     {
-        leds_count();
+        return(leds_count());
     }
 }
 
