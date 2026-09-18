@@ -389,7 +389,7 @@ void OpenRGBEffectsPlugin::UpdateControllers()
         \*-------------------------------------------------*/
         for(std::size_t zone_idx = 0; zone_idx < controller->GetZoneCount(); zone_idx++)
         {
-            if((controller->GetZoneSegmentCount(zone_idx) != 0) && (controller->GetZoneType(zone_idx == ZONE_TYPE_SEGMENTED)))
+            if((controller->GetZoneSegmentCount(zone_idx) != 0) && (controller->GetZoneType(zone_idx) == ZONE_TYPE_SEGMENTED))
             {
                 for(std::size_t segment_idx = 0; segment_idx < controller->GetZoneSegmentCount(zone_idx); segment_idx++)
                 {
