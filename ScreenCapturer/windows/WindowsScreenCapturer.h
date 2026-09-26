@@ -10,15 +10,17 @@
 #pragma once
 
 #include "ScreenCapturer.h"
+#include <atomic>
+#include <condition_variable>
+#include <cstdint>
+#include <mutex>
 #include <thread>
-#include <QScreen>
-#include <QPixmap>
 
 class WindowsScreenCapturer : public ScreenCapturer
 {
 public:
     WindowsScreenCapturer();
-    ~WindowsScreenCapturer();
+    ~WindowsScreenCapturer() override;
 
     void Start() override;
     void Stop() override;
@@ -26,9 +28,11 @@ public:
 
 private:
     void CaptureThreadFunction();
-    std::thread* capture_thread = nullptr;
-    bool continue_capture = false;
-    QScreen* screen = nullptr;
-
-    QPixmap grabWindow(quintptr window) const;
+    std::thread capture_thread;
+    std::atomic<bool> continue_capture{false};
+    std::mutex lifecycle_mutex;
+    std::mutex target_mutex;
+    std::condition_variable wake;
+    QString device_name;
+    std::atomic<std::uint64_t> target_revision{0};
 };

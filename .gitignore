@@ -8,6 +8,8 @@ OpenRGB-x86_64.AppImage
 .qmake.stash
 .vscode
 build
+OpenRGBEffectsPlugin.json
+__pycache__/
 Ship
 libORGBEffectPlugin.so*
 *.qm

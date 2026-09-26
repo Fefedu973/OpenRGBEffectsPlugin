@@ -122,14 +122,16 @@ PRE_TARGETDEPS         += prebuild_json_target
 #-----------------------------------------------------------------------------------------------#
 # OpenRGB Plugin SDK                                                                            #
 #-----------------------------------------------------------------------------------------------#
+isEmpty(OPENRGB_ROOM_ROOT): OPENRGB_ROOM_ROOT = $$PWD/OpenRGB
+INCLUDEPATH += $$OPENRGB_ROOM_ROOT
 INCLUDEPATH +=                                                                                  \
-    OpenRGB                                                                                     \
-    OpenRGB/dependencies/json                                                                   \
-    OpenRGB/qt                                                                                  \
-    OpenRGB/RGBController                                                                       \
+    $$OPENRGB_ROOM_ROOT                                                                         \
+    $$OPENRGB_ROOM_ROOT/dependencies/json                                                       \
+    $$OPENRGB_ROOM_ROOT/qt                                                                      \
+    $$OPENRGB_ROOM_ROOT/RGBController                                                           \
 
 SOURCES +=                                                                                      \
-    OpenRGB/qt/hsv.cpp                                                                          \
+    $$OPENRGB_ROOM_ROOT/qt/hsv.cpp                                                               \
 
 #-----------------------------------------------------------------------------------------------#
 # QCodeEditor                                                                                   #
@@ -541,6 +543,7 @@ TRANSLATIONS +=                                                                 
 # Windows  Configuration                                                                        #
 #-----------------------------------------------------------------------------------------------#
 win32:CONFIG += QTPLUGIN c++17
+win32:LIBS += -ld3d11 -ldxgi -ladvapi32
 
 win32:CONFIG(debug, debug|release) {
     win32:DESTDIR = debug

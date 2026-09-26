@@ -9,13 +9,13 @@
 
 #include "OpenRGBEffectsPlugin.h"
 #include "ShaderRenderer.h"
+#include <algorithm>
 
 std::mutex ShaderRenderer::context_lock;
 
 ShaderRenderer::ShaderRenderer(QObject *parent) :
     QObject(parent),
-    shader_program(new ShaderProgram),
-    clock(new std::chrono::steady_clock())
+    shader_program(new ShaderProgram)
 {}
 
 void ShaderRenderer::Start()
@@ -45,7 +45,25 @@ void ShaderRenderer::Stop()
 
 void ShaderRenderer::SetFPS(int value)
 {
-    FPS = value;
+    FPS = std::clamp(value,1,240);
+}
+
+void ShaderRenderer::Resize(int width, int height)
+{
+    std::lock_guard<std::mutex> guard(program_lock);
+    shader_program->Resize(width,height);
+}
+
+void ShaderRenderer::UpdateUniforms(float time, const float* audio)
+{
+    std::lock_guard<std::mutex> guard(program_lock);
+    uniforms.iTime = time;
+    if(audio)
+    {
+        std::copy_n(audio, audio_values.size(), audio_values.begin());
+        uniforms.iAudio = audio_values.data();
+    }
+    else uniforms.iAudio = nullptr;
 }
 
 void ShaderRenderer::RendererThreadFunction()
@@ -57,8 +75,17 @@ void ShaderRenderer::RendererThreadFunction()
 
     context = new QOpenGLContext();
     context->setFormat(surface->format());
-    context->create();
-    context->makeCurrent(surface);
+    if(!context->create() || !context->makeCurrent(surface))
+    {
+        emit Log(QStringLiteral("Unable to create the OpenGL rendering context."));
+        delete context;
+        delete surface;
+        context = nullptr;
+        surface = nullptr;
+        running = false;
+        context_lock.unlock();
+        return;
+    }
 
     QOpenGLFunctions* functions = context->functions();
 
@@ -74,7 +101,7 @@ void ShaderRenderer::RendererThreadFunction()
 
     while(running)
     {
-        TCount start = clock->now();
+        TCount start = std::chrono::steady_clock::now();
 
         // DRAW program
         program_lock.lock();
@@ -96,11 +123,11 @@ void ShaderRenderer::RendererThreadFunction()
         program_lock.unlock();
         // .....
 
-        TCount end = clock->now();
+        TCount end = std::chrono::steady_clock::now();
 
         int duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
-        int FPSDelay = 1000000 / (float)FPS;
+        int FPSDelay = 1000000 / FPS.load();
         int delta = FPSDelay - duration;
 
         if(delta > 0)

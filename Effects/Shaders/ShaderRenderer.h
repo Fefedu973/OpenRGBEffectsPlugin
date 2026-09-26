@@ -8,6 +8,8 @@
 \*---------------------------------------------------------*/
 
 #pragma once
+#include <atomic>
+#include <array>
 
 #include <QObject>
 #include <QImage>
@@ -22,7 +24,7 @@
 #include <mutex>
 #include "ShaderProgram.h"
 
-typedef std::chrono::time_point<std::chrono::steady_clock,std::chrono::duration<long long, std::ratio<1,10000000000>>> TCount;
+typedef std::chrono::steady_clock::time_point TCount;
 
 class ShaderRenderer : public QObject
 {
@@ -35,15 +37,17 @@ public:
     void Start();
     void Stop();
     void SetFPS(int);
+    void Resize(int width, int height);
+    void UpdateUniforms(float time, const float* audio);
 
     bool isRunning();
 
     ShaderProgram* Program();
     void SetProgram(ShaderProgram*);
 
-    Uniforms uniforms;
-
 private:
+    Uniforms uniforms;
+    std::array<float, 256> audio_values{};
     std::thread* thread = nullptr;
     void RendererThreadFunction();
 
@@ -51,11 +55,9 @@ private:
     QOffscreenSurface* surface = nullptr;
     QOpenGLContext* context = nullptr;
 
-    int FPS = 60;
+    std::atomic<int> FPS{60};
 
-    bool running = false;
-
-    std::chrono::steady_clock* clock;
+    std::atomic<bool> running{false};
 
     std::mutex program_lock;
 

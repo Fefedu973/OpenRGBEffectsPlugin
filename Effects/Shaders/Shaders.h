@@ -18,6 +18,12 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <mutex>
+#include <memory>
+#include <cstdint>
+#if defined(_WIN32) && __has_include("FrameSurface/FrameSurface.h")
+#include "FrameSurface/FrameSurface.h"
+#define SHADERS_HAS_FRAME_SURFACE 1
+#endif
 #include <QFile>
 #include <QMessageBox>
 #include <QDirIterator>
@@ -27,6 +33,7 @@
 #include "ShaderRenderer.h"
 #include "GLSLCodeEditor.h"
 #include "ShaderProgram.h"
+#include "CanvasRouting.h"
 
 namespace Ui {
 class Shaders;
@@ -51,6 +58,7 @@ public:
 
     void EffectState(bool) override;
     void SetFPS(unsigned int) override;
+    void OnControllerZonesListChanged(std::vector<ControllerZone*>) override;
 
 
 private slots:
@@ -85,6 +93,23 @@ private:
     unsigned int current_shader_idx = 0;
     bool show_rendering = false;
     std::mutex image_mutex;  
+    uint64_t image_sequence = 0;
+    uint64_t preview_sequence = 0;
+    uint64_t published_sequence = 0;
+    float published_brightness = -1;
+    int published_temperature = 0, published_tint = 0;
+    bool publish_frame = false;
+    std::string frame_channel = "room-shaders";
+    std::shared_ptr<const json> zone_regions = std::make_shared<const json>(json::array());
+    std::uint64_t plan_revision = 0;
+    effect_canvas::LedPlans led_plans;
+    effect_canvas::Router image_router;
+#ifdef SHADERS_HAS_FRAME_SURFACE
+    std::mutex publication_mutex;
+    bool publication_running = false;
+    std::unique_ptr<room_surface::Publisher> frame_publisher;
+    std::string publisher_channel;
+#endif
     bool use_audio = false;
     bool invert_time = false;
 

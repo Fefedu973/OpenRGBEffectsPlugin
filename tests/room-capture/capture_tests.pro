@@ -1,0 +1,11 @@
+QT += core gui
+QT -= widgets
+CONFIG += console c++17
+CONFIG -= app_bundle debug_and_release
+TEMPLATE = app
+TARGET = capture-tests
+DEFINES += WIN32_LEAN_AND_MEAN NOMINMAX
+INCLUDEPATH += ../../ScreenCapturer ../../ScreenCapturer/windows
+SOURCES += test_capture.cpp ../../ScreenCapturer/windows/WindowsScreenCapturer.cpp
+HEADERS += ../../ScreenCapturer/ScreenCapturer.h ../../ScreenCapturer/windows/WindowsScreenCapturer.h
+win32:LIBS += -ld3d11 -ldxgi -lgdi32 -luser32

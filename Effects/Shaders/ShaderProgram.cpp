@@ -8,6 +8,7 @@
 \*---------------------------------------------------------*/
 
 #include "ShaderProgram.h"
+#include "ShaderCanvas.h"
 
 ShaderProgram::ShaderProgram()
 {    
@@ -89,6 +90,7 @@ QImage ShaderProgram::Image()
 
 void ShaderProgram::Resize(int width, int height)
 {
+    if(width <= 0 || height <= 0 || !ShaderCanvas::ValidSize(width,height)) return;
     this->width = width;
     this->height = height;
 
@@ -131,8 +133,7 @@ ShaderProgram* ShaderProgram::FromJSON(json j)
     prog->main_pass = ShaderPass::FromJSON(j["main_pass"]);
 
     prog->version = j["version"];
-    prog->width = j["width"];
-    prog->height = j["height"];
+    prog->Resize(j["width"], j["height"]);
 
     for(json pass_json: j["passes"])
     {

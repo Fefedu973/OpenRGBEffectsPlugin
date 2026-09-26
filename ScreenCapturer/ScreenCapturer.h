@@ -13,6 +13,7 @@
 #include <QString>
 #include <QImage>
 #include <QRect>
+#include <atomic>
 
 enum ScreenCapturerError {
     Cancelled,
@@ -27,7 +28,7 @@ public:
     ScreenCapturer(QObject* parent = nullptr): QObject(parent){};
     ~ScreenCapturer() {};
 
-    void SetFrameRate(unsigned int value) {framerate = value;};
+    void SetFrameRate(unsigned int value) {framerate.store(value ? value : 1, std::memory_order_relaxed);};
 
     virtual void Init(const QString& restore_token = "", bool auto_start = false) { (void)restore_token; (void)auto_start; };
     virtual void SetToken(const QString& restore_token = "") { (void)restore_token; };
@@ -36,7 +37,7 @@ public:
     virtual void SetScreen(int) {};
 
 protected:
-    unsigned int framerate = 60;
+    std::atomic<unsigned int> framerate{60};
 
 signals:
     void OnStarted();

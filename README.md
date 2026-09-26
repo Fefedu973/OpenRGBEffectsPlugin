@@ -1,5 +1,8 @@
 # <img src="OpenRGBEffectsPlugin.png" width="48" height="48" style="vertical-align: middle;"/> OpenRGB Effects Plugin
 
+**Room development fork:** [ROOM.md](ROOM.md) documents the high-resolution
+Ambient/Shaders paths and generic image output integration with OpenRGB Room.
+
 [![Pipeline Status](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/badges/master/pipeline.svg)](https://gitlab.com/OpenRGBDevelopers/OpenRGBEffectsPlugin/-/commits/master)
 
 Synchronize your [OpenRGB](https://gitlab.com/CalcProgrammer1/OpenRGB) lighting with a wide variety of customizable effects including audio visualizations, screen mirroring (Ambilight), OpenGL shaders, and many more.

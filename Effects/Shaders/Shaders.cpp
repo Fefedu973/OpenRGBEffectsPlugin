@@ -10,10 +10,13 @@
 #include <QDesktopServices>
 #include <QInputDialog>
 #include <QUrl>
+#include <QTimer>
+#include <QSignalBlocker>
 #include "Audio/AudioManager.h"
 #include "OpenRGBEffectSettings.h"
 #include "OpenRGBEffectsPlugin.h"
 #include "Shaders.h"
+#include "ShaderCanvas.h"
 
 REGISTER_EFFECT(Shaders);
 
@@ -42,12 +45,38 @@ Shaders::Shaders(QWidget *parent) :
         shader_renderer->SetProgram(program);
     });
 
-    connect(shader_renderer, &ShaderRenderer::Image, [this](const QImage& image){
-        image_mutex.lock();
+    connect(shader_renderer, &ShaderRenderer::Image, this, [this](const QImage& image){
+        std::lock_guard<std::mutex> guard(image_mutex);
         this->image = image;
-        QMetaObject::invokeMethod(ui->preview, "setPixmap", Qt::QueuedConnection, Q_ARG(QPixmap, QPixmap::fromImage(image)));
-        image_mutex.unlock();
+        ++image_sequence;
+    }, Qt::DirectConnection);
+
+    // A single GUI timer consumes the latest frame. Hidden previews do no work,
+    // and a busy GUI cannot accumulate full-resolution pixmaps in its event queue.
+    auto* preview_timer = new QTimer(this);
+    preview_timer->setInterval(67);
+    connect(preview_timer, &QTimer::timeout, this, [this]{
+        if(!ui->preview->isVisible()) return;
+        QImage latest;
+        {
+            std::lock_guard<std::mutex> guard(image_mutex);
+            if(image_sequence == preview_sequence) return;
+            preview_sequence = image_sequence;
+            latest = image;
+        }
+        if(!latest.isNull()) ui->preview->setPixmap(QPixmap::fromImage(latest.scaled(640,360,Qt::KeepAspectRatio,Qt::FastTransformation)));
     });
+    preview_timer->start();
+    connect(ui->publish_frame, &QCheckBox::toggled, this, [this](bool enabled){
+        std::lock_guard<std::mutex> guard(image_mutex); publish_frame = enabled;
+    });
+    connect(ui->frame_channel, &QLineEdit::textChanged, this, [this](const QString& value){
+        std::lock_guard<std::mutex> guard(image_mutex); frame_channel = value.toStdString();
+    });
+#ifndef SHADERS_HAS_FRAME_SURFACE
+    ui->publish_frame->setEnabled(false);
+    ui->publish_frame->setToolTip(tr("Requires the Windows OpenRGB Room image-surface headers."));
+#endif
 
     connect(shader_renderer, &ShaderRenderer::Log, editor, &GLSLCodeEditor::SetLog);
 
@@ -105,6 +134,7 @@ Shaders::Shaders(QWidget *parent) :
 
 Shaders::~Shaders()
 {
+    shader_renderer->Stop();
     delete ui;
 }
 
@@ -132,6 +162,14 @@ void Shaders::SetFPS(unsigned int value)
 void Shaders::EffectState(bool state)
 {
     EffectEnabled = state;
+    image_router.SetRunning(state);
+#ifdef SHADERS_HAS_FRAME_SURFACE
+    {
+        std::lock_guard<std::mutex> guard(publication_mutex);
+        publication_running = state;
+        if(!state) { frame_publisher.reset(); published_sequence = 0; }
+    }
+#endif
 
     if(state)
     {
@@ -171,7 +209,7 @@ void Shaders::StopAudio()
 
 void Shaders::Resize()
 {
-    shader_renderer->Program()->Resize(width, height);
+    shader_renderer->Resize(width, height);
 }
 
 void Shaders::StepEffect(std::vector<ControllerZone*> controller_zones)
@@ -190,8 +228,8 @@ void Shaders::StepEffect(std::vector<ControllerZone*> controller_zones)
         return;
     }
 
-    shader_renderer->uniforms.iTime = invert_time ? - time : time;
-    shader_renderer->uniforms.iAudio = (float*) audio_signal_processor.Data().fft_fltr;
+    shader_renderer->UpdateUniforms(invert_time ? -time : time,
+                                   use_audio ? (float*)audio_signal_processor.Data().fft_fltr : nullptr);
 
     image_mutex.lock();
 
@@ -201,51 +239,67 @@ void Shaders::StepEffect(std::vector<ControllerZone*> controller_zones)
         return;
     }
 
-    QImage copy = image.copy();
+    QImage copy = image;
+    const uint64_t sequence = image_sequence;
+    const bool publish = publish_frame;
+    const std::string channel = frame_channel;
+    const auto regions = zone_regions;
+    const auto revision = plan_revision;
 
     image_mutex.unlock();
 
-    for(ControllerZone* controller_zone : controller_zones)
+#ifdef SHADERS_HAS_FRAME_SURFACE
     {
-        zone_type ZT = controller_zone->type();
-
-        if((ZT == ZONE_TYPE_SINGLE)
-        || (ZT == ZONE_TYPE_LINEAR)
-        || (ZT == ZONE_TYPE_LINEAR_LOOP))
+        std::lock_guard<std::mutex> publication_guard(publication_mutex);
+        if(publish && publication_running)
         {
-            unsigned int width = controller_zone->leds_count();
-            unsigned int height = 1;
-
-            QImage scaled = copy.scaled(width, height);
-
-            for(unsigned int i = 0; i < width; i++)
+            try
             {
-                QColor color = scaled.pixelColor(i, 0);
-                controller_zone->SetLED(i, ColorUtils::fromQColor(color), Brightness, Temperature, Tint);
-            }
-
-        }
-        else if((ZT == ZONE_TYPE_MATRIX)
-             || (ZT == ZONE_TYPE_MATRIX_LOOP_X)
-             || (ZT == ZONE_TYPE_MATRIX_LOOP_Y))
-        {
-            unsigned int width = controller_zone->matrix_map_width();
-            unsigned int height = controller_zone->matrix_map_height();
-
-            QImage scaled = copy.scaled(width, height);
-
-            for(unsigned int h = 0; h < height; h++)
-            {
-                for(unsigned int w = 0; w <  width; w++)
+                if(!frame_publisher || publisher_channel != channel)
                 {
-                    QColor color = scaled.pixelColor(w, h);
-
-                    unsigned int led_num = controller_zone->map()[h * width + w];
-                    controller_zone->SetLED(led_num, ColorUtils::fromQColor(color), Brightness, Temperature, Tint);
+                    frame_publisher.reset();
+                    frame_publisher = std::make_unique<room_surface::Publisher>(channel);
+                    publisher_channel = channel;
+                    published_sequence = 0;
+                    if(!frame_publisher->IsOpen()) LOG_WARNING("[Shaders] FrameSurface: %s", frame_publisher->LastError().c_str());
+                }
+                if(frame_publisher->IsOpen() && (sequence != published_sequence || Brightness != published_brightness ||
+                   Temperature != published_temperature || Tint != published_tint))
+                {
+                    image_router.frame.Update(copy, sequence, Brightness, Temperature, Tint);
+                    const auto& output = image_router.frame;
+                    if(output.pixels && frame_publisher->PublishBGRA(output.pixels->data(), output.pixels->size(), output.width, output.height, output.stride))
+                    {
+                        published_sequence=sequence; published_brightness=Brightness;
+                        published_temperature=Temperature; published_tint=Tint;
+                    }
                 }
             }
+            catch(const std::exception&) { frame_publisher.reset(); }
+        }
+        else frame_publisher.reset();
+    }
+#else
+    (void)publish; (void)channel;
+#endif
+
+    for(ControllerZone* zone : controller_zones)
+    {
+        const auto region = effect_canvas::RegionFor(zone, *regions);
+        if(image_router.Route(zone,copy,sequence,Brightness,Temperature,Tint,region)) continue;
+        const auto& samples = led_plans.Get(zone,revision,region);
+        for(const auto& sample : samples)
+        {
+            const QRgb color = effect_canvas::SamplePixel(copy,sample);
+            zone->SetLED(sample.led,ToRGBColor(qRed(color),qGreen(color),qBlue(color)),Brightness,Temperature,Tint);
         }
     }
+}
+
+void Shaders::OnControllerZonesListChanged(std::vector<ControllerZone*>)
+{
+    std::lock_guard<std::mutex> guard(image_mutex);
+    ++plan_revision;
 }
 
 /*-----------------------------------------------*\
@@ -319,12 +373,16 @@ void Shaders::on_shaders_currentIndexChanged(int idx)
 
 void Shaders::on_width_valueChanged(int value)
 {
+    if(!ShaderCanvas::ValidSize(value,height))
+    { QSignalBlocker blocker(ui->width); ui->width->setValue(width); return; }
     width = value;
     Resize();
 }
 
 void Shaders::on_height_valueChanged(int value)
 {
+    if(!ShaderCanvas::ValidSize(width,value))
+    { QSignalBlocker blocker(ui->height); ui->height->setValue(height); return; }
     height = value;
     Resize();
 }
@@ -433,6 +491,11 @@ void Shaders::on_open_shaders_folder_clicked()
 \*-----------------------------------------------*/
 void Shaders::LoadCustomSettings(json Settings)
 {
+    if(!Settings.is_object()) return;
+    if(Settings.contains("publish_frame") && Settings["publish_frame"].is_boolean())
+        ui->publish_frame->setChecked(Settings["publish_frame"]);
+    if(Settings.contains("frame_channel") && Settings["frame_channel"].is_string())
+        ui->frame_channel->setText(QString::fromStdString(Settings["frame_channel"]));
     if(Settings.contains("shader_name"))
         ui->shaders->setCurrentText(QString::fromStdString(Settings["shader_name"]));
 
@@ -442,11 +505,27 @@ void Shaders::LoadCustomSettings(json Settings)
         editor->SetProgram(shader_renderer->Program());
     }
 
-    if(Settings.contains("width"))
-        ui->width->setValue(Settings["width"]);
-
-    if(Settings.contains("height"))
-        ui->height->setValue(Settings["height"]);
+    // Validate and install the pair atomically; the previous height must not
+    // reject a valid new width during a wide-to-tall profile change.
+    try
+    {
+        const int new_width = Settings.value("width", int(width));
+        const int new_height = Settings.value("height", int(height));
+        if(new_width > 0 && new_height > 0 && ShaderCanvas::ValidSize(new_width,new_height))
+        {
+            const QSignalBlocker width_blocker(ui->width), height_blocker(ui->height);
+            width = new_width; height = new_height;
+            ui->width->setValue(width); ui->height->setValue(height);
+            Resize();
+        }
+    }
+    catch(const json::exception&) { LOG_WARNING("[Shaders] Ignoring malformed canvas dimensions"); }
+    {
+        auto valid = effect_canvas::ValidRegions(Settings.value("zone_regions",json::array()));
+        std::lock_guard<std::mutex> guard(image_mutex);
+        zone_regions = std::make_shared<const json>(std::move(valid));
+        ++plan_revision;
+    }
 
     if(Settings.contains("show_rendering"))
         ui->show_rendering->setChecked(Settings["show_rendering"]);
@@ -472,6 +551,9 @@ json Shaders::SaveCustomSettings()
     settings["shader_program"]   = shader_renderer->Program()->ToJSON();
     settings["width"]            = width;
     settings["height"]           = height;
+    settings["publish_frame"]    = publish_frame;
+    settings["frame_channel"]    = frame_channel;
+    { std::lock_guard<std::mutex> guard(image_mutex); settings["zone_regions"] = *zone_regions; }
     settings["show_rendering"]   = show_rendering;
     settings["invert_time"]      = invert_time;
     settings["use_audio"]        = use_audio;
