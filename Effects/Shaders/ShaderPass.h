@@ -19,6 +19,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLTexture>
 #include <thread>
+#include <array>
 #include <nlohmann/json.hpp>
 #include "ShaderPassData.h"
 
@@ -28,6 +29,7 @@ struct Uniforms
 {
     float iTime = 0.f;
     float* iAudio = nullptr;
+    std::array<float,4> iMusic{0.0f,0.0f,0.54f,0.0f};
 };
 
 class ShaderPass

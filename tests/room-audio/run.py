@@ -9,6 +9,7 @@ p.add_argument('--qt', type=Path, required=True)
 p.add_argument('--openrgb-root', type=Path, required=True)
 p.add_argument('--profile', type=Path, required=True)
 p.add_argument('--output', type=Path, help='Separate evidence directory for a preset variant')
+p.add_argument('--room-pulse', action='store_true', help='Test the Room Pulse layout and onset uniforms')
 a = p.parse_args()
 a.qt = a.qt.resolve()
 a.openrgb_root = a.openrgb_root.resolve()
@@ -23,10 +24,14 @@ subprocess.run(common+['/I'+str(repo),str(Path(__file__).with_name('audio_tests.
                       '/Fo:'+str(out/'audio_tests.obj'),'/Fe:'+str(out/'audio_tests.exe'),
                       '/link','ole32.lib','propsys.lib'],check=True)
 subprocess.run([str(out/'audio_tests.exe')],check=True,timeout=10,env=env)
+if a.room_pulse:
+    subprocess.run(common+['/I'+str(repo/'Effects/Shaders'),str(Path(__file__).with_name('music_envelope_tests.cpp')),
+                          '/Fo:'+str(out/'music_envelope_tests.obj'),'/Fe:'+str(out/'music_envelope_tests.exe')],check=True,cwd=out)
+    subprocess.run([str(out/'music_envelope_tests.exe')],check=True,timeout=5,env=env)
 includes = [a.qt/'include',a.qt/'include/QtCore',a.qt/'include/QtGui',a.qt/'include/QtOpenGL',
             a.openrgb_root/'dependencies/json',a.openrgb_root/'RGBController',repo/'Effects/Shaders']
 subprocess.run(common+['/I'+str(path) for path in includes]+
-               [str(Path(__file__).with_name('music_shader_tests.cpp')),str(repo/'Effects/Shaders/ShaderPass.cpp'),
+               [str(Path(__file__).with_name('room_pulse_shader_tests.cpp' if a.room_pulse else 'music_shader_tests.cpp')),str(repo/'Effects/Shaders/ShaderPass.cpp'),
                 str(repo/'Effects/Shaders/ShaderProgram.cpp'),'/Fo:'+str(out)+os.sep,
                 '/Fe:'+str(out/'music_shader_tests.exe'),'/link','/LIBPATH:'+str(a.qt/'lib'),
                 'Qt6Core.lib','Qt6Gui.lib','Qt6OpenGL.lib','opengl32.lib'],check=True,cwd=out)

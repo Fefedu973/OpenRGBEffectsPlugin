@@ -23,6 +23,7 @@
 #include <thread>
 #include <mutex>
 #include "ShaderProgram.h"
+#include "MusicEnvelope.h"
 
 typedef std::chrono::steady_clock::time_point TCount;
 
@@ -48,6 +49,7 @@ public:
 private:
     Uniforms uniforms;
     std::array<float, 256> audio_values{};
+    MusicEnvelope music_envelope;
     std::thread* thread = nullptr;
     void RendererThreadFunction();
 

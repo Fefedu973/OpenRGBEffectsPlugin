@@ -34,15 +34,20 @@ def replace_shader(template, shader, detail='detailed'):
     return result
 
 
-def make_profile(template, shader, controller_name, audio_device=-1, detail='detailed'):
+def make_profile(template, shader, controller_name, audio_device=-1, detail='detailed', preset='tri-band'):
     result = replace_shader(template, shader, detail)
     effects = result['plugins']['OpenRGB Effects Plugin']['Effects']
     effect = effects[0]
     if len(effect['ControllerZones']) != 1:
         raise ValueError('Expected one explicit canvas identity')
     effect['ControllerZones'][0]['name'] = controller_name
-    result.update(profile_name='Music - Tri Band', controllers=[])
-    effect.update(CustomName='Tri Band: spectrum, pulse surfaces + strip meters', AutoStart=False,
+    if preset not in ('tri-band', 'room-pulse'):
+        raise ValueError('Unknown music preset')
+    profile_name = 'Music - Room Pulse' if preset == 'room-pulse' else 'Music - Tri Band'
+    result.update(profile_name=profile_name, controllers=[])
+    if 'OpenRGB Visual Map Plugin' in result['plugins']:
+        result['plugins']['OpenRGB Visual Map Plugin']['active_map'] = controller_name
+    effect.update(CustomName='Room Pulse' if preset == 'room-pulse' else 'Tri Band: spectrum, pulse surfaces + strip meters', AutoStart=False,
                   SelectAll=False, FPS=30, Speed=1000)
     settings = effect['CustomSettings']
     settings.update(width=800, height=500, use_audio=True, publish_frame=False,
@@ -60,18 +65,22 @@ def make_profile(template, shader, controller_name, audio_device=-1, detail='det
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--identity-template', type=Path, required=True)
-    parser.add_argument('--controller-name', default='Music - Tri Band.json')
+    parser.add_argument('--controller-name')
+    parser.add_argument('--preset', choices=('tri-band', 'room-pulse'), default='tri-band')
     parser.add_argument('--audio-device', type=int, default=-1)
     parser.add_argument('--detail', choices=('detailed', 'soft'), default='detailed')
     parser.add_argument('--shader-only', action='store_true',
                         help='Preserve every profile setting except the embedded fragment')
     parser.add_argument('--out', type=Path, required=True)
     args = parser.parse_args()
-    shader = Path(__file__).resolve().parents[1]/'shaders/room-tri-band.fs'
+    if args.preset == 'room-pulse' and args.detail != 'detailed':
+        parser.error('Room Pulse uses its own control block; --detail soft applies to tri-band only')
+    shader = Path(__file__).resolve().parents[1]/('shaders/room-pulse.fs' if args.preset == 'room-pulse' else 'shaders/room-tri-band.fs')
+    controller_name = args.controller_name or ('Music - Room Pulse.json' if args.preset == 'room-pulse' else 'Music - Tri Band.json')
     template = json.loads(args.identity_template.read_bytes())
     profile = (replace_shader(template, shader.read_text(), args.detail) if args.shader_only
-               else make_profile(template, shader.read_text(), args.controller_name,
-                                 args.audio_device, args.detail))
+               else make_profile(template, shader.read_text(), controller_name,
+                                 args.audio_device, args.detail, args.preset))
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open('x', encoding='utf-8') as file:
         json.dump(profile, file, indent=2, ensure_ascii=False)

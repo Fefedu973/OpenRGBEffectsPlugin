@@ -53,6 +53,16 @@ class ProfileTest(unittest.TestCase):
         effects.append(copy.deepcopy(effects[0]))
         with self.assertRaises(ValueError): music.replace_shader(self.template, SHADER)
 
+    def test_room_pulse_has_consistent_map_and_name(self):
+        shader = (ROOT/'shaders/room-pulse.fs').read_text()
+        result = music.make_profile(self.template, shader, 'Music - Room Pulse.json', 2147483647, preset='room-pulse')
+        effect = result['plugins']['OpenRGB Effects Plugin']['Effects'][0]
+        self.assertEqual(result['profile_name'], 'Music - Room Pulse')
+        self.assertEqual(effect['CustomName'], 'Room Pulse')
+        self.assertEqual(result['plugins']['OpenRGB Visual Map Plugin']['active_map'], effect['ControllerZones'][0]['name'])
+        self.assertIn('iMusic.z', effect['CustomSettings']['shader_program']['main_pass']['fragment_shader'])
+        self.assertFalse(effect['AutoStart'])
+
     def test_reject_multipass(self):
         self.template['plugins']['OpenRGB Effects Plugin']['Effects'][0]['CustomSettings']['shader_program']['passes'] = [{}]
         with self.assertRaises(ValueError): music.replace_shader(self.template, SHADER)

@@ -27,6 +27,13 @@ void ShaderRenderer::Start()
 
     shader_program->initialized = false;
     shader_program->recompile = true;
+    {
+        std::lock_guard<std::mutex> guard(program_lock);
+        music_envelope.Reset();
+        uniforms.iMusic = {0.0f,0.0f,0.54f,0.0f};
+        audio_values.fill(0.0f);
+        uniforms.iAudio = nullptr;
+    }
 
     running = true;
     thread = new std::thread(&ShaderRenderer::RendererThreadFunction, this);
@@ -64,6 +71,8 @@ void ShaderRenderer::UpdateUniforms(float time, const float* audio)
         uniforms.iAudio = audio_values.data();
     }
     else uniforms.iAudio = nullptr;
+    const double seconds = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+    uniforms.iMusic = music_envelope.Update(uniforms.iAudio, seconds);
 }
 
 void ShaderRenderer::RendererThreadFunction()
