@@ -52,6 +52,7 @@ ShaderPass::ShaderPass(Type type)
 
 void ShaderPass::Init(int width, int height)
 {
+    if(type == DYNAMIC_IMAGE) return;
     Resize(width, height);
 
     program = new QOpenGLShaderProgram();
@@ -76,6 +77,8 @@ void ShaderPass::Init(int width, int height)
 
 void ShaderPass::Resize(int width, int height)
 {
+    if(type == DYNAMIC_IMAGE) return;
+    if(ShaderCanvas::ValidSize(data.width,data.height)) { width=data.width; height=data.height; }
     if(!ShaderCanvas::ValidSize(width,height)) return;
     this->width = width;
     this->height = height;
@@ -121,6 +124,7 @@ void ShaderPass::ResetFeedback()
 
 QString ShaderPass::Recompile(std::string version)
 {
+    if(type == DYNAMIC_IMAGE) return {};
     ResetFeedback();
     // re-link necessary??
     program->link();
@@ -219,6 +223,10 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         program->setUniformValue("iChannel1", 1);
         program->setUniformValue("iChannel2", 2);
         program->setUniformValue("iChannel3", 3);
+        const auto& screen=uniforms.images[0];
+        const bool available=screen && screen->Usable();
+        program->setUniformValue("iScreenAvailable",available ? 1.0f : 0.0f);
+        program->setUniformValue("iScreenResolution",available ? QVector3D(screen->Width(),screen->Height(),1) : QVector3D());
 
         for(const auto& entry : uniforms.custom)
         {
@@ -256,6 +264,12 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         gl->glActiveTexture(unit);
         gl->glBindTexture(GL_TEXTURE_2D, fbo->texture());
 
+        break;
+    }
+
+    case DYNAMIC_IMAGE:
+    {
+        DrawDynamicImage(uniforms,unit,gl);
         break;
     }
 
@@ -383,6 +397,8 @@ std::string ShaderPass::MakeFragmentShader(std::string pre_processor_version, st
             "uniform sampler2D iChannel2;\n"
             "uniform sampler2D iChannel3;\n"
             "uniform sampler2D iPreviousFrame;\n"
+            "uniform float iScreenAvailable;\n"
+            "uniform vec3 iScreenResolution;\n"
         ;
 
     std::string includes =
@@ -417,6 +433,12 @@ QImage ShaderPass::toImage()
 
 void ShaderPass::CleanupGL()
 {
+    if(dynamic_texture)
+    {
+        QOpenGLContext::currentContext()->functions()->glDeleteTextures(1,&dynamic_texture);
+        dynamic_texture=0;
+    }
+    uploaded_image.reset(); dynamic_width=dynamic_height=0;
     if(vbo != 0)
     {
         QOpenGLFunctions* gl = QOpenGLContext::currentContext()->functions();
@@ -473,13 +495,17 @@ ShaderPass::Type ShaderPass::GetType()
 
 ShaderPass* ShaderPass::FromJSON(json j)
 {
-    ShaderPass* pass = new ShaderPass(j["type"]);
-
-    pass->data.fragment_shader = j["fragment_shader"];
-    pass->data.texture_path = j["texture_path"];
+    const int type=j.at("type").get<int>();
+    if(type<TEXTURE || type>DYNAMIC_IMAGE)throw std::invalid_argument("Invalid shader pass type");
+    const int width=j.value("width",0),height=j.value("height",0),slot=j.value("image_slot",0);
+    if((width!=0 || height!=0) && !ShaderCanvas::ValidSize(width,height))throw std::invalid_argument("Invalid shader pass dimensions");
+    if(slot<0 || slot>3)throw std::invalid_argument("Invalid shader image slot");
+    auto pass=std::make_unique<ShaderPass>(Type(type));
+    pass->data.fragment_shader = j.at("fragment_shader").get<std::string>();
+    pass->data.texture_path = j.at("texture_path").get<std::string>();
     pass->data.feedback = j.value("feedback",false);
-
-    return pass;
+    pass->data.width = width; pass->data.height = height;pass->data.image_slot=unsigned(slot);
+    return pass.release();
 }
 
 json ShaderPass::ToJSON()
@@ -490,6 +516,47 @@ json ShaderPass::ToJSON()
     j["fragment_shader"] = data.fragment_shader;
     j["texture_path"] = data.texture_path;
     j["feedback"] = data.feedback;
+    j["width"] = data.width; j["height"] = data.height;
+    j["image_slot"] = data.image_slot;
 
     return j;
+}
+
+void ShaderPass::DrawDynamicImage(const Uniforms& uniforms,GLenum unit,QOpenGLFunctions* gl)
+{
+    const auto input=uniforms.images[std::min(data.image_slot,3u)];
+    const bool valid=input && input->Usable();
+    gl->glActiveTexture(unit);
+    if(!dynamic_texture) gl->glGenTextures(1,&dynamic_texture);
+    gl->glBindTexture(GL_TEXTURE_2D,dynamic_texture);
+    const unsigned w=valid ? input->Width() : 1, h=valid ? input->Height() : 1;
+    const bool numeric=valid && bool(input->rgba32f);
+    const bool resized=w!=dynamic_width || h!=dynamic_height || numeric!=dynamic_float;
+    const bool changed=valid && (!uploaded_image || input->sequence!=uploaded_image->sequence ||
+        input->source_revision!=uploaded_image->source_revision ||
+        input->generation!=uploaded_image->generation || input->image.cacheKey()!=uploaded_image->image.cacheKey() ||
+        input->rgba32f!=uploaded_image->rgba32f);
+    if(!resized && !changed && (valid || !uploaded_image)) return;
+
+    gl->glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,numeric ? GL_NEAREST : GL_LINEAR);
+    gl->glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,numeric ? GL_NEAREST : GL_LINEAR);
+    gl->glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    gl->glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    GLint alignment=4; gl->glGetIntegerv(GL_UNPACK_ALIGNMENT,&alignment); gl->glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    QImage packed;
+    const unsigned char black[4]={0,0,0,255};
+    const void* pixels=black;
+    if(numeric) pixels=input->rgba32f->data();
+    else if(valid)
+    {
+        packed=input->image.convertToFormat(QImage::Format_RGBA8888);
+        if(packed.bytesPerLine()!=int(w*4)) packed=packed.copy();
+        pixels=packed.constBits();
+    }
+    if(resized) gl->glTexImage2D(GL_TEXTURE_2D,0,numeric ? GL_RGBA32F : GL_RGBA,int(w),int(h),0,GL_RGBA,numeric ? GL_FLOAT : GL_UNSIGNED_BYTE,pixels);
+    else gl->glTexSubImage2D(GL_TEXTURE_2D,0,0,0,int(w),int(h),GL_RGBA,numeric ? GL_FLOAT : GL_UNSIGNED_BYTE,pixels);
+    gl->glPixelStorei(GL_UNPACK_ALIGNMENT,alignment);
+    dynamic_width=w; dynamic_height=h; dynamic_float=numeric;
+    uploaded_image=valid ? input : nullptr;
+    ++image_uploads;
 }

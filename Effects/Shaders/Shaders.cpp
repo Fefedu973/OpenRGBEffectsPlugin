@@ -545,8 +545,12 @@ void Shaders::LoadCustomSettings(json Settings)
 
     if(Settings.contains("shader_program"))
     {
-        shader_renderer->SetProgram(ShaderProgram::FromJSON(Settings["shader_program"]));
-        editor->SetProgram(shader_renderer->Program());
+        try
+        {
+            shader_renderer->SetProgram(ShaderProgram::FromJSON(Settings["shader_program"]));
+            editor->SetProgram(shader_renderer->Program());
+        }
+        catch(const std::exception& error){qWarning()<<"Invalid shader profile:"<<error.what();}
     }
 
     // Validate and install the pair atomically; the previous height must not

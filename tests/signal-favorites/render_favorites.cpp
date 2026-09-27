@@ -12,6 +12,8 @@
 #include "ShaderProgram.h"
 #include "BasicEffectState.h"
 #include "PumpDynamics.h"
+#include "ProceduralEffectState.h"
+#include "ScreenEffectState.h"
 #include <fstream>
 #include <iostream>
 #include <thread>
@@ -42,6 +44,20 @@ static Uniforms Parameters(const json& spec,const json& values,float time)
     const unsigned ticks=unsigned(std::clamp(time*60,1.f,600.f));
     for(unsigned i=0;i<ticks;++i)basic=state.Update(spec.at("id"),basic_parameters,1.0/60);
     uniforms.custom.insert(basic.begin(),basic.end());
+    native_procedural::State procedural;ShaderUniformMap proc;
+    for(unsigned i=0;i<ticks;++i)proc=procedural.Update(spec.at("id"),basic_parameters,1.0/60);
+    uniforms.custom.insert(proc.begin(),proc.end());
+    if(spec.value("screenReactive",false))
+    {
+        auto input=std::make_shared<DynamicShaderImage>();input->sequence=1;input->generation=1;
+        input->image=QImage(160,100,QImage::Format_ARGB32);
+        for(int y=0;y<100;++y)for(int x=0;x<160;++x)input->image.setPixel(x,y,qRgb(30+x*220/160,20+y*230/100,(x+y)%256));
+        native_screen::State state;native_screen::Result result;
+        for(unsigned i=0;i<ticks;++i)result=state.Update(spec.at("id"),basic_parameters,1.0/60,input->image,1,0);
+        auto data=std::make_shared<DynamicShaderImage>();data->rgba32f=result.numericRGBA;data->width=result.width;data->height=result.height;data->sequence=result.sequence;
+        uniforms.images[0]=input;uniforms.images[1]=data;
+        uniforms.custom.insert(result.uniforms.begin(),result.uniforms.end());
+    }
     if(spec.at("id")=="PumpUpBeats")
     {
         native_pump::State pump;native_pump::Frame frame;
@@ -156,6 +172,8 @@ static int Render(const QString& repo,const QString& output)
             const auto spec=Read(presets.filePath(file));
             std::string prefix="uniform vec4 iTap;\nuniform float iTapCount;\nuniform vec4 iTapEvents[64];\nuniform vec4 iTapMeta[64];\n";
             prefix+=native_basic::State::Declarations(spec.at("id"));
+            prefix+=native_procedural::State::Declarations(spec.at("id"));
+            if(spec.value("screenReactive",false))prefix+=native_screen::State::Declarations(spec.at("id"));
             for(const auto& c:spec.at("controls")) {
                 const std::string key=c.at("key"),type=c.at("type");
                 prefix+="uniform "+std::string(type=="color"?"vec3":"float")+" p_"+key+";\n";
@@ -166,6 +184,16 @@ static int Render(const QString& repo,const QString& output)
             ShaderProgram program; program.SetVersion("130"); program.Resize(800,500);
             program.main_pass->data.feedback=spec.value("feedback",false);
             program.main_pass->data.fragment_shader=prefix+shader.readAll().toStdString();
+            if(spec.value("screenReactive",false))
+            {
+                for(unsigned slot=0;slot<2;++slot){auto* pass=new ShaderPass(ShaderPass::DYNAMIC_IMAGE);pass->data.image_slot=slot;program.passes.push_back(pass);}
+                for(const auto& entry:spec.value("passes",json::array()))
+                {
+                    QFile source(repo+"/shaders/SignalFavorites/"+QString::fromStdString(entry.at("shader")));
+                    Check(source.open(QIODevice::ReadOnly),"missing screen input pass");auto* pass=new ShaderPass(ShaderPass::BUFFER);
+                    pass->data.fragment_shader=prefix+source.readAll().toStdString();pass->data.width=entry.value("width",0);pass->data.height=entry.value("height",0);program.passes.push_back(pass);
+                }
+            }
             program.Init(); const auto log=program.Compile(); if(!log.isEmpty()) throw std::runtime_error(file.toStdString()+": "+log.toStdString());
             program.Draw(Parameters(spec,json::object(),1),context.functions()); const auto first=program.Image();
             program.Draw(Parameters(spec,json::object(),4.125f),context.functions()); const auto second=program.Image();

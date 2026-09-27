@@ -23,6 +23,7 @@
 #include <map>
 #include <nlohmann/json.hpp>
 #include "ShaderPassData.h"
+#include "DynamicShaderImage.h"
 
 using json = nlohmann::json;
 
@@ -40,6 +41,7 @@ struct Uniforms
     std::array<float,4> iMusic{0.0f,0.0f,0.54f,0.0f};
     std::array<float,4> iRhythm{}, iOnset{};
     ShaderUniformMap custom;
+    std::array<std::shared_ptr<const DynamicShaderImage>,4> images;
 };
 
 class ShaderPass
@@ -49,7 +51,8 @@ public:
     enum Type {
         TEXTURE,
         AUDIO,
-        BUFFER
+        BUFFER,
+        DYNAMIC_IMAGE
     };
 
     ShaderPass(Type);
@@ -74,6 +77,7 @@ public:
 
     static ShaderPass* FromJSON(json);
     json ToJSON();
+    std::uint64_t ImageUploads() const { return image_uploads; }
 
 
 private:
@@ -94,4 +98,10 @@ private:
     QOpenGLTexture* texture = nullptr;
 
     GLuint vbo = 0;
+    GLuint dynamic_texture = 0;
+    unsigned dynamic_width = 0, dynamic_height = 0;
+    bool dynamic_float = false;
+    std::shared_ptr<const DynamicShaderImage> uploaded_image;
+    std::uint64_t image_uploads = 0;
+    void DrawDynamicImage(const Uniforms&, GLenum, QOpenGLFunctions*);
 };

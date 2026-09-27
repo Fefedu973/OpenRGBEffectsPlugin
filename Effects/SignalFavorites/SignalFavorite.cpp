@@ -132,6 +132,12 @@ SignalFavorite::SignalFavorite(const QString& resource, QWidget* parent) : Shade
         }
     }
     auto* size_row = new QWidget(this);
+    if(spec.value("screenReactive",false))
+    {
+        screen_state=std::make_unique<native_screen::State>();
+        screen_source=new ScreenSourceSelection(this);
+        outer->addWidget(screen_source);
+    }
     auto* size_layout = new QHBoxLayout(size_row);
     size_layout->setContentsMargins(0,0,0,0);
     canvas_width = new QSpinBox(size_row); canvas_height = new QSpinBox(size_row);
@@ -248,6 +254,8 @@ void SignalFavorite::InstallProgram(const QString& resource)
     if(!shader.open(QIODevice::ReadOnly)) throw std::runtime_error("Missing native favorite shader");
     std::string prefix = "uniform vec4 iTap;\nuniform float iTapCount;\nuniform vec4 iTapEvents[64];\nuniform vec4 iTapMeta[64];\n";
     prefix+=native_basic::State::Declarations(spec.at("id"));
+    prefix+=native_procedural::State::Declarations(spec.at("id"));
+    if(spec.value("screenReactive",false))prefix+=native_screen::State::Declarations(spec.at("id"));
     for(const auto& control : spec.at("controls"))
     {
         const std::string key = control.at("key");
@@ -261,6 +269,24 @@ void SignalFavorite::InstallProgram(const QString& resource)
     program->SetVersion("130"); program->Resize(800,500);
     program->main_pass->data.feedback=spec.value("feedback",false);
     program->main_pass->data.fragment_shader = prefix + shader.readAll().toStdString();
+    if(screen_source)
+    {
+        for(unsigned i=0;i<2;++i)
+        {auto* pass=new ShaderPass(ShaderPass::DYNAMIC_IMAGE);pass->data.image_slot=i;program->passes.push_back(pass);}
+        const auto extra=spec.value("passes",json::array());
+        if(extra.size()>2)throw std::runtime_error("Screen preset exceeds four input passes");
+        for(const auto& entry:extra)
+        {
+            const auto name=entry.at("shader").get<std::string>();
+            if(!std::regex_match(name,std::regex("[A-Za-z0-9_-]+\\.fs")))throw std::runtime_error("Invalid shader resource");
+            QFile source(":/shaders/SignalFavorites/"+QString::fromStdString(name));
+            if(!source.open(QIODevice::ReadOnly))throw std::runtime_error("Missing screen shader pass");
+            auto* pass=new ShaderPass(ShaderPass::BUFFER);
+            pass->data.fragment_shader=prefix+source.readAll().toStdString();
+            pass->data.width=entry.value("width",0);pass->data.height=entry.value("height",0);
+            program->passes.push_back(pass);
+        }
+    }
     program->recompile = true;
 }
 
@@ -273,7 +299,9 @@ void SignalFavorite::EffectState(bool enabled)
         tap_history.Clear(); tap={0,0,0,0};
         basic_state.Reset();
         pump_state.Reset();pending_helper_taps=0;
+        procedural_state.Reset();if(screen_state)screen_state->Reset();last_screen_frame.reset();++screen_generation;screen_frame_revision=0;
     }
+    if(screen_source)screen_source->SetRunning(enabled);
     UpdateInputListener();
     // Profiles load controls after construction. Prime those values while the
     // renderer is stopped so its first frame cannot flash the factory colors.
@@ -369,6 +397,8 @@ void SignalFavorite::CollectKeyboardTaps(const std::vector<ControllerZone*>& zon
 void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
 {
     ShaderUniformMap values;
+    std::array<std::shared_ptr<const DynamicShaderImage>,4> input_images;
+    if(screen_source)input_images[0]=screen_source->Latest();
     {
         std::lock_guard<std::mutex> guard(parameters_mutex);
         const auto now = std::chrono::steady_clock::now();
@@ -381,6 +411,31 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
         tap_history.Advance(elapsed,tap_speed);
         CollectKeyboardTaps(zones,tap_speed,std::chrono::duration<double>(now.time_since_epoch()).count());
         values=basic_state.Update(spec.at("id"),parameters,dt);
+        const auto procedural=procedural_state.Update(spec.at("id"),parameters,dt);
+        values.insert(procedural.begin(),procedural.end());
+        if(screen_source)
+        {
+            const auto& frame=input_images[0];
+            if(frame && frame->Usable())
+            {
+                if(last_screen_frame && (frame->generation!=last_screen_frame->generation || frame->source_revision!=last_screen_frame->source_revision))
+                {screen_state->Reset();++screen_generation;}
+                if(!last_screen_frame || frame->sequence!=last_screen_frame->sequence ||
+                   frame->source_revision!=last_screen_frame->source_revision ||
+                   frame->generation!=last_screen_frame->generation || frame->image.cacheKey()!=last_screen_frame->image.cacheKey())++screen_frame_revision;
+                last_screen_frame=frame;
+                const auto state=screen_state->Update(spec.at("id"),parameters,dt,frame->image,screen_frame_revision,pending_helper_taps);
+                values.insert(state.uniforms.begin(),state.uniforms.end());
+                if(state.numericRGBA)
+                {
+                    auto texture=std::make_shared<DynamicShaderImage>();texture->rgba32f=state.numericRGBA;
+                    texture->width=state.width;texture->height=state.height;texture->sequence=state.sequence;
+                    texture->generation=screen_generation;texture->expires=frame->expires;
+                    input_images[1]=texture;
+                }
+            }
+            else {screen_state->Reset();last_screen_frame.reset();++screen_generation;}
+        }
         if(spec.at("id")=="PumpUpBeats")
         {
             const auto frame=pump_state.Update(parameters,dt,CaptureSignalSnapshot(),
@@ -433,7 +488,8 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
             values["iTap"]={{float(event.x),float(event.y),float(event.age),1},4};
         }
     }
-    Renderer()->UpdateCustomUniforms(values);
+    if(screen_source)Renderer()->UpdateInputs(values,input_images);
+    else Renderer()->UpdateCustomUniforms(values);
     Shaders::StepEffect(std::move(zones));
 }
 
@@ -460,6 +516,7 @@ bool SignalFavorite::eventFilter(QObject* object,QEvent* event)
 void SignalFavorite::LoadCustomSettings(json settings)
 {
     if(!settings.is_object()) return;
+    if(screen_source && settings.contains("screen_source"))screen_source->Load(settings["screen_source"]);
     if(settings.contains("parameters") && settings["parameters"].is_object())
     {
         for(auto it=settings["parameters"].begin();it!=settings["parameters"].end();++it) SetParameter(it.key(),it.value());
@@ -485,6 +542,7 @@ json SignalFavorite::SaveCustomSettings()
 {
     auto settings = Shaders::SaveCustomSettings();
     settings.erase("shader_program"); settings.erase("shader_name");
+    if(screen_source)settings["screen_source"]=screen_source->Save();
     std::lock_guard<std::mutex> guard(parameters_mutex);
     settings["parameters"] = parameters;
     settings["preset"] = spec.at("id"); settings["schema_version"] = 1;

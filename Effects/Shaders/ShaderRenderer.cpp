@@ -90,6 +90,20 @@ void ShaderRenderer::UpdateCustomUniforms(const ShaderUniformMap& values)
     uniforms.custom = values;
 }
 
+void ShaderRenderer::UpdateImage(unsigned slot,std::shared_ptr<const DynamicShaderImage> image)
+{
+    if(slot>=uniforms.images.size()) return;
+    std::lock_guard<std::mutex> guard(program_lock);
+    uniforms.images[slot]=std::move(image);
+}
+
+void ShaderRenderer::UpdateInputs(const ShaderUniformMap& values,const std::array<std::shared_ptr<const DynamicShaderImage>,4>& images)
+{
+    std::lock_guard<std::mutex> guard(program_lock);
+    uniforms.custom=values;
+    uniforms.images=images;
+}
+
 void ShaderRenderer::RendererThreadFunction()
 {
     context_lock.lock();
@@ -128,23 +142,20 @@ void ShaderRenderer::RendererThreadFunction()
         TCount start = std::chrono::steady_clock::now();
 
         // DRAW program
-        program_lock.lock();
-
-        if(!shader_program->initialized)
+        try
         {
-            shader_program->Init();
-        }
+            std::lock_guard<std::mutex> guard(program_lock);
+            if(!shader_program->initialized)shader_program->Init();
 
-        if(shader_program->recompile)
+            if(shader_program->recompile)emit Log(shader_program->Compile());
+            shader_program->Draw(uniforms, context->functions());
+            emit Image(shader_program->Image());
+        }
+        catch(const std::exception& error)
         {
-            emit Log(shader_program->Compile());
+            emit Log(QStringLiteral("Shader rendering stopped: ")+QString::fromUtf8(error.what()));
+            running=false;
         }
-
-        shader_program->Draw(uniforms, context->functions());
-
-        emit Image(shader_program->Image());
-
-        program_lock.unlock();
         // .....
 
         TCount end = std::chrono::steady_clock::now();

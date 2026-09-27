@@ -42,6 +42,8 @@ public:
     void Resize(int width, int height);
     void UpdateUniforms(float time, const float* audio, const room_audio::RhythmSnapshot* rhythm = nullptr);
     void UpdateCustomUniforms(const ShaderUniformMap& values);
+    void UpdateImage(unsigned slot, std::shared_ptr<const DynamicShaderImage> image);
+    void UpdateInputs(const ShaderUniformMap&, const std::array<std::shared_ptr<const DynamicShaderImage>,4>&);
 
     bool isRunning();
 

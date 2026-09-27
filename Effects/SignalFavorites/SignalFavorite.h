@@ -8,6 +8,9 @@
 #include "KeyboardDeduplication.h"
 #include "BasicEffectState.h"
 #include "PumpDynamics.h"
+#include "ProceduralEffectState.h"
+#include "ScreenEffectState.h"
+#include "ScreenSourceSelection.h"
 #include <FrameRouting/OpenRGBInputPluginAPI.h>
 
 // Data-driven native effects: parameters remain uniforms, never shader source
@@ -43,6 +46,11 @@ private:
     native_taps::KeyboardDeduplication input_deduplication;
     native_basic::State basic_state;
     native_pump::State pump_state;
+    native_procedural::State procedural_state;
+    std::unique_ptr<native_screen::State> screen_state;
+    ScreenSourceSelection* screen_source = nullptr;
+    std::shared_ptr<const DynamicShaderImage> last_screen_frame;
+    std::uint64_t screen_frame_revision=0, screen_generation=1;
     unsigned pending_helper_taps = 0;
     room_input::PluginAPI* input_api = nullptr;
     std::uint64_t input_listener = 0;

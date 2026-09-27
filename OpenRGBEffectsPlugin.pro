@@ -651,4 +651,7 @@ HEADERS += Effects/SignalFavorites/KeyboardIdentity.h Effects/SignalFavorites/Ph
 HEADERS += Effects/SignalFavorites/KeyboardDeduplication.h
 HEADERS += Effects/SignalFavorites/BasicEffectState.h
 HEADERS += Effects/SignalFavorites/PumpDynamics.h
+SOURCES += ScreenSources/ScreenSource.cpp Effects/SignalFavorites/ScreenSourceSelection.cpp
+HEADERS += ScreenSources/ScreenSource.h Effects/SignalFavorites/ScreenSourceSelection.h Effects/Shaders/DynamicShaderImage.h
+HEADERS += Effects/SignalFavorites/ScreenEffectState.h Effects/SignalFavorites/ProceduralEffectState.h
 win32:LIBS += -lcfgmgr32

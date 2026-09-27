@@ -131,5 +131,23 @@
         <file>shaders/SignalFavorites/quad-color-breath.fs</file>
         <file>Effects/SignalFavorites/presets/pump-up-beats.json</file>
         <file>shaders/SignalFavorites/pump-up-beats.fs</file>
+        <file>Effects/SignalFavorites/presets/average-color.json</file>
+        <file>Effects/SignalFavorites/presets/screen-ambience.json</file>
+        <file>Effects/SignalFavorites/presets/lsd-ambience.json</file>
+        <file>shaders/SignalFavorites/average-color.fs</file>
+        <file>shaders/SignalFavorites/screen-ambience.fs</file>
+        <file>shaders/SignalFavorites/screen-ambience-color.fs</file>
+        <file>shaders/SignalFavorites/screen-ambience-blur-x.fs</file>
+        <file>shaders/SignalFavorites/lsd-ambience.fs</file>
+        <file>Effects/SignalFavorites/presets/visor.json</file>
+        <file>Effects/SignalFavorites/presets/custom-wave.json</file>
+        <file>Effects/SignalFavorites/presets/pinwheel.json</file>
+        <file>Effects/SignalFavorites/presets/spin.json</file>
+        <file>Effects/SignalFavorites/presets/plasma.json</file>
+        <file>shaders/SignalFavorites/visor.fs</file>
+        <file>shaders/SignalFavorites/custom-wave.fs</file>
+        <file>shaders/SignalFavorites/pinwheel.fs</file>
+        <file>shaders/SignalFavorites/spin.fs</file>
+        <file>shaders/SignalFavorites/plasma.fs</file>
     </qresource>
 </RCC>

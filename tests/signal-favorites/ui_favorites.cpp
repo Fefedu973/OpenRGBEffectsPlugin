@@ -7,6 +7,8 @@
 #include <QTemporaryDir>
 #include <QTimer>
 #include <QColor>
+#include <QComboBox>
+#include <QLineEdit>
 #include <QDir>
 #include <QFile>
 #include <QMenu>
@@ -63,7 +65,8 @@ int main(int argc,char** argv)
         const std::set<std::string> expected={"Aurora","CustomSpiral","Galaxies","GradientWave","Gradient",
             "RainbowRise","RainbowTunnel","Rainbow","SideToSide","SolidColor","Space","SpiralRainbow","Underwater",
             "RainbowTap","Terminal","NeonNebula","GoodNight","ColorCycle","NeonShift","PoliceLights",
-            "RainbowPulse","ColorShift","TVStatic","CustomSunrise","CrookedWaves","QuadColorBreath","PumpUpBeats"};
+            "RainbowPulse","ColorShift","TVStatic","CustomSunrise","CrookedWaves","QuadColorBreath","PumpUpBeats",
+            "AverageColor","ScreenAmbience","LSDAmbience","Visor","CustomWave","Pinwheel","Spin","Plasma"};
         std::set<std::string> found;
         CHECK(files.size()>=int(expected.size()));
         std::map<std::string,unsigned> category_sizes;
@@ -94,6 +97,16 @@ int main(int argc,char** argv)
             CHECK(category_menu&&category_menu->actions().size()==int(category.second));
         }
         for(const auto& id:expected)CHECK(found.count(id)==1);
+        // Source controls persist without connecting, capturing, or mutating Better.
+        Load(plugin,Entry("SignalFavorite.ScreenAmbience",{{"screen_source",{{"kind","better"},{"channel","synthetic-input-test"}}}}));
+        auto* source_kind=root->findChild<QComboBox*>("screen_source_kind");
+        auto* source_channel=root->findChild<QLineEdit*>("screen_source_channel");
+        CHECK(source_kind && source_kind->currentData()=="better");
+        CHECK(source_channel && source_channel->text()=="synthetic-input-test");
+        const auto source_saved=Save(plugin);Load(plugin,source_saved);
+        CHECK(Save(plugin)["CustomSettings"]["screen_source"]==source_saved["CustomSettings"]["screen_source"]);
+        Load(plugin,Entry("SignalFavorite.ScreenAmbience",{{"screen_source",{{"kind","better"},{"channel","../invalid"}}}}));
+        CHECK(Save(plugin)["CustomSettings"]["screen_source"]["channel"]=="better-screen-capture");
         Load(plugin,Entry("SignalFavorite.RainbowTap",json::object()));
         auto* keyboard=root->findChild<QCheckBox*>("keyboard_reactive");
         CHECK(keyboard&&keyboard->isChecked());

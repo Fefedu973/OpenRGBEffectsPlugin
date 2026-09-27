@@ -17,6 +17,7 @@ ShaderProgram::ShaderProgram()
 
 ShaderProgram::~ShaderProgram()
 {
+    for(auto* pass:passes) delete pass;
     passes.clear();
 
     delete main_pass;
@@ -24,6 +25,7 @@ ShaderProgram::~ShaderProgram()
 
 void ShaderProgram::Init()
 {
+    if(passes.size()>4) throw std::invalid_argument("A shader program supports at most four input passes");
     for(ShaderPass* pass: passes)
     {
         pass->Init(width, height);
@@ -110,7 +112,7 @@ std::string ShaderProgram::GetVersion()
 ShaderProgram* ShaderProgram::Copy()
 {
     ShaderProgram* copy = new ShaderProgram();
-
+    delete copy->main_pass;
     copy->main_pass = main_pass->Copy();
 
     copy->version = version;
@@ -128,9 +130,11 @@ ShaderProgram* ShaderProgram::Copy()
 
 ShaderProgram* ShaderProgram::FromJSON(json j)
 {
-    ShaderProgram* prog = new ShaderProgram();
-
-    prog->main_pass = ShaderPass::FromJSON(j["main_pass"]);
+    if(!j.at("passes").is_array() || j.at("passes").size()>4)throw std::invalid_argument("A shader program supports at most four input passes");
+    auto main=std::unique_ptr<ShaderPass>(ShaderPass::FromJSON(j.at("main_pass")));
+    if(main->GetType()!=ShaderPass::BUFFER)throw std::invalid_argument("Shader output must be a buffer pass");
+    auto prog=std::make_unique<ShaderProgram>();
+    delete prog->main_pass;prog->main_pass=main.release();
 
     prog->version = j["version"];
     prog->Resize(j["width"], j["height"]);
@@ -140,7 +144,7 @@ ShaderProgram* ShaderProgram::FromJSON(json j)
         prog->passes.push_back(ShaderPass::FromJSON(pass_json));
     }
 
-    return prog;
+    return prog.release();
 }
 
 json ShaderProgram::ToJSON()
