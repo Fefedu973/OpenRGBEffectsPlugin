@@ -1,0 +1,10 @@
+QT += core gui
+CONFIG += console c++17 release
+CONFIG -= app_bundle debug debug_and_release
+TEMPLATE = app
+TARGET = model-inputs-tests
+isEmpty(OPENRGB_ROOM_ROOT): error("Pass OPENRGB_ROOM_ROOT=<core checkout>")
+INCLUDEPATH += $$OPENRGB_ROOM_ROOT/dependencies/json $$OPENRGB_ROOM_ROOT/dependencies/json/nlohmann $$PWD/../../Effects/IntelligentAmbience/Inference
+SOURCES += $$PWD/model_inputs_tests.cpp $$PWD/../../Effects/IntelligentAmbience/Inference/ModelInputs.cpp
+QMAKE_CXXFLAGS_WARN_ON = /W4 /WX
+QMAKE_CXXFLAGS += /utf-8

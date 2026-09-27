@@ -226,6 +226,11 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         const auto& screen=uniforms.images[0];
         const bool available=screen && screen->Usable();
         program->setUniformValue("iScreenAvailable",available ? 1.0f : 0.0f);
+        // Re-evaluate immutable image leases on the renderer thread, even if
+        // a producer stops publishing new uniforms or model results.
+        QVector4D image_available;
+        for(unsigned i=0;i<4;++i)image_available[int(i)]=uniforms.images[i]&&uniforms.images[i]->Usable()?1.f:0.f;
+        program->setUniformValue("iImageAvailable",image_available);
         program->setUniformValue("iScreenResolution",available ? QVector3D(screen->Width(),screen->Height(),1) : QVector3D());
 
         for(const auto& entry : uniforms.custom)

@@ -30,11 +30,22 @@ placement de périphérique n'est modifié. Aucun système de placement 3D ajout
   de comparaison montre huit bandes de niveau. Aucun second capturer audio.
 - **Hybride :** addition bornée de la composition musicale à l'ambiance vidéo,
   calculée en lumière linéaire avant conversion sRGB finale.
-- **Démo :** une source synthétique permet de tester le rendu sans capture
-  écran/audio ni modèle. Elle est explicitement signalée dans l'interface.
+- **Démo :** une image synthétique et, pour tester un modèle musical, un signal
+  PCM de 440 Hz permettent de tester le raccordement sans capture écran/audio.
+  Cette source de diagnostic n'est pas une simulation de musique.
+- **Modèles optionnels :** deux exécuteurs ONNX Runtime CPU natifs, un par source,
+  chargent un manifeste local et un graphe vérifié. La préparation et l'inférence
+  s'exécutent hors des threads audio, rendu et interface, sans programme externe.
+  Le contrat `video-field-v1` reçoit les images courante/précédente en lumière
+  linéaire, le rectangle écran et le delta temporel. `audio-field-v1` reçoit une
+  fenêtre causale mono 48 kHz de la capture Effects existante. Les sorties sont
+  des champs RGB linéaires, accompagnés éventuellement d'une confiance et d'un
+  état récurrent. Un résultat invalide, périmé ou de la mauvaise génération
+  laisse place au rendu procédural.
 
 Les réglages du mode, de la prédiction, de sa durée/force, de la contribution
-musicale, de la source et de la scène sont sérialisés dans les profils Effects.
+musicale, de la source, de la scène et des deux modèles sont sérialisés dans les
+profils Effects. Le bouton Reload recharge un modèle sans relancer OpenRGB.
 Le rectangle de l'écran se règle dans un repère canvas **320 × 200**. Les valeurs
 initiales **80,55,160,90 sont illustratives**, pas une calibration de la chambre.
 Ce rectangle est nécessaire pour distinguer image observée et périphérie ;
@@ -72,10 +83,28 @@ pas la source et ne réclame pas à nouveau la scène BSRGBSC.
 
 ## Limites et suite utile
 
-**Aucun modèle IA ni poids téléchargé ou exécuté.** Ce prototype est la référence
-procédurale permettant de vérifier le raccordement et de comparer ensuite un
-modèle. Les scores de confiance sont heuristiques. Ni compréhension sémantique
-des objets, ni reconnaissance fiable d'émotions/instruments n'est annoncée.
+**Aucun poids appris n'est fourni, téléchargé ou activé.** Les tests utilisent de
+petits graphes ONNX générés localement, qui vérifient réellement chargement et
+inférence mais n'ont rien appris. La référence procédurale reste le comportement
+par défaut. Ses scores de confiance sont heuristiques : ni compréhension
+sémantique des objets, ni reconnaissance d'émotions/instruments n'est annoncée.
+
+Un modèle compatible peut être branché sans réécrire capture, interface, profils,
+traitement des résultats ou distribution aux LED. Un fichier PyTorch/ONNX
+arbitraire n'est pas automatiquement compatible : prétraitement, sorties,
+export, causalité et licence doivent correspondre au contrat. Les modèles
+Skip-BART et M3DDM ne sont pas intégrés par ce seul raccordement. Le backend CPU
+et ses formats bornés ciblent des modèles compacts ; aucun débit temps réel
+n'est promis pour un réseau de génération vidéo lourd. Voir le contrat et les
+limites dans [Inference](../Effects/IntelligentAmbience/Inference/README.md).
+
+Le runtime se trouve à côté du plugin, dans
+`plugins/IntelligentAmbience/onnxruntime.dll`, accompagné de ses dépendances et
+licences. L'application continue à fonctionner sans ce runtime lorsque les
+modèles sont désactivés. L'arrêt d'un effet invalide immédiatement ses résultats
+et demande l'annulation de l'inférence ; le déchargement attend ensuite la fin
+du worker avant de libérer la bibliothèque. Cela ne garantit pas un arrêt
+instantané pour n'importe quel graphe mal conçu.
 
 Les audits de modèles et le cahier des charges original sont conservés dans
 `../OpenRGB-Intelligence-Plugin/docs/`. Le choix natif dans Effects remplace les

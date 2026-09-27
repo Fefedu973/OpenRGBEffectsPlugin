@@ -63,6 +63,7 @@ public:
 protected:
     room_audio::RhythmSnapshot CaptureSignalSnapshot() const;
     AudioSettings* CaptureSettings() { return &audio_settings; }
+    int CaptureDeviceIndex() const { return audio_settings_struct.audio_device; }
     ShaderRenderer* Renderer() const { return shader_renderer; }
     Ui::Shaders* ShaderUi() const { return ui; }
     nlohmann::json CanvasRegions() { std::lock_guard<std::mutex> guard(image_mutex); return *zone_regions; }

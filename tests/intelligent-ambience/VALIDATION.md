@@ -9,19 +9,32 @@ Aucun accès aux contrôleurs physiques, aucune capture personnelle activée.
 | Shader vidéo, vrais ShaderProgram/ShaderPass | 60 checks, 27 comparaisons image entière CPU/GPU ; écart maximal 1/255 sRGB |
 | MusicDirector C++ | 769 assertions synthétiques réussies |
 | Shader musique, vrais ShaderProgram/ShaderPass | 19 checks, 13 comparaisons image entière ; écart maximal 1 niveau RGB8 linéaire |
-| DLL Effects complète dans un hôte API5 vide | 550 checks réussis |
+| DLL Effects complète dans un hôte API5 vide, avec ONNX Runtime CPU | 790 checks réussis |
+| Préparation modèles vidéo/PCM + champ de sortie | 154 checks réussis |
+| Exécuteur natif ONNX Runtime CPU 1.30.0 | 109 checks réels réussis |
+| Fenêtre PCM de la capture Windows existante | 2072 checks + 23 formats + 3340 régressions capture réussis |
 
 Le test de DLL conserve les 35 presets historiques et vérifie la catégorie,
 les contrôles du nouvel effet, les profils/calibration/scènes, les valeurs
 malformées, le rejet des programmes shader fournis dans un profil, la vraie
 animation GPU de démonstration, l'arrêt/reprise et un heartbeat de l'interface.
 Le descripteur BSRGBSC de test pointe dans un dossier temporaire inexistant.
-Le mode vidéo synthétique est le seul mode démarré dans cet hôte.
+Les modes vidéo et musique synthétiques sont démarrés dans cet hôte. Les petits
+graphes ONNX locaux produisent un champ rouge vidéo et vert musique : le test
+lit le résultat final de la vraie prévisualisation GPU. Il vérifie aussi le
+rechargement, la désactivation/réactivation, arrêt/reprise, persistance des
+manifests et repli procédural sur manifeste invalide. Ces graphes sont des
+fixtures mathématiques, pas des poids entraînés. Aucune capture audio réelle
+ou nouvelle application externe n'est utilisée.
 
 DLL candidate : `build/release/OpenRGBEffectsPlugin.dll`.
-SHA-256 : `E521EE56431F850F7254D629DD83F197D92D001F16A6F2FF4607780F7005A953`.
-Logs locaux : `build-intelligence-final.log` et
-`build/intelligent-ambience-ui/ui-run.log`.
+Candidate de la validation ONNX/UI :
+`83DF29983C6BB9596A4269CFCB24257495EAE19B2257A1CF43A2244FFB56CC00`.
+Logs locaux : `build-intelligence-inference.log` et
+`build/intelligent-ambience-ui/model-ui-run.log`.
+Les validations détaillées du backend et ses limites sont dans
+[inference-tests.md](inference-tests.md). Le manifeste de déploiement conserve
+le hash exact de la version finalement installée.
 WebPage reste compilé avec le SDK WebView2 existant ; IntelligentAmbience ne
 l'utilise pas. Les avertissements du build final concernent la conversion
 size_t/unsigned du RhythmTracker existant.

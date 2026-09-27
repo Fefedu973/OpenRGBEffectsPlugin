@@ -13,6 +13,7 @@ import subprocess
 parser = argparse.ArgumentParser(description=__doc__)
 for argument in ("qt", "jom", "core", "dll"):
     parser.add_argument("--" + argument, type=Path, required=True)
+parser.add_argument("--ort", type=Path, help="Optional real onnxruntime.dll; generates local red/green mathematical fixtures.")
 mode = parser.add_mutually_exclusive_group()
 mode.add_argument("--build-only", action="store_true")
 mode.add_argument("--run-only", action="store_true")
@@ -32,5 +33,11 @@ if not args.run_only:
                    cwd=out, env=env, check=True)
     subprocess.run([str(args.jom.resolve()), "/J", "4"], cwd=out, env=env, check=True)
 if not args.build_only:
-    subprocess.run([str(out / "intelligent-ambience-ui-test.exe"), str(args.dll.resolve())],
-                   cwd=out, env=env, check=True, timeout=90)
+    command = [str(out / "intelligent-ambience-ui-test.exe"), str(args.dll.resolve())]
+    if args.ort:
+        from model_inputs_ui_fixtures import generate_ui_fixtures
+        fixtures = out / "fixtures"
+        generate_ui_fixtures(fixtures)
+        env["OPENRGB_INTELLIGENCE_ORT"] = str(args.ort.resolve())
+        command += [str(fixtures / "ui_video_red/manifest.json"), str(fixtures / "ui_audio_green/manifest.json")]
+    subprocess.run(command, cwd=out, env=env, check=True, timeout=120)

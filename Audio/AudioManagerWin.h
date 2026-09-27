@@ -33,9 +33,13 @@ struct AudioSession
     // snapshot under mutex; no DSP or COM calls hold the publication lock.
     room_audio::RhythmTracker rhythm;
     room_audio::RhythmSnapshot rhythm_snapshot=rhythm.Snapshot();
+    // atomic shared_ptr access: allocated only by an interested reader, never
+    // by the capture worker. All ring and returned sample storage is owned.
+    std::shared_ptr<room_audio::PcmWindowBuffer> pcm_window;
     std::thread worker;
     void Silence()
     {
+        if(const auto pcm=std::atomic_load(&pcm_window)) pcm->Invalidate();
         rhythm.Reset(AudioNowSeconds());
         const auto snapshot=rhythm.Snapshot();
         std::lock_guard<std::mutex> lock(mutex);
@@ -43,6 +47,7 @@ struct AudioSession
     }
     void PublishNoPacket()
     {
+        if(const auto pcm=std::atomic_load(&pcm_window)) pcm->Invalidate();
         // Missing PCM is not a measured beat. Suppress the published grid at
         // once, while allowing the analysis owner a short idle grace period.
         std::lock_guard<std::mutex> lock(mutex);
@@ -53,9 +58,19 @@ struct AudioSession
         rhythm_snapshot.confidence=rhythm_snapshot.phase=rhythm_snapshot.bpm=0;
     }
     bool PublishPacket(audio_pcm::Window& window,const float* mono,size_t frames,
-                       unsigned rate,double first_sample,bool discontinuity)
+                       unsigned rate,double first_sample,bool discontinuity,
+                       unsigned source_channels=1,bool has_device_position=false,
+                       std::uint64_t device_position=0,bool timestamp_error=false)
     {
         if((frames && !mono) || !rate || !std::isfinite(first_sample)) { Silence(); return false; }
+        if(const auto pcm=std::atomic_load(&pcm_window))
+        {
+            // An estimated timestamp remains usable by legacy DSP but does not
+            // qualify an exact-time model window. Its next good packet restarts.
+            if(timestamp_error) pcm->Invalidate();
+            else pcm->Append(mono,frames,rate,source_channels,first_sample,discontinuity,
+                             has_device_position,device_position);
+        }
         if(rate>=8000 && rate<=192000)
         {
             if(!rhythm.Push(mono,frames,rate,first_sample,discontinuity)) { Silence(); return false; }
@@ -77,6 +92,7 @@ struct AudioSession
     void Stop()
     {
         { std::lock_guard<std::mutex> lock(mutex); stop.store(true); }
+        if(const auto pcm=std::atomic_load(&pcm_window)) pcm->Close();
         wake.notify_all();
         if(worker.joinable()) worker.join();
     }
@@ -174,8 +190,8 @@ HRESULT CaptureEndpoint(AudioSession& session, const AudioEndpoint& endpoint)
         }
         while(available && !session.stop.load())
         {
-            BYTE* data=nullptr; UINT32 frames=0; DWORD flags=0; UINT64 packet_qpc=0;
-            hr=capture->GetBuffer(&data,&frames,&flags,nullptr,&packet_qpc);
+            BYTE* data=nullptr; UINT32 frames=0; DWORD flags=0; UINT64 packet_qpc=0,device_position=0;
+            hr=capture->GetBuffer(&data,&frames,&flags,&device_position,&packet_qpc);
             if(FAILED(hr))break;
             if(hr==AUDCLNT_S_BUFFER_EMPTY){hr=S_OK;break;}
             const bool timestamp_error=(flags&AUDCLNT_BUFFERFLAGS_TIMESTAMP_ERROR)!=0;
@@ -193,7 +209,8 @@ HRESULT CaptureEndpoint(AudioSession& session, const AudioEndpoint& endpoint)
             if(FAILED(released)){hr=released;break;}
             // Analyze every sample only after releasing the WASAPI buffer.
             const bool discontinuity=timestamp_error||(flags&AUDCLNT_BUFFERFLAGS_DATA_DISCONTINUITY)!=0;
-            if(!session.PublishPacket(window,mono.data(),mono.size(),sample_rate,first_sample,discontinuity))
+            if(!session.PublishPacket(window,mono.data(),mono.size(),sample_rate,first_sample,discontinuity,
+                                      format.channels,true,device_position,timestamp_error))
             {hr=E_INVALIDARG;break;}
             silence_published=false;
             silence_reset=false;
@@ -299,6 +316,26 @@ room_audio::RhythmSnapshot AudioManager::CaptureRhythm(int index)
     {std::lock_guard<std::mutex> lock(windows->mutex);auto it=windows->sessions.find(index);if(it==windows->sessions.end())return {};session=it->second;}
     std::lock_guard<std::mutex> lock(session->mutex);
     return session->rhythm_snapshot;
+}
+room_audio::PcmWindowSnapshot AudioManager::CapturePcmWindow(int index,std::size_t count,double now)
+{
+    if(!count || count>room_audio::PcmWindowBuffer::MaximumSamples || !std::isfinite(now))
+    {
+        room_audio::PcmWindowSnapshot result;
+        result.status=room_audio::PcmWindowStatus::InvalidRequest;
+        return result;
+    }
+    std::shared_ptr<AudioSession> session;
+    {std::lock_guard<std::mutex> lock(windows->mutex);auto it=windows->sessions.find(index);if(it==windows->sessions.end())return {};session=it->second;}
+    if(session->stop.load()) return {};
+    auto pcm=std::atomic_load(&session->pcm_window);
+    if(!pcm)
+    {
+        auto created=std::make_shared<room_audio::PcmWindowBuffer>();
+        if(std::atomic_compare_exchange_strong(&session->pcm_window,&pcm,created)) pcm=std::move(created);
+    }
+    if(session->stop.load()) { pcm->Close(); return {}; }
+    return pcm->Read(count,now);
 }
 void AudioManager::RegisterClient(int index,void* client)
 {

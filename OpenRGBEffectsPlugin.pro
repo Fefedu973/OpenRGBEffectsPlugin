@@ -663,3 +663,5 @@ win32:LIBS += -lcfgmgr32
 INCLUDEPATH += Effects/IntelligentAmbience
 SOURCES += Effects/IntelligentAmbience/IntelligentAmbience.cpp Effects/IntelligentAmbience/VideoEngine.cpp Effects/IntelligentAmbience/MusicDirector.cpp
 HEADERS += Effects/IntelligentAmbience/IntelligentAmbience.h Effects/IntelligentAmbience/VideoEngine.h Effects/IntelligentAmbience/MusicDirector.h Effects/IntelligentAmbience/CoreTypes.h
+SOURCES += Effects/IntelligentAmbience/Inference/InferenceWorker.cpp Effects/IntelligentAmbience/Inference/ModelInputs.cpp
+HEADERS += Effects/IntelligentAmbience/Inference/InferenceWorker.h Effects/IntelligentAmbience/Inference/ModelInputs.h Audio/PcmWindow.h

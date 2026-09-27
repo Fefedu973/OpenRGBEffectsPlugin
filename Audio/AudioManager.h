@@ -19,6 +19,7 @@
 #include <map>
 #include <memory>
 #include "RhythmTracker.h"
+#include "PcmWindow.h"
 
 /*---------------------------------------------------------*\
 | Audio Library Includes                                    |
@@ -67,9 +68,13 @@ public:
     void                     Capture(int device_idx, float *buf);
 #ifdef _WIN32
     room_audio::RhythmSnapshot CaptureRhythm(int device_idx);
+    // Existing capture only; call on the model worker, never the render/audio
+    // callback. Returns owned mono48k PCM, including continuity and source time.
+    room_audio::PcmWindowSnapshot CapturePcmWindow(int device_idx, std::size_t sample_count, double now);
 #else
     // Keep other platform capture paths unchanged until they provide continuous PCM.
     room_audio::RhythmSnapshot CaptureRhythm(int) { return {}; }
+    room_audio::PcmWindowSnapshot CapturePcmWindow(int, std::size_t, double) { return {}; }
 #endif
     void                     RegisterClient(int device_idx, void * client);
     void                     UnRegisterClient(int device_idx, void * client);
