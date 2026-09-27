@@ -70,6 +70,12 @@
         <file>shaders/audio-idle-crazylines.fs</file>
         <file>shaders/fire.fs</file>
         <file>shaders/shine.fs</file>
+        <file>shaders/room-plasma.fs</file>
+        <file>shaders/room-fire.fs</file>
+        <file>shaders/room-aurora.fs</file>
+        <file>shaders/room-waves.fs</file>
+        <file>shaders/room-stars.fs</file>
+        <file>shaders/room-bubbles.fs</file>
         <file>OpenRGBPlugins.ttf</file>
     </qresource>
 </RCC>
