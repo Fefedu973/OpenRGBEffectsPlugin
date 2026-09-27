@@ -1,0 +1,12 @@
+QT += core gui
+QT -= widgets
+TEMPLATE = app
+CONFIG += console c++17
+CONFIG -= app_bundle
+TARGET = source_tests
+isEmpty(OPENRGB_ROOM_ROOT): OPENRGB_ROOM_ROOT = $$PWD/../../../OpenRGB-Room
+INCLUDEPATH += $$OPENRGB_ROOM_ROOT $$PWD/../../ScreenSources
+SOURCES += $$PWD/source_tests.cpp $$PWD/../../ScreenSources/ScreenSource.cpp
+HEADERS += $$PWD/../../ScreenSources/ScreenSource.h
+contains(CONFIG, unsupported): DEFINES += SCREEN_SOURCES_DISABLE_FRAME_SURFACE
+win32: LIBS += -ladvapi32
