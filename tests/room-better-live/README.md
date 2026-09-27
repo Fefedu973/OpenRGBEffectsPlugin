@@ -41,3 +41,31 @@ and the enabled native Better output:
 The private `report.json` contains the exact C++/GLSL source hashes and current
 scene catalogue. The separate synthetic appearance fixture suite remains the
 test for geometric/filter comparisons; this probe verifies live interoperability.
+
+## Optional transient scene-control test
+
+`--run --scene-cycle` is a **separate, explicitly mutating test**. It selects the
+saved scenes named `Main screen` and `Complete screen setup` through one lease,
+then releases that lease to let Better restore its original scene/settings.
+It requires both scenes to exist; it never creates scenes or substitutes an
+arbitrary UUID. Do not use this option without authorization to change the active
+scene temporarily.
+
+The native harness snapshots the initial scene and effective settings, then
+requires `ControlPhase::Effective` and an exactly matching paired image for each
+target (instance, scene UUID, scene/control revisions, raw generation and minimum
+sequence). Release runs on every completion/error path once a claim is created.
+A manual supersession aborts further selection and is respected; the harness
+never forcibly selects the original scene or reacquires after a manual edit.
+The overall wait is bounded to 29 seconds plus bounded worker cleanup.
+
+On 27 September 2026, the real current Better instance acknowledged both target
+scenes and produced their matching image states. Release then produced a newer
+control revision whose scene UUID and complete effective-settings object matched
+the initial snapshot exactly. Total time was 3.060 seconds, with no manual edit,
+image export or lighting-device output. This validates temporary scene control
+and restoration, not a saved OpenRGB-profile round trip.
+
+Full initial/target/restored metadata remains in a timestamped, ignored
+`build/room-better-live/scene-cycle-*.json` file. The terminal prints only a compact
+result. No lease capability or Bearer credential is saved.
