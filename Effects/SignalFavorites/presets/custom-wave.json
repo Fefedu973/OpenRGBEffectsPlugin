@@ -1,0 +1,65 @@
+{
+  "id": "CustomWave",
+  "title": "Custom Wave",
+  "source_id": "-M7cPj87OdhYqU_h1iCR",
+  "description": "Custom Wave with the original controls and native GPU rendering.",
+  "controls": [
+    {
+      "key": "nColors",
+      "label": "Number of Colors",
+      "type": "number",
+      "default": 2,
+      "step": 1,
+      "min": 2,
+      "max": 4
+    },
+    {
+      "key": "color1",
+      "label": "Color 1",
+      "type": "color",
+      "default": "#ff0000",
+      "min": 1,
+      "max": 359
+    },
+    {
+      "key": "color2",
+      "label": "Color 2",
+      "type": "color",
+      "default": "#0000ff",
+      "min": 1,
+      "max": 359
+    },
+    {
+      "key": "color3",
+      "label": "Color 3",
+      "type": "color",
+      "default": "#00ff00",
+      "min": 1,
+      "max": 359
+    },
+    {
+      "key": "color4",
+      "label": "Color 4",
+      "type": "color",
+      "default": "#ffff00",
+      "min": 1,
+      "max": 359
+    },
+    {
+      "key": "bVertical",
+      "label": "Vertical",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 50,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    }
+  ],
+  "notes": "Original native GLSL preserves 50-unit stripes, source palette order, both orientations and color-count-specific wrap thresholds, including the overshoot frame. Numeric animation state advances at a normalized 60 Hz reference; no JavaScript or browser runtime."
+}

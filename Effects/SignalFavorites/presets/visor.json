@@ -1,0 +1,65 @@
+{
+  "id": "Visor",
+  "title": "Visor",
+  "source_id": "-M6IRGbcnL4HQaVooCgs",
+  "description": "Visor with the original controls and native GPU rendering.",
+  "controls": [
+    {
+      "key": "color",
+      "label": "Color",
+      "type": "color",
+      "default": "#ff0066",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "randomColors",
+      "label": "Random Color",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "speed",
+      "label": "Visor Speed",
+      "type": "number",
+      "default": 30,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "trail",
+      "label": "Visor Trail",
+      "type": "number",
+      "default": 50,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "barWidth",
+      "label": "Bar Width",
+      "type": "number",
+      "default": 20,
+      "step": 1,
+      "min": 1,
+      "max": 50
+    },
+    {
+      "key": "vertical",
+      "label": "Vertical",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "bgColor",
+      "label": "Background Color",
+      "type": "color",
+      "default": "#000000",
+      "min": 0,
+      "max": 360
+    }
+  ],
+  "notes": "Original native GLSL with source-over frame history, independent horizontal/vertical positions and collision color changes. Motion advances at a normalized 60 Hz reference; trail accumulation occurs once per rendered frame. A deterministic valid RGB generator replaces browser Math.random; random realizations and subpixel antialiasing differ. History resets on restart, resize and recompile.",
+  "feedback": true
+}

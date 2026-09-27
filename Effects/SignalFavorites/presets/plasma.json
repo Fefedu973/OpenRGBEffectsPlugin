@@ -1,0 +1,102 @@
+{
+  "id": "Plasma",
+  "title": "Plasma",
+  "source_id": "-MgD_tyN6GeXM2OpGP-Z",
+  "description": "Plasma with the original controls and native GPU rendering.",
+  "controls": [
+    {
+      "key": "shape",
+      "label": "Shape",
+      "type": "enum",
+      "default": "Fill",
+      "options": [
+        "Fill",
+        "Fill All",
+        "Line"
+      ]
+    },
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 20,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "colorCycleSpeed",
+      "label": "Color cycle speed",
+      "type": "number",
+      "default": 30,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "colorMode",
+      "label": "Plasma Color Mode",
+      "type": "enum",
+      "default": "Default",
+      "options": [
+        "Default",
+        "Color Cycle",
+        "Gradient Wave"
+      ]
+    },
+    {
+      "key": "pixelColor",
+      "label": "Plasma Base Color",
+      "type": "color",
+      "default": "#0004d2",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "hueRange",
+      "label": "Hue range",
+      "type": "number",
+      "default": 100,
+      "step": 1,
+      "min": 0,
+      "max": 200
+    },
+    {
+      "key": "dotSize",
+      "label": "Scale",
+      "type": "number",
+      "default": 6,
+      "step": 1,
+      "min": 1,
+      "max": 100
+    },
+    {
+      "key": "gap",
+      "label": "Gap Scale",
+      "type": "number",
+      "default": 0,
+      "step": 1,
+      "min": 0,
+      "max": 10
+    },
+    {
+      "key": "bgcolorMode",
+      "label": "Background Color Mode",
+      "type": "enum",
+      "default": "Default",
+      "options": [
+        "Default",
+        "Color Cycle"
+      ]
+    },
+    {
+      "key": "bgColor",
+      "label": "Background Color",
+      "type": "color",
+      "default": "#20213c",
+      "min": 0,
+      "max": 360
+    }
+  ],
+  "notes": "Original native GLSL preserves the cell grid, gap, three alpha masks, HSL transformations, color cycling and eleven-stop moving gradient. The 12-direction Perlin-family gradient noise uses a reproducible integer hash instead of the browser random permutation seed, so the random field realization differs. State advances at a normalized 60 Hz reference; it is not claimed pixel-identical to a random browser run."
+}

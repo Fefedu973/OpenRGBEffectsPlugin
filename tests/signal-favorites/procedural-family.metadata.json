@@ -1,0 +1,413 @@
+[
+  {
+    "id": "Visor",
+    "slug": "visor",
+    "source_id": "-M6IRGbcnL4HQaVooCgs",
+    "source_sha256": "6372dac822593d58e214ce079ccd9306c3a31c17868b04ef4bba312501718fbb",
+    "source_title": "Visor",
+    "source_publisher": "SignalRGB",
+    "controls": [
+      {
+        "key": "color",
+        "label": "Color",
+        "type": "color",
+        "default": "#ff0066",
+        "min": 0,
+        "max": 360
+      },
+      {
+        "key": "randomColors",
+        "label": "Random Color",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "speed",
+        "label": "Visor Speed",
+        "type": "number",
+        "default": 30,
+        "step": 1,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "key": "trail",
+        "label": "Visor Trail",
+        "type": "number",
+        "default": 50,
+        "step": 1,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "key": "barWidth",
+        "label": "Bar Width",
+        "type": "number",
+        "default": 20,
+        "step": 1,
+        "min": 1,
+        "max": 50
+      },
+      {
+        "key": "vertical",
+        "label": "Vertical",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "bgColor",
+        "label": "Background Color",
+        "type": "color",
+        "default": "#000000",
+        "min": 0,
+        "max": 360
+      }
+    ]
+  },
+  {
+    "id": "CustomWave",
+    "slug": "custom-wave",
+    "source_id": "-M7cPj87OdhYqU_h1iCR",
+    "source_sha256": "43a4af0377996aac52231d59d79f12bd6e6ec756298b3adede0eb283a967249a",
+    "source_title": "Custom Wave",
+    "source_publisher": "SignalRGB",
+    "controls": [
+      {
+        "key": "nColors",
+        "label": "Number of Colors",
+        "type": "number",
+        "default": 2,
+        "step": 1,
+        "min": 2,
+        "max": 4
+      },
+      {
+        "key": "color1",
+        "label": "Color 1",
+        "type": "color",
+        "default": "#ff0000",
+        "min": 1,
+        "max": 359
+      },
+      {
+        "key": "color2",
+        "label": "Color 2",
+        "type": "color",
+        "default": "#0000ff",
+        "min": 1,
+        "max": 359
+      },
+      {
+        "key": "color3",
+        "label": "Color 3",
+        "type": "color",
+        "default": "#00ff00",
+        "min": 1,
+        "max": 359
+      },
+      {
+        "key": "color4",
+        "label": "Color 4",
+        "type": "color",
+        "default": "#ffff00",
+        "min": 1,
+        "max": 359
+      },
+      {
+        "key": "bVertical",
+        "label": "Vertical",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "speed",
+        "label": "Speed",
+        "type": "number",
+        "default": 50,
+        "step": 1,
+        "min": 0,
+        "max": 100
+      }
+    ]
+  },
+  {
+    "id": "Pinwheel",
+    "slug": "pinwheel",
+    "source_id": "-MaFlwMFx2KxmnL7X1_6",
+    "source_sha256": "d4da2465d1d768fd2e6fe9666057af46dcebff1d889ba94037768458ec61b417",
+    "source_title": "Pinwheel",
+    "source_publisher": "Ngoc Doan",
+    "controls": [
+      {
+        "key": "background",
+        "label": "Background Color",
+        "type": "color",
+        "default": "#FFB900",
+        "min": 0,
+        "max": 360
+      },
+      {
+        "key": "pinwheelColor",
+        "label": "Pinwheel Color",
+        "type": "color",
+        "default": "#A300F0",
+        "min": 0,
+        "max": 360
+      },
+      {
+        "key": "rainbow",
+        "label": "Rainbow Mode",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "num1",
+        "label": "Pinwheel Center - X Coordinate",
+        "type": "number",
+        "default": 160,
+        "step": 1,
+        "min": 0,
+        "max": 320
+      },
+      {
+        "key": "num2",
+        "label": "Pinwheel Center - Y Coordinate",
+        "type": "number",
+        "default": 100,
+        "step": 1,
+        "min": 0,
+        "max": 200
+      },
+      {
+        "key": "lineThickness",
+        "label": "Ray Width",
+        "type": "number",
+        "default": 5,
+        "step": 1,
+        "min": 2,
+        "max": 15
+      },
+      {
+        "key": "direction",
+        "label": "Ray Direction",
+        "type": "enum",
+        "default": "Clockwise",
+        "options": [
+          "Clockwise",
+          "Counter Clockwise"
+        ]
+      },
+      {
+        "key": "speed",
+        "label": "Ray Speed",
+        "type": "number",
+        "default": 10,
+        "step": 1,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "key": "bounce",
+        "label": "Edge to Edge Mode",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "edgeToEdge",
+        "label": "Edge Direction",
+        "type": "enum",
+        "default": "Clockwise",
+        "options": [
+          "Clockwise",
+          "Counter Clockwise"
+        ]
+      },
+      {
+        "key": "bounceSpeed",
+        "label": "Edge to Edge Speed",
+        "type": "number",
+        "default": 40,
+        "step": 1,
+        "min": 1,
+        "max": 100
+      }
+    ]
+  },
+  {
+    "id": "Spin",
+    "slug": "spin",
+    "source_id": "-MdDOaykoA7jHwcb2e0r",
+    "source_sha256": "46b354fcc7f645fc9fd55e377a95dcaa3b64ae1453ec8ef7a23c9108c6fd27d4",
+    "source_title": "Spin",
+    "source_publisher": "SignalRGB",
+    "controls": [
+      {
+        "key": "bg",
+        "label": "Background Color",
+        "type": "color",
+        "default": "#000000",
+        "min": 0,
+        "max": 360
+      },
+      {
+        "key": "fg",
+        "label": "Foreground Color",
+        "type": "color",
+        "default": "#0000ff",
+        "min": 0,
+        "max": 360
+      },
+      {
+        "key": "rainbow",
+        "label": "Rainbow mode",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "colorSpeed",
+        "label": "Color change speed",
+        "type": "number",
+        "default": 3,
+        "step": 1,
+        "min": 1,
+        "max": 10
+      },
+      {
+        "key": "reverse",
+        "label": "Reverse",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "speed",
+        "label": "Speed",
+        "type": "number",
+        "default": 50,
+        "step": 1,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "key": "size",
+        "label": "Line width",
+        "type": "number",
+        "default": 5,
+        "step": 1,
+        "min": 1,
+        "max": 20
+      },
+      {
+        "key": "lineGap",
+        "label": "Line gap",
+        "type": "number",
+        "default": 4,
+        "step": 1,
+        "min": 1,
+        "max": 10
+      }
+    ]
+  },
+  {
+    "id": "Plasma",
+    "slug": "plasma",
+    "source_id": "-MgD_tyN6GeXM2OpGP-Z",
+    "source_sha256": "6f08b6935cedc18ec724e38fb05d42c894a79ce7c73d82e298f18279038e0517",
+    "source_title": "Plasma",
+    "source_publisher": "SignalRGB",
+    "controls": [
+      {
+        "key": "shape",
+        "label": "Shape",
+        "type": "enum",
+        "default": "Fill",
+        "options": [
+          "Fill",
+          "Fill All",
+          "Line"
+        ]
+      },
+      {
+        "key": "speed",
+        "label": "Speed",
+        "type": "number",
+        "default": 20,
+        "step": 1,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "key": "colorCycleSpeed",
+        "label": "Color cycle speed",
+        "type": "number",
+        "default": 30,
+        "step": 1,
+        "min": 0,
+        "max": 100
+      },
+      {
+        "key": "colorMode",
+        "label": "Plasma Color Mode",
+        "type": "enum",
+        "default": "Default",
+        "options": [
+          "Default",
+          "Color Cycle",
+          "Gradient Wave"
+        ]
+      },
+      {
+        "key": "pixelColor",
+        "label": "Plasma Base Color",
+        "type": "color",
+        "default": "#0004d2",
+        "min": 0,
+        "max": 360
+      },
+      {
+        "key": "hueRange",
+        "label": "Hue range",
+        "type": "number",
+        "default": 100,
+        "step": 1,
+        "min": 0,
+        "max": 200
+      },
+      {
+        "key": "dotSize",
+        "label": "Scale",
+        "type": "number",
+        "default": 6,
+        "step": 1,
+        "min": 1,
+        "max": 100
+      },
+      {
+        "key": "gap",
+        "label": "Gap Scale",
+        "type": "number",
+        "default": 0,
+        "step": 1,
+        "min": 0,
+        "max": 10
+      },
+      {
+        "key": "bgcolorMode",
+        "label": "Background Color Mode",
+        "type": "enum",
+        "default": "Default",
+        "options": [
+          "Default",
+          "Color Cycle"
+        ]
+      },
+      {
+        "key": "bgColor",
+        "label": "Background Color",
+        "type": "color",
+        "default": "#20213c",
+        "min": 0,
+        "max": 360
+      }
+    ]
+  }
+]

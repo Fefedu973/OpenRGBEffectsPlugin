@@ -1,0 +1,102 @@
+{
+  "id": "Pinwheel",
+  "title": "Pinwheel",
+  "source_id": "-MaFlwMFx2KxmnL7X1_6",
+  "description": "Pinwheel with the original controls and native GPU rendering.",
+  "controls": [
+    {
+      "key": "background",
+      "label": "Background Color",
+      "type": "color",
+      "default": "#FFB900",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "pinwheelColor",
+      "label": "Pinwheel Color",
+      "type": "color",
+      "default": "#A300F0",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "rainbow",
+      "label": "Rainbow Mode",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "num1",
+      "label": "Pinwheel Center - X Coordinate",
+      "type": "number",
+      "default": 160,
+      "step": 1,
+      "min": 0,
+      "max": 320
+    },
+    {
+      "key": "num2",
+      "label": "Pinwheel Center - Y Coordinate",
+      "type": "number",
+      "default": 100,
+      "step": 1,
+      "min": 0,
+      "max": 200
+    },
+    {
+      "key": "lineThickness",
+      "label": "Ray Width",
+      "type": "number",
+      "default": 5,
+      "step": 1,
+      "min": 2,
+      "max": 15
+    },
+    {
+      "key": "direction",
+      "label": "Ray Direction",
+      "type": "enum",
+      "default": "Clockwise",
+      "options": [
+        "Clockwise",
+        "Counter Clockwise"
+      ]
+    },
+    {
+      "key": "speed",
+      "label": "Ray Speed",
+      "type": "number",
+      "default": 10,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "bounce",
+      "label": "Edge to Edge Mode",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "edgeToEdge",
+      "label": "Edge Direction",
+      "type": "enum",
+      "default": "Clockwise",
+      "options": [
+        "Clockwise",
+        "Counter Clockwise"
+      ]
+    },
+    {
+      "key": "bounceSpeed",
+      "label": "Edge to Edge Speed",
+      "type": "number",
+      "default": 40,
+      "step": 1,
+      "min": 1,
+      "max": 100
+    }
+  ],
+  "notes": "Original native GLSL preserves 37 ordered rays, the repeated 260-degree ray, the fixed endpoint circle and its alternate Y center in edge mode, independent edge conditions, speed/direction controls and source color order. Motion advances at a normalized 60 Hz reference; native edge coverage can differ from Canvas antialiasing."
+}

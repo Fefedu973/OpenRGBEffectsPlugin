@@ -1,0 +1,73 @@
+{
+  "id": "Spin",
+  "title": "Spin",
+  "source_id": "-MdDOaykoA7jHwcb2e0r",
+  "description": "Spin with the original controls and native GPU rendering.",
+  "controls": [
+    {
+      "key": "bg",
+      "label": "Background Color",
+      "type": "color",
+      "default": "#000000",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "fg",
+      "label": "Foreground Color",
+      "type": "color",
+      "default": "#0000ff",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "rainbow",
+      "label": "Rainbow mode",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "colorSpeed",
+      "label": "Color change speed",
+      "type": "number",
+      "default": 3,
+      "step": 1,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "key": "reverse",
+      "label": "Reverse",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 50,
+      "step": 1,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "size",
+      "label": "Line width",
+      "type": "number",
+      "default": 5,
+      "step": 1,
+      "min": 1,
+      "max": 20
+    },
+    {
+      "key": "lineGap",
+      "label": "Line gap",
+      "type": "number",
+      "default": 4,
+      "step": 1,
+      "min": 1,
+      "max": 10
+    }
+  ],
+  "notes": "Original native GLSL constructs the 599-segment Archimedean polyline with butt ends and miter joins. A conservative radial bound skips segments that cannot affect a pixel. Rotation and hue use elapsed milliseconds with the original speed denominator, including zero-speed and reverse. Native analytic edge coverage differs from Canvas antialiasing."
+}
