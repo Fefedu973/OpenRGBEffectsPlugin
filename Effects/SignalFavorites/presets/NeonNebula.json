@@ -1,0 +1,19 @@
+{
+  "id":"NeonNebula",
+  "title":"Neon Nebula",
+  "source_id":"-Mjb1GEcNJhwbQxjTw-z",
+  "description":"Persistent neon waves, falling squares, rising particles and expanding keypress rings.",
+  "feedback":true,
+  "tap_speed_key":"speedRaw",
+  "controls":[
+    {"key":"color1","label":"Color 1","type":"color","default":"#360059","min":0,"max":360},
+    {"key":"color2","label":"Color 2","type":"color","default":"#005159","min":0,"max":360},
+    {"key":"color3","label":"Color 3","type":"color","default":"#590046","min":0,"max":360},
+    {"key":"color4","label":"Color 4","type":"color","default":"#00baff","min":0,"max":360},
+    {"key":"color5","label":"Color 5","type":"color","default":"#f500ff","min":0,"max":360},
+    {"key":"color6","label":"Color 6","type":"color","default":"#0046ff","min":0,"max":360},
+    {"key":"speedRaw","label":"Speed","type":"number","default":5,"min":1,"max":10,"step":1},
+    {"key":"tapEffect","label":"Keypress effect","type":"boolean","default":true}
+  ],
+  "notes":"Original GLSL implementation; no redistributed Canvas source. Preserves all eight controls, three waves and their phase-dependent palette, persistent source-over accumulation, six-color square/ring population, initial teal and expanding color2 tap rings. Native ping-pong feedback never samples the texture being rendered. A fixed 300-particle seeded population replaces random births and the transient 30 growing startup squares; particle radii use their mature sizes. Animation and tap expansion use integrated speed at a normalized 60 Hz reference, while opacity accumulates once per rendered frame. Frame rate, random placement, startup population and antialiasing therefore affect pixel-level results. History clears on restart, resize and shader recompilation. Tap force controls ring opacity; speed changes do not jump an existing ring. No BPM or synthetic keypress is generated."
+}

@@ -15,4 +15,5 @@ struct ShaderPassData
 {
     std::string fragment_shader;
     std::string texture_path;
+    bool feedback = false;
 };

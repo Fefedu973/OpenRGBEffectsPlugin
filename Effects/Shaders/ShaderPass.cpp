@@ -9,10 +9,28 @@
 
 #include "ShaderPass.h"
 #include "RGBControllerInterface.h"
+#include "ShaderCanvas.h"
 
 #ifdef __linux__
 #include <GL/gl.h>
 #endif
+
+namespace
+{
+QOpenGLFramebufferObject* CreateFramebuffer(int width,int height)
+{
+    // Qt allocates its texture on the currently active unit. Preserve a prior
+    // pass's channel binding when a later pass resizes in the same frame.
+    auto* gl=QOpenGLContext::currentContext()->functions();
+    GLint active=0,binding=0;
+    gl->glGetIntegerv(GL_ACTIVE_TEXTURE,&active);
+    gl->glGetIntegerv(GL_TEXTURE_BINDING_2D,&binding);
+    auto* result=new QOpenGLFramebufferObject(width,height);
+    gl->glActiveTexture(active);
+    gl->glBindTexture(GL_TEXTURE_2D,binding);
+    return result;
+}
+}
 
 ShaderPass::ShaderPass(Type type)
 {
@@ -58,6 +76,7 @@ void ShaderPass::Init(int width, int height)
 
 void ShaderPass::Resize(int width, int height)
 {
+    if(!ShaderCanvas::ValidSize(width,height)) return;
     this->width = width;
     this->height = height;
 
@@ -66,11 +85,43 @@ void ShaderPass::Resize(int width, int height)
         delete fbo;
     }
 
-    fbo = new QOpenGLFramebufferObject(width, height);
+    fbo = CreateFramebuffer(width, height);
+    if(previous_fbo != nullptr)
+    {
+        delete previous_fbo;
+        previous_fbo = nullptr;
+    }
+    ResetFeedback();
+}
+
+void ShaderPass::ResetFeedback()
+{
+    // The history texture is never the render target. A non-feedback pass
+    // retains exactly one FBO, preserving its previous allocation behavior.
+    if(type != BUFFER || !data.feedback)
+    {
+        delete previous_fbo;
+        previous_fbo = nullptr;
+        return;
+    }
+    if(!fbo) return;
+    if(!previous_fbo) previous_fbo = CreateFramebuffer(width,height);
+    auto* gl = QOpenGLContext::currentContext()->functions();
+    GLfloat old_clear[4]; gl->glGetFloatv(GL_COLOR_CLEAR_VALUE,old_clear);
+    const bool scissor = gl->glIsEnabled(GL_SCISSOR_TEST);
+    gl->glDisable(GL_SCISSOR_TEST);
+    gl->glClearColor(0,0,0,0);
+    for(auto* target : {fbo,previous_fbo})
+    {
+        target->bind(); gl->glClear(GL_COLOR_BUFFER_BIT); target->release();
+    }
+    gl->glClearColor(old_clear[0],old_clear[1],old_clear[2],old_clear[3]);
+    if(scissor) gl->glEnable(GL_SCISSOR_TEST);
 }
 
 QString ShaderPass::Recompile(std::string version)
 {
+    ResetFeedback();
     // re-link necessary??
     program->link();
 
@@ -135,8 +186,16 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
 
     case BUFFER:
     {
+        if(data.feedback && !previous_fbo) ResetFeedback();
+        if(!data.feedback && previous_fbo) { delete previous_fbo; previous_fbo=nullptr; }
+        QOpenGLFramebufferObject* target = previous_fbo ? previous_fbo : fbo;
         program->bind();
-        fbo->bind();
+        // Units 0..3 are shader channels and 4 is the final output. History is
+        // a separate source on unit 5; it is unbound before the FBOs swap.
+        program->setUniformValue("iPreviousFrame",5);
+        gl->glActiveTexture(GL_TEXTURE5);
+        gl->glBindTexture(GL_TEXTURE_2D,previous_fbo ? fbo->texture() : 0);
+        target->bind();
 
         program->setUniformValue("iTime", uniforms.iTime);
 
@@ -188,8 +247,11 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
 
         // ...
 
-        fbo->release();
+        target->release();
         program->release();
+        gl->glActiveTexture(GL_TEXTURE5);
+        gl->glBindTexture(GL_TEXTURE_2D,0);
+        if(previous_fbo) std::swap(fbo,previous_fbo);
 
         gl->glActiveTexture(unit);
         gl->glBindTexture(GL_TEXTURE_2D, fbo->texture());
@@ -320,6 +382,7 @@ std::string ShaderPass::MakeFragmentShader(std::string pre_processor_version, st
             "uniform sampler2D iChannel1;\n"
             "uniform sampler2D iChannel2;\n"
             "uniform sampler2D iChannel3;\n"
+            "uniform sampler2D iPreviousFrame;\n"
         ;
 
     std::string includes =
@@ -372,6 +435,11 @@ void ShaderPass::CleanupGL()
         delete fbo;
         fbo = nullptr;
     }
+    if(previous_fbo != nullptr)
+    {
+        delete previous_fbo;
+        previous_fbo = nullptr;
+    }
 
     if(program != nullptr)
     {
@@ -409,6 +477,7 @@ ShaderPass* ShaderPass::FromJSON(json j)
 
     pass->data.fragment_shader = j["fragment_shader"];
     pass->data.texture_path = j["texture_path"];
+    pass->data.feedback = j.value("feedback",false);
 
     return pass;
 }
@@ -420,6 +489,7 @@ json ShaderPass::ToJSON()
     j["type"] = type;
     j["fragment_shader"] = data.fragment_shader;
     j["texture_path"] = data.texture_path;
+    j["feedback"] = data.feedback;
 
     return j;
 }

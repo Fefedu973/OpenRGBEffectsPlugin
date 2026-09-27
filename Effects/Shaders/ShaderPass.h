@@ -78,7 +78,9 @@ public:
 
 private:
     QOpenGLFramebufferObject* fbo = nullptr;
+    QOpenGLFramebufferObject* previous_fbo = nullptr;
     QOpenGLShaderProgram* program = nullptr;
+    void ResetFeedback();
 
     std::string MakeVertexShader();
     std::string MakeFragmentShader(std::string,std::string);
