@@ -33,10 +33,10 @@ The default poll interval is 16 ms (allowed 5–1000 ms); default TTL is 2000 ms
 
 ## Static frames and failures
 
-- `Live`: a newly accepted image. `Static`: the same unexpired publication, with the same shared frame pointer.
-- **Producer heartbeat:** republish an unchanged image at least every 500 ms for the default 2000 ms TTL. A publication must increment sequence, as the existing Publisher does. Updating only a private application timer or retaining a shared_ptr does not renew freshness.
+- `Live`: a newly accepted image. `Static`: the same unexpired pixels. With an unchanged timestamp, the shared frame pointer is also unchanged.
+- **Producer heartbeat:** Better's native v1 contract refreshes the shared header timestamp about every 250 ms, without changing sequence or copying pixels. The core Reader returns that validated timestamp on `Unchanged`. Source then publishes a new metadata wrapper sharing the same QImage pixels/cacheKey, generation and sequence, and derives expiry from the actual header age. No pixel upload is needed for a heartbeat. An existing snapshot remains immutable and retains its former deadline; callers must read the latest snapshot. Re-publishing identical pixels with a new sequence, as the core Publisher does, is also supported. Updating only a private application timer, polling the reader or retaining a shared_ptr never renews freshness.
 - `Busy`: a brief contended read can keep the last image only until its original deadline. `Snapshot::Usable()` also checks the deadline at call time, even if the worker is delayed.
-- `Stale`: no unexpired frame; no renderable frame is returned. `Unavailable`: absent, closed or dead publisher; the mapping is released so a replacement can reconnect or choose a new capacity.
+- `Stale`: no unexpired frame; no renderable frame is returned. One private image can remain cached so a resumed same-sequence heartbeat recovers without copying pixels. `Unavailable`: absent, closed or dead publisher; that image and the mapping are released so a replacement can reconnect or choose a new capacity.
 - `Invalid`: malformed header, dimensions or opaque pixel data. A later valid publication recovers. `Unsupported`: non-Windows or a build without the Room transport header; no worker is launched.
 
 The consumer chooses its stale visual policy explicitly. Do not silently switch to desktop capture, and do not reuse a stale image just because an effect still holds it. No pixel values, source URLs, keystrokes or private identifiers are logged. `Snapshot.detail` contains an aggregate diagnosis only.
@@ -45,6 +45,6 @@ Input geometry is preserved exactly. There is **no implicit crop, fit, aspect co
 
 ## Better integration status
 
-This reader is tested with the real core Publisher and isolated synthetic channels. Better Screen Capture main `ff335ac86fbf9e8f72f17c87113e2e5753a64606` did not publish ORGBFRM1 at audit time; a separate agent is implementing that producer. An isolated C# publisher prototype has already passed cross-process tests against the core Reader, but this does not claim integration in the running Better application. No scene-control API, lease command, metadata schema or MJPEG fallback is invented here. Without a publisher, the source reports Unavailable.
+This reader is tested with the real core Publisher and isolated synthetic channels, including timestamp-only heartbeats matching Better's `docs/native-openrgb-integration-v1.md` contract. Better now specifies authenticated discovery and generation-bound raw/coverage channels; their channel names must be discovered rather than assuming this module's generic default. Discovery, coverage pairing, rendering metadata and scene leases are higher-level integration responsibilities and are not implemented by this low-level channel reader. An isolated C# publisher prototype has passed cross-process tests against the core Reader, but this does not claim integration in the running Better application. Without a publisher, the source reports Unavailable.
 
 See `tests/room-screen-sources` for actual Qt/MSVC synthetic tests and unsupported-backend compilation. Full Effects integration and real capture performance are separate validation steps.

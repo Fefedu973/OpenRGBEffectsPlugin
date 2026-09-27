@@ -125,6 +125,21 @@ static std::shared_ptr<const Frame> OwnFrame(room_surface::Frame& input,unsigned
     pixels.release();
     return result;
 }
+
+static std::shared_ptr<const Frame> RefreshHeartbeat(const std::shared_ptr<const Frame>& current,
+                                                    std::uint64_t timestamp,unsigned ttl)
+{
+    if(!current || current->timestamp_ms==timestamp)return current;
+    const auto now_ms=GetTickCount64();
+    if(timestamp>now_ms || now_ms-timestamp>ttl)return current;
+    // QImage's copy shares the owned pixels and retains its cacheKey. Existing
+    // snapshots remain immutable; only a newly validated producer heartbeat can
+    // extend a new snapshot's deadline. Polling alone never renews the TTL.
+    auto renewed=std::make_shared<Frame>(*current);
+    renewed->timestamp_ms=timestamp;renewed->received=Clock::now();
+    renewed->expires=renewed->received+std::chrono::milliseconds(ttl-(now_ms-timestamp));
+    return renewed;
+}
 #endif
 
 void Source::Run()
@@ -150,16 +165,19 @@ void Source::Run()
                     rejected?"Invalid frame dimensions, stride or opaque BGRA pixels":(current?"":"Frame TTL expired"));
                 break;
             case S::Unchanged:
+                current=RefreshHeartbeat(current,incoming.timestamp_ms,config.ttl_ms);
                 if(rejected)Publish(State::Invalid,{},"Invalid frame dimensions, stride or opaque BGRA pixels");
                 else if(current && Clock::now()<=current->expires)Publish(State::Static,current,{});
                 else Publish(State::Stale,{},"Frame TTL expired");
                 break;
             case S::Busy:
-                if(current && Clock::now()>current->expires){current.reset();Publish(State::Stale,{},"Frame TTL expired while producer is busy");}
+                if(current && Clock::now()>current->expires)Publish(State::Stale,{},"Frame TTL expired while producer is busy");
                 else Publish(State::Busy,current,reader.LastError());
                 break;
             case S::Stale:
-                current.reset();Publish(State::Stale,{},reader.LastError());break;
+                // Retain one private immutable image so a resumed timestamp-only
+                // heartbeat can recover. No renderable snapshot exposes it while stale.
+                Publish(State::Stale,{},reader.LastError());break;
             case S::Unavailable:
                 current.reset();rejected=false;Publish(State::Unavailable,{},reader.LastError());
                 // Release an old mapping so a replacement can choose a new capacity.

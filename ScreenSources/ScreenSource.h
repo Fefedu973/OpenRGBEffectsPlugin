@@ -30,6 +30,8 @@ struct Config
 struct Frame
 {
     // Owned, implicitly shared pixels. No alias to the producer mapping remains.
+    // A timestamp-only heartbeat creates a fresh metadata wrapper but shares the
+    // exact QImage/cacheKey, generation and sequence (no new texture upload).
     // Treat as immutable; modifying a QImage copy detaches it in the normal Qt way.
     QImage image;
     std::uint64_t sequence = 0, generation = 0, timestamp_ms = 0;

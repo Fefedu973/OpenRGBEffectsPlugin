@@ -119,6 +119,45 @@ static void InvalidAndRecover()
     Check(publisher.PublishBGRA(p.data(),p.size(),4,4,16),"Header recovery publish failed");
     Wait(source,[](auto s){return s.Usable();},"Header recovery failed");
 }
+static void TimestampOnlyHeartbeat()
+{
+    auto c=Configuration(std::to_string(GetCurrentProcessId())+"-heartbeat");
+    room_surface::Publisher publisher(c.channel,1024);auto source=Source::Acquire(c);auto p=Pixels(4,4,17);
+    Check(publisher.PublishBGRA(p.data(),p.size(),4,4,16),"Heartbeat fixture publish failed");
+    auto first=Wait(source,[](auto s){return s.Usable();},"Heartbeat fixture absent");
+    const auto original=first.frame;
+    const auto* pixels=original->image.constBits();const auto key=original->image.cacheKey();
+    HANDLE mutex=OpenMutexW(SYNCHRONIZE|MUTEX_MODIFY_STATE,FALSE,room_surface::detail::Name(c.channel,true).c_str());
+    HANDLE mapping=OpenFileMappingW(FILE_MAP_ALL_ACCESS,FALSE,room_surface::detail::Name(c.channel,false).c_str());
+    auto* header=static_cast<room_surface::Header*>(MapViewOfFile(mapping,FILE_MAP_ALL_ACCESS,0,0,room_surface::HEADER_BYTES+1024));
+    Check(mutex&&mapping&&header,"Heartbeat fixture mapping failed");
+    auto refresh=[&] {
+        room_surface::detail::Lock guard(mutex,100);Check(guard.acquired,"Heartbeat fixture lock failed");
+        header->timestamp_ms=GetTickCount64();return header->timestamp_ms;
+    };
+    std::uint64_t stamp=original->timestamp_ms;
+    for(unsigned i=0;i<9;++i)
+    {
+        std::this_thread::sleep_for(250ms);stamp=refresh();
+        auto alive=Wait(source,[&](auto s){return s.Usable()&&s.frame->timestamp_ms==stamp;},"Timestamp-only heartbeat did not renew snapshot");
+        Check(alive.state==State::Static,"Timestamp-only heartbeat was treated as new pixels");
+        Check(alive.frame!=original&&alive.frame->sequence==original->sequence&&alive.frame->generation==original->generation,"Heartbeat altered immutable metadata identity");
+        Check(alive.frame->image.constBits()==pixels&&alive.frame->image.cacheKey()==key,"Heartbeat copied pixels or invalidated upload cache");
+        Check(original->timestamp_ms==first.frame->timestamp_ms&&original->expires<alive.frame->expires,"Heartbeat mutated an already published snapshot");
+    }
+    Check(stamp-original->timestamp_ms>2*c.ttl_ms,"Heartbeat test did not exceed two TTL windows");
+    Check(!first.Usable()&&source->Read().Usable(),"Retained snapshot was renewed or current snapshot expired");
+    auto stable=source->Read();std::this_thread::sleep_for(30ms);
+    auto unchanged=source->Read();
+    Check(stable.frame==unchanged.frame&&stable.revision==unchanged.revision,"Polling unchanged timestamp republished metadata");
+    Wait(source,[](auto s){return s.state==State::Stale;},"Stopped heartbeat remained live");
+    Check(!source->Read().frame&&!stable.Usable(),"Stopped heartbeat exposed a stale renderable image");
+    Check(GetTickCount64()-stamp<c.ttl_ms+200,"TTL was extended from poll time instead of header age");
+    stamp=refresh();
+    auto resumed=Wait(source,[&](auto s){return s.Usable()&&s.frame->timestamp_ms==stamp;},"Same-sequence heartbeat did not recover after expiry");
+    Check(resumed.frame->sequence==original->sequence&&resumed.frame->image.constBits()==pixels&&resumed.frame->image.cacheKey()==key,"Heartbeat recovery recopied static pixels");
+    UnmapViewOfFile(header);CloseHandle(mapping);CloseHandle(mutex);
+}
 static int ChildPublisher(const std::string& channel)
 {
     room_surface::Publisher publisher(channel,1024);auto p=Pixels(4,4,42);
@@ -161,7 +200,7 @@ int main(int argc,char** argv)
 #endif
         ConfigTests();
 #if defined(_WIN32) && !defined(SCREEN_SOURCES_DISABLE_FRAME_SURFACE)
-        Lifecycle();ExpiryAndContention();InvalidAndRecover();ProducerDeath();
+        Lifecycle();ExpiryAndContention();InvalidAndRecover();TimestampOnlyHeartbeat();ProducerDeath();
 #else
         auto source=Source::Acquire(Configuration("unsupported"));Check(source->Read().state==State::Unsupported,"Unsupported backend not reported");Check(!source->Read().Usable(),"Unsupported backend exposed a frame");
 #endif
