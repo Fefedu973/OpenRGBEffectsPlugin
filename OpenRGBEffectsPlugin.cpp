@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QSystemTrayIcon>
 #include <QThread>
+#include <exception>
 #include "OpenRGBEffectsPlugin.h"
 #include "EffectList.h"
 #include "EffectListManager.h"
@@ -18,6 +19,32 @@
 #include "Effects/SignalFavorites/SignalFavoriteRegistry.h"
 
 #define SETTINGSMANAGER_UPDATE_REASON_SETTINGS_UPDATED 0
+
+namespace
+{
+// SDK and profile hooks can run on host network threads. Their return values
+// and load order require synchronous delivery, but GUI callers (including the
+// session checkpoint) must run directly, without a nested event loop or lock.
+template<typename Function>
+void RunOnEffectUiThread(OpenRGBEffectTab* target, Function function)
+{
+    if(QThread::currentThread() == target->thread())
+    {
+        function();
+        return;
+    }
+
+    std::exception_ptr failure;
+    QMetaObject::invokeMethod(target, [&]()
+    {
+        // Never let an exception escape through Qt's event dispatcher. Preserve
+        // the caller's normal error handling on its own thread instead.
+        try { function(); }
+        catch(...) { failure = std::current_exception(); }
+    }, Qt::BlockingQueuedConnection);
+    if(failure) std::rethrow_exception(failure);
+}
+}
 
 /*---------------------------------------------------------*\
 | Plugin Global Variables                                   |
@@ -149,32 +176,38 @@ void OpenRGBEffectsPlugin::Unload()
     /*-----------------------------------------------------*\
     | Stop all effects                                      |
     \*-----------------------------------------------------*/
-    ui->StopAll();
+    RunOnEffectUiThread(ui, [this]() { ui->StopAll(); });
 }
 
 unsigned char* OpenRGBEffectsPlugin::OnSDKCommand(unsigned int pkt_id, unsigned char* data, unsigned int* data_size)
 {
     unsigned char* data_out = nullptr;
 
+    if(data_size == nullptr) return nullptr;
+
     switch(pkt_id)
     {
         case NET_PACKET_ID_REQUEST_EFFECT_LIST:
-            data_out = ui->GetEffectListDescription(data_size);
+            // The description builder accumulates this value. Request payload
+            // bytes are not part of the response and must not inflate it.
+            *data_size = 0;
+            RunOnEffectUiThread(ui, [&]() { data_out = ui->GetEffectListDescription(data_size); });
             break;
         case NET_PACKET_ID_START_EFFECT:
-            {
-                unsigned short name_len;
-                memcpy(&name_len, &data[0], sizeof(name_len));
-                char* name = (char *)&data[sizeof(unsigned short)];
-                ui->SetEffectState(std::string(name), true);
-            }
-            break;
         case NET_PACKET_ID_STOP_EFFECT:
             {
+                if(data == nullptr || *data_size < sizeof(unsigned short)) break;
                 unsigned short name_len;
-                memcpy(&name_len, &data[0], sizeof(name_len));
-                char* name = (char *)&data[sizeof(unsigned short)];
-                ui->SetEffectState(std::string(name), false);
+                memcpy(&name_len, data, sizeof(name_len));
+                if(name_len == 0 || name_len > *data_size - sizeof(name_len)) break;
+                const char* name_data = reinterpret_cast<const char*>(data + sizeof(name_len));
+                // Protocol strings include exactly one trailing NUL. Validate
+                // before copying so no UI call borrows network data.
+                if(name_data[name_len - 1] != '\0' ||
+                   memchr(name_data, '\0', name_len - 1) != nullptr) break;
+                const std::string name(name_data, name_len - 1);
+                const bool running = pkt_id == NET_PACKET_ID_START_EFFECT;
+                RunOnEffectUiThread(ui, [this, name, running]() { ui->SetEffectState(name, running); });
             }
             break;
     }
@@ -183,33 +216,19 @@ unsigned char* OpenRGBEffectsPlugin::OnSDKCommand(unsigned int pkt_id, unsigned 
 
 void OpenRGBEffectsPlugin::OnProfileAboutToLoad()
 {
-    if(QThread::currentThread() == this->thread())
-    {
-        ui->AboutToLoadProfile();
-    }
-    else
-    {
-        QMetaObject::invokeMethod(ui, [=](){ui->AboutToLoadProfile();}, Qt::BlockingQueuedConnection );
-    }
+    RunOnEffectUiThread(ui, [this]() { ui->AboutToLoadProfile(); });
 }
 
 void OpenRGBEffectsPlugin::OnProfileLoad(nlohmann::json profile_data)
 {
-    if(QThread::currentThread() == this->thread())
-    {
-        ui->LoadProfileJson(profile_data);
-    }
-    else
-    {
-        QMetaObject::invokeMethod(ui, [=](){ui->LoadProfileJson(profile_data);}, Qt::BlockingQueuedConnection );
-    }
+    RunOnEffectUiThread(ui, [this, profile_data]() { ui->LoadProfileJson(profile_data); });
 }
 
 nlohmann::json OpenRGBEffectsPlugin::OnProfileSave()
 {
     nlohmann::json profile_json;
 
-    profile_json = ui->GetProfileJson(true);
+    RunOnEffectUiThread(ui, [&]() { profile_json = ui->GetProfileJson(true); });
 
     return(profile_json);
 }
@@ -244,7 +263,10 @@ void OpenRGBEffectsPlugin::SettingsManagerUpdated(unsigned int update_reason)
     switch(update_reason)
     {
         case SETTINGSMANAGER_UPDATE_REASON_SETTINGS_UPDATED:
-            ui->SetLanguage();
+            // The host holds its callback-list mutex here. Do not wait for the
+            // GUI, which may be unregistering callbacks during shutdown. The
+            // QObject context also cancels this post if the widget is deleted.
+            QMetaObject::invokeMethod(ui, [target = ui]() { target->SetLanguage(); }, Qt::QueuedConnection);
             break;
     }
 }
