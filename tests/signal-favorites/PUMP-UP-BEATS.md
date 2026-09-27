@@ -10,7 +10,7 @@ It is distinct from the earlier original Room Pulse visualizer.
 
 ## Optional screen palette
 
-`ScreenDominant` selects the most populous quantized RGB color family in the
+`ScreenDominant` selects the most populous **chromatic** color family in the
 selected screen source. It is opt-in: the default remains HueCycle. The source
 selector is shown and capture runs only while this mode and the effect are
 active. Native Windows desktop capture needs no external program. Optional
@@ -18,17 +18,39 @@ Better/FrameSurface inputs reuse the existing input provider; Better itself
 must be running for its source to be available. Pump always consumes raw pixels,
 never the Better appearance render graph, and keeps its own spectrum/regions.
 
-A uniform nearest-pixel grid (at most 128×72 samples) feeds 4096 RGB4 buckets at
-most 10 times/s. Only the winning bucket's pixels are averaged, so red/blue scenes
-do not become a global gray/purple average. Alpha weights visible coverage;
-black and neutral majorities are respected. Quantization boundaries, small
-details and population ties can affect the result; it is a sampled dominant
-palette, not object recognition. Ties use a deterministic bucket order.
+A uniform nearest-pixel grid (at most 128×72 samples) feeds 24 circular hue bins
+at most 10 times/s. Pixels require HSV value ≥0.08, saturation ≥0.25 and chroma
+≥0.05; dark padding, grays and very faint color noise do not win. Each candidate
+family combines its bin and both neighbors, including red across 359°/0°.
+Alpha weights population; source brightness does not weight it. The winner
+must cover at least 0.5% of opaque sampled area and eight sampled pixels (one
+for an input with fewer than eight opaque samples). Its circular mean hue and
+mean saturation are preserved; HSV value is normalized to one.
 
-Missing/expired input uses Static Color1; an actually black dominant image is
-black. Audio gains, silence behavior, backgrounds and the twenty controls are
-otherwise unchanged. The source choice is saved with the profile. Tests use
-synthetic images and a local offscreen GPU; no real desktop capture is performed.
+Missing/expired, transparent, entirely black or neutral input uses **Static
+Color 1**, rather than keeping an old screen color. A neutral new image replaces
+the previous palette within the 100 ms reduction interval; missing/expired
+input resets it immediately. The source color therefore no longer darkens the
+audio response a second time: Pump's existing audio levels control foreground
+brightness. Choosing a dark Static Color 1 still explicitly gives a dark
+fallback. This music-oriented palette is deliberately different from copying
+the darkest/largest screen background; it is not object recognition.
+Quantization, sample coverage and ties can affect the selected family; ties
+are deterministic. No arbitrary saturation boost is applied.
+
+Audio gains, silence behavior, backgrounds and the twenty controls are otherwise
+unchanged. The source choice is saved with the profile. Tests use synthetic
+images (padding, neutral apps, photos represented by color patches, hue wrap,
+varying exposure, alpha and disappearance) and a local offscreen GPU. No real
+desktop capture is performed by these tests.
+
+Live diagnosis on 2026-09-27 separately confirmed the failure on a colorful
+Better raw frame: 43.84% of its canvas was black placement padding. The former
+RGB4 vote returned approximately (0.47, 0.19, 0.36) in RGB8 units; this hue-family
+reducer returned approximately (255, 160, 36) from the same frame. Its selected
+chromatic family covered 16.7% of all samples. A separate neutral-window frame
+correctly produced the configured static fallback. Private captures remain
+local and are not part of the repository or test fixtures.
 
 ## Rendering and layout
 

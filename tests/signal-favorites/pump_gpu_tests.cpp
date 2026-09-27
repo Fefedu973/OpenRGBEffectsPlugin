@@ -8,6 +8,7 @@
 #include <QColor>
 #include <QElapsedTimer>
 #include "ShaderProgram.h"
+#include "../../Effects/SignalFavorites/DominantScreenColor.h"
 #include <fstream>
 #include <iostream>
 #include <thread>
@@ -71,8 +72,21 @@ static void Run(const QString& repo,const QString& output,QOpenGLFunctions* gl)
         {auto pixel=Pixel(image,float(x),float(y));if(std::abs(qRed(pixel)-51)<=3&&std::abs(qGreen(pixel)-204)<=3&&std::abs(qBlue(pixel)-102)<=3){selected_color=true;break;}}
         Check(selected_color,"screen palette reaches each central spectrum style");
     }
-    u=Params(spec,{{"colorStyle","ScreenDominant"}});u.custom["pumpScreenColor"]={{0,0,0,0},3};Compile(p);image=Draw(p,u,gl);
-    RGB(image,10,150,0,0,0,"a genuinely black dominant image stays black");
+    // Production palette -> uniform -> production GPU. Black/neutral/absent
+    // input uses Static Color 1; a dark colored picture is normalized to V=1.
+    for(int input=0;input<4;++input)
+    {
+        QImage screen;
+        if(input){screen=QImage(64,64,QImage::Format_RGB32);screen.fill(input==1?Qt::black:input==2?Qt::gray:QColor(32,0,0));}
+        const auto dominant=native_screen_color::Dominant(screen);
+        const QColor fallback("#00ffff");
+        u=Params(spec,{{"colorStyle","ScreenDominant"}});
+        u.custom["pumpScreenColor"]={{dominant.valid?dominant.rgb[0]:float(fallback.redF()),
+            dominant.valid?dominant.rgb[1]:float(fallback.greenF()),dominant.valid?dominant.rgb[2]:float(fallback.blueF()),0},3};
+        Compile(p);image=Draw(p,u,gl);
+        if(input<3)RGB(image,10,150,0,255,255,"missing/neutral/black source uses explicit static fallback");
+        else {RGB(image,10,150,255,0,0,"dark chromatic source no longer attenuates full VU");RGB(image,230,10,64,0,0,"only audio scales normalized screen palette");}
+    }
     u.custom["pumpScreenColor"]={{1,0,0,0},3};u.custom["pumpLevels"]={{0,0,0,0},4};
     for(unsigned i=0;i<100;++i)u.custom["pumpFreq["+std::to_string(i)+"]"].values[0]=0;
     Compile(p);image=Draw(p,u,gl);RGB(image,10,150,0,0,0,"screen color does not invent audio volume in silence");
