@@ -91,7 +91,7 @@ unsigned int ControllerZone::matrix_size()
 /*---------------------------------------------------------*\
 | Match this zone against a descriptor from to_json().      |
 |                                                           |
-| Identity is name/serial/description/version/vendor plus   |
+| Identity is name/serial/description/vendor plus           |
 | zone and segment index and the controller location. That  |
 | location is not guaranteed stable for every bus type, so  |
 | it is matched per type:                                   |
@@ -104,6 +104,8 @@ unsigned int ControllerZone::matrix_size()
 |   on Linux, so compare only the device address.           |
 |                                                           |
 | Any other location is stable and compared exactly.        |
+| Firmware/plugin version is saved as metadata only: an     |
+| update must not disconnect an otherwise identical zone.   |
 \*---------------------------------------------------------*/
 bool ControllerZone::matches_json(const nlohmann::json& controller_zone_json)
 {
@@ -140,7 +142,6 @@ bool ControllerZone::matches_json(const nlohmann::json& controller_zone_json)
             controller->GetName()           == controller_zone_json["name"]         &&
             controller->GetSerial()         == controller_zone_json["serial"]       &&
             controller->GetDescription()    == controller_zone_json["description"]  &&
-            controller->GetVersion()        == controller_zone_json["version"]      &&
             controller->GetVendor()         == controller_zone_json["vendor"]       &&
             zone_idx                        == controller_zone_json["zone_idx"]     &&
             is_segment                      == saved_is_segment                     &&
