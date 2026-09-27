@@ -229,6 +229,11 @@ void Shaders::Resize()
     shader_renderer->Resize(width, height);
 }
 
+room_audio::RhythmSnapshot Shaders::CaptureSignalSnapshot() const
+{
+    return use_audio ? AudioManager::get()->CaptureRhythm(audio_settings_struct.audio_device) : room_audio::RhythmSnapshot{};
+}
+
 void Shaders::StepEffect(std::vector<ControllerZone*> controller_zones)
 {
     float new_time = time + 0.001 * Speed / (float) FPS;

@@ -50,6 +50,9 @@ static void Fragmented(unsigned rate,unsigned channels)
     Check(std::abs(actual.audio_time-direct.audio_time)<1e-9,"audio timeline independent of packet size");
     for(unsigned b=0;b<3;++b)
         Check(std::abs(actual.band_flux[b]-direct.band_flux[b])<1e-5,"multichannel fragment spectral flux matches full mono stream");
+    Check(std::abs(actual.power-direct.power)<1e-7,"multichannel mean-square power matches complete mono stream");
+    for(unsigned b=0;b<200;++b)
+        Check(std::abs(actual.spectrum[b]-direct.spectrum[b])<1e-6,"independent spectrum survives packet fragmentation");
     for(size_t i=0;i<512;++i)
         Check(std::abs(session->buffer[i]-expected[count-512+i])<1e-6,"legacy latest512 window unchanged");
     // A reset/reconnect publishes empty state immediately, without stale beats.
@@ -59,6 +62,8 @@ static void Fragmented(unsigned rate,unsigned channels)
           session->rhythm_snapshot.silent && session->rhythm_snapshot.onset_strength==0 &&
           session->rhythm_snapshot.bpm==0,"missing PCM suppresses published prediction before analysis reset");
     Check(session->rhythm.Snapshot().sequence==actual.sequence,"idle publication does not mutate capture-owned history");
+    Check(session->rhythm_snapshot.power==0 && std::all_of(session->rhythm_snapshot.spectrum.begin(),
+          session->rhythm_snapshot.spectrum.end(),[](float v){return v==0;}),"missing PCM clears power and frequency spectrum");
     session->Silence();
     Check(session->rhythm_snapshot.generation>generation && !session->rhythm_snapshot.locked &&
           session->rhythm_snapshot.silent && session->rhythm_snapshot.onset_strength==0,

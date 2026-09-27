@@ -1,0 +1,199 @@
+{
+  "id": "PumpUpBeats",
+  "title": "Pump Up Beats",
+  "source_id": "-MhwiL3cQgnjhqzS0g2L",
+  "description": "A native multi-region music display with mirrored spectrum, volume and bass meters, fan sector and beat colors.",
+  "feedback": true,
+  "audioReactive": true,
+  "controls": [
+    {
+      "key": "totalVolumeBoost",
+      "label": "Volume Boost",
+      "type": "number",
+      "default": 50.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "backgroundCol_in",
+      "label": "Background color",
+      "type": "color",
+      "default": "#000000",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "staticCol1",
+      "label": "Static Color 1",
+      "type": "color",
+      "default": "#00ffff",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "staticCol2",
+      "label": "Static Color 2",
+      "type": "color",
+      "default": "#00ffff",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "huespeed",
+      "label": "Hue cycling speed",
+      "type": "number",
+      "default": 20.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "colorStyle",
+      "label": "Color Style",
+      "type": "enum",
+      "default": "HueCycle",
+      "options": [
+        "Static",
+        "HueCycle",
+        "HueWave",
+        "HueWaveVert",
+        "RandomBeat"
+      ]
+    },
+    {
+      "key": "displayStyle",
+      "label": "Display Style",
+      "type": "enum",
+      "default": "Bars",
+      "options": [
+        "Bars",
+        "ThinBars",
+        "ChonkerBars",
+        "Smooth",
+        "SmoothSimple",
+        "Pixel"
+      ]
+    },
+    {
+      "key": "backgroundStyle",
+      "label": "Background Color",
+      "type": "enum",
+      "default": "Static",
+      "options": [
+        "Static",
+        "HueCycle",
+        "RandomBeat"
+      ]
+    },
+    {
+      "key": "backgroundMode",
+      "label": "Background Beat Flash",
+      "type": "enum",
+      "default": "Off",
+      "options": [
+        "Off",
+        "White",
+        "RandomBeat",
+        "Static1",
+        "Static2",
+        "BackgrCol"
+      ]
+    },
+    {
+      "key": "fadingOut",
+      "label": "Fading",
+      "type": "number",
+      "default": 0.0,
+      "min": 0.0,
+      "max": 50.0,
+      "step": 1
+    },
+    {
+      "key": "freqDisplaySize",
+      "label": "Size of Frequency Display",
+      "type": "number",
+      "default": 170.0,
+      "min": 120.0,
+      "max": 199.0,
+      "step": 1
+    },
+    {
+      "key": "bottomLineThickness",
+      "label": "Size of Bottom Frequency Line",
+      "type": "number",
+      "default": 4.0,
+      "min": 0.0,
+      "max": 50.0,
+      "step": 1
+    },
+    {
+      "key": "volumeBarSmoothing",
+      "label": "Volume bar (left) decay speed",
+      "type": "number",
+      "default": 40.0,
+      "min": 1.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "volumeRectSmoothing",
+      "label": "Volume Rectangle (top right) decay speed",
+      "type": "number",
+      "default": 25.0,
+      "min": 1.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "beatSensitivity",
+      "label": "Beat detection Sensitivity",
+      "type": "number",
+      "default": 50.0,
+      "min": 1.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "baseBarSmoothing",
+      "label": "Base bar (top left) decay speed",
+      "type": "number",
+      "default": 50.0,
+      "min": 1.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "baseRectSmoothing",
+      "label": "Base Rectangle (top left) decay speed",
+      "type": "number",
+      "default": 40.0,
+      "min": 1.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "volumeScaleCenter",
+      "label": "Scale frequencies by volume",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "usedFreqSector",
+      "label": "Frequency spectrum width",
+      "type": "number",
+      "default": 50.0,
+      "min": 10.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "displayLayoutHelper",
+      "label": "Layout Helper (keypress = pause)",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "notes": "Original native GPU implementation of the version 5.2 visual design and its twenty controls. Continuous WASAPI PCM supplies 200 FFT amplitude samples at 50 Hz spacing and mean-square power; its calibration is not identical to undocumented SignalRGB audio bytes. Frequency sectors, decay, beat-color transitions and per-frame fading use native bounded scalar state. Layout Helper pauses on a new keypress or preview click. No browser or copied Canvas source is distributed. GPU antialiasing and seeded random hue selection can differ from the reference.",
+  "keyboard_reactive": true
+}

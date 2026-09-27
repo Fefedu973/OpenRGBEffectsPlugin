@@ -49,6 +49,7 @@ struct AudioSession
         buffer.fill(0.f);
         rhythm_snapshot.silent=true; rhythm_snapshot.locked=false;
         rhythm_snapshot.onset_strength=0; rhythm_snapshot.band_flux.fill(0);
+        rhythm_snapshot.spectrum.fill(0); rhythm_snapshot.power=0;
         rhythm_snapshot.confidence=rhythm_snapshot.phase=rhythm_snapshot.bpm=0;
     }
     bool PublishPacket(audio_pcm::Window& window,const float* mono,size_t frames,

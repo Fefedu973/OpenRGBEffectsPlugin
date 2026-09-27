@@ -16,6 +16,11 @@ struct RhythmSnapshot
     double audio_time=0.0, last_onset_time=-1.0;
     float onset_strength=0.0f;
     std::array<float,3> band_flux{}; // Positive spectral changes: 40-250, 250-2000, 2000-12000 Hz.
+    // Independent samples of the existing continuous FFT, not duplicated
+    // legacy bins: linear Hann-corrected amplitude at 0,50,...9950 Hz.
+    // Values beyond Nyquist are zero. Power is mono mean-square amplitude.
+    std::array<float,200> spectrum{};
+    float power=0.0f;
     float bpm=0.0f, phase=0.0f, confidence=0.0f;
     bool locked=false, silent=true;
 };
@@ -141,7 +146,8 @@ private:
             const float x=ring[(next+i)%fft_size]; power+=double(x)*x;
             spectrum[i]=std::complex<float>(x*window[i],0);
         }
-        const float rms=float(std::sqrt(power/fft_size));
+        state.power=float(power/fft_size);
+        const float rms=float(std::sqrt(state.power));
         if(rms>0.0003f) audible_time=end_time;
         // Short rests are part of a rhythm; silence is declared only after a
         // complete slow-beat interval. Missing capture packets are a separate
@@ -153,9 +159,19 @@ private:
             if(history_count || state.locked) ClearTempo();
             previous_magnitudes.fill(0); flux_mean.fill(0);
             previous_novelty=older_novelty=previous_raw=0; state.onset_strength=0; state.band_flux.fill(0);
+            state.spectrum.fill(0);
             return;
         }
         FFT();
+        for(std::size_t i=0;i<state.spectrum.size();++i)
+        {
+            const double bin=double(i)*50.0*fft_size/sample_rate;
+            if(bin>=fft_size/2) {state.spectrum[i]=0;continue;}
+            const auto lo=std::size_t(bin),hi=std::min(lo+1,fft_size/2);
+            const float f=float(bin-lo);
+            const float magnitude=std::abs(spectrum[lo])*(1-f)+std::abs(spectrum[hi])*f;
+            state.spectrum[i]=std::clamp(magnitude*(i==0?2.0f:4.0f)/float(fft_size),0.0f,1.0f);
+        }
         std::array<float,3> flux{};
         std::array<unsigned,3> bins{};
         for(std::size_t bin=1;bin<fft_size/2;++bin)
