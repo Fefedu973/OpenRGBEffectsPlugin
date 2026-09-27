@@ -40,7 +40,7 @@ display x290–320. The symmetric spectrum occupies x48–320 and y30–196; the
 four rows carry frequency brightness. Changing frequency size moves these same
 regions; it does not redefine any device routes.
 
-Six spectrum modes, five color modes, independently decaying volume/bass
+Six spectrum modes, five original color modes plus ScreenDominant, independently decaying volume/bass
 envelopes, beat-color/background choices and the pausable helper are native.
 Helper simulation takes ten seconds per cycle and is paused by a new keyboard
 tap or preview click. RandomBeat is driven by recent low-frequency energy and
@@ -102,7 +102,7 @@ python tests/room-rhythm/run.py
 ```
 
 The production ShaderProgram/ShaderPass GPU harness checks twenty controls,
-52 boundary cases, six distinct geometries, known per-region pixel gains,
+53 boundary cases, six distinct geometries, known per-region pixel gains,
 feedback decay and reset at800×500. The independent PCM/state harness checks
 44.1/48kHz fragmented tones, exact spectral peak indices, low-rate Nyquist
 bounds, silence, volume/bass decay, helper pause, actual beat hue changes and
