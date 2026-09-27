@@ -18,6 +18,7 @@
 #include <set>
 #include <map>
 #include <memory>
+#include "RhythmTracker.h"
 
 /*---------------------------------------------------------*\
 | Audio Library Includes                                    |
@@ -64,6 +65,12 @@ public:
     | Client Handling and buffer passing  |
     \*-----------------------------------*/
     void                     Capture(int device_idx, float *buf);
+#ifdef _WIN32
+    room_audio::RhythmSnapshot CaptureRhythm(int device_idx);
+#else
+    // Keep other platform capture paths unchanged until they provide continuous PCM.
+    room_audio::RhythmSnapshot CaptureRhythm(int) { return {}; }
+#endif
     void                     RegisterClient(int device_idx, void * client);
     void                     UnRegisterClient(int device_idx, void * client);
 

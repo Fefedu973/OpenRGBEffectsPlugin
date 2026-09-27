@@ -115,6 +115,13 @@ private:
 #endif
     bool use_audio = false;
     bool invert_time = false;
+    std::atomic<bool> rhythm_tracking{false};
+    QCheckBox* rhythm_checkbox = nullptr;
+    QLabel* rhythm_label = nullptr;
+    room_audio::RhythmSnapshot latest_rhythm;
+    bool rhythm_reported = false, rhythm_reported_locked = false, rhythm_reported_silent = true;
+    float rhythm_reported_bpm = 0;
+    double rhythm_last_report = 0;
 
     AudioSettings                   audio_settings;
     Audio::AudioSettingsStruct      audio_settings_struct;

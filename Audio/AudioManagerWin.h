@@ -12,6 +12,16 @@
 namespace
 {
 using Microsoft::WRL::ComPtr;
+double AudioNowSeconds()
+{
+    return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+double AudioPacketSeconds(UINT64 qpc_100ns, bool timestamp_error, unsigned frames,
+                          unsigned rate, double now_seconds)
+{
+    // GetBuffer already converts QPC to 100 ns units (not raw counter ticks).
+    return timestamp_error ? now_seconds-double(frames)/rate : double(qpc_100ns)/10000000.0;
+}
 struct AudioEndpoint { std::wstring id; bool capture=false, default_output=false; };
 struct AudioSession
 {
@@ -19,8 +29,45 @@ struct AudioSession
     std::mutex mutex;
     std::condition_variable wake;
     std::array<float,512> buffer{};
+    // Only the capture worker touches the tracker. Readers copy the immutable
+    // snapshot under mutex; no DSP or COM calls hold the publication lock.
+    room_audio::RhythmTracker rhythm;
+    room_audio::RhythmSnapshot rhythm_snapshot=rhythm.Snapshot();
     std::thread worker;
-    void Silence() { std::lock_guard<std::mutex> lock(mutex); buffer.fill(0.f); }
+    void Silence()
+    {
+        rhythm.Reset(AudioNowSeconds());
+        const auto snapshot=rhythm.Snapshot();
+        std::lock_guard<std::mutex> lock(mutex);
+        buffer.fill(0.f); rhythm_snapshot=snapshot;
+    }
+    void PublishNoPacket()
+    {
+        // Missing PCM is not a measured beat. Suppress the published grid at
+        // once, while allowing the analysis owner a short idle grace period.
+        std::lock_guard<std::mutex> lock(mutex);
+        buffer.fill(0.f);
+        rhythm_snapshot.silent=true; rhythm_snapshot.locked=false;
+        rhythm_snapshot.onset_strength=0; rhythm_snapshot.band_flux.fill(0);
+        rhythm_snapshot.confidence=rhythm_snapshot.phase=rhythm_snapshot.bpm=0;
+    }
+    bool PublishPacket(audio_pcm::Window& window,const float* mono,size_t frames,
+                       unsigned rate,double first_sample,bool discontinuity)
+    {
+        if((frames && !mono) || !rate || !std::isfinite(first_sample)) { Silence(); return false; }
+        if(rate>=8000 && rate<=192000)
+        {
+            if(!rhythm.Push(mono,frames,rate,first_sample,discontinuity)) { Silence(); return false; }
+        }
+        else rhythm.Reset(first_sample); // Unsupported DSP rate must not break legacy PCM consumers.
+        if(discontinuity) window=audio_pcm::Window{};
+        window.AppendMono(mono,frames);
+        const auto next_buffer=window.Snapshot();
+        const auto next_rhythm=rhythm.Snapshot();
+        std::lock_guard<std::mutex> lock(mutex);
+        buffer=next_buffer; rhythm_snapshot=next_rhythm;
+        return true;
+    }
     bool Wait(unsigned ms)
     {
         std::unique_lock<std::mutex> lock(mutex);
@@ -73,6 +120,7 @@ bool AudioFormat(const WAVEFORMATEX* wave, audio_pcm::Format& format)
 }
 HRESULT CaptureEndpoint(AudioSession& session, const AudioEndpoint& endpoint)
 {
+    session.Silence(); // Endpoint changes never inherit a previous stream's beat grid.
     ComPtr<IMMDeviceEnumerator> enumerator;
     HRESULT hr=CoCreateInstance(__uuidof(MMDeviceEnumerator),nullptr,CLSCTX_ALL,IID_PPV_ARGS(&enumerator));
     if(FAILED(hr))return hr;
@@ -94,6 +142,7 @@ HRESULT CaptureEndpoint(AudioSession& session, const AudioEndpoint& endpoint)
     std::unique_ptr<WAVEFORMATEX,decltype(&CoTaskMemFree)> wave(raw,&CoTaskMemFree);
     audio_pcm::Format format{};
     if(!AudioFormat(wave.get(),format))return AUDCLNT_E_UNSUPPORTED_FORMAT;
+    const unsigned sample_rate=wave->nSamplesPerSec;
     hr=client->Initialize(AUDCLNT_SHAREMODE_SHARED,endpoint.capture?0:AUDCLNT_STREAMFLAGS_LOOPBACK,
                           0,0,wave.get(),nullptr);
     if(FAILED(hr))return hr;
@@ -103,6 +152,8 @@ HRESULT CaptureEndpoint(AudioSession& session, const AudioEndpoint& endpoint)
     hr=client->Start();
     if(FAILED(hr))return hr;
     audio_pcm::Window window;
+    std::vector<float> mono;
+    bool silence_published=false, silence_reset=false;
     auto last_packet=std::chrono::steady_clock::now();
     auto last_default_check=last_packet;
     while(!session.stop.load())
@@ -122,26 +173,45 @@ HRESULT CaptureEndpoint(AudioSession& session, const AudioEndpoint& endpoint)
         }
         while(available && !session.stop.load())
         {
-            BYTE* data=nullptr; UINT32 frames=0; DWORD flags=0;
-            hr=capture->GetBuffer(&data,&frames,&flags,nullptr,nullptr);
+            BYTE* data=nullptr; UINT32 frames=0; DWORD flags=0; UINT64 packet_qpc=0;
+            hr=capture->GetBuffer(&data,&frames,&flags,nullptr,&packet_qpc);
             if(FAILED(hr))break;
             if(hr==AUDCLNT_S_BUFFER_EMPTY){hr=S_OK;break;}
-            if(flags&AUDCLNT_BUFFERFLAGS_DATA_DISCONTINUITY)window=audio_pcm::Window{};
-            const bool valid=window.Append(data,frames,format,(flags&AUDCLNT_BUFFERFLAGS_SILENT)!=0);
+            const bool timestamp_error=(flags&AUDCLNT_BUFFERFLAGS_TIMESTAMP_ERROR)!=0;
+            const double first_sample=AudioPacketSeconds(packet_qpc,timestamp_error,frames,sample_rate,AudioNowSeconds());
+            bool valid=frames<=std::min<std::uint64_t>(384000,std::uint64_t(sample_rate)*2);
+            if(valid)
+            {
+                try { mono.resize(frames); }
+                catch(const std::bad_alloc&) { valid=false; }
+            }
+            if(valid) valid=audio_pcm::DecodeMono(data,frames,format,
+                (flags&AUDCLNT_BUFFERFLAGS_SILENT)!=0,mono.data(),mono.size());
             const HRESULT released=capture->ReleaseBuffer(frames);
             if(!valid){hr=E_INVALIDARG;break;}
             if(FAILED(released)){hr=released;break;}
-            {std::lock_guard<std::mutex> lock(session.mutex);session.buffer=window.Snapshot();}
+            // Analyze every sample only after releasing the WASAPI buffer.
+            const bool discontinuity=timestamp_error||(flags&AUDCLNT_BUFFERFLAGS_DATA_DISCONTINUITY)!=0;
+            if(!session.PublishPacket(window,mono.data(),mono.size(),sample_rate,first_sample,discontinuity))
+            {hr=E_INVALIDARG;break;}
+            silence_published=false;
+            silence_reset=false;
             last_packet=std::chrono::steady_clock::now();
             hr=capture->GetNextPacketSize(&available);
             if(FAILED(hr))break;
         }
         if(FAILED(hr))break;
         // WASAPI loopback can provide no packet at all during silence.
-        if(std::chrono::steady_clock::now()-last_packet>std::chrono::milliseconds(100))
+        if(!silence_published && std::chrono::steady_clock::now()-last_packet>std::chrono::milliseconds(100))
+        {
+            session.PublishNoPacket();
+            window=audio_pcm::Window{};
+            silence_published=true;
+        }
+        if(!silence_reset && std::chrono::steady_clock::now()-last_packet>std::chrono::milliseconds(1100))
         {
             session.Silence();
-            window=audio_pcm::Window{};
+            silence_reset=true;
         }
         if(session.Wait(5))break;
     }
@@ -221,6 +291,13 @@ void AudioManager::Capture(int index,float* output)
     {std::lock_guard<std::mutex> lock(windows->mutex);auto it=windows->sessions.find(index);if(it==windows->sessions.end())return;session=it->second;}
     std::lock_guard<std::mutex> lock(session->mutex);
     std::copy(session->buffer.begin(),session->buffer.end(),output);
+}
+room_audio::RhythmSnapshot AudioManager::CaptureRhythm(int index)
+{
+    std::shared_ptr<AudioSession> session;
+    {std::lock_guard<std::mutex> lock(windows->mutex);auto it=windows->sessions.find(index);if(it==windows->sessions.end())return {};session=it->second;}
+    std::lock_guard<std::mutex> lock(session->mutex);
+    return session->rhythm_snapshot;
 }
 void AudioManager::RegisterClient(int index,void* client)
 {

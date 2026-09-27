@@ -30,6 +30,8 @@ void ShaderRenderer::Start()
     {
         std::lock_guard<std::mutex> guard(program_lock);
         music_envelope.Reset();
+        rhythm_envelope.Reset();
+        uniforms.iRhythm = {}; uniforms.iOnset = {};
         uniforms.iMusic = {0.0f,0.0f,0.54f,0.0f};
         audio_values.fill(0.0f);
         uniforms.iAudio = nullptr;
@@ -61,7 +63,7 @@ void ShaderRenderer::Resize(int width, int height)
     shader_program->Resize(width,height);
 }
 
-void ShaderRenderer::UpdateUniforms(float time, const float* audio)
+void ShaderRenderer::UpdateUniforms(float time, const float* audio, const room_audio::RhythmSnapshot* rhythm)
 {
     std::lock_guard<std::mutex> guard(program_lock);
     uniforms.iTime = time;
@@ -73,6 +75,13 @@ void ShaderRenderer::UpdateUniforms(float time, const float* audio)
     else uniforms.iAudio = nullptr;
     const double seconds = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
     uniforms.iMusic = music_envelope.Update(uniforms.iAudio, seconds);
+    uniforms.iRhythm = {}; uniforms.iOnset = {};
+    if(rhythm)
+    {
+        const auto result=rhythm_envelope.Update(*rhythm,seconds);
+        uniforms.iRhythm=result.rhythm; uniforms.iOnset=result.transients;
+        uniforms.iMusic[2]=result.hue; uniforms.iMusic[3]=result.rhythm[3];
+    }
 }
 
 void ShaderRenderer::UpdateCustomUniforms(const ShaderUniformMap& values)

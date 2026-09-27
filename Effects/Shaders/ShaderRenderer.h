@@ -24,6 +24,7 @@
 #include <mutex>
 #include "ShaderProgram.h"
 #include "MusicEnvelope.h"
+#include "RhythmEnvelope.h"
 
 typedef std::chrono::steady_clock::time_point TCount;
 
@@ -39,7 +40,7 @@ public:
     void Stop();
     void SetFPS(int);
     void Resize(int width, int height);
-    void UpdateUniforms(float time, const float* audio);
+    void UpdateUniforms(float time, const float* audio, const room_audio::RhythmSnapshot* rhythm = nullptr);
     void UpdateCustomUniforms(const ShaderUniformMap& values);
 
     bool isRunning();
@@ -51,6 +52,7 @@ private:
     Uniforms uniforms;
     std::array<float, 256> audio_values{};
     MusicEnvelope music_envelope;
+    RhythmEnvelope rhythm_envelope;
     std::thread* thread = nullptr;
     void RendererThreadFunction();
 

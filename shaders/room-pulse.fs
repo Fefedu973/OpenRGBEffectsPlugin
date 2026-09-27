@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 // Original device-oriented music canvas. Coordinates use a 320x200 design grid.
-// No third-party effect code is included. iMusic is spectrum-derived, not BPM.
+// iRhythm: BPM, phase, confidence, pulse envelope from continuous audio.
+// iOnset: low/mid/high spectral flux envelopes and transient accent.
 // ---- User controls --------------------------------------------------------
-const int COLOR_STYLE = 2; // 0 static, 1 moving hue wave, 2 color on bass onset.
+const int COLOR_STYLE = 2; // 0 static, 1 moving hue wave, 2 color on musical pulse.
 const vec3 STATIC_COLOR = vec3(0.02,0.90,1.0);
 const float BACKGROUND_LEVEL = 0.008;
 const float VOLUME_GAIN = 0.85;
@@ -33,6 +34,7 @@ void mainImage(out vec4 color, in vec2 pixel)
     vec2 p = vec2(pixel.x/iResolution.x,1.0-pixel.y/iResolution.y)*vec2(320.0,200.0);
     float volume = clamp(iMusic.x*VOLUME_GAIN,0.0,1.0);
     float bass = clamp(iMusic.y,0.0,1.0);
+    float pulse = max(iRhythm.w,0.35*iOnset.w);
     vec3 ink = palette(p);
     float brightness = BACKGROUND_LEVEL;
     if(p.x < 48.0)
@@ -46,16 +48,17 @@ void mainImage(out vec4 color, in vec2 pixel)
     {
         if(p.x < 180.0)
             brightness = max(brightness,step(0.001,bass)*(1.0-smoothstep(bass-0.004,bass+0.004,(p.x-48.0)/132.0)));
-        else if(p.x < 220.0) brightness = max(brightness,bass);
-        else if(p.x < 260.0) brightness = max(brightness,volume);
+        else if(p.x < 220.0) brightness = max(brightness,pulse);
+        else if(p.x < 260.0) brightness = max(brightness,max(volume*0.55,iOnset.y));
         else if(p.x < 290.0)
         {
             // Circular sector starts at the bottom and sweeps clockwise.
             vec2 q = p-vec2(275.0,15.0);
             float sweep = fract(atan(q.x,-q.y)/6.2831853+0.5);
-            brightness = max(brightness,step(0.001,volume)*(1.0-smoothstep(volume-0.003,volume+0.003,sweep)));
+            float fill = iRhythm.z>0.35 ? 1.0-iRhythm.y : volume;
+            brightness = max(brightness,step(0.001,volume)*(1.0-smoothstep(fill-0.003,fill+0.003,sweep)));
         }
-        else brightness = max(brightness,p.y >= 10.0 && p.y < 20.0 ? bass : 0.75);
+        else brightness = max(brightness,p.y >= 10.0 && p.y < 20.0 ? max(pulse,iOnset.z) : 0.025);
     }
     else
     {
@@ -77,5 +80,8 @@ void mainImage(out vec4 color, in vec2 pixel)
             brightness = max(brightness,step(0.001,level)*width*shape);
         }
     }
+    // A restrained room-wide pulse links spectrum, VU and physical zones without
+    // replacing their independent detail with a full-screen white flash.
+    brightness=max(brightness,0.15*pulse*volume);
     color = vec4(ink*brightness,1.0);
 }

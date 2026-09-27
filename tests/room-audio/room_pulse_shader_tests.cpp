@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "ShaderProgram.h"
 #include "MusicEnvelope.h"
+#include "RhythmEnvelope.h"
 #include <algorithm>
 #include <array>
 #include <fstream>
@@ -27,20 +28,22 @@ static int Render(const char* profile,const char* output)
         program->Draw(uniforms,context.functions());auto silent=program->Image();
         Check(silent.width()==800&&silent.height()==500,"800x500 output");
         Check(Light(silent,20,100)<4&&Light(silent,200,15)<4&&Light(silent,184,107)<4,"silence keeps reactive regions dark");
-        Check(Light(silent,305,5)>150&&Light(silent,305,15)<4,"ring support region is distinct from bass ring");
+        Check(Light(silent,305,5)<8&&Light(silent,305,15)<4,"ring stays dim in silence rather than permanently bright");
         silent.save(QString::fromStdString(std::string(output)+"/room-pulse-silent.png"));
 
         // Known uniforms verify placement independently of the envelope test.
         uniforms.iMusic={0.5f,0.25f,0.12f,0.0f};
+        uniforms.iRhythm={120.0f,0.5f,0.9f,0.25f};
+        uniforms.iOnset={0.1f,0.42f,0.3f,0.5f};
         for(int bin=0;bin<64;++bin)
         {float v=0.06f+float((bin*13)%23)/35.0f;std::fill(audio.begin()+bin*4,audio.begin()+bin*4+4,v);}
         program->Draw(uniforms,context.functions());auto image=program->Image();
-        Check(Light(image,24,160)>200&&Light(image,24,50)<4,"left broadband VU fills upward");
-        Check(Light(image,60,15)>200&&Light(image,120,15)<4,"top bass VU fills to the right");
-        Check(Light(image,200,15)>50&&Light(image,200,15)<80,"bass pulse tile follows bass level");
-        Check(Light(image,240,15)>95&&Light(image,240,15)<120,"volume tile follows independent broadband level");
-        Check(Light(image,266,15)>200&&Light(image,284,15)<4,"fan sector has correct direction and half-volume sweep");
-        Check(Light(image,305,15)>50&&Light(image,305,15)<80,"ring middle follows bass envelope");
+        Check(Light(image,24,160)>200&&Light(image,24,50)<8,"left broadband VU fills upward");
+        Check(Light(image,60,15)>200&&Light(image,120,15)<8,"top bass VU remains separate from tracked pulse");
+        Check(Light(image,200,15)>50&&Light(image,200,15)<80,"pulse tile follows audio-clock pulse");
+        Check(Light(image,240,15)>95&&Light(image,240,15)<120,"midrange attack has an independent region");
+        Check(Light(image,266,15)>200&&Light(image,284,15)<8,"fan sector follows locked half-cycle phase");
+        Check(Light(image,305,15)>65&&Light(image,305,15)<90,"ring includes high-frequency accents");
         unsigned mirrored=0;double mirror_error=0;
         for(int y=80;y<460;y+=3)for(int x=125;x<460;x+=3)
         {
@@ -61,12 +64,18 @@ static int Render(const char* profile,const char* output)
 
         // Integrate the actual state with the actual shader for a synthetic
         // attack; no capture endpoint or hardware device is opened.
-        MusicEnvelope envelope;audio.fill(0);envelope.Update(audio.data(),0);
+        MusicEnvelope envelope; RhythmEnvelope rhythmic; audio.fill(0);envelope.Update(audio.data(),0);
+        room_audio::RhythmSnapshot beat;beat.sequence=1;beat.generation=1;beat.silent=false;beat.audio_time=10;
+        rhythmic.Update(beat,10);
         for(int bin=1;bin<=3;++bin)std::fill(audio.begin()+bin*4,audio.begin()+bin*4+4,0.65f);
-        uniforms.iMusic=envelope.Update(audio.data(),0.2);program->Draw(uniforms,context.functions());
-        auto bass=program->Image();Check(Light(bass,200,15)>200,"real envelope and shader produce a bass pulse");
+        uniforms.iMusic=envelope.Update(audio.data(),0.2);
+        beat.sequence=2;beat.audio_time=10.2;beat.onset_sequence=1;beat.last_onset_time=10.19;
+        const auto pulse=rhythmic.Update(beat,10.2);uniforms.iRhythm=pulse.rhythm;uniforms.iOnset=pulse.transients;
+        program->Draw(uniforms,context.functions());
+        auto bass=program->Image();Check(Light(bass,200,15)>200,"real rhythm envelope and shader produce a fresh transient pulse");
         bass.save(QString::fromStdString(std::string(output)+"/room-pulse-bass.png"));
         uniforms.iAudio=nullptr;uniforms.iMusic=envelope.Update(nullptr,0.3);
+        beat.silent=true;const auto absent=rhythmic.Update(beat,10.3);uniforms.iRhythm=absent.rhythm;uniforms.iOnset=absent.transients;
         program->Draw(uniforms,context.functions());auto disconnected=program->Image();
         Check(Light(disconnected,184,107)<4&&Light(disconnected,200,15)<4,"missing audio clears prior GPU spectrum and envelope");
         Check(context.functions()->glGetError()==GL_NO_ERROR,"no GL errors");

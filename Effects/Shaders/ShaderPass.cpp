@@ -151,6 +151,8 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         }
         program->setUniformValue("iMusic", QVector4D(uniforms.iMusic[0], uniforms.iMusic[1],
                                                      uniforms.iMusic[2], uniforms.iMusic[3]));
+        program->setUniformValue("iRhythm", QVector4D(uniforms.iRhythm[0],uniforms.iRhythm[1],uniforms.iRhythm[2],uniforms.iRhythm[3]));
+        program->setUniformValue("iOnset", QVector4D(uniforms.iOnset[0],uniforms.iOnset[1],uniforms.iOnset[2],uniforms.iOnset[3]));
 
         program->setUniformValue("iResolution", QVector3D(width, height, 1));
         program->setUniformValue("iMouse", QVector4D(0.,0.,0.,0.));
@@ -312,6 +314,8 @@ std::string ShaderPass::MakeFragmentShader(std::string pre_processor_version, st
             "uniform float     iTime;\n"
             "uniform float     iAudio[256];\n"
             "uniform vec4      iMusic;\n"
+            "uniform vec4      iRhythm;\n"
+            "uniform vec4      iOnset;\n"
             "uniform sampler2D iChannel0;\n"
             "uniform sampler2D iChannel1;\n"
             "uniform sampler2D iChannel2;\n"

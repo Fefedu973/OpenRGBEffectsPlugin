@@ -117,6 +117,16 @@ int main(int argc,char** argv)
         saved=Save(plugin);CHECK(saved["EffectClassName"]=="Shaders"&&saved["Speed"]==500);
         CHECK(saved["CustomSettings"]["shader_program"]["main_pass"]["fragment_shader"]==fragment);
         CHECK(saved["CustomSettings"]["width"]==37&&saved["CustomSettings"]["height"]==19);
+        // Continuous rhythm is a persistent opt-in. Keep audio disabled here:
+        // this exercises the actual widget/profile path without opening a stream.
+        auto* rhythm=root->findChild<QCheckBox*>("rhythm_tracking");CHECK(rhythm&&!rhythm->isChecked());
+        rhythm->setChecked(true);saved=Save(plugin);
+        CHECK(saved["CustomSettings"]["rhythm_tracking"]==true);
+        CHECK(saved["CustomSettings"]["use_audio"]==false);
+        Load(plugin,saved);rhythm=root->findChild<QCheckBox*>("rhythm_tracking");
+        CHECK(rhythm&&rhythm->isChecked());
+        rhythm->setChecked(false);saved=Save(plugin);
+        CHECK(saved["CustomSettings"]["rhythm_tracking"]==false);
         // Native favorite preview must use the same serialized setting as the base UI.
         Load(plugin,Entry("SignalFavorite.SolidColor",json::object()));
         QCheckBox* preview=nullptr;

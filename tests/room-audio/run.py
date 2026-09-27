@@ -28,7 +28,7 @@ if a.room_pulse:
     subprocess.run(common+['/I'+str(repo/'Effects/Shaders'),str(Path(__file__).with_name('music_envelope_tests.cpp')),
                           '/Fo:'+str(out/'music_envelope_tests.obj'),'/Fe:'+str(out/'music_envelope_tests.exe')],check=True,cwd=out)
     subprocess.run([str(out/'music_envelope_tests.exe')],check=True,timeout=5,env=env)
-includes = [a.qt/'include',a.qt/'include/QtCore',a.qt/'include/QtGui',a.qt/'include/QtOpenGL',
+includes = [repo,a.qt/'include',a.qt/'include/QtCore',a.qt/'include/QtGui',a.qt/'include/QtOpenGL',
             a.openrgb_root/'dependencies/json',a.openrgb_root/'RGBController',repo/'Effects/Shaders']
 subprocess.run(common+['/I'+str(path) for path in includes]+
                [str(Path(__file__).with_name('room_pulse_shader_tests.cpp' if a.room_pulse else 'music_shader_tests.cpp')),str(repo/'Effects/Shaders/ShaderPass.cpp'),

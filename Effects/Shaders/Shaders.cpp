@@ -25,6 +25,23 @@ Shaders::Shaders(QWidget *parent) :
     ui(new Ui::Shaders)
 {
     ui->setupUi(this);
+    rhythm_checkbox = new QCheckBox(tr("Track musical pulse (continuous audio)"),this);
+    rhythm_checkbox->setObjectName("rhythm_tracking");
+    rhythm_label = new QLabel(this);
+    ui->gridLayout->addWidget(rhythm_checkbox,9,0,1,4);
+    ui->gridLayout->addWidget(rhythm_label,10,0,1,4);
+    connect(rhythm_checkbox,&QCheckBox::toggled,this,[this](bool enabled){ rhythm_tracking=enabled; });
+    auto* rhythm_timer = new QTimer(this);
+    rhythm_timer->setInterval(250);
+    connect(rhythm_timer,&QTimer::timeout,this,[this]{
+        if(!rhythm_label->isVisible()) return;
+        room_audio::RhythmSnapshot snapshot;
+        { std::lock_guard<std::mutex> guard(image_mutex); snapshot=latest_rhythm; }
+        rhythm_label->setText(!rhythm_tracking ? tr("Pulse tracking disabled") : snapshot.silent ? tr("No audio pulse") :
+            snapshot.locked ? tr("%1 BPM · confidence %2% · live audio clock").arg(snapshot.bpm,0,'f',1).arg(int(snapshot.confidence*100)) :
+            tr("Listening to attacks — tempo not locked"));
+    });
+    rhythm_timer->start();
 
     SetDynamicStrings();
     EffectDetails.EffectClassName   = ClassName();
@@ -228,8 +245,28 @@ void Shaders::StepEffect(std::vector<ControllerZone*> controller_zones)
         return;
     }
 
+    room_audio::RhythmSnapshot rhythm;
+    const bool track_rhythm = use_audio && rhythm_tracking.load();
+    if(track_rhythm) rhythm=AudioManager::get()->CaptureRhythm(audio_settings_struct.audio_device);
+    if(track_rhythm)
+    {
+        const double now=std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+        if(!rhythm_reported || (now-rhythm_last_report>2 &&
+           (rhythm.locked!=rhythm_reported_locked || rhythm.silent!=rhythm_reported_silent ||
+            std::abs(rhythm.bpm-rhythm_reported_bpm)>3)))
+        {
+            LOG_INFO("[Effects Rhythm] %s; BPM %.1f, confidence %.2f, audio sequence %llu, onset sequence %llu",
+                     rhythm.silent?"silent":rhythm.locked?"locked":"listening",rhythm.bpm,rhythm.confidence,
+                     static_cast<unsigned long long>(rhythm.sequence),static_cast<unsigned long long>(rhythm.onset_sequence));
+            rhythm_reported=true; rhythm_reported_locked=rhythm.locked; rhythm_reported_silent=rhythm.silent;
+            rhythm_reported_bpm=rhythm.bpm; rhythm_last_report=now;
+        }
+    }
+    else rhythm_reported=false;
+    { std::lock_guard<std::mutex> guard(image_mutex); latest_rhythm=rhythm; }
     shader_renderer->UpdateUniforms(invert_time ? -time : time,
-                                   use_audio ? (float*)audio_signal_processor.Data().fft_fltr : nullptr);
+                                   use_audio ? (float*)audio_signal_processor.Data().fft_fltr : nullptr,
+                                   track_rhythm ? &rhythm : nullptr);
 
     image_mutex.lock();
 
@@ -492,6 +529,8 @@ void Shaders::on_open_shaders_folder_clicked()
 void Shaders::LoadCustomSettings(json Settings)
 {
     if(!Settings.is_object()) return;
+    if(Settings.contains("rhythm_tracking") && Settings["rhythm_tracking"].is_boolean())
+        rhythm_checkbox->setChecked(Settings["rhythm_tracking"].get<bool>());
     if(Settings.contains("publish_frame") && Settings["publish_frame"].is_boolean())
         ui->publish_frame->setChecked(Settings["publish_frame"]);
     if(Settings.contains("frame_channel") && Settings["frame_channel"].is_string())
@@ -557,6 +596,7 @@ json Shaders::SaveCustomSettings()
     settings["show_rendering"]   = show_rendering;
     settings["invert_time"]      = invert_time;
     settings["use_audio"]        = use_audio;
+    settings["rhythm_tracking"]  = rhythm_tracking.load();
     settings["audio_settings"] = audio_settings_struct;
 
     return settings;

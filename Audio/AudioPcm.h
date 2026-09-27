@@ -33,10 +33,35 @@ inline float Sample(const uint8_t* p, Encoding e)
     }
     return std::isfinite(v) ? float(std::max(-1.0,std::min(1.0,v))) : 0.f;
 }
+// Decode the complete interleaved packet. The caller owns bounded storage and
+// releases the WASAPI packet before performing spectral analysis on this copy.
+inline bool DecodeMono(const uint8_t* data, size_t frames, const Format& f,
+                       bool silent, float* output, size_t capacity)
+{
+    if(!Valid(f) || frames>capacity || (frames && (!output || (!silent && !data)))) return false;
+    for(size_t i=0;i<frames;++i)
+    {
+        float sum=0;
+        if(!silent) for(unsigned c=0;c<f.channels;++c)
+            sum+=Sample(data+i*f.block_align+c*Bytes(f.encoding),f.encoding);
+        output[i]=sum/f.channels;
+    }
+    return true;
+}
 // Latest 512 mono samples, owned by one capture. No static/shared input history.
 class Window
 {
 public:
+    bool AppendMono(const float* samples, size_t frames)
+    {
+        if(frames && !samples) return false;
+        for(size_t i=0;i<frames;++i)
+        {
+            ring[next]=samples[i];
+            next=(next+1)%ring.size();
+        }
+        return true;
+    }
     bool Append(const uint8_t* data, unsigned frames, const Format& f, bool silent)
     {
         if(!Valid(f) || (!silent && !data)) return false;
