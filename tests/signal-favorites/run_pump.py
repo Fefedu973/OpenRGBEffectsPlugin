@@ -22,5 +22,9 @@ subprocess.run(cmd+['/I'+str(d) for d in includes]+[
     '/link','/LIBPATH:'+str(a.qt/'lib'),'Qt6Core.lib','Qt6Gui.lib','Qt6OpenGL.lib','opengl32.lib'],cwd=out,check=True)
 subprocess.run(cmd+['/I'+str(repo/'Audio'),'/I'+str(repo/'Effects/SignalFavorites'),'/I'+str(a.openrgb_root/'dependencies/json'),str(Path(__file__).with_name('pump_dynamics_tests.cpp')),'/Fo:'+str(out/'pump_dynamics_tests.obj'),'/Fe:'+str(out/'pump_dynamics_tests.exe')],cwd=out,check=True)
 subprocess.run([str(out/'pump_dynamics_tests.exe')],check=True,timeout=30)
+subprocess.run(cmd+['/I'+str(d) for d in includes]+['/I'+str(repo),
+    str(Path(__file__).with_name('pump_screen_color_tests.cpp')),'/Fo:'+str(out/'pump_screen_color_tests.obj'),
+    '/Fe:'+str(out/'pump_screen_color_tests.exe'),'/link','/LIBPATH:'+str(a.qt/'lib'),'Qt6Core.lib','Qt6Gui.lib'],cwd=out,check=True)
 env=dict(os.environ,PATH=str(a.qt/'bin')+os.pathsep+os.environ['PATH'])
+subprocess.run([str(out/'pump_screen_color_tests.exe')],env=env,check=True,timeout=30)
 subprocess.run([str(out/'pump_gpu_tests.exe'),str(repo),str(out)],env=env,check=True,timeout=140)

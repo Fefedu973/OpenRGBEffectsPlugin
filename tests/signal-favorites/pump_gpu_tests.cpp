@@ -56,6 +56,27 @@ static void Run(const QString& repo,const QString& output,QOpenGLFunctions* gl)
     RGB(image,250,113,0,0,255,"central right spectrum static color2");RGB(image,110,113,255,0,0,"central left spectrum static color1");
     RGB(image,250,198,0,0,255,"bottom frequency line gain");
     Check(image.save(output+"/PumpUpBeats-static.png"),"static preview saved");
+    // The optional screen palette changes the foreground only. Region layout,
+    // per-region audio gains and all six spectrum geometries remain intact.
+    for(const auto& style:json::array({"Bars","ThinBars","ChonkerBars","Smooth","SmoothSimple","Pixel"}))
+    {
+        u=Params(spec,{{"colorStyle","ScreenDominant"},{"displayStyle",style}});
+        u.custom["pumpScreenColor"]={{.2f,.8f,.4f,0},3};Compile(p);image=Draw(p,u,gl);
+        RGB(image,10,150,51,204,102,"screen palette applied to VU");
+        RGB(image,190,10,38,153,77,"screen palette keeps bass brightness");
+        RGB(image,230,10,13,51,26,"screen palette keeps volume brightness");
+        RGB(image,275,20,51,204,102,"screen palette applied to fan sector");
+        bool selected_color=false;
+        for(int y=80;y<185&&!selected_color;++y)for(int x=49;x<320;++x)
+        {auto pixel=Pixel(image,float(x),float(y));if(std::abs(qRed(pixel)-51)<=3&&std::abs(qGreen(pixel)-204)<=3&&std::abs(qBlue(pixel)-102)<=3){selected_color=true;break;}}
+        Check(selected_color,"screen palette reaches each central spectrum style");
+    }
+    u=Params(spec,{{"colorStyle","ScreenDominant"}});u.custom["pumpScreenColor"]={{0,0,0,0},3};Compile(p);image=Draw(p,u,gl);
+    RGB(image,10,150,0,0,0,"a genuinely black dominant image stays black");
+    u.custom["pumpScreenColor"]={{1,0,0,0},3};u.custom["pumpLevels"]={{0,0,0,0},4};
+    for(unsigned i=0;i<100;++i)u.custom["pumpFreq["+std::to_string(i)+"]"].values[0]=0;
+    Compile(p);image=Draw(p,u,gl);RGB(image,10,150,0,0,0,"screen color does not invent audio volume in silence");
+    u=Params(spec,palette);Compile(p);Draw(p,u,gl);
     // Keep frame history only in non-reset areas; fading never makes the
     // separate top brightness rectangles or bottom spectrum retain old audio.
     u.custom["p_fadingOut"].values[0]=50;Draw(p,u,gl);

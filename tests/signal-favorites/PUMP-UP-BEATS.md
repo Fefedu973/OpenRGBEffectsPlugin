@@ -4,8 +4,31 @@ This is an original C++/GLSL implementation of the installed version 5.2 visual
 design by Julian Lang, source ID `-MhwiL3cQgnjhqzS0g2L`. No original Canvas
 source is distributed. Its audited SHA-256 is
 `9b0d5159d7ef5fa6a75ae709a676bd76b5cc37d6a3ceb2d2c697dc4d29a9ddc9`.
-The twenty control names, labels, defaults, limits and enum values are retained.
+The twenty control names, labels, defaults and limits are retained. The original
+enum values retain their indices; `ScreenDominant` is appended to Color Style.
 It is distinct from the earlier original Room Pulse visualizer.
+
+## Optional screen palette
+
+`ScreenDominant` selects the most populous quantized RGB color family in the
+selected screen source. It is opt-in: the default remains HueCycle. The source
+selector is shown and capture runs only while this mode and the effect are
+active. Native Windows desktop capture needs no external program. Optional
+Better/FrameSurface inputs reuse the existing input provider; Better itself
+must be running for its source to be available. Pump always consumes raw pixels,
+never the Better appearance render graph, and keeps its own spectrum/regions.
+
+A uniform nearest-pixel grid (at most 128×72 samples) feeds 4096 RGB4 buckets at
+most 10 times/s. Only the winning bucket's pixels are averaged, so red/blue scenes
+do not become a global gray/purple average. Alpha weights visible coverage;
+black and neutral majorities are respected. Quantization boundaries, small
+details and population ties can affect the result; it is a sampled dominant
+palette, not object recognition. Ties use a deterministic bucket order.
+
+Missing/expired input uses Static Color1; an actually black dominant image is
+black. Audio gains, silence behavior, backgrounds and the twenty controls are
+otherwise unchanged. The source choice is saved with the profile. Tests use
+synthetic images and a local offscreen GPU; no real desktop capture is performed.
 
 ## Rendering and layout
 

@@ -135,6 +135,25 @@ int main(int argc,char** argv)
         auto* audio=root->findChild<QCheckBox*>("use_audio");
         CHECK(audio&&audio->isChecked());
         CHECK(Save(plugin)["CustomSettings"]["use_audio"]==true);
+        auto* pump_style=root->findChild<QComboBox*>("colorStyle");
+        auto* pump_source=root->findChild<QComboBox*>("screen_source_kind");
+        CHECK(pump_style&&pump_style->currentText()=="HueCycle");
+        CHECK(pump_style->count()==6&&pump_style->findText("ScreenDominant")==5);
+        CHECK(pump_source&&pump_source->parentWidget()->isHidden());
+        CHECK(!root->findChild<QCheckBox*>("screen_source_follow_appearance"));
+        pump_style->setCurrentText("ScreenDominant");
+        CHECK(!pump_source->parentWidget()->isHidden());
+        auto palette_saved=Save(plugin);
+        CHECK(palette_saved["CustomSettings"]["parameters"]["colorStyle"]=="ScreenDominant");
+        CHECK(palette_saved["CustomSettings"]["screen_source"]["follow_better_appearance"]==false);
+        // A copied ScreenAmbience flag must never replace the Pump render graph.
+        palette_saved["CustomSettings"]["screen_source"]["follow_better_appearance"]=true;
+        Load(plugin,palette_saved);
+        CHECK(Save(plugin)["CustomSettings"]["screen_source"]["follow_better_appearance"]==false);
+        pump_style=root->findChild<QComboBox*>("colorStyle");pump_source=root->findChild<QComboBox*>("screen_source_kind");
+        CHECK(pump_style->currentText()=="ScreenDominant"&&!pump_source->parentWidget()->isHidden());
+        pump_style->setCurrentText("RandomBeat");CHECK(pump_source->parentWidget()->isHidden());
+        audio=root->findChild<QCheckBox*>("use_audio");
         audio->setChecked(false);
         auto audio_saved=Save(plugin);
         CHECK(audio_saved["CustomSettings"]["use_audio"]==false);

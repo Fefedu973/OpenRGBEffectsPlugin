@@ -4,6 +4,7 @@
 uniform vec4 pumpLevels;
 uniform vec4 pumpState;
 uniform float pumpFreq[100];
+uniform vec3 pumpScreenColor;
 
 vec3 pumpHue(float h)
 {return clamp(abs(fract(h+vec3(0.0,2.0/3.0,1.0/3.0))*6.0-3.0)-1.0,0.0,1.0);}
@@ -55,7 +56,8 @@ void pumpRect(inout vec3 c,vec2 p,vec4 r,vec4 limits,float brightness,float spli
         // layer whose alpha is multiplied by the rectangle's global alpha.
         if(bottom)c=mix(c,p_backgroundCol_in,value*value);
     }
-    else c=mix(bg,pumpHue(pumpState.y),value);
+    else if(p_colorStyle<4.5)c=mix(bg,pumpHue(pumpState.y),value);
+    else c=mix(bg,pumpScreenColor,value);
 }
 float pumpSmoothHeight(float distance,float bw,float n)
 {
@@ -104,7 +106,7 @@ void mainImage(out vec4 fragColor,in vec2 fragCoord)
                 if(p_colorStyle<0.5)c=mix(p_staticCol1,p_staticCol2,1.0-abs(fract(q)*2.0-1.0));
                 else c=pumpRainbow(q);
             }
-            else c=pumpHue(p_colorStyle<1.5?pumpState.x:pumpState.y);
+            else c=p_colorStyle>4.5?pumpScreenColor:pumpHue(p_colorStyle<1.5?pumpState.x:pumpState.y);
         }
     }
     vec2 center=vec2((320.0+left)*0.5,(top+200.0-bottom)*0.5);
@@ -141,7 +143,7 @@ void mainImage(out vec4 fragColor,in vec2 fragCoord)
             if(p_colorStyle>2.5 && p_colorStyle<3.5)q=(center.y-abs(p.y-center.y)-top)/max(center.y-top,0.001)+4.0*pumpState.x;
             if(p_colorStyle<0.5)c=mix(p_staticCol1,p_staticCol2,1.0-abs(fract(q)*2.0-1.0));
             else if(p_colorStyle>1.5 && p_colorStyle<3.5)c=pumpRainbow(q);
-            else c=pumpHue(p_colorStyle<1.5?pumpState.x:pumpState.y);
+            else c=p_colorStyle>4.5?pumpScreenColor:pumpHue(p_colorStyle<1.5?pumpState.x:pumpState.y);
         }
     }
     pumpRect(c,p,vec4(0.0,(1.0-pumpLevels.x)*200.0,left,pumpLevels.x*200.0),vec4(0.0,0.0,0.0,200.0),1.0,0.0,bg,false);

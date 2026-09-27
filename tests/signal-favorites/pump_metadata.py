@@ -30,11 +30,16 @@ assert len(spec['controls'])==20
 assert len({c['key'] for c in spec['controls']})==20
 assert spec['source_id']=='-MhwiL3cQgnjhqzS0g2L'
 assert spec['feedback'] and spec['audioReactive'] and spec['keyboard_reactive']
-canonical=json.dumps(spec['controls'],sort_keys=True,separators=(',',':'))
+# ScreenDominant is a named native extension, appended to retain all original
+# enum indices/defaults. The twenty original controls remain otherwise exact.
+controls=json.loads(json.dumps(spec['controls']))
+color=next(c for c in controls if c['key']=='colorStyle')
+assert color['options'].pop()=='ScreenDominant'
+assert spec['screenDominant'] and not spec.get('screenReactive',False)
 # The optional source check compares actual labels, defaults, limits and enums,
 # not just a count of controls. The source is not redistributed in this repo.
 if a.reference:
     data=a.reference.read_bytes();assert hashlib.sha256(data).hexdigest()==REFERENCE_SHA256
     parser=Metadata();parser.feed(data.decode('utf-8-sig'))
-    assert parser.controls==spec['controls'],'control differs from the audited reference'
-print('PASS: twenty controls'+(' match the audited reference SHA256' if a.reference else ' and native capabilities are valid'))
+    assert parser.controls==controls,'original control differs from the audited reference'
+print('PASS: twenty original controls'+(' match the audited reference SHA256' if a.reference else ' are valid')+', plus explicit ScreenDominant enum extension')

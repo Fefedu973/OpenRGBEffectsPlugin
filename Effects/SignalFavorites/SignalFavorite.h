@@ -11,6 +11,7 @@
 #include "ProceduralEffectState.h"
 #include "ScreenEffectState.h"
 #include "ScreenSourceSelection.h"
+#include "DominantScreenColor.h"
 #include <FrameRouting/OpenRGBInputPluginAPI.h>
 
 // Data-driven native effects: parameters remain uniforms, never shader source
@@ -48,6 +49,8 @@ private:
     native_pump::State pump_state;
     native_procedural::State procedural_state;
     std::unique_ptr<native_screen::State> screen_state;
+    native_screen_color::State screen_color;
+    bool screen_capture_running=false;
     ScreenSourceSelection* screen_source = nullptr;
     std::shared_ptr<const DynamicShaderImage> last_screen_frame;
     std::uint64_t screen_frame_revision=0, screen_generation=1;
@@ -65,5 +68,6 @@ private:
     void SetParameter(const std::string&, const json&);
     json Normalize(const json& control, const json& value) const;
     void SyncEditors();
+    void SyncScreenCapture();
     void InstallProgram(const QString& resource);
 };

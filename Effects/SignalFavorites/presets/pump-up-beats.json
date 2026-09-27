@@ -5,6 +5,7 @@
   "description": "A native multi-region music display with mirrored spectrum, volume and bass meters, fan sector and beat colors.",
   "feedback": true,
   "audioReactive": true,
+  "screenDominant": true,
   "controls": [
     {
       "key": "totalVolumeBoost",
@@ -58,7 +59,8 @@
         "HueCycle",
         "HueWave",
         "HueWaveVert",
-        "RandomBeat"
+        "RandomBeat",
+        "ScreenDominant"
       ]
     },
     {

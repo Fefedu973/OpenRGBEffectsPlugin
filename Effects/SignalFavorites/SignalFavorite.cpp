@@ -20,6 +20,7 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 #include <QTimer>
+#include <QThread>
 #include <algorithm>
 #include <cmath>
 #include <regex>
@@ -132,11 +133,12 @@ SignalFavorite::SignalFavorite(const QString& resource, QWidget* parent) : Shade
         }
     }
     auto* size_row = new QWidget(this);
-    if(spec.value("screenReactive",false))
+    if(spec.value("screenReactive",false) || spec.value("screenDominant",false))
     {
-        screen_state=std::make_unique<native_screen::State>();
+        if(spec.value("screenReactive",false))screen_state=std::make_unique<native_screen::State>();
         screen_source=new ScreenSourceSelection(this,spec.at("id")=="ScreenAmbience");
         outer->addWidget(screen_source);
+        if(spec.value("screenDominant",false))screen_source->hide();
         if(auto* follow=screen_source->findChild<QCheckBox*>("screen_source_follow_appearance"))
         {
             auto* source_kind=screen_source->findChild<QComboBox*>("screen_source_kind");
@@ -238,9 +240,28 @@ json SignalFavorite::Normalize(const json& control, const json& value) const
 
 void SignalFavorite::SetParameter(const std::string& key,const json& value)
 {
-    std::lock_guard<std::mutex> guard(parameters_mutex);
-    for(const auto& control : spec.at("controls")) if(control.at("key") == key)
-    { parameters[key] = Normalize(control,value); break; }
+    {
+        std::lock_guard<std::mutex> guard(parameters_mutex);
+        for(const auto& control : spec.at("controls")) if(control.at("key") == key)
+        { parameters[key] = Normalize(control,value); break; }
+    }
+    if(key=="colorStyle" && spec.value("screenDominant",false))SyncScreenCapture();
+}
+
+void SignalFavorite::SyncScreenCapture()
+{
+    if(!screen_source)return;
+    if(QThread::currentThread()!=thread())
+    {QMetaObject::invokeMethod(this,[this]{SyncScreenCapture();},Qt::QueuedConnection);return;}
+    bool enabled,wanted;
+    {
+        std::lock_guard<std::mutex> guard(parameters_mutex);
+        wanted=!spec.value("screenDominant",false) || parameters.value("colorStyle",std::string())=="ScreenDominant";
+        enabled=effect_enabled && wanted;
+        if(!wanted){screen_color.Reset();last_screen_frame.reset();}
+    }
+    if(spec.value("screenDominant",false))screen_source->setVisible(wanted);
+    if(screen_capture_running!=enabled){screen_capture_running=enabled;screen_source->SetRunning(enabled);}
 }
 
 void SignalFavorite::SyncEditors()
@@ -280,7 +301,7 @@ void SignalFavorite::InstallProgram(const QString& resource)
     program->SetVersion("130"); program->Resize(800,500);
     program->main_pass->data.feedback=spec.value("feedback",false);
     program->main_pass->data.fragment_shader = prefix + shader.readAll().toStdString();
-    if(screen_source)
+    if(screen_state)
     {
         for(unsigned i=0;i<2;++i)
         {auto* pass=new ShaderPass(ShaderPass::DYNAMIC_IMAGE);pass->data.image_slot=i;program->passes.push_back(pass);}
@@ -311,8 +332,9 @@ void SignalFavorite::EffectState(bool enabled)
         basic_state.Reset();
         pump_state.Reset();pending_helper_taps=0;
         procedural_state.Reset();if(screen_state)screen_state->Reset();last_screen_frame.reset();++screen_generation;screen_frame_revision=0;
+        screen_color.Reset();
     }
-    if(screen_source)screen_source->SetRunning(enabled);
+    SyncScreenCapture();
     UpdateInputListener();
     // Profiles load controls after construction. Prime those values while the
     // renderer is stopped so its first frame cannot flash the factory colors.
@@ -407,7 +429,8 @@ void SignalFavorite::CollectKeyboardTaps(const std::vector<ControllerZone*>& zon
 
 void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
 {
-    const auto appearance=screen_source?screen_source->LatestAppearance():nullptr;
+    // A color source never substitutes its image/appearance graph for Pump.
+    const auto appearance=screen_state&&screen_source?screen_source->LatestAppearance():nullptr;
     Renderer()->UpdateRenderGraph(appearance);
     if(appearance){Shaders::StepEffect(std::move(zones));return;}
     ShaderUniformMap values;
@@ -427,7 +450,7 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
         values=basic_state.Update(spec.at("id"),parameters,dt);
         const auto procedural=procedural_state.Update(spec.at("id"),parameters,dt);
         values.insert(procedural.begin(),procedural.end());
-        if(screen_source)
+        if(screen_state)
         {
             const auto& frame=input_images[0];
             if(frame && frame->Usable())
@@ -455,6 +478,19 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
         }
         if(spec.at("id")=="PumpUpBeats")
         {
+            const auto& source=input_images[0];
+            native_screen_color::Result dominant;
+            if(parameters.value("colorStyle",std::string())=="ScreenDominant" && source && source->Usable())
+            {
+                if(last_screen_frame && source->source_revision!=last_screen_frame->source_revision)screen_color.Reset();
+                last_screen_frame=source;
+                // The palette cache also throttles images with no opaque pixels.
+                dominant=screen_color.Update(source->image,std::chrono::duration<double>(now.time_since_epoch()).count());
+            }
+            else {screen_color.Reset();last_screen_frame.reset();}
+            const QColor fallback(QString::fromStdString(parameters.at("staticCol1")));
+            values["pumpScreenColor"]={{dominant.valid?dominant.rgb[0]:float(fallback.redF()),
+                dominant.valid?dominant.rgb[1]:float(fallback.greenF()),dominant.valid?dominant.rgb[2]:float(fallback.blueF()),0},3};
             const auto frame=pump_state.Update(parameters,dt,CaptureSignalSnapshot(),
                 parameters.value("displayLayoutHelper",false)&&(pending_helper_taps%2!=0));
             values["pumpLevels"]={frame.levels,4};
@@ -505,7 +541,7 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
             values["iTap"]={{float(event.x),float(event.y),float(event.age),1},4};
         }
     }
-    if(screen_source)Renderer()->UpdateInputs(values,input_images);
+    if(screen_state)Renderer()->UpdateInputs(values,input_images);
     else Renderer()->UpdateCustomUniforms(values);
     Shaders::StepEffect(std::move(zones));
 }
@@ -533,6 +569,8 @@ bool SignalFavorite::eventFilter(QObject* object,QEvent* event)
 void SignalFavorite::LoadCustomSettings(json settings)
 {
     if(!settings.is_object()) return;
+    if(screen_source && spec.value("screenDominant",false))
+    {screen_source->hide();screen_source->SetRunning(false);screen_capture_running=false;}
     if(screen_source && settings.contains("screen_source"))screen_source->Load(settings["screen_source"]);
     if(screen_source)
         if(auto* follow=screen_source->findChild<QCheckBox*>("screen_source_follow_appearance"))
@@ -560,6 +598,7 @@ void SignalFavorite::LoadCustomSettings(json settings)
     const QSignalBlocker bw(canvas_width), bh(canvas_height);
     canvas_width->setValue(canvas.at("width")); canvas_height->setValue(canvas.at("height"));
     if(screen_source)screen_source->SetOutputSize(canvas_width->value(),canvas_height->value());
+    SyncScreenCapture();
 }
 
 json SignalFavorite::SaveCustomSettings()
