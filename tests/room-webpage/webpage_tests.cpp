@@ -51,6 +51,8 @@ int main(int argc,char** argv)
     page.write("<!doctype html><style>html,body{margin:0;width:100%;height:100%;overflow:hidden}body{background:linear-gradient(90deg,rgb(255,0,0),rgb(0,0,255))}</style>");page.close();
     QTcpServer server;
     check(server.listen(QHostAddress::LocalHost,0));
+    const quint16 http_port=server.serverPort();
+    server.close(); // Deliberately launch HTTP after the browser's first request.
     QObject::connect(&server,&QTcpServer::newConnection,[&]
     {
         auto* socket=server.nextPendingConnection();
@@ -69,14 +71,14 @@ int main(int argc,char** argv)
     cancelled->Start(QUrl::fromLocalFile(path),160,100,5);
     cancelled->Stop(); delete cancelled;
     WebPageCapture capture;
-    unsigned frames=0,phase=0;bool stopped=false,seen_green=false,seen_blue=false;
+    unsigned frames=0,phase=0;bool stopped=false,seen_green=false,seen_blue=false,saw_retry=false;
     QElapsedTimer heartbeat_clock;heartbeat_clock.start();
     qint64 previous_beat=0,max_gap=0;unsigned beats=0;
     QTimer heartbeat;heartbeat.setInterval(20);
     QObject::connect(&heartbeat,&QTimer::timeout,[&]
     {const auto now=heartbeat_clock.elapsed();max_gap=std::max(max_gap,now-previous_beat);previous_beat=now;++beats;});
     heartbeat.start();
-    QObject::connect(&capture,&WebPageCapture::Status,[](const QString& text){std::cout<<text.toStdString()<<std::endl;});
+    QObject::connect(&capture,&WebPageCapture::Status,[&](const QString& text){saw_retry|=text.contains("retrying");std::cout<<text.toStdString()<<std::endl;});
     QObject::connect(&capture,&WebPageCapture::FrameReady,[&](const QImage& image)
     {
         check(!stopped);check(image.size()==QSize(800,600));
@@ -101,11 +103,12 @@ int main(int argc,char** argv)
                     if(phase==0)
                     {
                         phase=1;frames=0;stopped=false;
-                        capture.Start(QUrl("http://127.0.0.1:"+QString::number(server.serverPort())+"/green.html"),800,600,10);
+                        QTimer::singleShot(3500,&app,[&]{check(server.listen(QHostAddress::LocalHost,http_port));});
+                        capture.Start(QUrl("http://127.0.0.1:"+QString::number(http_port)+"/green.html"),800,600,10);
                     }
                     else
                     {
-                        check(beats>10);check(max_gap<500);
+                        check(beats>10);check(max_gap<500);check(saw_retry);
                         std::cout<<checks<<" assertions + "<<frames+3<<" WebView2 file/HTTP frames + JS animation + stop/restart/init-cancel passed; GUI heartbeat max gap "<<max_gap<<"ms\n";
                         app.exit(0);
                     }

@@ -55,6 +55,8 @@ struct WebPageCapture::State : std::enable_shared_from_this<State>
     QTimer timer;
     QElapsedTimer request_time;
     bool running = true, pending = false, loaded = false, first_navigation_done = false;
+    bool navigation_retry_pending = false;
+    unsigned navigation_failures = 0;
     quint64 navigation_id = 0;
     int width = 0, height = 0;
     QUrl url;
@@ -163,7 +165,33 @@ struct WebPageCapture::State : std::enable_shared_from_this<State>
                 if(completed_id!=s->navigation_id) return S_OK;
                 s->first_navigation_done=true;
                 BOOL ok=FALSE; args->get_IsSuccess(&ok); s->loaded=ok;
-                if(s->owner) emit s->owner->Status(ok ? "Rendering web page" : "Page navigation failed; no new frame");
+                if(ok)
+                {
+                    s->navigation_failures=0;
+                    if(s->owner) emit s->owner->Status("Rendering web page");
+                }
+                else if(s->url.scheme()=="http" || s->url.scheme()=="https")
+                {
+                    // A local capture server may start after OpenRGB. Retry the
+                    // configured URL; never relax TLS or redirect validation.
+                    if(s->owner) emit s->owner->Status("Page unavailable; retrying automatically");
+                    if(!s->navigation_retry_pending && s->owner)
+                    {
+                        s->navigation_retry_pending=true;
+                        const unsigned delay=std::min(15000u,1000u<<std::min(s->navigation_failures++,4u));
+                        QTimer::singleShot(int(delay),s->owner.data(),[weak]
+                        {
+                            const auto retry=weak.lock();
+                            if(!retry || !retry->running || !retry->browser) return;
+                            retry->navigation_retry_pending=false;
+                            if(retry->loaded) return;
+                            const auto address=retry->url.toString(QUrl::FullyEncoded).toStdWString();
+                            const HRESULT result=retry->browser->Navigate(address.c_str());
+                            if(FAILED(result)) retry->Fail("Retry navigation",result);
+                        });
+                    }
+                }
+                else if(s->owner) emit s->owner->Status("Page navigation failed; no new frame");
                 return S_OK;
             }).Get(),&token);
         if(FAILED(hr=browser->add_NewWindowRequested(Callback<ICoreWebView2NewWindowRequestedEventHandler>(
