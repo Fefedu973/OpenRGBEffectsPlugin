@@ -3,6 +3,11 @@
 #include "Shaders.h"
 #include <chrono>
 #include <map>
+#include "TapHistory.h"
+#include "KeyboardIdentity.h"
+#include "KeyboardDeduplication.h"
+#include "BasicEffectState.h"
+#include <FrameRouting/OpenRGBInputPluginAPI.h>
 
 // Data-driven native effects: parameters remain uniforms, never shader source
 // assembled from user values. The existing canvas router handles every device.
@@ -15,6 +20,7 @@ public:
     void EffectState(bool) override;
     void LoadCustomSettings(json) override;
     json SaveCustomSettings() override;
+    void OnControllerZonesListChanged(std::vector<ControllerZone*>) override;
     void SetSpeed(unsigned int) override { Shaders::SetSpeed(1000); }
     static void RegisterPresets();
 
@@ -31,6 +37,17 @@ private:
     std::chrono::steady_clock::time_point previous_tick;
     bool clock_running = false;
     std::array<float,4> tap{0,0,0,0};
+    native_taps::History tap_history;
+    native_taps::KeyboardIdentity input_identity;
+    native_taps::KeyboardDeduplication input_deduplication;
+    native_basic::State basic_state;
+    room_input::PluginAPI* input_api = nullptr;
+    std::uint64_t input_listener = 0;
+    bool keyboard_enabled = true;
+    bool effect_enabled = false;
+    QCheckBox* keyboard_checkbox = nullptr;
+    void UpdateInputListener();
+    void CollectKeyboardTaps(const std::vector<ControllerZone*>&, double speed, double now);
     QSpinBox* canvas_width = nullptr;
     QSpinBox* canvas_height = nullptr;
     QLabel* preview = nullptr;

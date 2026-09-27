@@ -1,0 +1,42 @@
+{
+  "id": "RainbowPulse",
+  "title": "Rainbow Pulse",
+  "source_id": "-M0UFswVDMt3aqpseqOX",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native GPU reconstruction of Rainbow Pulse.",
+  "controls": [
+    {
+      "key": "speed",
+      "label": "Rainbow Speed",
+      "type": "number",
+      "default": 1.0,
+      "min": 1.0,
+      "max": 10.0,
+      "step": 1
+    },
+    {
+      "key": "vertical",
+      "label": "Vertical",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "pulse",
+      "label": "Pulse On Keypress",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "pulseIntensity",
+      "label": "Pulse Intensity",
+      "type": "number",
+      "default": 75.0,
+      "min": 1.0,
+      "max": 100.0,
+      "step": 1
+    }
+  ],
+  "notes": "The reference uses a 50 Hz hue advance and global white flash, including its initial fade from half white. Native keyboard events or preview taps reset a global flash; taps do not create spatial rings. Pulse-intensity edits affect a currently decaying flash immediately; the reference samples that setting at the hit. No claim of physical keyboard identity validation is made by this preset.",
+  "tap_speed_key": "speed"
+}

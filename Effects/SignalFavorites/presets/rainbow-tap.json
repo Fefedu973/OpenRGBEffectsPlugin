@@ -1,0 +1,15 @@
+{
+  "id": "RainbowTap",
+  "title": "Rainbow Tap",
+  "source_id": "-Mof09C-c5QA4qMDvAGQ",
+  "description": "Overlapping colored rings expand from mapped keyboard hits or native preview taps.",
+  "tap_speed_key": "iSpeed",
+  "controls": [
+    {"key":"colorMode","label":"Color Mode","type":"enum","default":"Rainbow","options":["Rainbow","Custom","Random"]},
+    {"key":"frontColor","label":"Custom Tap Color","type":"color","default":"#ffff00","min":0,"max":360},
+    {"key":"color","label":"Background Color","type":"color","default":"#000000","min":0,"max":360},
+    {"key":"iWaveWidth","label":"Wave Width","type":"number","default":30,"min":5,"max":60,"step":1},
+    {"key":"iSpeed","label":"Wave Speed","type":"number","default":30,"min":0,"max":100,"step":1}
+  ],
+  "notes": "Original GPU reconstruction; no original source code or assets are embedded. Preserves the five controls, overlapping ring order, stable random color per event and custom color updates. The source's 300-frame lifetime is normalized to five seconds at 60 Hz, with a final 0.75-second fade. Speed is integrated independently for each ring, so zero stops expansion but not expiry, and speed changes do not jump its radius. At most 64 live events are retained; oldest events are evicted if full. Antialiasing, randomness and timing at other reference frame rates differ. Keyboard locations require the native input mapping capability; preview taps use the same spatial contract."
+}

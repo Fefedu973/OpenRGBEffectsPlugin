@@ -1,0 +1,21 @@
+{
+  "id": "NeonShift",
+  "title": "Neon Shift",
+  "source_id": "bundled:Static\\Neon Shift.html",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native GPU reconstruction of Neon Shift.",
+  "controls": [
+    {
+      "key": "speed",
+      "label": "Shift Speed",
+      "type": "number",
+      "default": 50.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    }
+  ],
+  "notes": "Uses native framebuffer feedback: five percent of each new frame approaches the next HSL target. This preserves frame-dependent blending; convergence therefore depends on selected render FPS. Integrated phase preserves speed changes and zero holds the current target while its blend continues. Reference palette colors and full saturation/halved lightness are retained.",
+  "feedback": true
+}

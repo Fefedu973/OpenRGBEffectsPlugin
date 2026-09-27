@@ -103,5 +103,31 @@
         <file>shaders/SignalFavorites/underwater.fs</file>
         <file>Effects/SignalFavorites/presets/galaxies.json</file>
         <file>shaders/SignalFavorites/galaxies.fs</file>
+        <file>Effects/SignalFavorites/presets/rainbow-tap.json</file>
+        <file>Effects/SignalFavorites/presets/Terminal.json</file>
+        <file>Effects/SignalFavorites/presets/NeonNebula.json</file>
+        <file>shaders/SignalFavorites/rainbow-tap.fs</file>
+        <file>shaders/SignalFavorites/Terminal.fs</file>
+        <file>shaders/SignalFavorites/NeonNebula.fs</file>
+        <file>Effects/SignalFavorites/presets/good-night.json</file>
+        <file>Effects/SignalFavorites/presets/color-cycle.json</file>
+        <file>Effects/SignalFavorites/presets/neon-shift.json</file>
+        <file>Effects/SignalFavorites/presets/police-lights.json</file>
+        <file>Effects/SignalFavorites/presets/rainbow-pulse.json</file>
+        <file>Effects/SignalFavorites/presets/color-shift.json</file>
+        <file>Effects/SignalFavorites/presets/tv-static.json</file>
+        <file>Effects/SignalFavorites/presets/custom-sunrise.json</file>
+        <file>Effects/SignalFavorites/presets/crooked-waves.json</file>
+        <file>Effects/SignalFavorites/presets/quad-color-breath.json</file>
+        <file>shaders/SignalFavorites/good-night.fs</file>
+        <file>shaders/SignalFavorites/color-cycle.fs</file>
+        <file>shaders/SignalFavorites/neon-shift.fs</file>
+        <file>shaders/SignalFavorites/police-lights.fs</file>
+        <file>shaders/SignalFavorites/rainbow-pulse.fs</file>
+        <file>shaders/SignalFavorites/color-shift.fs</file>
+        <file>shaders/SignalFavorites/tv-static.fs</file>
+        <file>shaders/SignalFavorites/custom-sunrise.fs</file>
+        <file>shaders/SignalFavorites/crooked-waves.fs</file>
+        <file>shaders/SignalFavorites/quad-color-breath.fs</file>
     </qresource>
 </RCC>

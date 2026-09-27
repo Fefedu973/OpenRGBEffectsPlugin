@@ -1,0 +1,71 @@
+{
+  "id": "CustomSunrise",
+  "title": "Custom Sunrise",
+  "source_id": "-MO8liV7Dy1JZC5l7nfQ",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native GPU reconstruction of Custom Sunrise.",
+  "controls": [
+    {
+      "key": "xPos",
+      "label": "X Position",
+      "type": "number",
+      "default": 160.0,
+      "min": 0.0,
+      "max": 320.0,
+      "step": 1
+    },
+    {
+      "key": "yPos",
+      "label": "Y Position",
+      "type": "number",
+      "default": 200.0,
+      "min": 0.0,
+      "max": 200.0,
+      "step": 1
+    },
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 30.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "scale",
+      "label": "Scale",
+      "type": "number",
+      "default": 25.0,
+      "min": 1.0,
+      "max": 50.0,
+      "step": 1
+    },
+    {
+      "key": "hue1",
+      "label": "Color 1",
+      "type": "color",
+      "default": "#FFFF00",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "hue2",
+      "label": "Color 2",
+      "type": "color",
+      "default": "#00FF00",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "hue3",
+      "label": "Color 3",
+      "type": "color",
+      "default": "#0000FF",
+      "min": 0.0,
+      "max": 360.0
+    }
+  ],
+  "notes": "Original analytic radial reconstruction with all seven controls, integrated radial speed, three-color sequence and reference 400-pixel radius. This is not pixel-perfect: it models dense bands rather than the finite 400-ring array, so its startup overlap, sparse-ring recycling and historical band colors after Scale edits differ. Scale edits reshape existing bands immediately; the reference retains each ring birth color. No original source or assets are embedded."
+}

@@ -12,7 +12,7 @@ a=p.parse_args()
 repo=Path(__file__).resolve().parents[2]
 out=repo/'build/signal-favorites'; out.mkdir(parents=True,exist_ok=True)
 includes=[a.qt/'include',a.qt/'include/QtCore',a.qt/'include/QtGui',a.qt/'include/QtOpenGL',
-          a.openrgb_root/'dependencies/json',a.openrgb_root/'RGBController',repo/'Effects/Shaders']
+          a.openrgb_root/'dependencies/json',a.openrgb_root/'RGBController',repo/'Effects/Shaders',repo/'Effects/SignalFavorites']
 cmd=['cl','/nologo','/EHsc','/std:c++17','/Zc:__cplusplus','/permissive-','/MD','/O2','/DNOMINMAX','/utf-8']
 subprocess.run(cmd+['/I'+str(d) for d in includes]+
     [str(Path(__file__).with_name('render_favorites.cpp')),str(repo/'Effects/Shaders/ShaderPass.cpp'),

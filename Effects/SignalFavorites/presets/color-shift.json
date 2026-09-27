@@ -1,0 +1,38 @@
+{
+  "id": "ColorShift",
+  "title": "Color Shift",
+  "source_id": "-M0irvuFzkzdLaL0cwSA",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native GPU reconstruction of Color Shift.",
+  "controls": [
+    {
+      "key": "shiftSpeed",
+      "label": "Color Shift Speed",
+      "type": "number",
+      "default": 50.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "saturation",
+      "label": "Color Saturation",
+      "type": "number",
+      "default": 100.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "lightness",
+      "label": "Color Lightness",
+      "type": "number",
+      "default": 50.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    }
+  ],
+  "notes": "A bounded native 60 Hz simulation preserves spawn countdown across speed edits, at most ten composited layers, alpha accumulation, zero-speed fade freeze and live HSL saturation/lightness. Random colors are deterministic original pseudorandom values, not the reference random sequence."
+}

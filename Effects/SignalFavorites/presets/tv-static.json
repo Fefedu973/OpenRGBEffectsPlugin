@@ -1,0 +1,64 @@
+{
+  "id": "TVStatic",
+  "title": "TV Static",
+  "source_id": "-M_0i3Zs7qGIiYIpDQAu",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native GPU reconstruction of TV Static.",
+  "controls": [
+    {
+      "key": "pixelSize",
+      "label": "Pixel Size",
+      "type": "number",
+      "default": 10.0,
+      "min": 1.0,
+      "max": 15.0,
+      "step": 1
+    },
+    {
+      "key": "whiteAmount",
+      "label": "Amount of White Pixels",
+      "type": "number",
+      "default": 1.0,
+      "min": 0.0,
+      "max": 10.0,
+      "step": 1
+    },
+    {
+      "key": "customColor",
+      "label": "Custom Colors: ",
+      "type": "enum",
+      "default": "0",
+      "options": [
+        "0",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "key": "color1",
+      "label": "Color 1",
+      "type": "color",
+      "default": "#ff0000",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "color2",
+      "label": "Color 2",
+      "type": "color",
+      "default": "#0000ff",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "color3",
+      "label": "Color 3",
+      "type": "color",
+      "default": "#00ff00",
+      "min": 0.0,
+      "max": 360.0
+    }
+  ],
+  "notes": "Original deterministic per-cell noise changes at a nominal 60 Hz. Preserves pixel sizes, the 0/2/3 custom-color options, equal custom-palette selection and the rounded white-pixel draw distribution. Noise samples differ from browser randomness."
+}

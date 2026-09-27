@@ -35,7 +35,7 @@ def normalize(control, entry):
 
 def create(source, spec, preferences):
     profile = copy.deepcopy(source)
-    profile['profile_name'] = 'Favori - ' + spec['title']
+    profile['profile_name'] = spec.get('profile_prefix','Favori - ') + spec['title']
     profile['controllers'] = []
     profile.pop('base_color', None)
     effect = profile['plugins']['OpenRGB Effects Plugin']['Effects'][0]

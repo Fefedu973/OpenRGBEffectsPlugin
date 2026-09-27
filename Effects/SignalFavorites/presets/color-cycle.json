@@ -1,0 +1,20 @@
+{
+  "id": "ColorCycle",
+  "title": "Color Cycle",
+  "source_id": "-M7DSVXVwLrF5BZP38Pd",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native GPU reconstruction of Color Cycle.",
+  "controls": [
+    {
+      "key": "nSpeed",
+      "label": "Speed",
+      "type": "number",
+      "default": 50.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    }
+  ],
+  "notes": "Speed is integrated continuously and normalized to the reference at 60 Hz. Zero freezes hue. The tiny one-degree reset discontinuity of the reference is replaced by a continuous hue wrap."
+}

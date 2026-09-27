@@ -63,6 +63,7 @@ public:
 protected:
     ShaderRenderer* Renderer() const { return shader_renderer; }
     Ui::Shaders* ShaderUi() const { return ui; }
+    nlohmann::json CanvasRegions() { std::lock_guard<std::mutex> guard(image_mutex); return *zone_regions; }
 
 private slots:
     void changeEvent(QEvent *event) override;

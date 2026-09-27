@@ -3,6 +3,9 @@
 #include "SignalFavoriteRegistry.h"
 #include "EffectListManager.h"
 #include "ShaderCanvas.h"
+#include "OpenRGBEffectsPlugin.h"
+#include "PhysicalKeys.h"
+#include <FrameRouting/RGBControllerInputMappingInterface.h>
 #include <QCheckBox>
 #include <QColorDialog>
 #include <QComboBox>
@@ -16,6 +19,7 @@
 #include <QSignalBlocker>
 #include <QSpinBox>
 #include <QVBoxLayout>
+#include <QTimer>
 #include <algorithm>
 #include <cmath>
 #include <regex>
@@ -54,7 +58,7 @@ void SignalFavorite::RegisterPresets()
         {
             const auto definition = ReadSpec(path);
             EffectListManager::get()->RegisterEffect("SignalFavorite." + definition.at("id").get<std::string>(),
-                definition.at("title"), "SignalRGB Favorites", [path](){ return new SignalFavorite(path); });
+                definition.at("title"), definition.value("category",std::string("SignalRGB Favorites")), [path](){ return new SignalFavorite(path); });
         }
         catch(const std::exception& ex) { qWarning() << "Native favorite:" << path << ex.what(); }
     }
@@ -152,6 +156,27 @@ SignalFavorite::SignalFavorite(const QString& resource, QWidget* parent) : Shade
     preview->installEventFilter(this);
     connect(show,&QCheckBox::toggled,preview,&QWidget::setVisible);
     preview->hide();
+    if(spec.contains("tap_speed_key")||spec.value("keyboard_reactive",false))
+    {
+        keyboard_checkbox=new QCheckBox(tr("React to physical keyboard keys"),this);
+        keyboard_checkbox->setObjectName("keyboard_reactive");
+        keyboard_checkbox->setChecked(true);
+        outer->addWidget(keyboard_checkbox);
+        auto* input_status=new QLabel(this); input_status->setWordWrap(true); outer->addWidget(input_status);
+        connect(keyboard_checkbox,&QCheckBox::toggled,this,[this](bool enabled){
+            {std::lock_guard<std::mutex> guard(parameters_mutex);keyboard_enabled=enabled;}
+            UpdateInputListener();
+        });
+        auto* status_timer=new QTimer(this);
+        connect(status_timer,&QTimer::timeout,this,[this,input_status]{
+            if(!isVisible()) return;
+            std::lock_guard<std::mutex> guard(parameters_mutex);
+            input_status->setText(input_listener?tr("Keyboard input active. Physical positions follow the assigned layout."):
+                !effect_enabled?tr("Keyboard input starts with this effect."):
+                !keyboard_enabled?tr("Keyboard input disabled."):tr("Keyboard input unavailable in this host. Preview clicks remain available."));
+        });
+        status_timer->start(500);
+    }
     const QString notes = QString::fromStdString(spec.value("notes",std::string()));
     if(!notes.isEmpty()) { auto* label = new QLabel(notes,this); label->setWordWrap(true); outer->addWidget(label); }
     SyncEditors();
@@ -215,7 +240,8 @@ void SignalFavorite::InstallProgram(const QString& resource)
     const QString basename = QFileInfo(resource).completeBaseName();
     QFile shader(":/shaders/SignalFavorites/"+basename+".fs");
     if(!shader.open(QIODevice::ReadOnly)) throw std::runtime_error("Missing native favorite shader");
-    std::string prefix = "uniform vec4 iTap;\n";
+    std::string prefix = "uniform vec4 iTap;\nuniform float iTapCount;\nuniform vec4 iTapEvents[64];\nuniform vec4 iTapMeta[64];\n";
+    prefix+=native_basic::State::Declarations(spec.at("id"));
     for(const auto& control : spec.at("controls"))
     {
         const std::string key = control.at("key");
@@ -227,6 +253,7 @@ void SignalFavorite::InstallProgram(const QString& resource)
     // program instead of abandoning an allocated program on every preset load.
     auto* program = Renderer()->Program();
     program->SetVersion("130"); program->Resize(800,500);
+    program->main_pass->data.feedback=spec.value("feedback",false);
     program->main_pass->data.fragment_shader = prefix + shader.readAll().toStdString();
     program->recompile = true;
 }
@@ -236,11 +263,99 @@ void SignalFavorite::EffectState(bool enabled)
     {
         std::lock_guard<std::mutex> guard(parameters_mutex);
         clock_running = false;
+        effect_enabled=enabled;
+        tap_history.Clear(); tap={0,0,0,0};
+        basic_state.Reset();
     }
+    UpdateInputListener();
     // Profiles load controls after construction. Prime those values while the
     // renderer is stopped so its first frame cannot flash the factory colors.
     if(enabled && !Renderer()->isRunning()) StepEffect({});
     Shaders::EffectState(enabled);
+}
+
+void SignalFavorite::UpdateInputListener()
+{
+    std::lock_guard<std::mutex> guard(parameters_mutex);
+    const bool wanted=effect_enabled&&keyboard_enabled&&keyboard_checkbox;
+    if(!wanted)
+    {
+        if(input_api&&input_listener) input_api->ReleaseKeyboardInput(input_listener);
+        input_listener=0; input_api=nullptr; input_identity.Clear(); input_deduplication.Clear(); tap_history.Clear();
+    }
+    else if(!input_listener)
+    {
+        input_api=dynamic_cast<room_input::PluginAPI*>(OpenRGBEffectsPlugin::api);
+        if(input_api&&input_api->InputAPIVersion()==1) input_listener=input_api->AcquireKeyboardInput();
+    }
+}
+
+void SignalFavorite::OnControllerZonesListChanged(std::vector<ControllerZone*> zones)
+{
+    Shaders::OnControllerZonesListChanged(zones);
+    std::lock_guard<std::mutex> guard(parameters_mutex);
+    tap_history.Clear();tap={0,0,0,0};input_identity.Clear();input_deduplication.Clear();
+    if(input_api&&input_listener) input_api->ReadKeyboardInput(input_listener);
+}
+
+void SignalFavorite::CollectKeyboardTaps(const std::vector<ControllerZone*>& zones,double speed,double now)
+{
+    if(!input_api||!input_listener) return;
+    const auto events=input_api->ReadKeyboardInput(input_listener);
+    if(events.empty()) return;
+    const auto regions=CanvasRegions();
+    std::vector<room_input::InputPoint> points;
+    for(auto* zone:zones)
+    {
+        if(!zone||!zone->controller||!zone->self_brightness) continue;
+        const auto region=effect_canvas::RegionFor(zone,regions);
+        if(auto* mapped=dynamic_cast<room_input::RGBControllerInputMappingInterface*>(zone->controller))
+        {
+            if(zone->is_segment) continue;
+            std::vector<room_input::InputPoint> members;
+            if(!mapped->GetInputPoints(zone->zone_idx,members)) continue;
+            const auto transform=room_image::Mapping::Rectangle(region.x,region.y,region.width,region.height,
+                region.rotation,region.flip_x!=zone->reverse,region.flip_y);
+            for(auto& member:members)
+            {
+                double x,y;
+                if(points.size()>=room_input::MaxInputPoints) break;
+                if(transform.Point(member.u,member.v,x,y)&&x>=0&&x<=1&&y>=0&&y<=1)
+                {member.u=x;member.v=y;points.push_back(std::move(member));}
+            }
+        }
+        else if(zone->controller->GetDeviceType()==DEVICE_TYPE_KEYBOARD)
+        {
+            effect_canvas::LedPlans direct;
+            for(const auto& sample:direct.Get(zone,0,region))
+            {
+                if(points.size()>=room_input::MaxInputPoints) break;
+                room_input::InputPoint point;
+                point.location=zone->controller->GetLocation();point.serial=zone->controller->GetSerial();
+                point.name=zone->controller->GetName();point.global_led=zone->start_idx()+sample.led;
+                point.keyname=zone->controller->GetLEDName(point.global_led);
+                point.u=sample.u;point.v=sample.v;points.push_back(std::move(point));
+            }
+        }
+    }
+    for(const auto& event:events)
+    {
+        const auto age=now-event.time;
+        if(age<0||age>0.25) continue;
+        const auto device=input_identity.Container(event.device_path);
+        if(device.empty()) continue;
+        if(!input_deduplication.Accept(device,event.device_path,event.scan,event.time))continue;
+        std::vector<std::pair<double,double>> used;
+        for(const auto& point:points)
+        {
+            if(native_taps::PhysicalScan(point.keyname)!=event.scan
+               ||input_identity.Container(point.location)!=device) continue;
+            const std::pair<double,double> position{point.u,point.v};
+            if(std::find(used.begin(),used.end(),position)!=used.end()) continue;
+            used.push_back(position);
+            tap_history.Add(point.u*320,point.v*200,age,speed);
+        }
+    }
 }
 
 void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
@@ -250,8 +365,14 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
         std::lock_guard<std::mutex> guard(parameters_mutex);
         const auto now = std::chrono::steady_clock::now();
         // Resume does not integrate time spent stopped; UI stalls are capped.
-        const double dt = clock_running ? std::clamp(std::chrono::duration<double>(now-previous_tick).count(),0.0,0.25) : 0;
+        const double elapsed=clock_running?std::max(0.0,std::chrono::duration<double>(now-previous_tick).count()):0;
+        const double dt = std::min(elapsed,0.25);
         previous_tick = now; clock_running = true;
+        const std::string speed_key=spec.value("tap_speed_key",std::string());
+        const double tap_speed=parameters.contains(speed_key)?parameters.at(speed_key).get<double>():1.0;
+        tap_history.Advance(elapsed,tap_speed);
+        CollectKeyboardTaps(zones,tap_speed,std::chrono::duration<double>(now.time_since_epoch()).count());
+        values=basic_state.Update(spec.at("id"),parameters,dt);
         for(const auto& control : spec.at("controls"))
         {
             const std::string key = control.at("key");
@@ -279,6 +400,20 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
         }
         if(tap[3] != 0) tap[2] += float(dt);
         values["iTap"] = {tap,4};
+        const auto& taps=tap_history.Events();
+        values["iTapCount"].values[0]=float(taps.size());
+        unsigned index=0;
+        for(const auto& event:taps)
+        {
+            const auto suffix="["+std::to_string(index++)+"]";
+            values["iTapEvents"+suffix]={{float(event.x),float(event.y),float(event.age),1},4};
+            values["iTapMeta"+suffix]={{float(event.seed),float(event.travel),0,0},4};
+        }
+        if(!taps.empty())
+        {
+            const auto& event=taps.back();
+            values["iTap"]={{float(event.x),float(event.y),float(event.age),1},4};
+        }
     }
     Renderer()->UpdateCustomUniforms(values);
     Shaders::StepEffect(std::move(zones));
@@ -296,6 +431,7 @@ bool SignalFavorite::eventFilter(QObject* object,QEvent* event)
         {
             std::lock_guard<std::mutex> guard(parameters_mutex);
             tap = {float(320*x/size.width()),float(200*y/size.height()),0,1};
+            tap_history.Add(tap[0],tap[1],0,0);
             return true;
         }
     }
@@ -313,6 +449,12 @@ void SignalFavorite::LoadCustomSettings(json settings)
     // Persist identity/controls, not editable copies of shipped shader code.
     settings.erase("shader_program"); settings.erase("shader_name");
     settings["use_audio"] = false;
+    if(settings.contains("keyboard_reactive")&&settings["keyboard_reactive"].is_boolean())
+    {
+        { std::lock_guard<std::mutex> guard(parameters_mutex);keyboard_enabled=settings["keyboard_reactive"].get<bool>(); }
+        if(keyboard_checkbox) {const QSignalBlocker blocker(keyboard_checkbox);keyboard_checkbox->setChecked(keyboard_enabled);}
+        UpdateInputListener();
+    }
     Shaders::LoadCustomSettings(settings);
     const auto canvas = Shaders::SaveCustomSettings();
     const QSignalBlocker bw(canvas_width), bh(canvas_height);
@@ -326,5 +468,6 @@ json SignalFavorite::SaveCustomSettings()
     std::lock_guard<std::mutex> guard(parameters_mutex);
     settings["parameters"] = parameters;
     settings["preset"] = spec.at("id"); settings["schema_version"] = 1;
+    if(keyboard_checkbox) settings["keyboard_reactive"]=keyboard_enabled;
     return settings;
 }

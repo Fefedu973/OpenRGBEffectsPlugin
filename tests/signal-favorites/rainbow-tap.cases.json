@@ -1,0 +1,15 @@
+{
+  "note": "Analytical checkpoints for the original native shader; centers are 320x200 design coordinates. Uniform values represent event data after integration, not captured input.",
+  "id": "RainbowTap",
+  "base_parameters": {"colorMode": "Custom", "frontColor": "#ff0000", "color": "#000000", "iWaveWidth": 10, "iSpeed": 30},
+  "cases": [
+    {"name":"empty-background", "events":[], "meta":[], "points":[{"x":100,"y":100,"rgb":[0,0,0]}]},
+    {"name":"one-ring", "events":[[100,100,1,1]], "meta":[[0.3333333,10,0,0]], "points":[{"x":163,"y":100,"rgb":[255,0,0]},{"x":100,"y":100,"rgb":[0,0,0]}]},
+    {"name":"two-rings", "events":[[100,100,1,1],[230,100,1,1]], "meta":[[0.1,10,0,0],[0.8,10,0,0]], "points":[{"x":37,"y":100,"rgb":[255,0,0]},{"x":293,"y":100,"rgb":[255,0,0]}]},
+    {"name":"half-fade", "events":[[100,100,4.625,1]], "meta":[[0.1,10,0,0]], "points":[{"x":163,"y":100,"rgb":[128,0,0]}]},
+    {"name":"expired", "events":[[100,100,5,1]], "meta":[[0.1,10,0,0]], "points":[{"x":163,"y":100,"rgb":[0,0,0]}]},
+    {"name":"random-seed", "parameters":{"colorMode":"Random"}, "events":[[100,100,1,1]], "meta":[[0.3333333333,10,0,0]], "points":[{"x":163,"y":100,"rgb":[0,255,0]}]},
+    {"name":"rainbow-phase", "parameters":{"colorMode":"Rainbow"}, "events":[[100,100,1,1]], "meta":[[0.75,10,0,0]], "points":[{"x":163,"y":100,"rgb":[128,255,0]}]},
+    {"name":"speed-change-preserves-position", "parameters":{"iSpeed":0}, "events":[[100,100,1,1]], "meta":[[0.1,10,0,0]], "points":[{"x":163,"y":100,"rgb":[255,0,0]}]}
+  ]
+}

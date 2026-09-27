@@ -1,0 +1,412 @@
+{
+  "rainbow-pulse": {
+    "id": "RainbowPulse",
+    "source_id": "-M0UFswVDMt3aqpseqOX",
+    "source_sha256": "d23ccaebd7f1ddc9a6aec3fea1be4e6ecfef921a37399fff378fa435a0d36277",
+    "controls": [
+      {
+        "key": "speed",
+        "label": "Rainbow Speed",
+        "type": "number",
+        "default": 1.0,
+        "min": 1.0,
+        "max": 10.0,
+        "step": 1
+      },
+      {
+        "key": "vertical",
+        "label": "Vertical",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "pulse",
+        "label": "Pulse On Keypress",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "pulseIntensity",
+        "label": "Pulse Intensity",
+        "type": "number",
+        "default": 75.0,
+        "min": 1.0,
+        "max": 100.0,
+        "step": 1
+      }
+    ]
+  },
+  "color-shift": {
+    "id": "ColorShift",
+    "source_id": "-M0irvuFzkzdLaL0cwSA",
+    "source_sha256": "3cbcd12fa0836e81f70ad3d9598276789b1af46f972e4535b3f59d82b6b5dfa3",
+    "controls": [
+      {
+        "key": "shiftSpeed",
+        "label": "Color Shift Speed",
+        "type": "number",
+        "default": 50.0,
+        "min": 0.0,
+        "max": 100.0,
+        "step": 1
+      },
+      {
+        "key": "saturation",
+        "label": "Color Saturation",
+        "type": "number",
+        "default": 100.0,
+        "min": 0.0,
+        "max": 100.0,
+        "step": 1
+      },
+      {
+        "key": "lightness",
+        "label": "Color Lightness",
+        "type": "number",
+        "default": 50.0,
+        "min": 0.0,
+        "max": 100.0,
+        "step": 1
+      }
+    ]
+  },
+  "color-cycle": {
+    "id": "ColorCycle",
+    "source_id": "-M7DSVXVwLrF5BZP38Pd",
+    "source_sha256": "cd19244e05c5a0fac808d9a37a8a33f1df030cbb62f44295507cda47f99cc6c3",
+    "controls": [
+      {
+        "key": "nSpeed",
+        "label": "Speed",
+        "type": "number",
+        "default": 50.0,
+        "min": 0.0,
+        "max": 100.0,
+        "step": 1
+      }
+    ]
+  },
+  "custom-sunrise": {
+    "id": "CustomSunrise",
+    "source_id": "-MO8liV7Dy1JZC5l7nfQ",
+    "source_sha256": "162e39b238ef35ad98166e6b1eb26877ed61551a7ab572e8aa9a5438a12f6e5a",
+    "controls": [
+      {
+        "key": "xPos",
+        "label": "X Position",
+        "type": "number",
+        "default": 160.0,
+        "min": 0.0,
+        "max": 320.0,
+        "step": 1
+      },
+      {
+        "key": "yPos",
+        "label": "Y Position",
+        "type": "number",
+        "default": 200.0,
+        "min": 0.0,
+        "max": 200.0,
+        "step": 1
+      },
+      {
+        "key": "speed",
+        "label": "Speed",
+        "type": "number",
+        "default": 30.0,
+        "min": 0.0,
+        "max": 100.0,
+        "step": 1
+      },
+      {
+        "key": "scale",
+        "label": "Scale",
+        "type": "number",
+        "default": 25.0,
+        "min": 1.0,
+        "max": 50.0,
+        "step": 1
+      },
+      {
+        "key": "hue1",
+        "label": "Color 1",
+        "type": "color",
+        "default": "#FFFF00",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "hue2",
+        "label": "Color 2",
+        "type": "color",
+        "default": "#00FF00",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "hue3",
+        "label": "Color 3",
+        "type": "color",
+        "default": "#0000FF",
+        "min": 0.0,
+        "max": 360.0
+      }
+    ]
+  },
+  "police-lights": {
+    "id": "PoliceLights",
+    "source_id": "-MVxkay-PqzZsf7o5UJx",
+    "source_sha256": "8beeb291968f73c19ef9c9094d7f0202bc36ede635c4069ec103d80c0d016b2f",
+    "controls": [
+      {
+        "key": "color1",
+        "label": "Color 1",
+        "type": "color",
+        "default": "#ff0000",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "color2",
+        "label": "Color 2",
+        "type": "color",
+        "default": "#ffffff",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "color3",
+        "label": "Color 3",
+        "type": "color",
+        "default": "#0000ff",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "speed",
+        "label": "Speed",
+        "type": "number",
+        "default": 50.0,
+        "min": 0.0,
+        "max": 100.0,
+        "step": 1
+      }
+    ]
+  },
+  "tv-static": {
+    "id": "TVStatic",
+    "source_id": "-M_0i3Zs7qGIiYIpDQAu",
+    "source_sha256": "7ccaa5a59a421f703035242af1d7bf3e6a75e559331a14bc916f3d956ec0ee3d",
+    "controls": [
+      {
+        "key": "pixelSize",
+        "label": "Pixel Size",
+        "type": "number",
+        "default": 10.0,
+        "min": 1.0,
+        "max": 15.0,
+        "step": 1
+      },
+      {
+        "key": "whiteAmount",
+        "label": "Amount of White Pixels",
+        "type": "number",
+        "default": 1.0,
+        "min": 0.0,
+        "max": 10.0,
+        "step": 1
+      },
+      {
+        "key": "customColor",
+        "label": "Custom Colors: ",
+        "type": "enum",
+        "default": "0",
+        "options": [
+          "0",
+          "2",
+          "3"
+        ]
+      },
+      {
+        "key": "color1",
+        "label": "Color 1",
+        "type": "color",
+        "default": "#ff0000",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "color2",
+        "label": "Color 2",
+        "type": "color",
+        "default": "#0000ff",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "color3",
+        "label": "Color 3",
+        "type": "color",
+        "default": "#00ff00",
+        "min": 0.0,
+        "max": 360.0
+      }
+    ]
+  },
+  "good-night": {
+    "id": "GoodNight",
+    "source_id": "-M_bG5GkyerNU7v-7zZs",
+    "source_sha256": "7066a6e4789af342e6cd36a64248aee5917a5e8d92fac43efb4467cb9ad91be1",
+    "controls": []
+  },
+  "quad-color-breath": {
+    "id": "QuadColorBreath",
+    "source_id": "-M_q1iI-843ttc56sSiL",
+    "source_sha256": "48012ef511c2abde277a71b2ce8fb392f907c82614b85d3b0445f8fc19315b06",
+    "controls": [
+      {
+        "key": "color1",
+        "label": "Top Left Color",
+        "type": "color",
+        "default": "#ff0000",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "color2",
+        "label": "Top Right Color",
+        "type": "color",
+        "default": "#00ff00",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "color3",
+        "label": "Bottom Right Color",
+        "type": "color",
+        "default": "#0000ff",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "color4",
+        "label": "Bottom Left Color",
+        "type": "color",
+        "default": "#ffff00",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "rotate",
+        "label": "Rotate colors",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "breathing1",
+        "label": "Breathing Top Left",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "breathing2",
+        "label": "Breathing Top Right",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "breathing3",
+        "label": "Breathing Bottom Right",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "breathing4",
+        "label": "Breathing Bottom Left",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "speed",
+        "label": "Breathing / rotation Speed",
+        "type": "number",
+        "default": 1.0,
+        "min": 1.0,
+        "max": 5.0,
+        "step": 1
+      }
+    ]
+  },
+  "crooked-waves": {
+    "id": "CrookedWaves",
+    "source_id": "-MckKulFLpSaux_1ySC9",
+    "source_sha256": "3641809e02e31e880a9602fd5b1b3a9391a867feb5410da79a2e2952e9013828",
+    "controls": [
+      {
+        "key": "color",
+        "label": "Color",
+        "type": "color",
+        "default": "#0a00ff",
+        "min": 0.0,
+        "max": 360.0
+      },
+      {
+        "key": "randomColors",
+        "label": "Random Color",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "speed",
+        "label": "Visor Speed",
+        "type": "number",
+        "default": 3.0,
+        "min": 1.0,
+        "max": 10.0,
+        "step": 1
+      },
+      {
+        "key": "barWidth",
+        "label": "Bar Width",
+        "type": "number",
+        "default": 30.0,
+        "min": 1.0,
+        "max": 50.0,
+        "step": 1
+      },
+      {
+        "key": "barAmount",
+        "label": "Bar Amount",
+        "type": "number",
+        "default": 2.0,
+        "min": 1.0,
+        "max": 4.0,
+        "step": 1
+      },
+      {
+        "key": "bgColor",
+        "label": "Background Color",
+        "type": "color",
+        "default": "#ffffff",
+        "min": 0.0,
+        "max": 360.0
+      }
+    ]
+  },
+  "neon-shift": {
+    "id": "NeonShift",
+    "source_id": "bundled:Static\\Neon Shift.html",
+    "source_sha256": "1be9ba4c927b24993be2b1eaf44a83607a36c36aff1170432b5cf2f74a792589",
+    "controls": [
+      {
+        "key": "speed",
+        "label": "Shift Speed",
+        "type": "number",
+        "default": 50.0,
+        "min": 0.0,
+        "max": 100.0,
+        "step": 1
+      }
+    ]
+  }
+}

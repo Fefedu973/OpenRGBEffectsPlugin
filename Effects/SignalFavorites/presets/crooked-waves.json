@@ -1,0 +1,60 @@
+{
+  "id": "CrookedWaves",
+  "title": "Crooked Waves",
+  "source_id": "-MckKulFLpSaux_1ySC9",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native GPU reconstruction of Crooked Waves.",
+  "controls": [
+    {
+      "key": "color",
+      "label": "Color",
+      "type": "color",
+      "default": "#0a00ff",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "randomColors",
+      "label": "Random Color",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "speed",
+      "label": "Visor Speed",
+      "type": "number",
+      "default": 3.0,
+      "min": 1.0,
+      "max": 10.0,
+      "step": 1
+    },
+    {
+      "key": "barWidth",
+      "label": "Bar Width",
+      "type": "number",
+      "default": 30.0,
+      "min": 1.0,
+      "max": 50.0,
+      "step": 1
+    },
+    {
+      "key": "barAmount",
+      "label": "Bar Amount",
+      "type": "number",
+      "default": 2.0,
+      "min": 1.0,
+      "max": 4.0,
+      "step": 1
+    },
+    {
+      "key": "bgColor",
+      "label": "Background Color",
+      "type": "color",
+      "default": "#ffffff",
+      "min": 0.0,
+      "max": 360.0
+    }
+  ],
+  "notes": "Native fixed-step 60 Hz state retains four bounded stripe positions, shared random color on wrap and resets positions when Bar Amount changes. Shader applies the 45-degree stripe transform and antialiasing. Random samples differ; the source initial blank/undefined-color frame is replaced by the selected color. Its commented-out Vertical control is not added."
+}

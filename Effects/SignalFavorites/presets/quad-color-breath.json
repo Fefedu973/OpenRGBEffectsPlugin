@@ -1,0 +1,82 @@
+{
+  "id": "QuadColorBreath",
+  "title": "Quad-Color Breath",
+  "source_id": "-M_q1iI-843ttc56sSiL",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native GPU reconstruction of Quad-Color Breath.",
+  "controls": [
+    {
+      "key": "color1",
+      "label": "Top Left Color",
+      "type": "color",
+      "default": "#ff0000",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "color2",
+      "label": "Top Right Color",
+      "type": "color",
+      "default": "#00ff00",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "color3",
+      "label": "Bottom Right Color",
+      "type": "color",
+      "default": "#0000ff",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "color4",
+      "label": "Bottom Left Color",
+      "type": "color",
+      "default": "#ffff00",
+      "min": 0.0,
+      "max": 360.0
+    },
+    {
+      "key": "rotate",
+      "label": "Rotate colors",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "breathing1",
+      "label": "Breathing Top Left",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "breathing2",
+      "label": "Breathing Top Right",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "breathing3",
+      "label": "Breathing Bottom Right",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "breathing4",
+      "label": "Breathing Bottom Left",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "speed",
+      "label": "Breathing / rotation Speed",
+      "type": "number",
+      "default": 1.0,
+      "min": 1.0,
+      "max": 5.0,
+      "step": 1
+    }
+  ],
+  "notes": "Native fixed-step 60 Hz state preserves tint limits, rotation at the dark end, the historical four-color order, and independent per-quadrant breathing flags. Turning rotation off reloads the chosen colors; turning it back on retains that palette until the next dark-end rotation. Timing is normalized to 60 Hz rather than browser frame rate."
+}

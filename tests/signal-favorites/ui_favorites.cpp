@@ -13,6 +13,7 @@
 #include <QEvent>
 #include <iostream>
 #include <set>
+#include <map>
 #include "FakeAPI.h"
 
 using json=nlohmann::json;
@@ -60,18 +61,18 @@ int main(int argc,char** argv)
         const QDir presets(":/Effects/SignalFavorites/presets");
         const auto files=presets.entryList({"*.json"},QDir::Files,QDir::Name);
         const std::set<std::string> expected={"Aurora","CustomSpiral","Galaxies","GradientWave","Gradient",
-            "RainbowRise","RainbowTunnel","Rainbow","SideToSide","SolidColor","Space","SpiralRainbow","Underwater"};
+            "RainbowRise","RainbowTunnel","Rainbow","SideToSide","SolidColor","Space","SpiralRainbow","Underwater",
+            "RainbowTap","Terminal","NeonNebula","GoodNight","ColorCycle","NeonShift","PoliceLights",
+            "RainbowPulse","ColorShift","TVStatic","CustomSunrise","CrookedWaves","QuadColorBreath"};
         std::set<std::string> found;
         CHECK(files.size()>=int(expected.size()));
-        QMenu* favorite_menu=nullptr;
-        for(auto* menu:root->findChildren<QMenu*>())
-            if(menu->title()=="SignalRGB Favorites"){favorite_menu=menu;break;}
-        CHECK(favorite_menu&&favorite_menu->actions().size()==files.size());
+        std::map<std::string,unsigned> category_sizes;
         for(const auto& file:files)
         {
             QFile source(presets.filePath(file));CHECK(source.open(QIODevice::ReadOnly));
             const auto spec=json::parse(source.readAll().toStdString());
             const std::string id=spec.at("id");
+            ++category_sizes[spec.value("category",std::string("SignalRGB Favorites"))];
             CHECK(found.insert(id).second);
             Load(plugin,Entry("SignalFavorite."+id,json::object()));
             const auto saved_preset=Save(plugin);
@@ -85,7 +86,25 @@ int main(int argc,char** argv)
             Load(plugin,saved_preset);
             CHECK(Save(plugin)["CustomSettings"]["parameters"]==saved_preset["CustomSettings"]["parameters"]);
         }
+        for(const auto& category:category_sizes)
+        {
+            QMenu* category_menu=nullptr;
+            for(auto* menu:root->findChildren<QMenu*>())
+                if(menu->title().toStdString()==category.first){category_menu=menu;break;}
+            CHECK(category_menu&&category_menu->actions().size()==int(category.second));
+        }
         for(const auto& id:expected)CHECK(found.count(id)==1);
+        Load(plugin,Entry("SignalFavorite.RainbowTap",json::object()));
+        auto* keyboard=root->findChild<QCheckBox*>("keyboard_reactive");
+        CHECK(keyboard&&keyboard->isChecked());
+        keyboard->setChecked(false);
+        auto keyboard_saved=Save(plugin);
+        CHECK(keyboard_saved["CustomSettings"]["keyboard_reactive"]==false);
+        Load(plugin,keyboard_saved);
+        keyboard=root->findChild<QCheckBox*>("keyboard_reactive");
+        CHECK(keyboard&&!keyboard->isChecked());
+        keyboard->setChecked(true);
+        CHECK(Save(plugin)["CustomSettings"]["keyboard_reactive"]==true);
         Load(plugin,Entry("SignalFavorite.SolidColor",{{"parameters",{{"speed",99999},{"breathe","bad"},{"color","not-color"},{"unknown",9}}}}));
         auto saved=Save(plugin);const auto settings=saved["CustomSettings"];
         CHECK(saved["EffectClassName"]=="SignalFavorite.SolidColor");

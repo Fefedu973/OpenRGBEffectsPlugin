@@ -10,6 +10,7 @@
 #include <QColor>
 #include <QElapsedTimer>
 #include "ShaderProgram.h"
+#include "BasicEffectState.h"
 #include <fstream>
 #include <iostream>
 #include <thread>
@@ -22,15 +23,24 @@ static json Read(const QString& path) { std::ifstream in(path.toStdString()); js
 static Uniforms Parameters(const json& spec,const json& values,float time)
 {
     Uniforms uniforms; uniforms.iTime=time; uniforms.custom["iTap"]={{160,100,0.5f,1},4};
+    uniforms.custom["iTapCount"].values[0]=1;
+    uniforms.custom["iTapEvents[0]"]={{160,100,0.5f,1},4};
+    uniforms.custom["iTapMeta[0]"]={{.25f,5.0f+std::fmod(time,1.0f)*10.0f,0,0},4};
+    json basic_parameters=json::object();
     for(const auto& c:spec.at("controls"))
     {
         const std::string key=c.at("key"),type=c.at("type");
         auto& p=uniforms.custom["p_"+key]; const auto value=values.value(key,c.at("default"));
+        basic_parameters[key]=value;
         if(type=="color") {const QColor col(QString::fromStdString(value)); p={{float(col.redF()),float(col.greenF()),float(col.blueF()),0},3};}
         else if(type=="boolean") p.values[0]=value.get<bool>()?1.f:0.f;
         else if(type=="enum") {const auto& opts=c.at("options");p.values[0]=float(std::distance(opts.begin(),std::find(opts.begin(),opts.end(),value)));}
         else {p.values[0]=value.get<float>();uniforms.custom["t_"+key].values[0]=time*p.values[0];}
     }
+    native_basic::State state; ShaderUniformMap basic;
+    const unsigned ticks=unsigned(std::clamp(time*60,1.f,600.f));
+    for(unsigned i=0;i<ticks;++i)basic=state.Update(spec.at("id"),basic_parameters,1.0/60);
+    uniforms.custom.insert(basic.begin(),basic.end());
     return uniforms;
 }
 // Independent analytic checkpoints. Qt's FBO image is top-left oriented, as is
@@ -90,6 +100,34 @@ static json MeasureRenderReadback(ShaderProgram& program,const json& spec,QOpenG
             {"samples",samples.size()},{"average_ms",average},
             {"median_ms",(samples[2]+samples[3])*0.5},{"maximum_ms",samples.back()}};
 }
+static unsigned VerifyTapRings(ShaderProgram& program,const json& spec,const json& cases,QOpenGLFunctions* gl)
+{
+    unsigned count=0;
+    for(const auto& entry:cases.at("cases"))
+    {
+        auto parameters=cases.at("base_parameters");
+        if(entry.contains("parameters"))parameters.update(entry.at("parameters"));
+        auto uniforms=Parameters(spec,parameters,0);
+        uniforms.custom["iTapCount"].values[0]=float(entry.at("events").size());
+        for(std::size_t i=0;i<entry.at("events").size();++i)
+        {
+            auto& event=uniforms.custom["iTapEvents["+std::to_string(i)+"]"];event.components=4;
+            auto& meta=uniforms.custom["iTapMeta["+std::to_string(i)+"]"];meta.components=4;
+            for(unsigned c=0;c<4;++c){event.values[c]=entry["events"][i][c];meta.values[c]=entry["meta"][i][c];}
+        }
+        program.Draw(uniforms,gl);const auto image=program.Image();
+        Check(!image.isNull()&&gl->glGetError()==GL_NO_ERROR,"tap render failed");
+        for(const auto& point:entry.at("points"))
+        {
+            const auto rgb=image.pixelColor(int(point.at("x").get<double>()*image.width()/320),
+                                            int(point.at("y").get<double>()*image.height()/200));
+            const int actual[]={rgb.red(),rgb.green(),rgb.blue()};
+            for(unsigned c=0;c<3;++c)Check(std::abs(actual[c]-point["rgb"][c].get<int>())<=3,"tap color checkpoint failed");
+            ++count;
+        }
+    }
+    return count;
+}
 static int Render(const QString& repo,const QString& output)
 {
     try {
@@ -104,7 +142,8 @@ static int Render(const QString& repo,const QString& output)
         json evidence=json::array(); int index=0;
         for(const auto& file:files) {
             const auto spec=Read(presets.filePath(file));
-            std::string prefix="uniform vec4 iTap;\n";
+            std::string prefix="uniform vec4 iTap;\nuniform float iTapCount;\nuniform vec4 iTapEvents[64];\nuniform vec4 iTapMeta[64];\n";
+            prefix+=native_basic::State::Declarations(spec.at("id"));
             for(const auto& c:spec.at("controls")) {
                 const std::string key=c.at("key"),type=c.at("type");
                 prefix+="uniform "+std::string(type=="color"?"vec3":"float")+" p_"+key+";\n";
@@ -113,6 +152,7 @@ static int Render(const QString& repo,const QString& output)
             QFile shader(repo+"/shaders/SignalFavorites/"+QFileInfo(file).completeBaseName()+".fs");
             Check(shader.open(QIODevice::ReadOnly),"missing shader");
             ShaderProgram program; program.SetVersion("130"); program.Resize(800,500);
+            program.main_pass->data.feedback=spec.value("feedback",false);
             program.main_pass->data.fragment_shader=prefix+shader.readAll().toStdString();
             program.Init(); const auto log=program.Compile(); if(!log.isEmpty()) throw std::runtime_error(file.toStdString()+": "+log.toStdString());
             program.Draw(Parameters(spec,json::object(),1),context.functions()); const auto first=program.Image();
@@ -123,7 +163,7 @@ static int Render(const QString& repo,const QString& output)
                 const auto c=second.pixel(x,y); if(qRed(c)+qGreen(c)+qBlue(c)>12) ++lit;
                 if(first.pixel(x,y)!=c) ++changed;
             }
-            Check(lit>10,"blank default render");
+            Check(spec.at("id")=="GoodNight"?lit==0:lit>10,"unexpected blank/lit default render");
             Check(context.functions()->glGetError()==GL_NO_ERROR,"GL error on default render");
             json controls=json::array();
             for(const auto& c:spec.at("controls")) {
@@ -143,9 +183,11 @@ static int Render(const QString& repo,const QString& output)
                 controls.push_back({{"key",key},{"boundary_cases",cases.size()},{"different_frames",differences}});
             }
             const auto color_points=VerifyColorPoints(program,spec,QFileInfo(file).completeBaseName(),color_cases,context.functions());
+            const auto tap_points=spec.at("id")=="RainbowTap"?
+                VerifyTapRings(program,spec,Read(repo+"/tests/signal-favorites/rainbow-tap.cases.json"),context.functions()):0;
             const auto timing=MeasureRenderReadback(program,spec,context.functions());
             evidence.push_back({{"id",spec.at("id")},{"lit_samples",lit},{"animated_samples",changed},{"controls",controls},
-                                {"color_checkpoints",color_points},{"render_readback",timing}});
+                                {"color_checkpoints",color_points},{"tap_color_checkpoints",tap_points},{"render_readback",timing}});
             second.save(output+"/"+QFileInfo(file).completeBaseName()+".png");
             painter.drawImage(QRect((index%3)*320,(index/3)*222,320,200),second);
             painter.setPen(Qt::white); painter.drawText((index%3)*320+8,(index/3)*222+216,QString::fromStdString(spec.at("title")));
