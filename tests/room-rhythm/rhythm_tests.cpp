@@ -101,6 +101,35 @@ int main()
             Check(result.last.locked,"mixed fixture did not lock");
             Check(std::abs(result.last.bpm-120)<2,"mixed fixture incorrect tempo");
         }
+        for(double bpm:{157.,173.})
+        {
+            for(unsigned rate:{44100u,48000u})
+            {
+                // A clear kick grid with quiet sixteenth-note hats. At these
+                // tempi the old 90ms global refractory discarded alternating
+                // hats AND kicks after spectral-peak quantization, destroying
+                // the otherwise stable beat evidence.
+                const Signal mix=[=](double t)
+                {
+                    const double beat=std::fmod(t,60.0/bpm),sub=std::fmod(t,15.0/bpm);
+                    const double kick=beat<.07?.8*std::exp(-beat/.018)*std::sin(2*PI*100*t):0;
+                    const double hat=sub<.025?.2*std::exp(-sub/.008)*
+                        (std::sin(2*PI*4200*t)+std::sin(2*PI*7100*t))*.5:0;
+                    return float(kick+hat);
+                };
+                auto tracker=std::make_unique<room_audio::RhythmTracker>();
+                Feed(*tracker,mix,rate,10,rate/100);
+                const auto result=Feed(*tracker,mix,rate,20,rate/100,10);
+                Summary(("sixteenth-hats-"+std::to_string(int(bpm))+"-"+std::to_string(rate)).c_str(),result);
+                Check(result.last.locked && result.locked>=1900,"subdivisions suppress the underlying kick grid");
+                Check(std::abs(result.last.bpm-bpm)<2,"subdivisions doubled or halved musical tempo");
+                Check(result.last.onset_sequence>=unsigned(29*bpm/15),"legitimate sixteenth-note attacks discarded");
+                Check(result.last.onset_sequence<=unsigned(30*bpm/15)+1,"subdivision attacks duplicated");
+                const double expected=std::fmod(result.last.audio_time*bpm/60.0,1.0);
+                const double error=std::abs(result.last.phase-expected);
+                Check(std::min(error,1.0-error)<.15,"subdivision beat phase lost alignment");
+            }
+        }
         {
             auto tracker=std::make_unique<room_audio::RhythmTracker>();
             auto silence=Feed(*tracker,[](double){return 0.f;},48000,5);

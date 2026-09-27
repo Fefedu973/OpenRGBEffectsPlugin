@@ -178,11 +178,14 @@ private:
             state.band_flux[band]=std::clamp(normalized,0.0f,1.0f);
             flux_mean[band]+=0.00995f*(flux[band]-flux_mean[band]);
         }
-        // One cross-band peak per attack, one-hop confirmation, 90 ms refractory.
+        // One cross-band peak per attack, one-hop confirmation. Keep the
+        // refractory below a sixteenth note at 180 BPM (83ms), including
+        // spectral-peak timing jitter: 90ms discarded real intervening attacks
+        // and could suppress the stronger next beat after a quiet hat.
         float impulse=0;
         const double center_time=end_time-double(fft_size)/(2.0*sample_rate);
         if(previous_novelty>0.25f && previous_novelty>older_novelty && previous_novelty>=novelty &&
-           previous_peak_time-last_event>=0.090 && rms>0.0003f)
+           previous_peak_time-last_event>=0.050 && rms>0.0003f)
         {
             last_event=previous_peak_time;
             state.last_onset_time=last_event; ++state.onset_sequence;

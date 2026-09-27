@@ -43,7 +43,7 @@ Every 10 ms of audio, a Hann window of approximately 40–64 ms is transformed b
 radix-two FFT. Positive log-magnitude changes are measured separately over
 40–250 Hz, 250–2000 Hz and 2000–12000 Hz (limited by the input's Nyquist rate).
 Adaptive per-band thresholds allow mid/high-frequency attacks to work without a
-kick drum. A one-hop local-peak confirmation and 90 ms refractory period produce
+kick drum. A one-hop local-peak confirmation and 50 ms refractory period produce
 one onset per event across the bands.
 
 - `audio_time` timestamps the last analyzed sample boundary.
@@ -90,6 +90,7 @@ microphone capture, plugin, GPU context or hardware connection. Cases cover:
 - 90/120/150 BPM at 44.1 and 48 kHz, plus 60/180 BPM boundaries;
 - weak alternating beats, high-frequency offbeats and syncopation, changing
   volume, treble-only pulses and simultaneous bass/treble attacks;
+- kick grids at 157/173 BPM with quiet sixteenth-note hats at 44.1 and 48 kHz;
 - silence, a sustained tone, a single volume jump and irregular attacks;
 - a continuous 120→150 BPM transition, pause/resume and absolute timestamps;
 - arbitrary 137-versus8191-sample packets, rate boundaries, discontinuities,
@@ -101,6 +102,18 @@ are algorithmic fixture results, **not measured audio-to-light latency** or a
 real-song quality benchmark. Identical packetization results demonstrate that
 render stalls cannot discard PCM in this module, provided the adapter actually
 feeds every captured sample.
+
+The subdivision regression exposed a concrete defect in the original 90 ms
+refractory interval: spectral peak timing plus 10 ms quantization could discard
+legitimate hats and the following kick. At 157 BPM, the original tracker remained
+unlocked throughout the final 20 seconds of a 30-second synthetic fixture. A
+50 ms interval retains these real attacks (sixteenths at 180 BPM are 83 ms apart)
+without weakening any confidence, correlation or phase gate. The four 157/173
+BPM / 44.1/48 kHz cases now retain the intended beat grid for at least 95% of the
+measured window, with BPM error below 2 and phase error below 0.15 cycles. The
+complete tracker suite passes 102 assertions, including irregular-input
+abstention and no duplicate simultaneous bass/treble events. This fixes that
+reproduced failure; it does not establish a reliable tempo for every live song.
 
 The separate envelope tests exercise the production `RhythmEnvelope.h` with
 30/60 FPS and jittered render timing, stale/silent input, reacquisition, resets
