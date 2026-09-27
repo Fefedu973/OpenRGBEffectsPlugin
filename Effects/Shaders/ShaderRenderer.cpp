@@ -61,6 +61,7 @@ void ShaderRenderer::Resize(int width, int height)
 {
     std::lock_guard<std::mutex> guard(program_lock);
     shader_program->Resize(width,height);
+    if(width>0 && height>0 && width<=4096 && height<=4096){graph_width=unsigned(width);graph_height=unsigned(height);}
 }
 
 void ShaderRenderer::UpdateUniforms(float time, const float* audio, const room_audio::RhythmSnapshot* rhythm)
@@ -104,6 +105,11 @@ void ShaderRenderer::UpdateInputs(const ShaderUniformMap& values,const std::arra
     uniforms.images=images;
 }
 
+void ShaderRenderer::UpdateRenderGraph(std::shared_ptr<const ShaderRenderGraphFrame> frame)
+{
+    std::lock_guard<std::mutex> guard(program_lock);graph_frame=std::move(frame);
+}
+
 void ShaderRenderer::RendererThreadFunction()
 {
     context_lock.lock();
@@ -137,6 +143,7 @@ void ShaderRenderer::RendererThreadFunction()
 
     context_lock.unlock();
 
+    std::unique_ptr<ShaderRenderGraphRunner> graph_runner;
     while(running)
     {
         TCount start = std::chrono::steady_clock::now();
@@ -145,11 +152,19 @@ void ShaderRenderer::RendererThreadFunction()
         try
         {
             std::lock_guard<std::mutex> guard(program_lock);
-            if(!shader_program->initialized)shader_program->Init();
-
-            if(shader_program->recompile)emit Log(shader_program->Compile());
-            shader_program->Draw(uniforms, context->functions());
-            emit Image(shader_program->Image());
+            if(graph_frame)
+            {
+                if(!graph_runner)graph_runner=std::make_unique<ShaderRenderGraphRunner>();
+                emit Image(graph_runner->Draw(*graph_frame,graph_width,graph_height));
+            }
+            else
+            {
+                graph_runner.reset();
+                if(!shader_program->initialized)shader_program->Init();
+                if(shader_program->recompile)emit Log(shader_program->Compile());
+                shader_program->Draw(uniforms, context->functions());
+                emit Image(shader_program->Image());
+            }
         }
         catch(const std::exception& error)
         {
@@ -176,6 +191,7 @@ void ShaderRenderer::RendererThreadFunction()
     }
 
     // Clean up GL resources while the context is still current
+    graph_runner.reset();
     program_lock.lock();
     if(shader_program != nullptr)
     {

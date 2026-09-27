@@ -23,6 +23,7 @@
 #include <thread>
 #include <mutex>
 #include "ShaderProgram.h"
+#include "ShaderRenderGraph.h"
 #include "MusicEnvelope.h"
 #include "RhythmEnvelope.h"
 
@@ -44,6 +45,7 @@ public:
     void UpdateCustomUniforms(const ShaderUniformMap& values);
     void UpdateImage(unsigned slot, std::shared_ptr<const DynamicShaderImage> image);
     void UpdateInputs(const ShaderUniformMap&, const std::array<std::shared_ptr<const DynamicShaderImage>,4>&);
+    void UpdateRenderGraph(std::shared_ptr<const ShaderRenderGraphFrame>);
 
     bool isRunning();
 
@@ -52,6 +54,8 @@ public:
 
 private:
     Uniforms uniforms;
+    std::shared_ptr<const ShaderRenderGraphFrame> graph_frame;
+    unsigned graph_width=128,graph_height=128;
     std::array<float, 256> audio_values{};
     MusicEnvelope music_envelope;
     RhythmEnvelope rhythm_envelope;

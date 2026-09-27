@@ -154,6 +154,11 @@ tests do not establish installation or connection to the user's running Better
 application. The [catalogue progress file](signal-catalog-progress.json) records
 source, candidate and deployment separately.
 
+The producer-side native contract is included in Better 1.4 (source commit
+`6979d38`). This candidate has not yet been validated against a running Better
+instance with native output enabled; absence of its descriptor is reported as
+unavailable rather than treated as a working connection.
+
 Validation is split by layer:
 
 - [Discovery/control](../tests/room-better-discovery/README.md): 167 checks using
@@ -174,9 +179,10 @@ Validation is split by layer:
   successful run alone is not an optical-equivalence gate.
 - [Screen ports](../tests/signal-favorites/screen-family.md): numeric state,
   original controls and production GLSL. Combined DLL/UI suites check preset
-  registration and source-setting persistence without hardware capture.
+  registration and source-setting persistence without hardware capture; the
+  current 35-preset candidate passes 623 real DLL/UI assertions.
 
-The current appearance report contains 376 structural/GPU assertions. Three
+The current appearance report contains 575 structural/GPU/optical assertions. Three
 geometry/raw fixtures match exactly; filters without halo have mean absolute
 error at most 0.195 on 8-bit channels, Classic 0.166 and Soft 0.359 in the tested
 fixtures. After matching repeated boundary coverage, Contours fullscreen with

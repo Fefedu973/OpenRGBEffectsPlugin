@@ -16,6 +16,7 @@ struct DynamicShaderImage
     unsigned width = 0, height = 0;
     std::uint64_t sequence = 0, generation = 0;
     std::uint64_t source_revision = 0; // Local source selection, not a wire ABI field.
+    bool metadata_generation = false; // Better can rotate state without restarting capture.
     std::chrono::steady_clock::time_point expires = std::chrono::steady_clock::time_point::max();
 
     unsigned Width() const { return rgba32f ? width : unsigned(image.width()); }

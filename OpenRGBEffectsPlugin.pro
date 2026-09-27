@@ -8,6 +8,7 @@
 QT +=                                                                                           \
     core                                                                                        \
     gui                                                                                         \
+    network                                                                                     \
     opengl                                                                                      \
     widgets
 
@@ -652,6 +653,10 @@ HEADERS += Effects/SignalFavorites/KeyboardDeduplication.h
 HEADERS += Effects/SignalFavorites/BasicEffectState.h
 HEADERS += Effects/SignalFavorites/PumpDynamics.h
 SOURCES += ScreenSources/ScreenSource.cpp Effects/SignalFavorites/ScreenSourceSelection.cpp
+SOURCES += ScreenSources/BetterDiscovery.cpp
+HEADERS += ScreenSources/BetterDiscovery.h
+SOURCES += ScreenSources/BetterFrameSource.cpp ScreenSources/BetterAppearanceInput.cpp Effects/BetterCapture/Appearance.cpp Effects/Shaders/ShaderRenderGraph.cpp
+HEADERS += ScreenSources/BetterFrameSource.h ScreenSources/BetterAppearanceInput.h Effects/BetterCapture/Appearance.h Effects/Shaders/ShaderRenderGraph.h
 HEADERS += ScreenSources/ScreenSource.h Effects/SignalFavorites/ScreenSourceSelection.h Effects/Shaders/DynamicShaderImage.h
 HEADERS += Effects/SignalFavorites/ScreenEffectState.h Effects/SignalFavorites/ProceduralEffectState.h
 win32:LIBS += -lcfgmgr32

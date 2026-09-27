@@ -31,8 +31,8 @@ approximation must not be advertised as a pixel-identical completed conversion.
 
 ## Verified state on 27 September 2026
 
-There are **27 distinct native presets in source and in the tested candidate**.
-**26 are deployed**; Pump Up Beats is tested but not deployed. The catalogue inventory contains 509 source records,
+There are **35 distinct native presets in source and in the tested candidate**.
+**26 are deployed**; nine further presets are tested but not deployed. The catalogue inventory contains 509 source records,
 including excluded entries, unavailable sources and variants. It is not a count
 of implemented effects; similar titles and `Free` copies do not automatically
 inherit support. This work has not ported the whole catalogue.
@@ -72,6 +72,21 @@ Unimplemented variants retain their own status. No placeholder effect is
 registered merely to inflate the count.
 
 ## Known fidelity boundaries
+
+The latest batch adds Visor, Custom Wave, Pinwheel, Spin and Plasma, plus Average
+Color, Screen Ambience and LSD Ambience. All 35 pass the combined production GPU
+suite; 604 real DLL/UI checks pass without starting capture or hardware. The new
+families have separate state, metadata and GPU tests, including an independent
+polyline oracle for Spin and a private temporal reference comparison for LSD.
+See [procedural tests](../tests/signal-favorites/PROCEDURAL-FAMILY.md),
+[screen tests](../tests/signal-favorites/screen-family.md) and
+[native screen input](native-screen-input.md).
+
+The procedural ports normalize discrete motion to a 60 Hz reference. Plasma
+uses a different deterministic random field realization. Screen reduction,
+Gaussian truncation and edge antialiasing have documented differences. These
+limits must not be hidden behind the passing tests. Fire and Ice was deferred
+because its in-place stochastic grid requires a separate stateful implementation.
 
 - **Custom Sunrise:** analytic dense radial bands replace the finite 400-ring
   array. Startup overlaps, sparse recycling and colors retained after changing

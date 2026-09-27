@@ -1,13 +1,13 @@
 {
-  "updated_at": "2026-09-27T12:23:04.632703+00:00",
+  "updated_at": "2026-09-27T13:05:22.773002+00:00",
   "strategy": "Individual original native GLSL reconstructions, with bounded native numeric state where required; no JavaScript runtime or WebView. Source presence, candidate tests, deployment and hardware validation are separate. No claim of pixel identity.",
   "scope_policy": "Standard effects including screen, audio and keyboard interaction; no game integrations or specialized external APIs; personal sources only if title or filename contains free. Hidden records remain to be classified.",
   "summary": {
     "inventory_records": 509,
-    "native_presets_in_source": 27,
-    "native_presets_in_tested_candidate": 27,
+    "native_presets_in_source": 35,
+    "native_presets_in_tested_candidate": 35,
     "native_presets_deployed": 26,
-    "counting_note": "Distinct native presets:26 deployed and one additional Pump Up Beats candidate. Optical/input tests and exact rendering parity remain separate; most of the catalogue is not yet ported.",
+    "counting_note": "35 distinct native presets: 26 deployed; Pump Up Beats and eight new ports tested but not deployed. No pixel-perfect claim; most catalogue names remain unported.",
     "deployed_native_ids": [
       "Aurora",
       "ColorCycle",
@@ -37,17 +37,36 @@
       "Underwater"
     ],
     "pending_native_ids": [
-      "PumpUpBeats"
+      "AverageColor",
+      "CustomWave",
+      "LSDAmbience",
+      "Pinwheel",
+      "Plasma",
+      "PumpUpBeats",
+      "ScreenAmbience",
+      "Spin",
+      "Visor"
     ],
     "candidate_checks": {
       "global_plugin_build": "passed",
-      "production_gpu_effects": 27,
-      "native_ui_persistence_assertions": 474,
+      "production_gpu_effects": 35,
+      "native_ui_persistence_assertions": 623,
       "basic_state_assertions": 41,
       "basic_gpu_checks": 122,
-      "physical_input_or_optical_validation_for_new_presets": "Rainbow Tap: user confirmed KBHE A/Q/Z/W/!/*/< positions and no duplicate triggers; other optical comparisons pending"
+      "physical_input_or_optical_validation_for_new_presets": "Rainbow Tap: user confirmed KBHE A/Q/Z/W/!/*/< positions and no duplicate triggers; other optical comparisons pending",
+      "procedural_gpu_state_assertions": 2333,
+      "procedural_control_boundaries": 88,
+      "screen_state_assertions": 28,
+      "screen_gpu_assertions": 65,
+      "dynamic_texture_and_wire_gpu_assertions": 32,
+      "gpu_graph_assertions": 12,
+      "better_discovery_control_assertions": 167,
+      "better_frame_pairing_assertions": 48,
+      "better_control_model_assertions": 115,
+      "better_appearance_fixture_assertions": 575,
+      "better_live_application_validation": "pending native output activation in Better 1.4"
     },
-    "native_presets_pending_deployment": 1
+    "native_presets_pending_deployment": 9
   },
   "status_definitions": {
     "deployed_native_reconstruction": "Reference-matched source and tested native implementation are deployed. No pixel identity or individual hardware validation is implied.",
@@ -221,9 +240,15 @@
       "origin": "catalog",
       "canonical_key": "visor",
       "scope": "included",
-      "status": "not_ported",
+      "status": "candidate_tested_pending_deployment",
       "declared_controls": 7,
-      "source_sha256": "6372dac822593d58e214ce079ccd9306c3a31c17868b04ef4bba312501718fbb"
+      "source_sha256": "6372dac822593d58e214ce079ccd9306c3a31c17868b04ef4bba312501718fbb",
+      "native_id": "Visor",
+      "native_preset": "Effects/SignalFavorites/presets/visor.json",
+      "candidate_validation": "35-preset production build/GPU and 604 real DLL/UI persistence checks passed",
+      "hardware_validation": "pending",
+      "fidelity": "original_reconstruction_with_documented_differences",
+      "differences": "Original native GLSL with source-over frame history, independent horizontal/vertical positions and collision color changes. Motion advances at a normalized 60 Hz reference; trail accumulation occurs once per rendered frame. A deterministic valid RGB generator replaces browser Math.random; random realizations and subpixel antialiasing differ. History resets on restart, resize and recompile."
     },
     {
       "id": "-M6NpYksqaKLHatGQqNo",
@@ -395,9 +420,15 @@
       "origin": "catalog",
       "canonical_key": "customwave",
       "scope": "included",
-      "status": "not_ported",
+      "status": "candidate_tested_pending_deployment",
       "declared_controls": 7,
-      "source_sha256": "43a4af0377996aac52231d59d79f12bd6e6ec756298b3adede0eb283a967249a"
+      "source_sha256": "43a4af0377996aac52231d59d79f12bd6e6ec756298b3adede0eb283a967249a",
+      "native_id": "CustomWave",
+      "native_preset": "Effects/SignalFavorites/presets/custom-wave.json",
+      "candidate_validation": "35-preset production build/GPU and 604 real DLL/UI persistence checks passed",
+      "hardware_validation": "pending",
+      "fidelity": "original_reconstruction_with_documented_differences",
+      "differences": "Original native GLSL preserves 50-unit stripes, source palette order, both orientations and color-count-specific wrap thresholds, including the overshoot frame. Numeric animation state advances at a normalized 60 Hz reference; no JavaScript or browser runtime."
     },
     {
       "id": "-M7cyY7cWBQkKSosxQCd",
@@ -1646,9 +1677,15 @@
       "origin": "catalog",
       "canonical_key": "pinwheel",
       "scope": "included",
-      "status": "not_ported",
+      "status": "candidate_tested_pending_deployment",
       "declared_controls": 11,
-      "source_sha256": "d4da2465d1d768fd2e6fe9666057af46dcebff1d889ba94037768458ec61b417"
+      "source_sha256": "d4da2465d1d768fd2e6fe9666057af46dcebff1d889ba94037768458ec61b417",
+      "native_id": "Pinwheel",
+      "native_preset": "Effects/SignalFavorites/presets/pinwheel.json",
+      "candidate_validation": "35-preset production build/GPU and 604 real DLL/UI persistence checks passed",
+      "hardware_validation": "pending",
+      "fidelity": "original_reconstruction_with_documented_differences",
+      "differences": "Original native GLSL preserves 37 ordered rays, the repeated 260-degree ray, the fixed endpoint circle and its alternate Y center in edge mode, independent edge conditions, speed/direction controls and source color order. Motion advances at a normalized 60 Hz reference; native edge coverage can differ from Canvas antialiasing."
     },
     {
       "id": "-MaFmNvNg_fjXD5AXHhO",
@@ -1797,9 +1834,15 @@
       "origin": "catalog",
       "canonical_key": "spin",
       "scope": "included",
-      "status": "not_ported",
+      "status": "candidate_tested_pending_deployment",
       "declared_controls": 8,
-      "source_sha256": "46b354fcc7f645fc9fd55e377a95dcaa3b64ae1453ec8ef7a23c9108c6fd27d4"
+      "source_sha256": "46b354fcc7f645fc9fd55e377a95dcaa3b64ae1453ec8ef7a23c9108c6fd27d4",
+      "native_id": "Spin",
+      "native_preset": "Effects/SignalFavorites/presets/spin.json",
+      "candidate_validation": "35-preset production build/GPU and 604 real DLL/UI persistence checks passed",
+      "hardware_validation": "pending",
+      "fidelity": "original_reconstruction_with_documented_differences",
+      "differences": "Original native GLSL constructs the 599-segment Archimedean polyline with butt ends and miter joins. A conservative radial bound skips segments that cannot affect a pixel. Rotation and hue use elapsed milliseconds with the original speed denominator, including zero-speed and reverse. Native analytic edge coverage differs from Canvas antialiasing."
     },
     {
       "id": "-MdKQH17oE7oDNKOoyWM",
@@ -1912,9 +1955,15 @@
       "origin": "catalog",
       "canonical_key": "plasma",
       "scope": "included",
-      "status": "not_ported",
+      "status": "candidate_tested_pending_deployment",
       "declared_controls": 10,
-      "source_sha256": "6f08b6935cedc18ec724e38fb05d42c894a79ce7c73d82e298f18279038e0517"
+      "source_sha256": "6f08b6935cedc18ec724e38fb05d42c894a79ce7c73d82e298f18279038e0517",
+      "native_id": "Plasma",
+      "native_preset": "Effects/SignalFavorites/presets/plasma.json",
+      "candidate_validation": "35-preset production build/GPU and 604 real DLL/UI persistence checks passed",
+      "hardware_validation": "pending",
+      "fidelity": "original_reconstruction_with_documented_differences",
+      "differences": "Original native GLSL preserves the cell grid, gap, three alpha masks, HSL transformations, color cycling and eleven-stop moving gradient. The 12-direction Perlin-family gradient noise uses a reproducible integer hash instead of the browser random permutation seed, so the random field realization differs. State advances at a normalized 60 Hz reference; it is not claimed pixel-identical to a random browser run."
     },
     {
       "id": "-MgJ2qh-r5wgYKhqIA40",
@@ -3443,9 +3492,15 @@
       "origin": "catalog",
       "canonical_key": "lsdambience",
       "scope": "included",
-      "status": "not_ported",
+      "status": "candidate_tested_pending_deployment",
       "declared_controls": 7,
-      "source_sha256": "6cba71f86203b0d2180d0c359571434fc7a25da96b26dcafee5d8924f84fb91a"
+      "source_sha256": "6cba71f86203b0d2180d0c359571434fc7a25da96b26dcafee5d8924f84fb91a",
+      "native_id": "LSDAmbience",
+      "native_preset": "Effects/SignalFavorites/presets/lsd-ambience.json",
+      "candidate_validation": "35-preset production build/GPU and 604 real DLL/UI persistence checks passed",
+      "hardware_validation": "pending",
+      "fidelity": "original_reconstruction_with_documented_differences",
+      "differences": "560 ordered circles preserve asymmetric centers, radius state, delayed radius updates, stationary newest wave, forward-removal skips and doubled cycle hue. Run-length wave storage preserves repeated zero-speed births; a defensive 8192 distinct-wave cap discards oldest groups only for pathological fractional speeds beyond normal UI stepping. Qt smooth screen reduction and GLSL edge antialiasing differ from proprietary engine.zone/Canvas; pixel equivalence is not claimed."
     },
     {
       "id": "-Nx-WQANhjQ5YF4UQPNd",
@@ -3650,9 +3705,15 @@
       "origin": "catalog",
       "canonical_key": "averagecolor",
       "scope": "included",
-      "status": "not_ported",
+      "status": "candidate_tested_pending_deployment",
       "declared_controls": 1,
-      "source_sha256": "49d049557c1165664dc2c9f18278e5abc78d19296f5e4a59bd2231b20fc71afe"
+      "source_sha256": "49d049557c1165664dc2c9f18278e5abc78d19296f5e4a59bd2231b20fc71afe",
+      "native_id": "AverageColor",
+      "native_preset": "Effects/SignalFavorites/presets/average-color.json",
+      "candidate_validation": "35-preset production build/GPU and 604 real DLL/UI persistence checks passed",
+      "hardware_validation": "pending",
+      "fidelity": "original_reconstruction_with_documented_differences",
+      "differences": "Arithmetic HSL mean of 28x20 reduced cells, including non-circular hue averaging. Native tap gain multiplies by 0.95 per event, then recovers 0.025 per render. Qt smooth full-rectangle reduction is explicit; the proprietary engine.zone reduction is unavailable. Capture selection is shared infrastructure, not an extra artistic control. No source HTML or assets included."
     },
     {
       "id": "-OZQXPu-zySr507qBVyy",
@@ -3858,9 +3919,15 @@
       "origin": "bundled",
       "canonical_key": "screenambience",
       "scope": "included",
-      "status": "not_ported",
+      "status": "candidate_tested_pending_deployment",
       "declared_controls": 7,
-      "source_sha256": "c57750262504b45688ee2ff64e2744ba13a13f8e0e122b00f8a65725692b5cee"
+      "source_sha256": "c57750262504b45688ee2ff64e2744ba13a13f8e0e122b00f8a65725692b5cee",
+      "native_id": "ScreenAmbience",
+      "native_preset": "Effects/SignalFavorites/presets/screen-ambience.json",
+      "candidate_validation": "35-preset production build/GPU and 604 real DLL/UI persistence checks passed",
+      "hardware_validation": "pending",
+      "fidelity": "original_reconstruction_with_documented_differences",
+      "differences": "Separate Float32 HSL and HD histories are preserved between modes and advanced per render on a stationary capture. Dominant preserves the observed last eligible cell and non-circular one-degree hue approach. Ordered CSS RGB filters and separable Gaussian blur are native GLSL. Qt smooth screen reduction, explicit bilinear HD stretch, three-sigma discrete blur and edge rasterization may differ from engine.zone/Ultralight; pixel equivalence is not claimed."
     },
     {
       "id": "bundled:Static\\Neon Shift.html",
@@ -5487,9 +5554,9 @@
   "remaining_counts": {
     "included_records": 324,
     "included_canonical_names": 242,
-    "unported_reference_records": 297,
-    "canonical_names_with_unported_reference": 216,
-    "wholly_unported_canonical_names": 215,
+    "unported_reference_records": 289,
+    "canonical_names_with_unported_reference": 210,
+    "wholly_unported_canonical_names": 207,
     "included_source_unavailable": 10,
     "paired_free_variants": 82,
     "pairs_equal_script_and_controls": 69,

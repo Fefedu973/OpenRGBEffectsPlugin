@@ -98,15 +98,28 @@ int main(int argc,char** argv)
         }
         for(const auto& id:expected)CHECK(found.count(id)==1);
         // Source controls persist without connecting, capturing, or mutating Better.
-        Load(plugin,Entry("SignalFavorite.ScreenAmbience",{{"screen_source",{{"kind","better"},{"channel","synthetic-input-test"}}}}));
+        Load(plugin,Entry("SignalFavorite.ScreenAmbience",{{"screen_source",{{"kind","surface"},{"channel","synthetic-input-test"}}}}));
         auto* source_kind=root->findChild<QComboBox*>("screen_source_kind");
         auto* source_channel=root->findChild<QLineEdit*>("screen_source_channel");
-        CHECK(source_kind && source_kind->currentData()=="better");
+        CHECK(source_kind && source_kind->currentData()=="surface");
         CHECK(source_channel && source_channel->text()=="synthetic-input-test");
         const auto source_saved=Save(plugin);Load(plugin,source_saved);
         CHECK(Save(plugin)["CustomSettings"]["screen_source"]==source_saved["CustomSettings"]["screen_source"]);
         Load(plugin,Entry("SignalFavorite.ScreenAmbience",{{"screen_source",{{"kind","better"},{"channel","../invalid"}}}}));
         CHECK(Save(plugin)["CustomSettings"]["screen_source"]["channel"]=="better-screen-capture");
+        Load(plugin,Entry("SignalFavorite.ScreenAmbience",{{"screen_source",{{"kind","better"},{"connection_file","synthetic-test-profile/connection.json"}}}}));
+        CHECK(Save(plugin)["CustomSettings"]["screen_source"]["kind"]=="better");
+        CHECK(Save(plugin)["CustomSettings"]["screen_source"]["connection_file"]=="synthetic-test-profile/connection.json");
+        auto* appearance=root->findChild<QCheckBox*>("screen_source_follow_appearance");
+        CHECK(appearance&&appearance->isChecked());
+        appearance->setChecked(false);
+        CHECK(Save(plugin)["CustomSettings"]["screen_source"]["follow_better_appearance"]==false);
+        Load(plugin,Entry("SignalFavorite.ScreenAmbience",{{"screen_source",{{"kind","better"},{"connection_file","synthetic-test-profile/connection.json"},{"scene","f717b624-8acb-48e7-8db3-30bd99d1c07a"},{"follow_better_appearance",false}}}}));
+        const auto better_saved=Save(plugin);Load(plugin,better_saved);
+        CHECK(Save(plugin)["CustomSettings"]["screen_source"]==better_saved["CustomSettings"]["screen_source"]);
+        Load(plugin,Entry("SignalFavorite.AverageColor",json::object()));
+        CHECK(!root->findChild<QCheckBox*>("screen_source_follow_appearance"));
+        CHECK(Save(plugin)["CustomSettings"]["screen_source"]["follow_better_appearance"]==false);
         Load(plugin,Entry("SignalFavorite.RainbowTap",json::object()));
         auto* keyboard=root->findChild<QCheckBox*>("keyboard_reactive");
         CHECK(keyboard&&keyboard->isChecked());

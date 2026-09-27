@@ -149,5 +149,14 @@
         <file>shaders/SignalFavorites/pinwheel.fs</file>
         <file>shaders/SignalFavorites/spin.fs</file>
         <file>shaders/SignalFavorites/plasma.fs</file>
+        <file>shaders/BetterCapture/common.glsl</file>
+        <file>shaders/BetterCapture/compose.fs</file>
+        <file>shaders/BetterCapture/contours.fs</file>
+        <file>shaders/BetterCapture/dilate.fs</file>
+        <file>shaders/BetterCapture/gaussian.fs</file>
+        <file>shaders/BetterCapture/glow-source.fs</file>
+        <file>shaders/BetterCapture/place.fs</file>
+        <file>shaders/BetterCapture/saturate.fs</file>
+        <file>shaders/BetterCapture/tone.fs</file>
     </qresource>
 </RCC>

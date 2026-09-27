@@ -1,6 +1,6 @@
 # Remaining SignalRGB catalogue work
 
-Audit: 27 September 2026. Scope/status source: `signal-catalog-progress.json`; implementation count cross-checked against the 27 JSON presets. This is an inventory and a work breakdown, not a commitment that the remaining catalogue is implemented.
+Audit: 27 September 2026. Scope/status source: `signal-catalog-progress.json`; implementation count cross-checked against the 35 JSON presets. This is an inventory and a work breakdown, not a commitment that the remaining catalogue is implemented.
 
 ## Counts and units
 
@@ -9,15 +9,15 @@ Audit: 27 September 2026. Scope/status source: `signal-catalog-progress.json`; i
 | Inventory records | 509 | Catalogue, bundled and personal sources together |
 | Included reference records | 324 | Scope-filtered records; duplicates retained |
 | Included canonical names | 242 | Normalized names, not proof of equivalent behavior |
-| Native presets in source/tested candidate | 27 | Each targets an exact reference ID |
+| Native presets in source/tested candidate | 35 | Each targets an exact reference ID |
 | Installed native presets | 26 | Current published deployment metadata |
-| Additional tested candidate | 1 | Pump Up Beats; not yet installed |
-| Wholly unported canonical names | 215 | None of their references has a native preset |
-| Unported reference records | 297 | Includes Free variants and missing sources |
-| Names containing an unported reference | 216 | The 215 missing names plus Galaxies Free |
+| Additional tested candidates | 9 | Pump Up Beats and eight further ports; not yet installed |
+| Wholly unported canonical names | 207 | None of their references has a native preset |
+| Unported reference records | 289 | Includes Free variants and missing sources |
+| Names containing an unported reference | 210 | Includes unimplemented alternate references of already ported names |
 | Missing included reference sources | 10 | Algorithm/controls cannot currently be audited |
 
-The one-preset gap is **Pump Up Beats**. Room Pulse, generic Shaders, Ambient and WebPage capabilities are not counted as ports of named catalogue effects. None of the 27 ports is certified pixel-identical to SignalRGB.
+The nine-preset gap is **Pump Up Beats, Visor, Custom Wave, Pinwheel, Spin, Plasma, Average Color, Screen Ambience and LSD Ambience**. Room Pulse, generic Shaders, Ambient and WebPage capabilities are not counted as ports of named catalogue effects. None of the 35 ports is certified pixel-identical to SignalRGB.
 
 ## Duplicate and variant audit
 
@@ -45,17 +45,17 @@ Impossible Game is held in `review_scope_boundary`: it is a standalone interacti
 
 ## Concrete work batches
 
-The following primary buckets partition the 215 wholly absent canonical names. Audio and screen use actual native-source calls/controls; keyboard uses a nonempty `onCanvasTapped` handler. Audio takes precedence over keyboard (for example Tesla Coil). Rave Visualizer also has a screen-dependent layer. Aqua contains an unused `copyScreen` helper and is not counted as screen-reactive just because that function exists.
+The following primary buckets partition the 207 wholly absent canonical names. Audio and screen use actual native-source calls/controls; keyboard uses a nonempty `onCanvasTapped` handler. Audio takes precedence over keyboard (for example Tesla Coil). Rave Visualizer also has a screen-dependent layer. Aqua contains an unused `copyScreen` helper and is not counted as screen-reactive just because that function exists.
 
 The autonomous split is preliminary: collection mutation or CPU image-buffer operations place a source in the stateful review queue; this can include a simple palette array rather than particles. These two counts are a scheduling triage, not completed per-effect algorithm audits or complexity estimates.
 
 | Primary batch | Canonical names | First concrete ports |
 | --- | ---: | --- |
-| Basic/procedural, preliminary | 25 | Visor, Custom Wave, Fire and Ice, Pinwheel, Spin, Plasma, Multizone |
+| Basic/procedural, preliminary | 20 | Multizone, Borealis, Pastel; Fire and Ice requires stateful heat-grid treatment |
 | Particles/stateful, preliminary | 111 | Bubbles, Rain, Fireworks, Sakura, Starlight, Falling Stars, Fireflies, Asteroid Belt |
 | Keyboard | 46 | Liquid, Lightning, Heatmap, Bombing Run, Breathing Ripples, Ripples, Thermal |
 | Audio | 20 | Audio Spectrum, Bars Visualizer, RGBarz, Logarithmic Visualizer, WaveScope, Sonic Bubbles |
-| Screen | 3 | Screen Ambience, Average Color, LSD Ambience |
+| Screen | 0 | Three candidates implemented; physical/app integration validation remains separate |
 | Source recovery first | 10 | No implementation should be invented from the title |
 
 Ports in the keyboard batch must preserve autonomous behavior and their actual tap effects. Particle/stateful batches need bounded native populations/history and reset tests. Audio batches must audit density, level and frequency scaling individually; the Pump spectrum contract is reusable but is not proof of identical calibration. Screen batches should reuse the native capture pipeline while reproducing their own controls and filtering.
@@ -64,7 +64,7 @@ Ports in the keyboard batch must preserve autonomous behavior and their actual t
 
 ### Basic and procedural - preliminary
 
-Borealis; Bouncing Ball; Bouncing Logo; Cherry Berry; Custom Wave; Explosion; Fire; Fire and Ice; Fireplace; Gamer Advantage; Gradient Pinwheel; Lasers; Lollipop Rainbow; Multiverse; Multizone; Neon Fire; Neon Sunset Wave; Pastel; Pinwheel; Pixel Fill; Plasma; Spin; Vibe; Visor; Watercolor.
+Borealis; Bouncing Ball; Bouncing Logo; Cherry Berry; Explosion; Fire; Fire and Ice; Fireplace; Gamer Advantage; Gradient Pinwheel; Lasers; Lollipop Rainbow; Multiverse; Multizone; Neon Fire; Neon Sunset Wave; Pastel; Pixel Fill; Vibe; Watercolor.
 
 ### Particles and stateful - preliminary
 
@@ -80,7 +80,7 @@ Audio Spectrum; Bars Visualizer; Eye of Sauron; Fire Visualizer; Hydrogen; LSD V
 
 ### Screen
 
-Average Color; LSD Ambience; Screen Ambience.
+No wholly absent name in this primary bucket. The three ports retain explicit rasterization, filtering and reduction limits; they are not certified pixel-identical.
 
 ### Source unavailable
 

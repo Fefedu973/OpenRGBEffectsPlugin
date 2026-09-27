@@ -135,8 +135,18 @@ SignalFavorite::SignalFavorite(const QString& resource, QWidget* parent) : Shade
     if(spec.value("screenReactive",false))
     {
         screen_state=std::make_unique<native_screen::State>();
-        screen_source=new ScreenSourceSelection(this);
+        screen_source=new ScreenSourceSelection(this,spec.at("id")=="ScreenAmbience");
         outer->addWidget(screen_source);
+        if(auto* follow=screen_source->findChild<QCheckBox*>("screen_source_follow_appearance"))
+        {
+            auto* source_kind=screen_source->findChild<QComboBox*>("screen_source_kind");
+            auto enable_artistic=[this,follow,source_kind]{
+                const bool own_controls=source_kind->currentData()!="better" || !follow->isChecked();
+                for(const auto& entry:editors)entry.second->setEnabled(own_controls);
+            };
+            connect(follow,&QCheckBox::toggled,this,enable_artistic);
+            connect(source_kind,qOverload<int>(&QComboBox::currentIndexChanged),this,enable_artistic);
+        }
     }
     auto* size_layout = new QHBoxLayout(size_row);
     size_layout->setContentsMargins(0,0,0,0);
@@ -150,6 +160,7 @@ SignalFavorite::SignalFavorite(const QString& resource, QWidget* parent) : Shade
         settings.erase("shader_program"); settings.erase("shader_name");
         settings["width"] = canvas_width->value(); settings["height"] = canvas_height->value();
         Shaders::LoadCustomSettings(settings);
+        if(screen_source)screen_source->SetOutputSize(canvas_width->value(),canvas_height->value());
     };
     connect(canvas_width,qOverload<int>(&QSpinBox::valueChanged),this,resize_canvas);
     connect(canvas_height,qOverload<int>(&QSpinBox::valueChanged),this,resize_canvas);
@@ -396,6 +407,9 @@ void SignalFavorite::CollectKeyboardTaps(const std::vector<ControllerZone*>& zon
 
 void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
 {
+    const auto appearance=screen_source?screen_source->LatestAppearance():nullptr;
+    Renderer()->UpdateRenderGraph(appearance);
+    if(appearance){Shaders::StepEffect(std::move(zones));return;}
     ShaderUniformMap values;
     std::array<std::shared_ptr<const DynamicShaderImage>,4> input_images;
     if(screen_source)input_images[0]=screen_source->Latest();
@@ -418,7 +432,10 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
             const auto& frame=input_images[0];
             if(frame && frame->Usable())
             {
-                if(last_screen_frame && (frame->generation!=last_screen_frame->generation || frame->source_revision!=last_screen_frame->source_revision))
+                // Metadata-only Better generations (e.g. a lease heartbeat)
+                // do not restart the effect's temporal history.
+                if(last_screen_frame && (frame->source_revision!=last_screen_frame->source_revision ||
+                    (!frame->metadata_generation && frame->generation!=last_screen_frame->generation)))
                 {screen_state->Reset();++screen_generation;}
                 if(!last_screen_frame || frame->sequence!=last_screen_frame->sequence ||
                    frame->source_revision!=last_screen_frame->source_revision ||
@@ -517,6 +534,12 @@ void SignalFavorite::LoadCustomSettings(json settings)
 {
     if(!settings.is_object()) return;
     if(screen_source && settings.contains("screen_source"))screen_source->Load(settings["screen_source"]);
+    if(screen_source)
+        if(auto* follow=screen_source->findChild<QCheckBox*>("screen_source_follow_appearance"))
+        {
+            const bool own_controls=screen_source->findChild<QComboBox*>("screen_source_kind")->currentData()!="better" || !follow->isChecked();
+            for(const auto& entry:editors)entry.second->setEnabled(own_controls);
+        }
     if(settings.contains("parameters") && settings["parameters"].is_object())
     {
         for(auto it=settings["parameters"].begin();it!=settings["parameters"].end();++it) SetParameter(it.key(),it.value());
@@ -536,6 +559,7 @@ void SignalFavorite::LoadCustomSettings(json settings)
     const auto canvas = Shaders::SaveCustomSettings();
     const QSignalBlocker bw(canvas_width), bh(canvas_height);
     canvas_width->setValue(canvas.at("width")); canvas_height->setValue(canvas.at("height"));
+    if(screen_source)screen_source->SetOutputSize(canvas_width->value(),canvas_height->value());
 }
 
 json SignalFavorite::SaveCustomSettings()
