@@ -158,5 +158,7 @@
         <file>shaders/BetterCapture/place.fs</file>
         <file>shaders/BetterCapture/saturate.fs</file>
         <file>shaders/BetterCapture/tone.fs</file>
+        <file>shaders/IntelligentAmbience/video.fs</file>
+        <file>shaders/IntelligentAmbience/music.fs</file>
     </qresource>
 </RCC>

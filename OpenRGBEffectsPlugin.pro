@@ -660,3 +660,6 @@ HEADERS += ScreenSources/BetterFrameSource.h ScreenSources/BetterAppearanceInput
 HEADERS += ScreenSources/ScreenSource.h Effects/SignalFavorites/ScreenSourceSelection.h Effects/Shaders/DynamicShaderImage.h
 HEADERS += Effects/SignalFavorites/ScreenEffectState.h Effects/SignalFavorites/ProceduralEffectState.h
 win32:LIBS += -lcfgmgr32
+INCLUDEPATH += Effects/IntelligentAmbience
+SOURCES += Effects/IntelligentAmbience/IntelligentAmbience.cpp Effects/IntelligentAmbience/VideoEngine.cpp Effects/IntelligentAmbience/MusicDirector.cpp
+HEADERS += Effects/IntelligentAmbience/IntelligentAmbience.h Effects/IntelligentAmbience/VideoEngine.h Effects/IntelligentAmbience/MusicDirector.h Effects/IntelligentAmbience/CoreTypes.h
