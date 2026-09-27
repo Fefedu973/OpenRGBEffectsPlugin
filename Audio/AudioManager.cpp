@@ -11,6 +11,10 @@
 #include "OpenRGBEffectsPlugin.h"
 
 #ifdef _WIN32
+#include "Audio/AudioManagerWin.h"
+#else
+
+#ifdef _WIN32
 #include <stringapiset.h>
 #endif
 
@@ -489,3 +493,4 @@ void AudioManager::CloseDevice(int device_idx)
     }
     #endif
 }
+#endif

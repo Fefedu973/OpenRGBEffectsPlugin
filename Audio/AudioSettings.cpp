@@ -82,7 +82,11 @@ void AudioSettings::SetSettings(Audio::AudioSettingsStruct* settings)
 
 void AudioSettings::SetSettingsValues(const Audio::AudioSettingsStruct& s)
 {
-    ui->audio_device->setCurrentIndex(s.audio_device);
+    int audio_index = s.audio_device;
+#ifdef _WIN32
+    if(audio_index == AudioManager::DEFAULT_OUTPUT_DEVICE) audio_index = ui->audio_device->count()-1;
+#endif
+    ui->audio_device->setCurrentIndex(audio_index);
     ui->amplitude->setValue(s.amplitude);
     ui->avg_mode->setCurrentIndex(s.avg_mode);
     ui->avg_size->setValue(s.avg_size);
@@ -104,6 +108,9 @@ void AudioSettings::SetEQValues(const Audio::AudioSettingsStruct& s)
 void AudioSettings::on_audio_device_currentIndexChanged(int idx)
 {
     LOG_TRACE("AudioSettings::on_devices_currentIndexChanged: %d", idx);
+#ifdef _WIN32
+    if(idx >= 0 && idx == ui->audio_device->count()-1) idx = AudioManager::DEFAULT_OUTPUT_DEVICE;
+#endif
     emit AudioDeviceChanged(idx);
 }
 

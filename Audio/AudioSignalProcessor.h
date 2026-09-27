@@ -22,5 +22,5 @@ public:
     const Audio::AudioDataStruct& Data();
 
 private:
-    Audio::AudioDataStruct  data;
+    Audio::AudioDataStruct  data{};
 };

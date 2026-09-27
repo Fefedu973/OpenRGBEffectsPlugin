@@ -17,6 +17,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <memory>
 
 /*---------------------------------------------------------*\
 | Audio Library Includes                                    |
@@ -50,6 +51,9 @@ class AudioManager
 
 public:
     static AudioManager*     get();
+#ifdef _WIN32
+    static constexpr int     DEFAULT_OUTPUT_DEVICE = 2147483647;
+#endif
 
     /*-------------------------------------*\
     | Passes list of devices to requester   |
@@ -66,6 +70,11 @@ public:
 private:
     AudioManager();
     ~AudioManager();
+
+#ifdef _WIN32
+    struct WindowsState;
+    std::unique_ptr<WindowsState> windows;
+#else
 
     void InitAudioDeviceList(); // Couldn't this just be the constructor?
 
@@ -113,6 +122,6 @@ private:
     \*--------------------------*/
     void OpenDevice(int device_idx);
     void CloseDevice(int device_idx);
-
+#endif
 
 };

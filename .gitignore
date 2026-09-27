@@ -8,6 +8,7 @@ OpenRGB-x86_64.AppImage
 .qmake.stash
 .vscode
 build
+/private/
 OpenRGBEffectsPlugin.json
 __pycache__/
 Ship

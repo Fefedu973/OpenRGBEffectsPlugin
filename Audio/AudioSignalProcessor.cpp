@@ -11,6 +11,7 @@
 #include "Audio/AudioManager.h"
 #include "chuck_fft.h"
 #include <math.h>
+#include <algorithm>
 
 AudioSignalProcessor::AudioSignalProcessor()
 {
@@ -35,7 +36,7 @@ void AudioSignalProcessor::SetNormalization(Audio::AudioSettingsStruct* settings
 
 void AudioSignalProcessor::Process(int FPS, Audio::AudioSettingsStruct* settings)
 {
-    float fft_tmp[512];
+    float fft_tmp[512] = {};
 
     for (int i = 0; i < 256; i++)
     {
@@ -47,7 +48,7 @@ void AudioSignalProcessor::Process(int FPS, Audio::AudioSettingsStruct* settings
         /*----------------------*\
         | Decay previous values  |
         \*----------------------*/
-        data.fft[i] = data.fft[i] * ((float(settings->decay) / 100.0f / (60 / FPS)));
+        data.fft[i] *= std::pow((std::min)(settings->decay, 100u) / 100.0f, 60.0f / (std::max)(FPS, 1));
     }
 
     AudioManager::get()->Capture(settings->audio_device, fft_tmp);
