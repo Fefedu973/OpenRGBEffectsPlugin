@@ -225,7 +225,14 @@ void OpenRGBEffectsPlugin::ResourceManagerUpdated(unsigned int update_reason)
     switch(update_reason)
     {
         case RESOURCEMANAGER_UPDATE_REASON_DEVICE_LIST_UPDATED:
-            QMetaObject::invokeMethod(this, "UpdateControllers", Qt::BlockingQueuedConnection );
+            // Virtual controller registration can notify on the GUI thread.
+            // Blocking delivery to that same thread is invalid and can skip
+            // the remap (or deadlock on Qt versions without this detection);
+            // cross-thread callers still wait for the controller remap before
+            // the old controller descriptions may be released.
+            QMetaObject::invokeMethod(this, "UpdateControllers",
+                QThread::currentThread() == thread()
+                    ? Qt::DirectConnection : Qt::BlockingQueuedConnection);
             break;
     }
 }
