@@ -10,14 +10,14 @@ Audit: 27 September 2026. Scope/status source: `signal-catalog-progress.json`; i
 | Included reference records | 324 | Scope-filtered records; duplicates retained |
 | Included canonical names | 242 | Normalized names, not proof of equivalent behavior |
 | Native presets in source/tested candidate | 35 | Each targets an exact reference ID |
-| Installed native presets | 26 | Current published deployment metadata |
-| Additional tested candidates | 9 | Pump Up Beats and eight further ports; not yet installed |
+| Installed native presets | 35 | Current published deployment metadata |
+| Additional tested candidates awaiting installation | 0 | Latest nine installed and loaded |
 | Wholly unported canonical names | 207 | None of their references has a native preset |
 | Unported reference records | 289 | Includes Free variants and missing sources |
 | Names containing an unported reference | 210 | Includes unimplemented alternate references of already ported names |
 | Missing included reference sources | 10 | Algorithm/controls cannot currently be audited |
 
-The nine-preset gap is **Pump Up Beats, Visor, Custom Wave, Pinwheel, Spin, Plasma, Average Color, Screen Ambience and LSD Ambience**. Room Pulse, generic Shaders, Ambient and WebPage capabilities are not counted as ports of named catalogue effects. None of the 35 ports is certified pixel-identical to SignalRGB.
+The latest nine-preset installation adds **Pump Up Beats, Visor, Custom Wave, Pinwheel, Spin, Plasma, Average Color, Screen Ambience and LSD Ambience**. Room Pulse, generic Shaders, Ambient and WebPage capabilities are not counted as ports of named catalogue effects. None of the 35 ports is certified pixel-identical to SignalRGB.
 
 ## Duplicate and variant audit
 

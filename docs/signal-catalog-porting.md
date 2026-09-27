@@ -32,7 +32,7 @@ approximation must not be advertised as a pixel-identical completed conversion.
 ## Verified state on 27 September 2026
 
 There are **35 distinct native presets in source and in the tested candidate**.
-**26 are deployed**; nine further presets are tested but not deployed. The catalogue inventory contains 509 source records,
+**All 35 are installed and loaded**; the latest nine were installed after native GPU and UI validation. The catalogue inventory contains 509 source records,
 including excluded entries, unavailable sources and variants. It is not a count
 of implemented effects; similar titles and `Free` copies do not automatically
 inherit support. This work has not ported the whole catalogue.
@@ -59,8 +59,7 @@ comparison against recorded SignalRGB output or a physical-device FPS claim.
 The subsequent Pump Up Beats candidate also passes the combined build and GPU
 harness, plus 474 real DLL/UI persistence checks across 27 presets. Its separate
 FFT/state, capture and six-style GPU tests are documented in
-[Pump Up Beats validation](../tests/signal-favorites/PUMP-UP-BEATS.md). It remains
-outside the running installation until the next deliberate plugin replacement.
+[Pump Up Beats validation](../tests/signal-favorites/PUMP-UP-BEATS.md). It is now installed with the subsequent eight ports.
 See [basic-family tests](../tests/signal-favorites/basic-family.md),
 [UI tests](../tests/signal-favorites/UI-TESTS.md), and
 [keyboard input boundaries](native-keyboard-effects.md).
@@ -75,7 +74,7 @@ registered merely to inflate the count.
 
 The latest batch adds Visor, Custom Wave, Pinwheel, Spin and Plasma, plus Average
 Color, Screen Ambience and LSD Ambience. All 35 pass the combined production GPU
-suite; 604 real DLL/UI checks pass without starting capture or hardware. The new
+suite; 623 real DLL/UI checks pass without starting capture or hardware. The new
 families have separate state, metadata and GPU tests, including an independent
 polyline oracle for Spin and a private temporal reference comparison for LSD.
 See [procedural tests](../tests/signal-favorites/PROCEDURAL-FAMILY.md),

@@ -140,24 +140,31 @@ routing. CPU preparation of source geometry is cached by rendering recipe and
 output dimensions, rather than rasterizing every color frame. Input storage,
 the geometry atlas and final image are additional to the intermediate budget.
 
-Invalid schemas/graphs, excessive sizes, compilation failures and expired input
-produce black with a source/renderer diagnostic. There is no unbounded frame
+Invalid source schemas, excessive preparation sizes and expired input produce
+black with a source diagnostic. A GL compilation/allocation failure stops the
+renderer and reports its error; restart the effect after correcting that failure. There is no unbounded frame
 queue. Effects sharing input retain separate artistic state and relinquish their
 own subscriptions and scene ownership when stopped.
 
 ## Verification and release status
 
-As of the 2026-09-27 candidate, **35 native presets are in source/tested and 26
-are installed**. The three screen ports are among the nine additions awaiting
-deployment. The Better integration is a further candidate change: controlled
-tests do not establish installation or connection to the user's running Better
-application. The [catalogue progress file](signal-catalog-progress.json) records
-source, candidate and deployment separately.
+As of 27 September 2026, **all 35 native presets are installed and loaded**.
+The native Better integration is included in the installed Effects build from
+commit `e1118085dd1d793f07b6b6831b9c791dbba05cc0`. Source, deployment, fidelity
+and the remaining catalogue stay separate in [the progress file](signal-catalog-progress.json).
 
-The producer-side native contract is included in Better 1.4 (source commit
-`6979d38`). This candidate has not yet been validated against a running Better
-instance with native output enabled; absence of its descriptor is reported as
-unavailable rather than treated as a working connection.
+Interoperability was verified with the running Better 1.4 application (producer
+contract commit `6979d38`): raw/coverage/metadata at 800 × 600, five frames through
+the production native appearance pipeline without OpenGL errors, two temporary
+scene changes with exact revision/frame acknowledgments, then restoration of the
+original unsaved composition and its effective settings. This test emitted no
+device lighting and exported no user image. Physical optical comparison remains
+distinct from the live data/rendering test.
+
+Each effect profile saves its own scene UUID. The three local scene profiles and
+nine newly ported effect profiles are available through a Stream Deck submenu.
+The main Ambilight button uses native appearance following the active Better
+composition; a separate WebView option remains available.
 
 Validation is split by layer:
 
@@ -190,5 +197,4 @@ hidden sources has mean error 0.878/255 (0.779 against the WebGL reference), and
 the high-quality crop case 0.394. **Localized antialiasing differences remain**:
 the fullscreen fixture has seven occupancy differences among 64000 pixels and
 isolated channel errors up to 170. These are synthetic-fixture results, not
-coverage of every setting or physical-device performance. No pixel-perfect or
-real-application integration claim is made.
+coverage of every setting or physical-device performance. No pixel-perfect claim is made; the live interoperability check is described above.
