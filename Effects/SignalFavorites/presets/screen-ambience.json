@@ -1,0 +1,89 @@
+{
+  "id": "ScreenAmbience",
+  "title": "Screen Ambience",
+  "source_id": "bundled:Dynamic\\Screen Ambience.html",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native screen-driven GPU effect with persistent numeric state.",
+  "screen_state": "ScreenAmbience",
+  "controls": [
+    {
+      "key": "picture_mode",
+      "label": "Picture Mode",
+      "type": "enum",
+      "default": "Standard",
+      "options": [
+        "Standard",
+        "Cinema",
+        "Mono",
+        "Vivid",
+        "Dominant",
+        "HD"
+      ]
+    },
+    {
+      "key": "blur_amount",
+      "label": "Blur",
+      "type": "number",
+      "default": 4.0,
+      "min": 0.0,
+      "max": 20.0,
+      "step": 1
+    },
+    {
+      "key": "motion_smoothing",
+      "label": "Motion Smoothing",
+      "type": "number",
+      "default": 50.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "boost",
+      "label": "Color Shift",
+      "type": "number",
+      "default": 0.0,
+      "min": -180.0,
+      "max": 180.0,
+      "step": 1
+    },
+    {
+      "key": "brightness",
+      "label": "Brightness",
+      "type": "number",
+      "default": 0.0,
+      "min": -100.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "saturation",
+      "label": "Saturation",
+      "type": "number",
+      "default": 0.0,
+      "min": -100.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "contrast",
+      "label": "Contrast",
+      "type": "number",
+      "default": 0.0,
+      "min": -100.0,
+      "max": 100.0,
+      "step": 1
+    }
+  ],
+  "notes": "Separate Float32 HSL and HD histories are preserved between modes and advanced per render on a stationary capture. Dominant preserves the observed last eligible cell and non-circular one-degree hue approach. Ordered CSS RGB filters and separable Gaussian blur are native GLSL. Qt smooth screen reduction, explicit bilinear HD stretch, three-sigma discrete blur and edge rasterization may differ from engine.zone/Ultralight; pixel equivalence is not claimed.",
+  "screenReactive": true,
+  "passes": [
+    {
+      "shader": "screen-ambience-color.fs"
+    },
+    {
+      "shader": "screen-ambience-blur-x.fs"
+    }
+  ]
+}

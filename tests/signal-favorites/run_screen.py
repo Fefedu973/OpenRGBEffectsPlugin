@@ -1,0 +1,15 @@
+"""Build/run native state and production GPU screen tests, synthetic input only."""
+# SPDX-License-Identifier: GPL-2.0-or-later
+import argparse,os,subprocess,sys
+from pathlib import Path
+p=argparse.ArgumentParser();p.add_argument('--qt',type=Path,required=True);p.add_argument('--openrgb-root',type=Path,required=True);a=p.parse_args()
+repo=Path(__file__).resolve().parents[2];out=repo/'build/screen-family';out.mkdir(parents=True,exist_ok=True)
+include=[a.qt/'include',a.qt/'include/QtCore',a.qt/'include/QtGui',a.qt/'include/QtOpenGL',a.openrgb_root/'dependencies/json',a.openrgb_root/'RGBController',repo/'Effects/Shaders',repo/'Effects/SignalFavorites',repo/'Audio']
+flags=['cl','/nologo','/EHsc','/std:c++17','/Zc:__cplusplus','/permissive-','/MD','/O2','/DNOMINMAX','/utf-8']+['/I'+str(x)for x in include]
+links=['/link','/LIBPATH:'+str(a.qt/'lib'),'Qt6Core.lib','Qt6Gui.lib','Qt6OpenGL.lib','opengl32.lib']
+env=dict(os.environ,PATH=str(a.qt/'bin')+os.pathsep+os.environ['PATH'])
+subprocess.run([sys.executable,str(Path(__file__).with_name('screen-family.py'))],check=True)
+subprocess.run(flags+[str(Path(__file__).with_name('screen_state_tests.cpp')),'/Fo:'+str(out/'screen_state_tests.obj'),'/Fe:'+str(out/'screen_state_tests.exe')]+links,cwd=out,check=True)
+subprocess.run([str(out/'screen_state_tests.exe')],env=env,check=True,timeout=30)
+subprocess.run(flags+[str(Path(__file__).with_name('screen_gpu_tests.cpp')),str(repo/'Effects/Shaders/ShaderPass.cpp'),str(repo/'Effects/Shaders/ShaderProgram.cpp'),'/Fo:'+str(out)+os.sep,'/Fe:'+str(out/'screen_gpu_tests.exe')]+links,cwd=out,check=True)
+subprocess.run([str(out/'screen_gpu_tests.exe'),str(repo),str(out)],env=env,check=True,timeout=130)

@@ -1,0 +1,20 @@
+{
+  "id": "AverageColor",
+  "title": "Average Color",
+  "source_id": "-OZLjxrclACsWzD5QG3Z",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native screen-driven GPU effect with persistent numeric state.",
+  "screen_state": "AverageColor",
+  "controls": [
+    {
+      "key": "tapOn",
+      "label": "Tap Effect",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "notes": "Arithmetic HSL mean of 28x20 reduced cells, including non-circular hue averaging. Native tap gain multiplies by 0.95 per event, then recovers 0.025 per render. Qt smooth full-rectangle reduction is explicit; the proprietary engine.zone reduction is unavailable. Capture selection is shared infrastructure, not an extra artistic control. No source HTML or assets included.",
+  "keyboard_reactive": true,
+  "screenReactive": true
+}

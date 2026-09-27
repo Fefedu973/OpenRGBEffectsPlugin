@@ -1,0 +1,78 @@
+{
+  "id": "LSDAmbience",
+  "title": "LSD Ambience",
+  "source_id": "-NwRj3PVvEFwErS_VRx6",
+  "category": "SignalRGB Collection",
+  "profile_prefix": "SignalRGB - ",
+  "description": "Original native screen-driven GPU effect with persistent numeric state.",
+  "screen_state": "LSDAmbience",
+  "controls": [
+    {
+      "key": "waveFreq",
+      "label": "Wave Frequency",
+      "type": "number",
+      "default": 15.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "effectSpeed",
+      "label": "Wave Speed",
+      "type": "number",
+      "default": 25.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "dotFade",
+      "label": "Dot Fade",
+      "type": "number",
+      "default": 5.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "dotMin",
+      "label": "Dot Minimum Size",
+      "type": "number",
+      "default": 25.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "colorMode",
+      "label": "Color Mode",
+      "type": "enum",
+      "default": "Color Cycle",
+      "options": [
+        "Screen",
+        "Custom",
+        "Color Cycle",
+        "Rainbow Gradient"
+      ]
+    },
+    {
+      "key": "cycleSpeed",
+      "label": "Color Cycle Speed",
+      "type": "number",
+      "default": 50.0,
+      "min": 0.0,
+      "max": 100.0,
+      "step": 1
+    },
+    {
+      "key": "color1",
+      "label": "Custom Color",
+      "type": "color",
+      "default": "#0000ff",
+      "min": 0.0,
+      "max": 360.0
+    }
+  ],
+  "notes": "560 ordered circles preserve asymmetric centers, radius state, delayed radius updates, stationary newest wave, forward-removal skips and doubled cycle hue. Run-length wave storage preserves repeated zero-speed births; a defensive 8192 distinct-wave cap discards oldest groups only for pathological fractional speeds beyond normal UI stepping. Qt smooth screen reduction and GLSL edge antialiasing differ from proprietary engine.zone/Canvas; pixel equivalence is not claimed.",
+  "screenReactive": true
+}
