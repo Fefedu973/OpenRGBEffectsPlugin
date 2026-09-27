@@ -159,6 +159,18 @@ void ShaderPass::Draw(const Uniforms& uniforms, GLenum unit, QOpenGLFunctions *g
         program->setUniformValue("iChannel2", 2);
         program->setUniformValue("iChannel3", 3);
 
+        for(const auto& entry : uniforms.custom)
+        {
+            const auto& v = entry.second;
+            switch(v.components)
+            {
+            case 1: program->setUniformValue(entry.first.c_str(), v.values[0]); break;
+            case 3: program->setUniformValue(entry.first.c_str(), QVector3D(v.values[0],v.values[1],v.values[2])); break;
+            case 4: program->setUniformValue(entry.first.c_str(), QVector4D(v.values[0],v.values[1],v.values[2],v.values[3])); break;
+            default: break;
+            }
+        }
+
         // Bind VBO and set vertex attribute
         gl->glBindBuffer(GL_ARRAY_BUFFER, vbo);
         program->enableAttributeArray(0);

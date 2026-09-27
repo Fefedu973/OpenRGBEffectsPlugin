@@ -77,5 +77,31 @@
         <file>shaders/room-stars.fs</file>
         <file>shaders/room-bubbles.fs</file>
         <file>OpenRGBPlugins.ttf</file>
+        <file>Effects/SignalFavorites/presets/aurora.json</file>
+        <file>Effects/SignalFavorites/presets/custom-spiral.json</file>
+        <file>Effects/SignalFavorites/presets/gradient-wave.json</file>
+        <file>Effects/SignalFavorites/presets/gradient.json</file>
+        <file>Effects/SignalFavorites/presets/rainbow-rise.json</file>
+        <file>Effects/SignalFavorites/presets/rainbow-tunnel.json</file>
+        <file>Effects/SignalFavorites/presets/rainbow.json</file>
+        <file>Effects/SignalFavorites/presets/side-to-side.json</file>
+        <file>Effects/SignalFavorites/presets/solid-color.json</file>
+        <file>Effects/SignalFavorites/presets/space.json</file>
+        <file>Effects/SignalFavorites/presets/spiral-rainbow.json</file>
+        <file>Effects/SignalFavorites/presets/underwater.json</file>
+        <file>shaders/SignalFavorites/aurora.fs</file>
+        <file>shaders/SignalFavorites/custom-spiral.fs</file>
+        <file>shaders/SignalFavorites/gradient-wave.fs</file>
+        <file>shaders/SignalFavorites/gradient.fs</file>
+        <file>shaders/SignalFavorites/rainbow-rise.fs</file>
+        <file>shaders/SignalFavorites/rainbow-tunnel.fs</file>
+        <file>shaders/SignalFavorites/rainbow.fs</file>
+        <file>shaders/SignalFavorites/side-to-side.fs</file>
+        <file>shaders/SignalFavorites/solid-color.fs</file>
+        <file>shaders/SignalFavorites/space.fs</file>
+        <file>shaders/SignalFavorites/spiral-rainbow.fs</file>
+        <file>shaders/SignalFavorites/underwater.fs</file>
+        <file>Effects/SignalFavorites/presets/galaxies.json</file>
+        <file>shaders/SignalFavorites/galaxies.fs</file>
     </qresource>
 </RCC>

@@ -1,0 +1,297 @@
+{
+  "note": "Reference declared metadata and source hashes only; no implementation, assets or private preferences.",
+  "presets": [
+    {
+      "slug": "space",
+      "id": "Space",
+      "source_id": "-M6NpYksqaKLHatGQqNo",
+      "source_sha256": "72fa3d9d592a6199187a933a630cbba5281bda983bcc23581be93193d8263abb",
+      "controls": [
+        {
+          "key": "effectSpeed",
+          "label": "Animation Speed",
+          "type": "number",
+          "default": 50.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "starSize",
+          "label": "Star Size",
+          "type": "number",
+          "default": 10.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "backMod",
+          "label": "Background Element Size",
+          "type": "number",
+          "default": 10.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "colorCycle",
+          "label": "Color Cycle",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "cycleSpeed",
+          "label": "Color Cycle Speed",
+          "type": "number",
+          "default": 50.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "starColor",
+          "label": "Star Color",
+          "type": "color",
+          "default": "#ffffff",
+          "min": 0.0,
+          "max": 360.0
+        },
+        {
+          "key": "backColor",
+          "label": "Background Color",
+          "type": "color",
+          "default": "#001127",
+          "min": 0.0,
+          "max": 360.0
+        }
+      ]
+    },
+    {
+      "slug": "aurora",
+      "id": "Aurora",
+      "source_id": "-M6kb-ZFTdoKW5tRxV8Y",
+      "source_sha256": "8c7555875705e6fff8ceff00ca62c023954621818d0943047f9b7789b5be90a5",
+      "controls": [
+        {
+          "key": "effectSpeed",
+          "label": "Animation Speed",
+          "type": "number",
+          "default": 40.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "amount",
+          "label": "Aurora Density",
+          "type": "number",
+          "default": 61.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "frontColor",
+          "label": "Main Aurora Color",
+          "type": "color",
+          "default": "#00ffff",
+          "min": 0.0,
+          "max": 360.0
+        },
+        {
+          "key": "backColor",
+          "label": "Background Color",
+          "type": "color",
+          "default": "#005f49",
+          "min": 0.0,
+          "max": 360.0
+        },
+        {
+          "key": "colorCycle",
+          "label": "Color Cycle",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "cycleSpeed",
+          "label": "Color Cycle Speed",
+          "type": "number",
+          "default": 50.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "slug": "underwater",
+      "id": "Underwater",
+      "source_id": "-M7DfOgkz34CHWDtnXDM",
+      "source_sha256": "2f1dac2b175cb3164f52d84a02777b3414c70f00f43ac2bea103f7693cb9e3b2",
+      "controls": [
+        {
+          "key": "tapEnable",
+          "label": "Tap Effects",
+          "type": "boolean",
+          "default": true,
+          "min": 0.0,
+          "max": 1.0
+        },
+        {
+          "key": "monoDir",
+          "label": "One-Way Shimmer",
+          "type": "boolean",
+          "default": false,
+          "min": 0.0,
+          "max": 1.0
+        },
+        {
+          "key": "shimmerColor",
+          "label": "Shimmer Color",
+          "type": "color",
+          "default": "#0000ff",
+          "min": 0.0,
+          "max": 360.0
+        },
+        {
+          "key": "speed",
+          "label": "Shimmer Speed",
+          "type": "number",
+          "default": 20.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "size",
+          "label": "Shimmer size",
+          "type": "number",
+          "default": 40.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "amount",
+          "label": "Shimmer Amount",
+          "type": "number",
+          "default": 55.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "fade",
+          "label": "Shimmer Fade",
+          "type": "number",
+          "default": 93.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "rippleFreq",
+          "label": "Ripple Frequency",
+          "type": "number",
+          "default": 18.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "rotation",
+          "label": "Rotation",
+          "type": "number",
+          "default": 0.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "slug": "galaxies",
+      "id": "Galaxies",
+      "source_id": "-Ng1lYIFg2C-H8TxQQrn",
+      "source_sha256": "3920e79798af62e458836b3d7604bfe607749fb254fa40a2a3bd75749f37f8e9",
+      "controls": [
+        {
+          "key": "effectType",
+          "label": "Galaxy Type",
+          "type": "enum",
+          "default": "Milky Way",
+          "options": [
+            "Andromeda",
+            "Antennae",
+            "Condor",
+            "Hoag",
+            "Milky Way"
+          ]
+        },
+        {
+          "key": "backColor",
+          "label": "Background Color",
+          "type": "color",
+          "default": "#050505",
+          "min": 0.0,
+          "max": 360.0
+        },
+        {
+          "key": "effectSpeed",
+          "label": "Animation Speed",
+          "type": "number",
+          "default": 50.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "globalGScale",
+          "label": "Galaxy Scale",
+          "type": "number",
+          "default": 50.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "globalXPos",
+          "label": "Galaxy Horizontal Position",
+          "type": "number",
+          "default": 50.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "globalYPos",
+          "label": "Galaxy Vertical Postion",
+          "type": "number",
+          "default": 50.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "globalYScale",
+          "label": "Galaxy Edge View",
+          "type": "number",
+          "default": 45.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        },
+        {
+          "key": "globalRotation",
+          "label": "Galaxy Rotation",
+          "type": "number",
+          "default": 42.0,
+          "min": 0.0,
+          "max": 100.0,
+          "step": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "Space",
+  "title": "Space",
+  "source_id": "-M6NpYksqaKLHatGQqNo",
+  "description": "A native GPU star field over four translucent layers of drifting cosmic clouds.",
+  "controls": [
+    {"key":"effectSpeed","label":"Animation Speed","type":"number","default":50,"min":0,"max":100,"step":1},
+    {"key":"starSize","label":"Star Size","type":"number","default":10,"min":0,"max":100,"step":1},
+    {"key":"backMod","label":"Background Element Size","type":"number","default":10,"min":0,"max":100,"step":1},
+    {"key":"colorCycle","label":"Color Cycle","type":"boolean","default":false},
+    {"key":"cycleSpeed","label":"Color Cycle Speed","type":"number","default":50,"min":0,"max":100,"step":1},
+    {"key":"starColor","label":"Star Color","type":"color","default":"#ffffff","min":0,"max":360},
+    {"key":"backColor","label":"Background Color","type":"color","default":"#001127","min":0,"max":360}
+  ],
+  "notes": "Original GPU implementation, not redistributed Canvas source. Preserves the seven controls and layered-cloud/outward-star composition. Stable procedural seeds replace JavaScript randomness; star lifetimes and cloud oscillations use integrated animation speed at a normalized 60 Hz reference. Cloud speed response is continuous and linear instead of the original wall-clock-dependent curve. A zero animation speed freezes motion while live color/size controls remain usable. Particle placement, startup population and antialiasing differ; pixel identity is not claimed."
+}

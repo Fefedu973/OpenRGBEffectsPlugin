@@ -1,0 +1,95 @@
+{
+  "id": "GradientWave",
+  "title": "Gradient Wave",
+  "source_id": "-Me3BsMN_hIlzeJwFbMs",
+  "description": "A directional moving gradient with two to four colors and optional hue cycling.",
+  "controls": [
+    {
+      "key": "effectType",
+      "label": "Effect Direction",
+      "type": "enum",
+      "default": "Right",
+      "options": [
+        "Right",
+        "Left",
+        "Down",
+        "Up"
+      ]
+    },
+    {
+      "key": "nColors",
+      "label": "Number of Colors",
+      "type": "number",
+      "default": 3,
+      "min": 2,
+      "max": 4,
+      "step": 1
+    },
+    {
+      "key": "color1",
+      "label": "Color 1",
+      "type": "color",
+      "default": "#00feff",
+      "min": 1,
+      "max": 359
+    },
+    {
+      "key": "color2",
+      "label": "Color 2",
+      "type": "color",
+      "default": "#0900ff",
+      "min": 1,
+      "max": 359
+    },
+    {
+      "key": "color3",
+      "label": "Color 3",
+      "type": "color",
+      "default": "#ff00ff",
+      "min": 1,
+      "max": 359
+    },
+    {
+      "key": "color4",
+      "label": "Color 4",
+      "type": "color",
+      "default": "#ff0000",
+      "min": 1,
+      "max": 359
+    },
+    {
+      "key": "colorCycle",
+      "label": "Color Cycle",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "colorCycleSpeed",
+      "label": "Color Cycle Speed",
+      "type": "number",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    {
+      "key": "peakSize",
+      "label": "Wave size",
+      "type": "number",
+      "default": 1,
+      "min": 1,
+      "max": 100,
+      "step": 1
+    }
+  ],
+  "notes": "Reference animation is calibrated at 60 Hz. Frame-count wrap overshoot and HSL rounding are removed. Changing direction, wave size or color count immediately recomposes the field. Hue-cycle phase follows its integrated clock while disabled."
+}

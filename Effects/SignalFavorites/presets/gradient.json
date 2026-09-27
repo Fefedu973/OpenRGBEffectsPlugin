@@ -1,0 +1,122 @@
+{
+  "id": "Gradient",
+  "title": "Gradient",
+  "source_id": "-MA7wCKkv_359cmwPOEK",
+  "description": "A static gradient with up to four movable stops and freely positioned endpoints.",
+  "controls": [
+    {
+      "key": "numColors",
+      "label": "Number of Colors",
+      "type": "number",
+      "default": 4,
+      "min": 2,
+      "max": 4,
+      "step": 1
+    },
+    {
+      "key": "color1",
+      "label": "Color 1",
+      "type": "color",
+      "default": "#00efff",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "color1pos",
+      "label": "Color 1 Position",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "max": 320,
+      "step": 1
+    },
+    {
+      "key": "color2",
+      "label": "Color 2",
+      "type": "color",
+      "default": "#ff00cf",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "color2pos",
+      "label": "Color 2 Position",
+      "type": "number",
+      "default": 121,
+      "min": 0,
+      "max": 320,
+      "step": 1
+    },
+    {
+      "key": "color3",
+      "label": "Color 3",
+      "type": "color",
+      "default": "#ccff00",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "color3pos",
+      "label": "Color 3 Position",
+      "type": "number",
+      "default": 248,
+      "min": 0,
+      "max": 320,
+      "step": 1
+    },
+    {
+      "key": "color4",
+      "label": "Color 4",
+      "type": "color",
+      "default": "#00ff5f",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "color4pos",
+      "label": "Color 4 Position",
+      "type": "number",
+      "default": 320,
+      "min": 0,
+      "max": 320,
+      "step": 1
+    },
+    {
+      "key": "startX",
+      "label": "Start X position",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "max": 320,
+      "step": 1
+    },
+    {
+      "key": "startY",
+      "label": "Start Y position",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "max": 200,
+      "step": 1
+    },
+    {
+      "key": "endX",
+      "label": "End X position",
+      "type": "number",
+      "default": 320,
+      "min": 0,
+      "max": 320,
+      "step": 1
+    },
+    {
+      "key": "endY",
+      "label": "End Y position",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "max": 200,
+      "step": 1
+    }
+  ],
+  "notes": "RGB interpolation follows sorted stops including coincident stops. Identical endpoints render black; no previous Canvas2D frame is retained."
+}

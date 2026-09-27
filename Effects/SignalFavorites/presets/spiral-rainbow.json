@@ -1,0 +1,42 @@
+{
+  "id": "SpiralRainbow",
+  "title": "Spiral Rainbow",
+  "source_id": "-M6IC8Ls2wMTq45iJ3qC",
+  "description": "A rotating angular rainbow with a movable center.",
+  "controls": [
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 5,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    {
+      "key": "xPos",
+      "label": "Center X Position",
+      "type": "number",
+      "default": 160,
+      "min": 0,
+      "max": 320,
+      "step": 1
+    },
+    {
+      "key": "yPos",
+      "label": "Center Y Position",
+      "type": "number",
+      "default": 100,
+      "min": 0,
+      "max": 200,
+      "step": 1
+    },
+    {
+      "key": "reversed",
+      "label": "Reverse Spiral",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "notes": "Analytic sectors replace Canvas2D overlap and antialiasing. Reverse changes may reposition phase; elapsed-time speed matches the source."
+}

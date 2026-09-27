@@ -1,0 +1,51 @@
+{
+  "id": "RainbowRise",
+  "title": "Rainbow Rise",
+  "source_id": "-MDR1wa7FsvZFpaaqgmB",
+  "description": "Concentric rainbow rings expanding from a movable origin.",
+  "controls": [
+    {
+      "key": "xPos",
+      "label": "X Position",
+      "type": "number",
+      "default": 160,
+      "min": 0,
+      "max": 360,
+      "step": 1
+    },
+    {
+      "key": "yPos",
+      "label": "Y Position",
+      "type": "number",
+      "default": 200,
+      "min": 0,
+      "max": 200,
+      "step": 1
+    },
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    {
+      "key": "scale",
+      "label": "Scale",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 5,
+      "step": 1
+    },
+    {
+      "key": "reverse",
+      "label": "Reverse Direction",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "notes": "Reference animation is calibrated at 60 Hz. Continuous radial color replaces individual accumulated one-pixel Canvas2D strokes. Reverse changes may reposition phase."
+}

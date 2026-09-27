@@ -1,0 +1,24 @@
+{
+  "id": "Rainbow",
+  "title": "Rainbow",
+  "source_id": "Rainbow.html",
+  "description": "A moving horizontal or vertical spectrum.",
+  "controls": [
+    {
+      "key": "speed",
+      "label": "Rainbow Speed",
+      "type": "number",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    {
+      "key": "vertical",
+      "label": "Vertical",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "notes": "Reference animation is calibrated at 60 Hz. Smooth analytic sampling replaces the original 320x200 strips; controls remain in reference units."
+}

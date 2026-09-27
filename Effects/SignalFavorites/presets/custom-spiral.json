@@ -1,0 +1,83 @@
+{
+  "id": "CustomSpiral",
+  "title": "Custom Spiral",
+  "source_id": "-M6l_fYNP7tCfJ1GnUCK",
+  "description": "Alternating angular sectors with two, three or four chosen colors.",
+  "controls": [
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    {
+      "key": "numColors",
+      "label": "Number of Colors",
+      "type": "number",
+      "default": 4,
+      "min": 2,
+      "max": 4,
+      "step": 1
+    },
+    {
+      "key": "color1",
+      "label": "Color 1",
+      "type": "color",
+      "default": "#ff0000",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "color2",
+      "label": "Color 2",
+      "type": "color",
+      "default": "#0000ff",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "color3",
+      "label": "Color 3",
+      "type": "color",
+      "default": "#00ff00",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "color4",
+      "label": "Color 4",
+      "type": "color",
+      "default": "#ffff00",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "xPos",
+      "label": "Center X Position",
+      "type": "number",
+      "default": 160,
+      "min": 0,
+      "max": 320,
+      "step": 1
+    },
+    {
+      "key": "yPos",
+      "label": "Center Y Position",
+      "type": "number",
+      "default": 100,
+      "min": 0,
+      "max": 200,
+      "step": 1
+    },
+    {
+      "key": "reversed",
+      "label": "Reverse Spiral",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "notes": "Reference animation is calibrated at 60 Hz. Analytic sector edges replace overlapping Canvas2D wedges; reverse changes may reposition phase."
+}

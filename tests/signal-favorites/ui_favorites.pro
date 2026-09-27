@@ -1,0 +1,9 @@
+QT += core gui widgets
+CONFIG += console c++17 release
+CONFIG -= app_bundle debug debug_and_release
+TEMPLATE = app
+TARGET = ui-favorites-test
+isEmpty(OPENRGB_ROOM_ROOT): error("Pass OPENRGB_ROOM_ROOT=<core checkout>")
+CORE = $$OPENRGB_ROOM_ROOT
+INCLUDEPATH += $$CORE/tests/room-plugin-images/stubs $$CORE/tests/room-plugin-images $$CORE $$CORE/RGBController $$CORE/dependencies/json
+SOURCES += $$PWD/ui_favorites.cpp $$CORE/RGBController/RGBController.cpp $$CORE/RGBController/RGBController_Virtual.cpp $$CORE/RGBController/RGBControllerKeyNames.cpp $$CORE/StringUtils.cpp

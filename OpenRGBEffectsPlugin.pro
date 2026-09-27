@@ -642,3 +642,6 @@ RESOURCES +=                                                                    
     resources.qrc
 
 include(Effects/WebPage/WebPage.pri)
+SOURCES += Effects/SignalFavorites/SignalFavorite.cpp
+HEADERS += Effects/SignalFavorites/SignalFavorite.h
+INCLUDEPATH += Effects/SignalFavorites Effects/Shaders

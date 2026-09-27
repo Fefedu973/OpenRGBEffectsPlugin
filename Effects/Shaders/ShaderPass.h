@@ -20,16 +20,25 @@
 #include <QOpenGLTexture>
 #include <thread>
 #include <array>
+#include <map>
 #include <nlohmann/json.hpp>
 #include "ShaderPassData.h"
 
 using json = nlohmann::json;
+
+struct ShaderUniform
+{
+    std::array<float,4> values{};
+    int components = 1;
+};
+using ShaderUniformMap = std::map<std::string, ShaderUniform>;
 
 struct Uniforms
 {
     float iTime = 0.f;
     float* iAudio = nullptr;
     std::array<float,4> iMusic{0.0f,0.0f,0.54f,0.0f};
+    ShaderUniformMap custom;
 };
 
 class ShaderPass

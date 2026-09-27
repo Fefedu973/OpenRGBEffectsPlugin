@@ -1,0 +1,18 @@
+{
+  "id": "Underwater",
+  "title": "Underwater",
+  "source_id": "-M7DfOgkz34CHWDtnXDM",
+  "description": "Colorful water shimmers, drifting light squares and expanding ripples rendered on the GPU.",
+  "controls": [
+    {"key":"tapEnable","label":"Tap Effects","type":"boolean","default":true,"min":0,"max":1},
+    {"key":"monoDir","label":"One-Way Shimmer","type":"boolean","default":false,"min":0,"max":1},
+    {"key":"shimmerColor","label":"Shimmer Color","type":"color","default":"#0000ff","min":0,"max":360},
+    {"key":"speed","label":"Shimmer Speed","type":"number","default":20,"min":0,"max":100,"step":1},
+    {"key":"size","label":"Shimmer size","type":"number","default":40,"min":0,"max":100,"step":1},
+    {"key":"amount","label":"Shimmer Amount","type":"number","default":55,"min":0,"max":100,"step":1},
+    {"key":"fade","label":"Shimmer Fade","type":"number","default":93,"min":0,"max":100,"step":1},
+    {"key":"rippleFreq","label":"Ripple Frequency","type":"number","default":18,"min":0,"max":100,"step":1},
+    {"key":"rotation","label":"Rotation","type":"number","default":0,"min":0,"max":100,"step":1}
+  ],
+  "notes": "Original bounded GPU reconstruction with the original nine controls. Shimmers use a seeded spatial population, analytic trails and phase-based renewal rather than the source Canvas particle/history buffers. Fade retention is bounded, including at 100, and automatic ripples are capped at 32 simultaneous rings. Ripple Frequency changes their density and resulting event rate, approximating the original behavior at the default speed; it is not an exact spawn scheduler at other speeds. The latest native preview tap is supported through iTap; spatial keyboard events and multiple simultaneous tap histories are not ported. Pixel identity is not claimed."
+}

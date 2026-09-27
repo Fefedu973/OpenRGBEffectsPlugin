@@ -1,0 +1,541 @@
+{
+  "note": "Declared source controls/defaults only. No user preferences, source code or assets. Shader implementations are original.",
+  "presets": [
+    {
+      "slug": "spiral-rainbow",
+      "id": "SpiralRainbow",
+      "source_id": "-M6IC8Ls2wMTq45iJ3qC",
+      "source_sha256": "cccf1747f0e044ce62f900909719371c7f21032c534a3f0c70ceb73d90ef8bfb",
+      "controls": [
+        {
+          "key": "speed",
+          "label": "Speed",
+          "type": "number",
+          "default": 5,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "key": "xPos",
+          "label": "Center X Position",
+          "type": "number",
+          "default": 160,
+          "min": 0,
+          "max": 320,
+          "step": 1
+        },
+        {
+          "key": "yPos",
+          "label": "Center Y Position",
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 200,
+          "step": 1
+        },
+        {
+          "key": "reversed",
+          "label": "Reverse Spiral",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "slug": "custom-spiral",
+      "id": "CustomSpiral",
+      "source_id": "-M6l_fYNP7tCfJ1GnUCK",
+      "source_sha256": "beb42cd9e33f69bbd6469e00639b5311fd9f74b9db01389a91fdf540bf0270d9",
+      "controls": [
+        {
+          "key": "speed",
+          "label": "Speed",
+          "type": "number",
+          "default": 50,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "key": "numColors",
+          "label": "Number of Colors",
+          "type": "number",
+          "default": 4,
+          "min": 2,
+          "max": 4,
+          "step": 1
+        },
+        {
+          "key": "color1",
+          "label": "Color 1",
+          "type": "color",
+          "default": "#ff0000",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "color2",
+          "label": "Color 2",
+          "type": "color",
+          "default": "#0000ff",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "color3",
+          "label": "Color 3",
+          "type": "color",
+          "default": "#00ff00",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "color4",
+          "label": "Color 4",
+          "type": "color",
+          "default": "#ffff00",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "xPos",
+          "label": "Center X Position",
+          "type": "number",
+          "default": 160,
+          "min": 0,
+          "max": 320,
+          "step": 1
+        },
+        {
+          "key": "yPos",
+          "label": "Center Y Position",
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 200,
+          "step": 1
+        },
+        {
+          "key": "reversed",
+          "label": "Reverse Spiral",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "slug": "gradient",
+      "id": "Gradient",
+      "source_id": "-MA7wCKkv_359cmwPOEK",
+      "source_sha256": "576d00e9cee7a6933e8bc148e1887f14a2d609017fdaf843c94f9f69aaf04868",
+      "controls": [
+        {
+          "key": "numColors",
+          "label": "Number of Colors",
+          "type": "number",
+          "default": 4,
+          "min": 2,
+          "max": 4,
+          "step": 1
+        },
+        {
+          "key": "color1",
+          "label": "Color 1",
+          "type": "color",
+          "default": "#00efff",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "color1pos",
+          "label": "Color 1 Position",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 320,
+          "step": 1
+        },
+        {
+          "key": "color2",
+          "label": "Color 2",
+          "type": "color",
+          "default": "#ff00cf",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "color2pos",
+          "label": "Color 2 Position",
+          "type": "number",
+          "default": 121,
+          "min": 0,
+          "max": 320,
+          "step": 1
+        },
+        {
+          "key": "color3",
+          "label": "Color 3",
+          "type": "color",
+          "default": "#ccff00",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "color3pos",
+          "label": "Color 3 Position",
+          "type": "number",
+          "default": 248,
+          "min": 0,
+          "max": 320,
+          "step": 1
+        },
+        {
+          "key": "color4",
+          "label": "Color 4",
+          "type": "color",
+          "default": "#00ff5f",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "color4pos",
+          "label": "Color 4 Position",
+          "type": "number",
+          "default": 320,
+          "min": 0,
+          "max": 320,
+          "step": 1
+        },
+        {
+          "key": "startX",
+          "label": "Start X position",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 320,
+          "step": 1
+        },
+        {
+          "key": "startY",
+          "label": "Start Y position",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 200,
+          "step": 1
+        },
+        {
+          "key": "endX",
+          "label": "End X position",
+          "type": "number",
+          "default": 320,
+          "min": 0,
+          "max": 320,
+          "step": 1
+        },
+        {
+          "key": "endY",
+          "label": "End Y position",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 200,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "slug": "rainbow-rise",
+      "id": "RainbowRise",
+      "source_id": "-MDR1wa7FsvZFpaaqgmB",
+      "source_sha256": "45b916e40b75e3556e301597cf61103d2e927ea50218f9d0d8b2a1e1984a3ad0",
+      "controls": [
+        {
+          "key": "xPos",
+          "label": "X Position",
+          "type": "number",
+          "default": 160,
+          "min": 0,
+          "max": 360,
+          "step": 1
+        },
+        {
+          "key": "yPos",
+          "label": "Y Position",
+          "type": "number",
+          "default": 200,
+          "min": 0,
+          "max": 200,
+          "step": 1
+        },
+        {
+          "key": "speed",
+          "label": "Speed",
+          "type": "number",
+          "default": 30,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "key": "scale",
+          "label": "Scale",
+          "type": "number",
+          "default": 1,
+          "min": 0,
+          "max": 5,
+          "step": 1
+        },
+        {
+          "key": "reverse",
+          "label": "Reverse Direction",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "slug": "gradient-wave",
+      "id": "GradientWave",
+      "source_id": "-Me3BsMN_hIlzeJwFbMs",
+      "source_sha256": "22bd69a9d242dae2cb5aa45ead81a4e67f0649219692f67b0554fecc7ae0c106",
+      "controls": [
+        {
+          "key": "effectType",
+          "label": "Effect Direction",
+          "type": "enum",
+          "default": "Right",
+          "options": [
+            "Right",
+            "Left",
+            "Down",
+            "Up"
+          ]
+        },
+        {
+          "key": "nColors",
+          "label": "Number of Colors",
+          "type": "number",
+          "default": 3,
+          "min": 2,
+          "max": 4,
+          "step": 1
+        },
+        {
+          "key": "color1",
+          "label": "Color 1",
+          "type": "color",
+          "default": "#00feff",
+          "min": 1,
+          "max": 359
+        },
+        {
+          "key": "color2",
+          "label": "Color 2",
+          "type": "color",
+          "default": "#0900ff",
+          "min": 1,
+          "max": 359
+        },
+        {
+          "key": "color3",
+          "label": "Color 3",
+          "type": "color",
+          "default": "#ff00ff",
+          "min": 1,
+          "max": 359
+        },
+        {
+          "key": "color4",
+          "label": "Color 4",
+          "type": "color",
+          "default": "#ff0000",
+          "min": 1,
+          "max": 359
+        },
+        {
+          "key": "colorCycle",
+          "label": "Color Cycle",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "colorCycleSpeed",
+          "label": "Color Cycle Speed",
+          "type": "number",
+          "default": 50,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "key": "speed",
+          "label": "Speed",
+          "type": "number",
+          "default": 50,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "key": "peakSize",
+          "label": "Wave size",
+          "type": "number",
+          "default": 1,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "slug": "rainbow-tunnel",
+      "id": "RainbowTunnel",
+      "source_id": "-MhLTUi-oxPWtl1yksuM",
+      "source_sha256": "5c275c5e989f5f940870b5bb967c26b004fa20203b9774b8bd4b15ad059afb92",
+      "controls": [
+        {
+          "key": "speed",
+          "label": "Speed",
+          "type": "number",
+          "default": 50,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "key": "size",
+          "label": "Ring size",
+          "type": "number",
+          "default": 5,
+          "min": 1,
+          "max": 10,
+          "step": 1
+        },
+        {
+          "key": "sat",
+          "label": "Saturation",
+          "type": "number",
+          "default": 90,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "key": "lite",
+          "label": "Lightness",
+          "type": "number",
+          "default": 60,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "slug": "rainbow",
+      "id": "Rainbow",
+      "source_id": "Rainbow.html",
+      "source_sha256": "6ee80b543b06b4c178b5c0eacb1edcbe142c84b0d7a639f8b1316439d0941a82",
+      "controls": [
+        {
+          "key": "speed",
+          "label": "Rainbow Speed",
+          "type": "number",
+          "default": 50,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "key": "vertical",
+          "label": "Vertical",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "slug": "side-to-side",
+      "id": "SideToSide",
+      "source_id": "Side To Side.html",
+      "source_sha256": "3b4186662bfa49313e4072e2a8fb18f0093ad5a49af10d261aab70ad7d933cd5",
+      "controls": [
+        {
+          "key": "direction",
+          "label": "Direction",
+          "type": "enum",
+          "default": "All Directions",
+          "options": [
+            "Side to Side",
+            "Up and Down",
+            "All Directions"
+          ]
+        },
+        {
+          "key": "color1",
+          "label": "Color 1",
+          "type": "color",
+          "default": "#082EFF",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "color2",
+          "label": "Color 2",
+          "type": "color",
+          "default": "#FF03AF",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "rainbow",
+          "label": "Rainbow Mode",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "speed",
+          "label": "Speed",
+          "type": "number",
+          "default": 15,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "slug": "solid-color",
+      "id": "SolidColor",
+      "source_id": "Solid Color.html",
+      "source_sha256": "cecff5fba2765c052fc9e65211180c2c036ca34f113dd9485f9fb29334804df7",
+      "controls": [
+        {
+          "key": "color",
+          "label": "Color",
+          "type": "color",
+          "default": "#00BBff",
+          "min": 0,
+          "max": 360
+        },
+        {
+          "key": "breathe",
+          "label": "Breathing",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "speed",
+          "label": "Breathing Speed",
+          "type": "number",
+          "default": 75,
+          "min": 0,
+          "max": 100,
+          "step": 1
+        }
+      ]
+    }
+  ]
+}

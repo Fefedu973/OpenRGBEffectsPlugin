@@ -1,0 +1,17 @@
+{
+  "id": "Galaxies",
+  "title": "Galaxies",
+  "source_id": "-Ng1lYIFg2C-H8TxQQrn",
+  "description": "Five galaxy formations with orbiting clouds, expanding arms, a ring galaxy and an independent twinkling star field.",
+  "controls": [
+    {"key":"effectType","label":"Galaxy Type","type":"enum","default":"Milky Way","options":["Andromeda","Antennae","Condor","Hoag","Milky Way"]},
+    {"key":"backColor","label":"Background Color","type":"color","default":"#050505","min":0,"max":360},
+    {"key":"effectSpeed","label":"Animation Speed","type":"number","default":50,"min":0,"max":100,"step":1},
+    {"key":"globalGScale","label":"Galaxy Scale","type":"number","default":50,"min":0,"max":100,"step":1},
+    {"key":"globalXPos","label":"Galaxy Horizontal Position","type":"number","default":50,"min":0,"max":100,"step":1},
+    {"key":"globalYPos","label":"Galaxy Vertical Postion","type":"number","default":50,"min":0,"max":100,"step":1},
+    {"key":"globalYScale","label":"Galaxy Edge View","type":"number","default":45,"min":0,"max":100,"step":1},
+    {"key":"globalRotation","label":"Galaxy Rotation","type":"number","default":42,"min":0,"max":100,"step":1}
+  ],
+  "notes": "Original GPU reconstruction; no original implementation or assets are embedded. Retains all eight controls, their labels (including Vertical Postion), five named formations and the independent star field. Position controls set the rotation/scale pivot as in the reference, not an independent galaxy translation. Stable procedural seeds, continuously populated clouds and integrated phases replace random birth schedules and Canvas history. Expanding-arm populations are capped at 100, and analytic radial gradients approximate the reference gradients. All motion, including core pulsation, freezes at zero animation speed. Particle placement, startup, exact spiral growth and gradient interpolation differ; pixel identity is not claimed."
+}

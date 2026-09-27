@@ -15,6 +15,7 @@
 #include "EffectListManager.h"
 #include "EffectManager.h"
 #include "OpenRGBEffectSettings.h"
+#include "Effects/SignalFavorites/SignalFavoriteRegistry.h"
 
 #define SETTINGSMANAGER_UPDATE_REASON_SETTINGS_UPDATED 0
 
@@ -63,6 +64,7 @@ void OpenRGBEffectsPlugin::Load(OpenRGBPluginAPIInterface* api_interface_ptr)
     | Store API interface pointer                           |
     \*-----------------------------------------------------*/
     api = api_interface_ptr;
+    RegisterSignalFavoritePresets();
     
     /*-----------------------------------------------------*\
     | Log initial messages                                  |

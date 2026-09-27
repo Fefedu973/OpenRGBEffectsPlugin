@@ -40,6 +40,7 @@ public:
     void SetFPS(int);
     void Resize(int width, int height);
     void UpdateUniforms(float time, const float* audio);
+    void UpdateCustomUniforms(const ShaderUniformMap& values);
 
     bool isRunning();
 

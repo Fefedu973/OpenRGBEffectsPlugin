@@ -75,6 +75,12 @@ void ShaderRenderer::UpdateUniforms(float time, const float* audio)
     uniforms.iMusic = music_envelope.Update(uniforms.iAudio, seconds);
 }
 
+void ShaderRenderer::UpdateCustomUniforms(const ShaderUniformMap& values)
+{
+    std::lock_guard<std::mutex> guard(program_lock);
+    uniforms.custom = values;
+}
+
 void ShaderRenderer::RendererThreadFunction()
 {
     context_lock.lock();

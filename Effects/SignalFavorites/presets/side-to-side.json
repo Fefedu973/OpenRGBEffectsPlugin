@@ -1,0 +1,51 @@
+{
+  "id": "SideToSide",
+  "title": "Side to Side",
+  "source_id": "Side To Side.html",
+  "description": "Alternating horizontal, vertical or four-direction color sweeps.",
+  "controls": [
+    {
+      "key": "direction",
+      "label": "Direction",
+      "type": "enum",
+      "default": "All Directions",
+      "options": [
+        "Side to Side",
+        "Up and Down",
+        "All Directions"
+      ]
+    },
+    {
+      "key": "color1",
+      "label": "Color 1",
+      "type": "color",
+      "default": "#082EFF",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "color2",
+      "label": "Color 2",
+      "type": "color",
+      "default": "#FF03AF",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "rainbow",
+      "label": "Rainbow Mode",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "speed",
+      "label": "Speed",
+      "type": "number",
+      "default": 15,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    }
+  ],
+  "notes": "Reference animation is calibrated at 60 Hz. Rainbow hue selection is deterministic per sweep rather than Math.random. Frame overshoot at sweep completion is removed; direction changes restart geometry at the current integrated travel phase."
+}

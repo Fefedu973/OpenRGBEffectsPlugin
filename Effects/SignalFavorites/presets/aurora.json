@@ -1,0 +1,15 @@
+{
+  "id": "Aurora",
+  "title": "Aurora",
+  "source_id": "-M6kb-ZFTdoKW5tRxV8Y",
+  "description": "Layered aurora curtains with vertical color gradients, drifting streaks and soft trails.",
+  "controls": [
+    {"key":"effectSpeed","label":"Animation Speed","type":"number","default":40,"min":0,"max":100,"step":1},
+    {"key":"amount","label":"Aurora Density","type":"number","default":61,"min":0,"max":100,"step":1},
+    {"key":"frontColor","label":"Main Aurora Color","type":"color","default":"#00ffff","min":0,"max":360},
+    {"key":"backColor","label":"Background Color","type":"color","default":"#005f49","min":0,"max":360},
+    {"key":"colorCycle","label":"Color Cycle","type":"boolean","default":false},
+    {"key":"cycleSpeed","label":"Color Cycle Speed","type":"number","default":50,"min":0,"max":100,"step":1}
+  ],
+  "notes": "Original GPU implementation with the original six controls. Seeded curtains and smooth vertical wandering replace random per-frame movement. Analytic trails approximate the original persistent Canvas accumulation without storing past frames. Density zero clears curtains immediately instead of waiting for existing streaks to leave. Integrated speed preserves phase when speed changes; cycle changes recolor existing curtains immediately. Pixel identity and identical random particle histories are not claimed."
+}

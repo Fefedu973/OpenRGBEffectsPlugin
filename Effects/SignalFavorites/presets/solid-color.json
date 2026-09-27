@@ -1,0 +1,32 @@
+{
+  "id": "SolidColor",
+  "title": "Solid Color",
+  "source_id": "Solid Color.html",
+  "description": "A chosen solid color with optional sine breathing.",
+  "controls": [
+    {
+      "key": "color",
+      "label": "Color",
+      "type": "color",
+      "default": "#00BBff",
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "breathe",
+      "label": "Breathing",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "key": "speed",
+      "label": "Breathing Speed",
+      "type": "number",
+      "default": 75,
+      "min": 0,
+      "max": 100,
+      "step": 1
+    }
+  ],
+  "notes": "Reference breathing is calibrated at 60 Hz. Direct RGB alpha multiplication avoids source HSL rounding. The integrated breathing clock continues while the toggle is off."
+}

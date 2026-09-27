@@ -84,7 +84,7 @@ Shaders::Shaders(QWidget *parent) :
     | List the embeded shaders, add them to the       |
     | combo box                                       |
     \*-----------------------------------------------*/
-    QDirIterator it(":/shaders");
+    QDirIterator it(":/shaders", QDir::Files);
     QStringList shader_list;
 
     while (it.hasNext())

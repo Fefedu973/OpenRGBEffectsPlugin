@@ -60,6 +60,9 @@ public:
     void SetFPS(unsigned int) override;
     void OnControllerZonesListChanged(std::vector<ControllerZone*>) override;
 
+protected:
+    ShaderRenderer* Renderer() const { return shader_renderer; }
+    Ui::Shaders* ShaderUi() const { return ui; }
 
 private slots:
     void changeEvent(QEvent *event) override;
