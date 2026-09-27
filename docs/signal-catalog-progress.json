@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-27T12:14:52.686857+00:00",
+  "updated_at": "2026-09-27T12:23:04.632703+00:00",
   "strategy": "Individual original native GLSL reconstructions, with bounded native numeric state where required; no JavaScript runtime or WebView. Source presence, candidate tests, deployment and hardware validation are separate. No claim of pixel identity.",
   "scope_policy": "Standard effects including screen, audio and keyboard interaction; no game integrations or specialized external APIs; personal sources only if title or filename contains free. Hidden records remain to be classified.",
   "summary": {
@@ -50,8 +50,8 @@
     "native_presets_pending_deployment": 1
   },
   "status_definitions": {
-    "deployed_native_reconstruction": "Source and tested candidate are present; included in the existing 13-effect deployment. Does not assert optical equivalence or a per-effect hardware test.",
-    "candidate_tested_pending_deployment": "Source, build, GPU and native UI checks passed in the 26-effect candidate; not yet deployed, hardware/input checks pending.",
+    "deployed_native_reconstruction": "Reference-matched source and tested native implementation are deployed. No pixel identity or individual hardware validation is implied.",
+    "candidate_tested_pending_deployment": "Reference-matched source, build, production GPU and native UI checks passed; not included in the deployed plugin.",
     "not_ported": "No implementation of this specific source record is supplied. Similar titles or control schemas do not confer support.",
     "source_unavailable": "Local reference source unavailable; algorithm and controls cannot be confirmed."
   },
@@ -182,10 +182,11 @@
       "title": "COVID-19 Stats",
       "origin": "catalog",
       "canonical_key": "covid19stats",
-      "scope": "review_hidden",
+      "scope": "excluded_external_api",
       "status": "not_ported",
       "declared_controls": 0,
-      "source_sha256": "fa5969e869321d4a7baf5d1d620f608dce1aa48bc9d7faab0b2e7f5a8f2dc5d1"
+      "source_sha256": "fa5969e869321d4a7baf5d1d620f608dce1aa48bc9d7faab0b2e7f5a8f2dc5d1",
+      "scope_reason": "Depends on an external COVID statistics service."
     },
     {
       "id": "-M5inqP-b-qzPGgF0JVb",
@@ -1038,10 +1039,11 @@
       "title": "CryptoFizz",
       "origin": "catalog",
       "canonical_key": "cryptofizz",
-      "scope": "review_hidden",
+      "scope": "excluded_external_api",
       "status": "not_ported",
       "declared_controls": 3,
-      "source_sha256": "eaa459bdfff62be0968184d57da61f6f080bf4aab155c9c2790b993111bdc37b"
+      "source_sha256": "eaa459bdfff62be0968184d57da61f6f080bf4aab155c9c2790b993111bdc37b",
+      "scope_reason": "Depends on Binance market data APIs."
     },
     {
       "id": "-MQtFeX-o2hMR6sv8aFr",
@@ -2109,10 +2111,11 @@
       "title": "Browser Integration",
       "origin": "catalog",
       "canonical_key": "browserintegration",
-      "scope": "included",
+      "scope": "excluded_external_api",
       "status": "not_ported",
       "declared_controls": 24,
-      "source_sha256": "1da096d6b36f2ffa873870f3fd1491b62a72ddb08654ffa7c4d81e574dcf7de0"
+      "source_sha256": "1da096d6b36f2ffa873870f3fd1491b62a72ddb08654ffa7c4d81e574dcf7de0",
+      "scope_reason": "Requires the SignalRGB browser extension; specialized integration, not generic native screen capture."
     },
     {
       "id": "-MkES4ONtPseIh34t2Ff",
@@ -2205,10 +2208,11 @@
       "title": "Impossible Game",
       "origin": "catalog",
       "canonical_key": "impossiblegame",
-      "scope": "included",
+      "scope": "review_scope_boundary",
       "status": "not_ported",
       "declared_controls": 4,
-      "source_sha256": "2df2d8df7b408c54683c22c11848217ebe15eaf439f53de2e62ac2b7f2a85d30"
+      "source_sha256": "2df2d8df7b408c54683c22c11848217ebe15eaf439f53de2e62ac2b7f2a85d30",
+      "scope_reason": "Interactive standalone keyboard mini-game; distinct from an external game integration. Keep pending scope review."
     },
     {
       "id": "-MpiIztVu2cXYV5vsf6o",
@@ -2562,10 +2566,11 @@
       "title": "Weather Effect",
       "origin": "catalog",
       "canonical_key": "weathereffect",
-      "scope": "included",
+      "scope": "excluded_external_api",
       "status": "not_ported",
       "declared_controls": 11,
-      "source_sha256": "370cb2e1d71930c1cd6d72d682d4c2cf0c8b6b5a2e4dad15306bead0f7cd261a"
+      "source_sha256": "370cb2e1d71930c1cd6d72d682d4c2cf0c8b6b5a2e4dad15306bead0f7cd261a",
+      "scope_reason": "Depends on the OpenWeather external service."
     },
     {
       "id": "-N9QI89NBxnTcy5c0szU",
@@ -4190,12 +4195,13 @@
       "title": "Browser Integration Free",
       "origin": "personal",
       "canonical_key": "browserintegration",
-      "scope": "included",
+      "scope": "excluded_external_api",
       "status": "not_ported",
       "declared_controls": 24,
       "source_sha256": "4168e79a88f3e8685f265b71ecb7e6efb409bd046d5ed4e3eb55524c98c3189c",
       "same_named_catalog_id": "-MjkuxfFxEBrIKj4adpV",
-      "matching_control_schema": true
+      "matching_control_schema": true,
+      "scope_reason": "Requires the SignalRGB browser extension; specialized integration, not generic native screen capture."
     },
     {
       "id": "personal:pro\\Bullet Hell.html",
@@ -4418,12 +4424,13 @@
       "title": "Impossible Game Free",
       "origin": "personal",
       "canonical_key": "impossiblegame",
-      "scope": "included",
+      "scope": "review_scope_boundary",
       "status": "not_ported",
       "declared_controls": 4,
       "source_sha256": "74158cde08611c253fd589a96664f4e3fbd4d75dd99231e3c0b637c1d47a1634",
       "same_named_catalog_id": "-Mp8it4cCCpY7crVrmZz",
-      "matching_control_schema": true
+      "matching_control_schema": true,
+      "scope_reason": "Interactive standalone keyboard mini-game; distinct from an external game integration. Keep pending scope review."
     },
     {
       "id": "personal:pro\\Jellyfish.html",
@@ -5066,12 +5073,13 @@
       "title": "Weather Effect Free",
       "origin": "personal",
       "canonical_key": "weathereffect",
-      "scope": "included",
+      "scope": "excluded_external_api",
       "status": "not_ported",
       "declared_controls": 11,
       "source_sha256": "8425d7cac9608f77f22a7379245a88d7411b756f70dade2e531d5c7ab585ca5d",
       "same_named_catalog_id": "-N9DEF4swvFZhfpyMpnl",
-      "matching_control_schema": true
+      "matching_control_schema": true,
+      "scope_reason": "Depends on the OpenWeather external service."
     },
     {
       "id": "personal:pro\\Wormhole.html",
@@ -5449,5 +5457,43 @@
       "same_named_catalog_id": "-M945gtFXC7-EslfLkeP",
       "matching_control_schema": false
     }
-  ]
+  ],
+  "scope_counts": {
+    "excluded_external_api": {
+      "records": 6,
+      "canonical_names": 4
+    },
+    "excluded_game": {
+      "records": 89,
+      "canonical_names": 62
+    },
+    "excluded_personal": {
+      "records": 14,
+      "canonical_names": 14
+    },
+    "included": {
+      "records": 324,
+      "canonical_names": 242
+    },
+    "review_hidden": {
+      "records": 74,
+      "canonical_names": 71
+    },
+    "review_scope_boundary": {
+      "records": 2,
+      "canonical_names": 1
+    }
+  },
+  "remaining_counts": {
+    "included_records": 324,
+    "included_canonical_names": 242,
+    "unported_reference_records": 297,
+    "canonical_names_with_unported_reference": 216,
+    "wholly_unported_canonical_names": 215,
+    "included_source_unavailable": 10,
+    "paired_free_variants": 82,
+    "pairs_equal_script_and_controls": 69,
+    "pairs_different_script_or_controls": 13,
+    "note": "Canonical names, exact source records and native presets are different units. Equal script/control pairs remain separate unimplemented records until their complete source contract is reviewed; no optical equivalence is implied."
+  }
 }
