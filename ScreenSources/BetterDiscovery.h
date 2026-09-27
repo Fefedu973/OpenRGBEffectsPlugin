@@ -3,10 +3,12 @@
 #include <QString>
 #include <QStringList>
 #include <QVector>
+#include <QJsonObject>
 #include <cstdint>
 #include <memory>
 
-// Native Better discovery, independent of image transport and control leases.
+// Native Better discovery, generation metadata and optional scene leases.
+// Image pixels remain on the separate shared-memory transport.
 // Read()/Refresh() never perform I/O on the caller's thread. Credentials remain
 // private to the worker and are neither returned, logged nor persisted.
 namespace better_source
@@ -33,6 +35,23 @@ struct Snapshot
     QVector<Scene> scenes;
     bool Ready() const { return state==State::Ready; }
 };
+enum class PublishedStateStatus { Pending, Ready, Unavailable, Invalid };
+struct PublishedState
+{
+    PublishedStateStatus status=PublishedStateStatus::Pending;
+    QString instance_id,detail;
+    std::uint64_t requested_generation=0;
+    QJsonObject envelope;
+};
+enum class RequestResult { Accepted, Conflict, Invalid };
+enum class ControlPhase { Idle, Waiting, Pending, Effective, Conflict, Superseded, Unavailable, Releasing };
+struct ControlSnapshot
+{
+    ControlPhase phase=ControlPhase::Idle;
+    QString detail,scene_id,instance_id;
+    std::uint64_t revision=0,control_revision=0,scene_revision=0;
+    std::uint64_t effective_generation=0,minimum_sequence=0;
+};
 class Discovery final
 {
 public:
@@ -45,6 +64,17 @@ public:
     Discovery& operator=(const Discovery&)=delete;
     std::shared_ptr<const Snapshot> Read() const;
     void Refresh();
+    // Latest-generation request, bounded8-entry immutable cache. No callback.
+    // A Ready response is authenticated JSON; validate full frame association
+    // separately with BetterControlState::ValidateFrameBinding.
+    void RequestState(std::uint64_t generation);
+    std::shared_ptr<const PublishedState> ReadState(std::uint64_t generation) const;
+    // One application-wide scene: equal scenes share one lease, conflicting
+    // scenes are refused. Owner IDs are local effect-instance IDs (1..128 chars).
+    // Empty scene UUID is equivalent to ReleaseScene(owner). No appearance edit.
+    RequestResult RequestScene(const QString& owner,const QString& scene_uuid);
+    void ReleaseScene(const QString& owner);
+    std::shared_ptr<const ControlSnapshot> ReadControl(const QString& owner) const;
 private:
     class Impl;
     explicit Discovery(const Config& config);
