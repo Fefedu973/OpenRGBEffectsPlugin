@@ -4,6 +4,7 @@
 #include <QOpenGLContext>
 #include <QTimer>
 #include "ShaderProgram.h"
+#include <algorithm>
 #include <array>
 #include <fstream>
 #include <iostream>
@@ -18,6 +19,15 @@ static double Delta(const QImage& a,const QImage& b,int column)
     {auto p=a.pixel(x,y),q=b.pixel(x,y);sum+=abs(qRed(p)-qRed(q))+abs(qGreen(p)-qGreen(q))+abs(qBlue(p)-qBlue(q));++count;}
     return sum/(3*count);
 }
+static double RegionDelta(const QImage& a,const QImage& b,int top,int bottom)
+{
+    double sum=0;unsigned count=0;
+    for(int y=top;y<bottom;++y)for(int x=0;x<a.width();++x)
+    {auto p=a.pixel(x,y),q=b.pixel(x,y);sum+=abs(qRed(p)-qRed(q))+abs(qGreen(p)-qGreen(q))+abs(qBlue(p)-qBlue(q));++count;}
+    return sum/(3*count);
+}
+static int Light(const QImage& image,int x,int y)
+{auto p=image.pixel(x,y);return std::max({qRed(p),qGreen(p),qBlue(p)});}
 static int Render(const char* profile,const char* output)
 {
     try
@@ -48,6 +58,40 @@ static int Render(const char* profile,const char* output)
         }
         spectrum.fill(0.001f);program->Draw(u,context.functions());
         auto gated=program->Image();for(int col=0;col<3;++col)Check(Delta(gated,silent,col)==0.,"noise floor remains at idle");
+        // Moving one true FFT magnitude within its band keeps band energy
+        // identical. Only the upper spectrum must move; lower meters must not.
+        const int firstBins[]={0,4,24},binCounts[]={4,20,40};
+        const std::string fragment=data["plugins"]["OpenRGB Effects Plugin"]["Effects"][0]["CustomSettings"]["shader_program"]["main_pass"]["fragment_shader"];
+        const bool paired=fragment.find("const int SPECTRUM_BARS = 32;")!=std::string::npos;
+        result["spectrum_bars"]=paired ? 32 : 64;
+        for(int band=0;band<3;++band)
+        {
+            spectrum.fill(0.f);
+            std::fill(spectrum.begin()+firstBins[band]*4,spectrum.begin()+firstBins[band]*4+4,0.75f);
+            program->Draw(u,context.functions());QImage first=program->Image();
+            spectrum.fill(0.f);
+            int lastBin=firstBins[band]+binCounts[band]-1;
+            std::fill(spectrum.begin()+lastBin*4,spectrum.begin()+lastBin*4+4,0.75f);
+            program->Draw(u,context.functions());QImage last=program->Image();
+            Check(RegionDelta(first,last,0,250)>0.10,"individual FFT magnitude changes detailed upper spectrum");
+            Check(RegionDelta(first,last,250,500)==0.,"equal band energy retains exact lower VU rendering");
+            double bars=binCounts[band]/(paired?2.0:1.0);
+            int firstX=int((band+0.5/bars)*800.0/3.0);
+            int lastX=int((band+(bars-0.5)/bars)*800.0/3.0);
+            Check(Light(first,firstX,145)>Light(last,firstX,145)+20,"first FFT bar is spatially resolved");
+            Check(Light(last,lastX,145)>Light(first,lastX,145)+20,"last FFT bar is spatially resolved");
+            first.save(QString::fromStdString(std::string(output)+"/spectrum-first-"+std::to_string(band)+".png"));
+            last.save(QString::fromStdString(std::string(output)+"/spectrum-last-"+std::to_string(band)+".png"));
+        }
+        // Every supplied magnitude is a real DSP bin (four repeated slots).
+        // Alternating values give a detailed full-spectrum evidence image.
+        for(int bin=0;bin<64;++bin)
+        {
+            float magnitude=0.045f+float((bin*17)%31)/62.f;
+            std::fill(spectrum.begin()+bin*4,spectrum.begin()+bin*4+4,magnitude);
+        }
+        program->Draw(u,context.functions());
+        program->Image().save(QString::fromStdString(std::string(output)+"/detailed-spectrum.png"));
         spectrum.fill(0.5f);program->Draw(u,context.functions());auto at2=program->Image();
         u.iTime=4.f;program->Draw(u,context.functions());auto at4=program->Image();
         Check(Delta(at2,at4,0)>0.1,"audio-lit surface has spatial animated texture");

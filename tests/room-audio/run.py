@@ -8,10 +8,15 @@ p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--qt', type=Path, required=True)
 p.add_argument('--openrgb-root', type=Path, required=True)
 p.add_argument('--profile', type=Path, required=True)
+p.add_argument('--output', type=Path, help='Separate evidence directory for a preset variant')
 a = p.parse_args()
+a.qt = a.qt.resolve()
+a.openrgb_root = a.openrgb_root.resolve()
 repo = Path(__file__).resolve().parents[2]
 out = repo/'build/room-audio'
 out.mkdir(parents=True, exist_ok=True)
+evidence = a.output.resolve() if a.output else out
+evidence.mkdir(parents=True, exist_ok=True)
 env = dict(os.environ, PATH=str(a.qt/'bin')+os.pathsep+os.environ['PATH'])
 common = ['cl','/nologo','/EHsc','/std:c++17','/Zc:__cplusplus','/permissive-','/MD','/O2','/DNOMINMAX','/utf-8']
 subprocess.run(common+['/I'+str(repo),str(Path(__file__).with_name('audio_tests.cpp')),
@@ -25,4 +30,4 @@ subprocess.run(common+['/I'+str(path) for path in includes]+
                 str(repo/'Effects/Shaders/ShaderProgram.cpp'),'/Fo:'+str(out)+os.sep,
                 '/Fe:'+str(out/'music_shader_tests.exe'),'/link','/LIBPATH:'+str(a.qt/'lib'),
                 'Qt6Core.lib','Qt6Gui.lib','Qt6OpenGL.lib','opengl32.lib'],check=True,cwd=out)
-subprocess.run([str(out/'music_shader_tests.exe'),str(a.profile.resolve()),str(out)],check=True,timeout=20,env=env,cwd=out)
+subprocess.run([str(out/'music_shader_tests.exe'),str(a.profile.resolve()),str(evidence)],check=True,timeout=20,env=env,cwd=out)
