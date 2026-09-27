@@ -640,3 +640,5 @@ macx: {
 
 RESOURCES +=                                                                                    \
     resources.qrc
+
+include(Effects/WebPage/WebPage.pri)

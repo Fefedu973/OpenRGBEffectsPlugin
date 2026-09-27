@@ -41,6 +41,19 @@ readback too. These are **not** zero-copy GPU paths, and the dimension limits ar
 not a measured promise of 60 fps on every shader/GPU. Windows capture is SDR8;
 HDR tone mapping and cursor composition are not added in this stage.
 
+## Web Page
+
+Select **Special → Web Page**, enter an HTTP/HTTPS URL or an absolute local
+HTML file URL, choose the canvas size and capture limit, and apply. WebView2
+renders animated page content while this effect is enabled. The generic canvas
+route sends full images to screen-capable outputs and samples ordinary LEDs.
+The default is 800×600, capped at 20 captures/s. Capture uses CPU PNG readback;
+the FPS limit is not a throughput guarantee.
+
+Run `python tools/fetch-webview2.py` before building. The portable Room package
+includes the matching loader and license; it uses the installed WebView2 runtime.
+See [Web Page setup, lifecycle and tests](Documentation/WEBPAGE.md).
+
 ## Build and validation
 
 Use the core fork's `tools/room-build/Build-Room.ps1` from a VS2022 x64 developer
