@@ -63,7 +63,7 @@ int main(int argc,char** argv)
         const std::set<std::string> expected={"Aurora","CustomSpiral","Galaxies","GradientWave","Gradient",
             "RainbowRise","RainbowTunnel","Rainbow","SideToSide","SolidColor","Space","SpiralRainbow","Underwater",
             "RainbowTap","Terminal","NeonNebula","GoodNight","ColorCycle","NeonShift","PoliceLights",
-            "RainbowPulse","ColorShift","TVStatic","CustomSunrise","CrookedWaves","QuadColorBreath"};
+            "RainbowPulse","ColorShift","TVStatic","CustomSunrise","CrookedWaves","QuadColorBreath","PumpUpBeats"};
         std::set<std::string> found;
         CHECK(files.size()>=int(expected.size()));
         std::map<std::string,unsigned> category_sizes;
@@ -105,6 +105,16 @@ int main(int argc,char** argv)
         CHECK(keyboard&&!keyboard->isChecked());
         keyboard->setChecked(true);
         CHECK(Save(plugin)["CustomSettings"]["keyboard_reactive"]==true);
+        Load(plugin,Entry("SignalFavorite.PumpUpBeats",json::object()));
+        auto* audio=root->findChild<QCheckBox*>("use_audio");
+        CHECK(audio&&audio->isChecked());
+        CHECK(Save(plugin)["CustomSettings"]["use_audio"]==true);
+        audio->setChecked(false);
+        auto audio_saved=Save(plugin);
+        CHECK(audio_saved["CustomSettings"]["use_audio"]==false);
+        Load(plugin,audio_saved);
+        audio=root->findChild<QCheckBox*>("use_audio");
+        CHECK(audio&&!audio->isChecked());
         Load(plugin,Entry("SignalFavorite.SolidColor",{{"parameters",{{"speed",99999},{"breathe","bad"},{"color","not-color"},{"unknown",9}}}}));
         auto saved=Save(plugin);const auto settings=saved["CustomSettings"];
         CHECK(saved["EffectClassName"]=="SignalFavorite.SolidColor");

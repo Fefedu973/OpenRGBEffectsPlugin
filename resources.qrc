@@ -129,5 +129,7 @@
         <file>shaders/SignalFavorites/custom-sunrise.fs</file>
         <file>shaders/SignalFavorites/crooked-waves.fs</file>
         <file>shaders/SignalFavorites/quad-color-breath.fs</file>
+        <file>Effects/SignalFavorites/presets/pump-up-beats.json</file>
+        <file>shaders/SignalFavorites/pump-up-beats.fs</file>
     </qresource>
 </RCC>

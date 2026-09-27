@@ -45,7 +45,7 @@ def create(source, spec, preferences):
     settings.pop('shader_program', None)
     settings.pop('shader_name', None)
     settings.update(preset=spec['id'], schema_version=1, width=800, height=500,
-                    use_audio=False, show_rendering=False,
+                    use_audio=spec.get('audioReactive',False), show_rendering=False,
                     parameters={c['key']: normalize(c, preferences.get(c['key'])) for c in spec['controls']})
     return profile
 

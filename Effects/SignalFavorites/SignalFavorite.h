@@ -7,6 +7,7 @@
 #include "KeyboardIdentity.h"
 #include "KeyboardDeduplication.h"
 #include "BasicEffectState.h"
+#include "PumpDynamics.h"
 #include <FrameRouting/OpenRGBInputPluginAPI.h>
 
 // Data-driven native effects: parameters remain uniforms, never shader source
@@ -41,6 +42,8 @@ private:
     native_taps::KeyboardIdentity input_identity;
     native_taps::KeyboardDeduplication input_deduplication;
     native_basic::State basic_state;
+    native_pump::State pump_state;
+    unsigned pending_helper_taps = 0;
     room_input::PluginAPI* input_api = nullptr;
     std::uint64_t input_listener = 0;
     bool keyboard_enabled = true;

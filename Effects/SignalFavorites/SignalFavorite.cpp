@@ -156,6 +156,12 @@ SignalFavorite::SignalFavorite(const QString& resource, QWidget* parent) : Shade
     preview->installEventFilter(this);
     connect(show,&QCheckBox::toggled,preview,&QWidget::setVisible);
     preview->hide();
+    if(spec.value("audioReactive",false))
+    {
+        outer->addWidget(ShaderUi()->use_audio);
+        outer->addWidget(ShaderUi()->audio_settings);
+        ShaderUi()->use_audio->show();
+    }
     if(spec.contains("tap_speed_key")||spec.value("keyboard_reactive",false))
     {
         keyboard_checkbox=new QCheckBox(tr("React to physical keyboard keys"),this);
@@ -181,7 +187,7 @@ SignalFavorite::SignalFavorite(const QString& resource, QWidget* parent) : Shade
     if(!notes.isEmpty()) { auto* label = new QLabel(notes,this); label->setWordWrap(true); outer->addWidget(label); }
     SyncEditors();
     InstallProgram(resource);
-    Shaders::LoadCustomSettings({{"width",800},{"height",500}});
+    Shaders::LoadCustomSettings({{"width",800},{"height",500},{"use_audio",spec.value("audioReactive",false)}});
     SetFPS(60);
     StepEffect({}); // Initialize uniform defaults before the first GPU frame.
 }
@@ -266,6 +272,7 @@ void SignalFavorite::EffectState(bool enabled)
         effect_enabled=enabled;
         tap_history.Clear(); tap={0,0,0,0};
         basic_state.Reset();
+        pump_state.Reset();pending_helper_taps=0;
     }
     UpdateInputListener();
     // Profiles load controls after construction. Prime those values while the
@@ -281,7 +288,7 @@ void SignalFavorite::UpdateInputListener()
     if(!wanted)
     {
         if(input_api&&input_listener) input_api->ReleaseKeyboardInput(input_listener);
-        input_listener=0; input_api=nullptr; input_identity.Clear(); input_deduplication.Clear(); tap_history.Clear();
+        input_listener=0; input_api=nullptr; input_identity.Clear(); input_deduplication.Clear(); tap_history.Clear();pending_helper_taps=0;
     }
     else if(!input_listener)
     {
@@ -294,7 +301,7 @@ void SignalFavorite::OnControllerZonesListChanged(std::vector<ControllerZone*> z
 {
     Shaders::OnControllerZonesListChanged(zones);
     std::lock_guard<std::mutex> guard(parameters_mutex);
-    tap_history.Clear();tap={0,0,0,0};input_identity.Clear();input_deduplication.Clear();
+    tap_history.Clear();tap={0,0,0,0};input_identity.Clear();input_deduplication.Clear();pending_helper_taps=0;
     if(input_api&&input_listener) input_api->ReadKeyboardInput(input_listener);
 }
 
@@ -355,6 +362,7 @@ void SignalFavorite::CollectKeyboardTaps(const std::vector<ControllerZone*>& zon
             used.push_back(position);
             tap_history.Add(point.u*320,point.v*200,age,speed);
         }
+        if(!used.empty()) ++pending_helper_taps;
     }
 }
 
@@ -373,6 +381,16 @@ void SignalFavorite::StepEffect(std::vector<ControllerZone*> zones)
         tap_history.Advance(elapsed,tap_speed);
         CollectKeyboardTaps(zones,tap_speed,std::chrono::duration<double>(now.time_since_epoch()).count());
         values=basic_state.Update(spec.at("id"),parameters,dt);
+        if(spec.at("id")=="PumpUpBeats")
+        {
+            const auto frame=pump_state.Update(parameters,dt,CaptureSignalSnapshot(),
+                parameters.value("displayLayoutHelper",false)&&(pending_helper_taps%2!=0));
+            values["pumpLevels"]={frame.levels,4};
+            values["pumpState"]={frame.state,4};
+            for(unsigned i=0;i<frame.frequencies.size();++i)
+                values["pumpFreq["+std::to_string(i)+"]"].values[0]=frame.frequencies[i];
+        }
+        pending_helper_taps=0;
         for(const auto& control : spec.at("controls"))
         {
             const std::string key = control.at("key");
@@ -432,6 +450,7 @@ bool SignalFavorite::eventFilter(QObject* object,QEvent* event)
             std::lock_guard<std::mutex> guard(parameters_mutex);
             tap = {float(320*x/size.width()),float(200*y/size.height()),0,1};
             tap_history.Add(tap[0],tap[1],0,0);
+            ++pending_helper_taps;
             return true;
         }
     }
@@ -448,7 +467,8 @@ void SignalFavorite::LoadCustomSettings(json settings)
     }
     // Persist identity/controls, not editable copies of shipped shader code.
     settings.erase("shader_program"); settings.erase("shader_name");
-    settings["use_audio"] = false;
+    if(!spec.value("audioReactive",false)) settings["use_audio"]=false;
+    else if(!settings.contains("use_audio")||!settings["use_audio"].is_boolean()) settings["use_audio"]=true;
     if(settings.contains("keyboard_reactive")&&settings["keyboard_reactive"].is_boolean())
     {
         { std::lock_guard<std::mutex> guard(parameters_mutex);keyboard_enabled=settings["keyboard_reactive"].get<bool>(); }

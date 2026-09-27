@@ -31,25 +31,24 @@ approximation must not be advertised as a pixel-identical completed conversion.
 
 ## Verified state on 27 September 2026
 
-There are **26 distinct native presets in source and in the tested candidate**.
-Only **13 are currently deployed**. The other **13 are pending deployment and
-hardware/input validation**. The catalogue inventory contains 509 source records,
+There are **27 distinct native presets in source and in the tested candidate**.
+**26 are deployed**; Pump Up Beats is tested but not deployed. The catalogue inventory contains 509 source records,
 including excluded entries, unavailable sources and variants. It is not a count
 of implemented effects; similar titles and `Free` copies do not automatically
 inherit support. This work has not ported the whole catalogue.
 
-The existing deployment contains Aurora, Custom Spiral, Galaxies, Gradient,
+The first deployment contained Aurora, Custom Spiral, Galaxies, Gradient,
 Gradient Wave, Rainbow, Rainbow Rise, Rainbow Tunnel, Side to Side, Solid Color,
 Space, Spiral Rainbow and Underwater. Deployment does not by itself establish
 pixel equivalence or an optical test of every individual effect.
 
-The tested but undeployed additions are:
+The second deployment added:
 
 | Presets | Candidate status |
 | --- | --- |
-| Terminal, Rainbow Tap, Neon Nebula | Native source, GPU and UI tests passed; real keyboard interaction and optical verification pending where applicable |
-| Good Night!, Color Cycle, Neon Shift, Police Lights, Rainbow Pulse | Native source, GPU and UI tests passed; deployment/hardware checks pending |
-| Color Shift, TV Static, Custom Sunrise, Crooked Waves, Quad-Color Breath | Native source, GPU and UI tests passed; deployment/hardware checks pending; Sunrise remains an explicitly approximate reconstruction |
+| Terminal, Rainbow Tap, Neon Nebula | Installed; Rainbow Tap's physical KBHE positions and lack of duplicate triggers confirmed by the user; complete optical comparisons remain pending |
+| Good Night!, Color Cycle, Neon Shift, Police Lights, Rainbow Pulse | Installed after native source, GPU and UI tests; optical comparisons pending |
+| Color Shift, TV Static, Custom Sunrise, Crooked Waves, Quad-Color Breath | Installed after native source, GPU and UI tests; Sunrise remains an explicitly approximate reconstruction |
 
 The complete plugin build and production GPU checks passed for all 26 presets.
 The real DLL/native UI harness passed 451 checks, including control persistence,
@@ -57,6 +56,11 @@ without starting controllers or effects. The ten basic additions also passed
 41 native-state assertions and 122 GPU checks at 800 × 500, including 26 analytic
 color points. Those tests exercise implementation behavior; they are not a
 comparison against recorded SignalRGB output or a physical-device FPS claim.
+The subsequent Pump Up Beats candidate also passes the combined build and GPU
+harness, plus 474 real DLL/UI persistence checks across 27 presets. Its separate
+FFT/state, capture and six-style GPU tests are documented in
+[Pump Up Beats validation](../tests/signal-favorites/PUMP-UP-BEATS.md). It remains
+outside the running installation until the next deliberate plugin replacement.
 See [basic-family tests](../tests/signal-favorites/basic-family.md),
 [UI tests](../tests/signal-favorites/UI-TESTS.md), and
 [keyboard input boundaries](native-keyboard-effects.md).
@@ -79,8 +83,9 @@ registered merely to inflate the count.
   seeded mature particle population replaces the source's random births and
   startup population. Frame rate and antialiasing affect accumulation.
 - **Rainbow Tap:** ring motion and lifetimes are normalized to a 60 Hz reference,
-  with at most 64 live events and deterministic per-event colors. Physical
-  keyboard identity and layout mapping still require runtime verification.
+  with at most 64 live events and deterministic per-event colors. The user
+  confirmed correct physical KBHE positions for A/Q/Z/W/!/*/< and no duplicate
+  triggers on 27 September. This does not establish support for every keyboard.
 - **Rainbow Pulse:** the white flash is global; changing its intensity while a
   flash is decaying applies immediately, unlike the source's birth-time value.
 - **Neon Shift:** feedback blends five percent per rendered frame, so convergence

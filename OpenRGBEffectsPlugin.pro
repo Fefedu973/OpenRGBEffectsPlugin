@@ -650,4 +650,5 @@ SOURCES += Effects/SignalFavorites/KeyboardIdentity.cpp
 HEADERS += Effects/SignalFavorites/KeyboardIdentity.h Effects/SignalFavorites/PhysicalKeys.h Effects/SignalFavorites/TapHistory.h
 HEADERS += Effects/SignalFavorites/KeyboardDeduplication.h
 HEADERS += Effects/SignalFavorites/BasicEffectState.h
+HEADERS += Effects/SignalFavorites/PumpDynamics.h
 win32:LIBS += -lcfgmgr32

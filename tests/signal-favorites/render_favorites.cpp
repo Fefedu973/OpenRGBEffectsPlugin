@@ -11,6 +11,7 @@
 #include <QElapsedTimer>
 #include "ShaderProgram.h"
 #include "BasicEffectState.h"
+#include "PumpDynamics.h"
 #include <fstream>
 #include <iostream>
 #include <thread>
@@ -41,6 +42,17 @@ static Uniforms Parameters(const json& spec,const json& values,float time)
     const unsigned ticks=unsigned(std::clamp(time*60,1.f,600.f));
     for(unsigned i=0;i<ticks;++i)basic=state.Update(spec.at("id"),basic_parameters,1.0/60);
     uniforms.custom.insert(basic.begin(),basic.end());
+    if(spec.at("id")=="PumpUpBeats")
+    {
+        native_pump::State pump;native_pump::Frame frame;
+        room_audio::RhythmSnapshot audio;audio.generation=1;audio.power=.3f;audio.silent=false;
+        for(unsigned i=0;i<audio.spectrum.size();++i)audio.spectrum[i]=.4f*std::exp(-float(i)/30.f);
+        for(unsigned i=0;i<ticks;++i)frame=pump.Update(basic_parameters,1.0/60,audio);
+        uniforms.custom["pumpLevels"]={frame.levels,4};
+        uniforms.custom["pumpState"]={frame.state,4};
+        for(unsigned i=0;i<frame.frequencies.size();++i)
+            uniforms.custom["pumpFreq["+std::to_string(i)+"]"].values[0]=frame.frequencies[i];
+    }
     return uniforms;
 }
 // Independent analytic checkpoints. Qt's FBO image is top-left oriented, as is
