@@ -43,6 +43,23 @@ is copied under the existing session mutex. Native amplitude calibration is
 explicit, but equivalence to undocumented SignalRGB byte/level scaling is not
 claimed. Volume Boost remains available to adjust the displayed level.
 
+The native effect is registered as `SignalFavorite.PumpUpBeats`. A profile that
+still selects generic `Shaders` with the embedded `room-pulse.fs` is the older
+Room Pulse visualizer, even when both profiles use the same music layout.
+When migrating an existing room profile, retain its current ControllerZones and
+Visual Map identity; an older Pump template can omit devices added subsequently.
+The profile name may stay unchanged so existing menu shortcuts keep working.
+
+`Volume Boost` controls native power scaling, independently of the legacy FFT
+`amplitude` control. The instantaneous volume is
+`min(1, 2.4 * mean_square_pcm * 6^((boost-50)/20))`, followed by the selected
+decay. For example, RMS 0.125 gives about 3.8% at boost50 or 35.2% at boost75,
+before decay. Raising Windows volume cannot fix a wrong effect selection or
+guarantee that different capture calibrations match. Calibrate this control on
+the selected output with actual music; the same slider value as SignalRGB does
+not establish equivalent loudness. Spectrum geometry and audio calibration
+must be checked separately.
+
 `native_pump::State::Update(parameters,elapsed,snapshot,helperTap)` returns
 `Frame.levels` (volume bar/rectangle, bass bar/rectangle), `Frame.state` (cyclic
 hue, random hue, flash, helper phase), and `Frame.frequencies[100]`. It performs

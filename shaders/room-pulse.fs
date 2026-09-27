@@ -8,7 +8,9 @@ const vec3 STATIC_COLOR = vec3(0.02,0.90,1.0);
 const float BACKGROUND_LEVEL = 0.008;
 const float VOLUME_GAIN = 0.85;
 const float SPECTRUM_GAIN = 1.80;
-const bool SCALE_SPECTRUM_BY_VOLUME = true;
+// Magnitudes already contain audio level. Multiplying by their derived volume
+// attenuates quiet spectra a second time, often below the background level.
+const bool SCALE_SPECTRUM_BY_VOLUME = false;
 const int VISIBLE_BINS = 64; // 8..64 real input magnitudes, not Hz labels.
 const float BAR_FILL = 0.55; // Thin bars; set 1.0 for a continuous filled shape.
 const float LINE_HEIGHT = 15.0;

@@ -51,6 +51,24 @@ programs. To upgrade such a profile, replace its embedded fragment with the
 updated resource and enable `rhythm_tracking`, preserving its layout/controller
 selection. Test a copy before replacing an edited profile.
 
+## Room Pulse spectrum sensitivity
+
+Room Pulse defaults `SCALE_SPECTRUM_BY_VOLUME` to `false`. Its `iAudio`
+magnitudes already carry signal level; multiplying each bar by the
+spectrum-derived `iMusic.x` attenuated quiet or narrow-band material twice.
+This is separate from Windows output volume and from continuous rhythm tracking.
+The VU still uses the legacy spectrum-derived envelope, rather than a raw PCM
+level meter. The profile's audio gain and selected capture endpoint remain
+independent settings.
+
+The GPU regression compares both shader variants with one processed bin at
+0.05 and unchanged audio gain. The former bar level is 0.002888; the corrected
+level is 0.209054. The lower strip's largest color channel changes from 2 to 80
+out of 255. Silence and absent input remain dark and no rhythmic pulse is
+created by this correction. This verifies shader response, not the level of a
+particular live audio source. Existing saved profiles embed the shader and
+must also receive the changed constant.
+
 ## Evidence and limits
 
 The capture adapter's synthetic tests cover complete packets, stereo/7.1,

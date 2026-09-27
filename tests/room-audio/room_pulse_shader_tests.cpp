@@ -78,10 +78,52 @@ static int Render(const char* profile,const char* output)
         beat.silent=true;const auto absent=rhythmic.Update(beat,10.3);uniforms.iRhythm=absent.rhythm;uniforms.iOnset=absent.transients;
         program->Draw(uniforms,context.functions());auto disconnected=program->Image();
         Check(Light(disconnected,184,107)<4&&Light(disconnected,200,15)<4,"missing audio clears prior GPU spectrum and envelope");
+
+        // A quiet, isolated real DSP bin used to disappear after multiplication
+        // by volume derived from the same spectrum. Exercise both shader
+        // variants with the production MusicEnvelope and unchanged gain.
+        std::array<float,256> quietAudio{};
+        constexpr unsigned quietBin=20;
+        std::fill_n(quietAudio.begin()+quietBin*4,4,0.05f);
+        MusicEnvelope quietEnvelope;Uniforms quietUniforms;
+        quietUniforms.iAudio=quietAudio.data();
+        quietUniforms.iMusic=quietEnvelope.Update(quietAudio.data(),30.0);
+        const double quietLevel=std::pow(0.05*1.8,0.65);
+        const double oldLevel=quietLevel*quietUniforms.iMusic[0]*0.85;
+        Check(std::abs(quietLevel-0.209054)<0.00001&&std::abs(oldLevel-0.002888)<0.00001,
+              "quiet bin reproduces 0.0029 old versus 0.209 unattenuated spectrum level");
+        program->Draw(quietUniforms,context.functions());const auto quiet=program->Image();
+        const double quietX=184.0+(quietBin+0.5)*136.0/64.0;
+        Check(Light(quiet,quietX,120)>245,"quiet spectrum bar remains visible above its center");
+        const int quietLine=Light(quiet,quietX,192);
+        Check(std::abs(quietLine-quietLevel*1.5*255)<2,"quiet lower strip preserves measured bin magnitude");
+        Check(Light(quiet,24,190)<4&&Light(quiet,24,199)>245,
+              "quiet broadband VU retains its true short fill, not an artificial gain");
+        Check(Light(quiet,200,15)<4,"quiet static tone does not invent a rhythmic pulse");
+
+        auto oldSettings=data["plugins"]["OpenRGB Effects Plugin"]["Effects"][0]["CustomSettings"]["shader_program"];
+        std::string oldSource=oldSettings["main_pass"]["fragment_shader"];
+        const std::string corrected="const bool SCALE_SPECTRUM_BY_VOLUME = false;";
+        const auto position=oldSource.find(corrected);
+        Check(position!=std::string::npos,"test profile uses the corrected production shader");
+        oldSource.replace(position,corrected.size(),"const bool SCALE_SPECTRUM_BY_VOLUME = true;");
+        oldSettings["main_pass"]["fragment_shader"]=oldSource;
+        auto* oldProgram=ShaderProgram::FromJSON(oldSettings);
+        oldProgram->Init();Check(oldProgram->Compile().isEmpty(),"old attenuation control variant compiles");
+        oldProgram->Draw(quietUniforms,context.functions());const auto oldQuiet=oldProgram->Image();
+        const int oldQuietLine=Light(oldQuiet,quietX,192);
+        Check(Light(oldQuiet,quietX,120)<4&&oldQuietLine<4,
+              "negative control reproduces the former bar and strip disappearing into background");
+        quiet.save(QString::fromStdString(std::string(output)+"/room-pulse-quiet.png"));
+        oldQuiet.save(QString::fromStdString(std::string(output)+"/room-pulse-quiet-old.png"));
+        oldProgram->CleanupGL();delete oldProgram;
         Check(context.functions()->glGetError()==GL_NO_ERROR,"no GL errors");
         json evidence={{"GL",reinterpret_cast<const char*>(context.functions()->glGetString(GL_VERSION))},
                        {"assertions",checks},{"width",800},{"height",500},{"audio_capture_opened",false},
-                       {"horizontal_mirror_mean_error",mirror_error/(3*mirrored)}};
+                       {"horizontal_mirror_mean_error",mirror_error/(3*mirrored)},
+                       {"quiet_bin",quietBin},{"quiet_magnitude",0.05},
+                       {"old_spectrum_level",oldLevel},{"corrected_spectrum_level",quietLevel},
+                       {"old_strip_max_channel",oldQuietLine},{"corrected_strip_max_channel",quietLine}};
         std::ofstream(std::string(output)+"/room-pulse-validation.json")<<evidence.dump(2)<<'\n';
         program->CleanupGL();delete program;
         std::cout<<"PASS "<<checks<<" Room Pulse GPU checks\n";return 0;
