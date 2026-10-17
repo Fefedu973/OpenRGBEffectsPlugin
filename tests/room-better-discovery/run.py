@@ -6,5 +6,7 @@ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--qt',required=Tr
 repo=Path(__file__).resolve().parents[2];out=repo/'build/better-discovery';out.mkdir(parents=True,exist_ok=True)
 include=[a.qt/'include',a.qt/'include/QtCore',a.qt/'include/QtNetwork',repo/'ScreenSources']
 cmd=['cl','/nologo','/EHsc','/std:c++17','/Zc:__cplusplus','/permissive-','/MD','/O2','/DNOMINMAX','/utf-8']
-subprocess.run(cmd+['/I'+str(p) for p in include]+[str(Path(__file__).with_name('discovery_tests.cpp')),str(repo/'ScreenSources/BetterDiscovery.cpp'),'/Fo:'+str(out)+os.sep,'/Fe:'+str(out/'discovery_tests.exe'),'/link','/LIBPATH:'+str(a.qt/'lib'),'Qt6Core.lib','Qt6Network.lib'],cwd=out,check=True)
-env=dict(os.environ,PATH=str(a.qt/'bin')+os.pathsep+os.environ['PATH']);subprocess.run([str(out/'discovery_tests.exe')],env=env,check=True,timeout=40)
+env=dict(os.environ,PATH=str(a.qt/'bin')+os.pathsep+os.environ['PATH'])
+for suite,timeout in [('discovery_tests',40),('capture_tests',75)]:
+    subprocess.run(cmd+['/I'+str(p) for p in include]+[str(Path(__file__).with_name(suite+'.cpp')),str(repo/'ScreenSources/BetterDiscovery.cpp'),'/Fo:'+str(out)+os.sep,'/Fe:'+str(out/(suite+'.exe')),'/link','/LIBPATH:'+str(a.qt/'lib'),'Qt6Core.lib','Qt6Network.lib'],cwd=out,check=True)
+    subprocess.run([str(out/(suite+'.exe'))],env=env,check=True,timeout=timeout)

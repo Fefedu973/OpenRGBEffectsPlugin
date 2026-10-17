@@ -16,10 +16,18 @@
 namespace
 {
 bool SceneReady(const std::shared_ptr<better_source::Discovery>& connection,const QString& owner,
-                const std::shared_ptr<const better_source::FrameSnapshot>& image,bool requested)
+                const std::shared_ptr<const better_source::FrameSnapshot>& image,bool requested,bool captureRequested)
 {
     if(!image || !image->Usable() || !connection->Read()->Ready() || connection->Read()->instance_id!=image->instance_id)return false;
     const auto control=connection->ReadControl(owner);
+    if(captureRequested)
+    {
+        if(!control->capture_active || !control->minimum_capture_revision || control->instance_id!=image->instance_id ||
+           image->control_revision<control->minimum_capture_revision)return false;
+        // A capture-only owner follows the current, generation-bound canvas.
+        // Manual appearance/layout edits must not pin it to an old state revision.
+        if(!requested)return true;
+    }
     if(control->phase==better_source::ControlPhase::Idle)return !requested;
     return control->phase==better_source::ControlPhase::Effective && control->instance_id==image->instance_id &&
         control->scene_id==image->scene_id && image->scene_revision==control->scene_revision && image->control_revision==control->control_revision;
@@ -39,14 +47,20 @@ ScreenSourceSelection::ScreenSourceSelection(QWidget* parent,bool offerAppearanc
     descriptor=new QLineEdit(this);descriptor->setObjectName("screen_source_descriptor");
     descriptor->setPlaceholderText(tr("Automatic — current Better profile"));
     scene=new QComboBox(this);scene->setObjectName("screen_source_scene");scene->addItem(tr("Follow active Better scene"),QString());
-    status=new QLabel(this);status->setWordWrap(true);
+    status=new QLabel(this);status->setObjectName("screen_source_status");status->setWordWrap(true);
     form->addRow(tr("Source"),kind);form->addRow(tr("Display"),display);form->addRow(tr("Connection file (optional)"),descriptor);form->addRow(tr("Frame channel"),channel);form->addRow(status);
     form->insertRow(3,tr("Scene while this effect runs"),scene);
+    capture_on_demand=new QCheckBox(tr("Start Better capture while this effect runs"),this);
+    capture_on_demand->setObjectName("screen_source_capture_on_demand");
+    capture_hint=new QLabel(tr("For capture only on demand, turn off Auto-start recording on launch in Better. The last effect restores the previous capture state."),this);
+    capture_hint->setWordWrap(true);capture_hint->setTextFormat(Qt::PlainText);
+    form->insertRow(4,capture_on_demand);form->insertRow(5,capture_hint);
+    connect(capture_on_demand,&QCheckBox::toggled,this,[this]{Reconfigure();});
     if(offerAppearance)
     {
         follow_appearance=new QCheckBox(tr("Follow Better appearance (native placement, filters and glow)"),this);
         follow_appearance->setObjectName("screen_source_follow_appearance");follow_appearance->setChecked(true);
-        form->insertRow(4,follow_appearance);
+        form->insertRow(6,follow_appearance);
         connect(follow_appearance,&QCheckBox::toggled,this,[this]{Reconfigure();});
     }
     status->setTextFormat(Qt::PlainText);
@@ -77,9 +91,11 @@ ScreenSourceSelection::ScreenSourceSelection(QWidget* parent,bool offerAppearanc
     Reconfigure();
 }
 ScreenSourceSelection::~ScreenSourceSelection(){destroying=true;SetRunning(false);}
-void ScreenSourceSelection::SetRunning(bool value){running=value;Reconfigure();}
+void ScreenSourceSelection::SetRunning(bool value){if(running==value)return;running=value;Reconfigure();}
 void ScreenSourceSelection::Reconfigure()
 {
+    const bool better=kind->currentData().toString()=="better";
+    const bool manual=kind->currentData().toString()=="surface";
     {std::lock_guard<std::mutex> guard(mutex);native_active=false;native.reset();}
     capturer->Stop();
     std::shared_ptr<screen_source::Source> old;
@@ -87,15 +103,20 @@ void ScreenSourceSelection::Reconfigure()
     std::shared_ptr<better_source::FrameSource> old_paired;
     std::shared_ptr<better_source::AppearanceInput> old_appearance;
     {std::lock_guard<std::mutex> guard(mutex);old.swap(external);old_discovery.swap(discovery);old_paired.swap(paired);old_appearance.swap(appearance);appearance_active=false;++generation;sequence=0;}
-    if(old_discovery)old_discovery->ReleaseScene(owner);
+    // Appearance/size edits keep the same ownership and original baseline.
+    // Only changing provider or stopping the effect releases its interests.
+    const bool keep_connection=better&&old_discovery&&configured_descriptor==descriptor->text()&&!destroying;
+    if(keep_connection){std::lock_guard<std::mutex> lock(mutex);discovery=old_discovery;}
+    else if(old_discovery)old_discovery->ReleaseOwner(owner);
     old_appearance.reset();old_paired.reset();old.reset();old_discovery.reset();
-    bound_channel.clear();bound_instance.clear();claimed_scene.clear();
-    const bool better=kind->currentData().toString()=="better";
-    const bool manual=kind->currentData().toString()=="surface";
+    bound_channel.clear();bound_instance.clear();
+    if(!keep_connection){claimed_scene.clear();claimed_capture=false;}
+    if(!running&&discovery){discovery->ReleaseOwner(owner);claimed_scene.clear();claimed_capture=false;}
     source_error.clear();
     channel->setEnabled(manual);display->setEnabled(!better && !manual);descriptor->setEnabled(better);
     scene->setEnabled(better);if(follow_appearance)follow_appearance->setEnabled(better);
-    {std::lock_guard<std::mutex> guard(mutex);appearance_active=better&&follow_appearance&&follow_appearance->isChecked();scene_required=better&&!requested_scene.isEmpty();scene_invalid=false;}
+    capture_on_demand->setEnabled(better);capture_hint->setVisible(better);
+    {std::lock_guard<std::mutex> guard(mutex);appearance_active=better&&follow_appearance&&follow_appearance->isChecked();scene_required=better&&!requested_scene.isEmpty();capture_required=false;scene_invalid=false;}
     if(better)RefreshBetter();
     else if(running && manual && channel->hasAcceptableInput())
     {
@@ -126,7 +147,7 @@ void ScreenSourceSelection::RefreshBetter()
     if(destroying || kind->currentData().toString()!="better" || (!running && !isVisible()))return;
     if(!discovery)
     {
-        try {better_source::Config config;config.descriptor_path=descriptor->text();auto next=better_source::Discovery::Acquire(config);std::lock_guard<std::mutex> lock(mutex);discovery=std::move(next);}
+        try {better_source::Config config;config.descriptor_path=descriptor->text();auto next=better_source::Discovery::Acquire(config);std::lock_guard<std::mutex> lock(mutex);discovery=std::move(next);configured_descriptor=descriptor->text();}
         catch(const std::exception&){source_error=tr("Unable to start Better connection discovery.");return;}
     }
     const auto connection=discovery->Read();
@@ -149,6 +170,14 @@ void ScreenSourceSelection::RefreshBetter()
         {std::lock_guard<std::mutex> lock(mutex);scene_invalid=result==better_source::RequestResult::Invalid;}
         if(scene_invalid)source_error=tr("The saved Better scene identifier is invalid; select a valid scene.");
     }
+    const bool capture_requested=running&&capture_on_demand->isChecked();
+    if(claimed_capture!=capture_requested)
+    {
+        const auto result=discovery->RequestCapture(owner,capture_requested);
+        claimed_capture=capture_requested&&result==better_source::RequestResult::Accepted;
+    }
+    const bool capture_supported=connection->Ready()&&connection->capabilities.contains("captureControl");
+    {std::lock_guard<std::mutex> lock(mutex);scene_required=!requested_scene.isEmpty();capture_required=capture_requested&&capture_supported;}
     if(!connection->Ready() || !running)
     {
         std::shared_ptr<screen_source::Source> old;
@@ -156,14 +185,18 @@ void ScreenSourceSelection::RefreshBetter()
         bound_channel.clear();bound_instance.clear();
         return;
     }
-    if(bound_channel==connection->raw_channel && bound_instance==connection->instance_id)return;
+    const bool needs_pair=appearance_active || !requested_scene.isEmpty() || (capture_requested&&capture_supported);
+    // Capabilities can change without the producer's channel/instance changing.
+    // Never retain an unbound raw reader after capture control becomes available.
+    if(bound_channel==connection->raw_channel && bound_instance==connection->instance_id &&
+       bool(paired)==needs_pair && bool(appearance)==appearance_active)return;
     try
     {
         screen_source::Config config;config.channel=connection->raw_channel.toStdString();config.ttl_ms=connection->recommended_ttl_ms;
         auto next=screen_source::Source::Acquire(config);
         std::shared_ptr<better_source::FrameSource> next_paired;
         std::shared_ptr<better_source::AppearanceInput> next_appearance;
-        if(appearance_active || !requested_scene.isEmpty())next_paired=better_source::FrameSource::Acquire(discovery);
+        if(needs_pair)next_paired=better_source::FrameSource::Acquire(discovery);
         if(appearance_active)next_appearance=std::make_shared<better_source::AppearanceInput>(next_paired,output_width,output_height);
         std::shared_ptr<screen_source::Source> old;
         std::shared_ptr<better_source::FrameSource> old_paired;
@@ -179,12 +212,12 @@ std::shared_ptr<const DynamicShaderImage> ScreenSourceSelection::Latest() const
     std::shared_ptr<screen_source::Source> source;
     std::shared_ptr<better_source::FrameSource> metadata;
     std::shared_ptr<better_source::Discovery> connection;
-    bool requested;
+    bool requested,captureRequested;
     std::uint64_t revision;
-    {std::lock_guard<std::mutex> guard(mutex);if(native_active)return native;if(scene_invalid)return {};source=external;revision=generation;metadata=paired;connection=discovery;requested=scene_required;}
+    {std::lock_guard<std::mutex> guard(mutex);if(native_active)return native;if(scene_invalid)return {};source=external;revision=generation;metadata=paired;connection=discovery;requested=scene_required;captureRequested=capture_required;}
     if(metadata && connection)
     {
-        const auto bound=metadata->Read();if(!SceneReady(connection,owner,bound,requested))return {};
+        const auto bound=metadata->Read();if(!SceneReady(connection,owner,bound,requested,captureRequested))return {};
         auto frame=std::make_shared<DynamicShaderImage>();frame->image=bound->raw;
         frame->generation=bound->raw_generation;frame->sequence=bound->raw_sequence;frame->expires=bound->expires;frame->source_revision=revision;
         frame->metadata_generation=true;
@@ -205,12 +238,12 @@ std::shared_ptr<const DynamicShaderImage> ScreenSourceSelection::Latest() const
 std::shared_ptr<const ShaderRenderGraphFrame> ScreenSourceSelection::LatestAppearance() const
 {
     std::shared_ptr<better_source::AppearanceInput> input;std::shared_ptr<better_source::FrameSource> metadata;std::shared_ptr<better_source::Discovery> connection;
-    std::uint64_t revision;bool requested,invalid;
-    {std::lock_guard<std::mutex> lock(mutex);if(!appearance_active)return {};input=appearance;metadata=paired;connection=discovery;revision=generation;requested=scene_required;invalid=scene_invalid;}
+    std::uint64_t revision;bool requested,captureRequested,invalid;
+    {std::lock_guard<std::mutex> lock(mutex);if(!appearance_active)return {};input=appearance;metadata=paired;connection=discovery;revision=generation;requested=scene_required;captureRequested=capture_required;invalid=scene_invalid;}
     const auto black=[](){return std::make_shared<const ShaderRenderGraphFrame>();};
     if(!input || !metadata || !connection || invalid)return black();
     const auto frame=input->Read();const auto bound=metadata->Read();
-    if(!SceneReady(connection,owner,bound,requested) || !frame->images.count("raw") || frame->images.at("raw")->generation!=bound->raw_generation)return black();
+    if(!SceneReady(connection,owner,bound,requested,captureRequested) || !frame->images.count("raw") || frame->images.at("raw")->generation!=bound->raw_generation)return black();
     {std::lock_guard<std::mutex> lock(mutex);if(generation!=revision || paired!=metadata || discovery!=connection || appearance!=input)return black();}
     return frame;
 }
@@ -229,7 +262,26 @@ void ScreenSourceSelection::RefreshStatus()
         const auto connection=discovery->Read();
         if(!connection->Ready()){status->setText(connection->detail);return;}
         const auto control=discovery->ReadControl(owner);
-        if(control->phase!=better_source::ControlPhase::Idle && control->phase!=better_source::ControlPhase::Effective){status->setText(control->detail);return;}
+        if(control->phase!=better_source::ControlPhase::Idle && control->phase!=better_source::ControlPhase::Effective)
+        {
+            using Phase=better_source::ControlPhase;
+            switch(control->phase)
+            {
+            case Phase::Conflict:status->setText(tr("Another effect or application owns a conflicting Better scene."));break;
+            case Phase::Superseded:status->setText(tr("Better was changed manually. Turn capture on demand off and on, or restart this effect, to request control again."));break;
+            case Phase::Releasing:status->setText(tr("Restoring the previous Better capture and scene state…"));break;
+            case Phase::Pending:status->setText(tr("Waiting for Better's captured image…"));break;
+            case Phase::Waiting:status->setText(tr("Waiting for Better to finish its current operation…"));break;
+            case Phase::Unavailable:
+                status->setText(control->detail=="capture_outcome_unknown"?
+                    tr("Better is still preparing capture; checking its state before continuing…"):
+                    tr("Better capture control is unavailable. Check Better's diagnostics before retrying."));break;
+            default:status->setText(control->detail);break;
+            }
+            return;
+        }
+        if(capture_on_demand->isChecked()&&!connection->capabilities.contains("captureControl"))
+        {status->setText(tr("This Better version does not support capture control; following existing frames."));return;}
         if(appearance){status->setText(appearance->Status());return;}
     }
     if(!running){status->setText(tr("Capture starts with this effect."));return;}
@@ -247,6 +299,7 @@ nlohmann::json ScreenSourceSelection::Save() const
     return {{"kind",kind->currentData().toString().toStdString()},{"display",display->currentIndex()},
             {"display_name",display->currentText().toStdString()},{"channel",channel->text().toStdString()},
             {"connection_file",descriptor->text().toStdString()}, {"scene",requested_scene.toStdString()},
+            {"capture_on_demand",capture_on_demand->isChecked()},
             {"follow_better_appearance",follow_appearance&&follow_appearance->isChecked()}};
 }
 void ScreenSourceSelection::Load(const nlohmann::json& settings)
@@ -256,6 +309,8 @@ void ScreenSourceSelection::Load(const nlohmann::json& settings)
     if(settings.contains("kind") && settings["kind"].is_string())kind->setCurrentIndex(settings["kind"]=="better"?1:settings["kind"]=="surface"?2:0);
     if(settings.contains("connection_file") && settings["connection_file"].is_string())descriptor->setText(QString::fromStdString(settings["connection_file"]));
     if(settings.contains("scene") && settings["scene"].is_string())requested_scene=QString::fromStdString(settings["scene"]);
+    {const QSignalBlocker block(capture_on_demand);capture_on_demand->setChecked(settings.contains("capture_on_demand")&&
+        settings["capture_on_demand"].is_boolean()&&settings["capture_on_demand"].get<bool>());}
     if(follow_appearance && settings.contains("follow_better_appearance") && settings["follow_better_appearance"].is_boolean())
     {const QSignalBlocker block(follow_appearance);follow_appearance->setChecked(settings["follow_better_appearance"].get<bool>());}
     if(settings.contains("display") && settings["display"].is_number_integer())display->setCurrentIndex(std::clamp(settings["display"].get<int>(),0,std::max(0,display->count()-1)));

@@ -33,6 +33,8 @@ private:
     void RefreshBetter();
     QComboBox *kind=nullptr,*display=nullptr,*scene=nullptr;
     QCheckBox* follow_appearance=nullptr;
+    QCheckBox* capture_on_demand=nullptr;
+    QLabel* capture_hint=nullptr;
     QLineEdit* channel=nullptr;
     QLineEdit* descriptor=nullptr;
     QLabel* status=nullptr;
@@ -42,9 +44,10 @@ private:
     std::shared_ptr<better_source::Discovery> discovery;
     std::shared_ptr<better_source::FrameSource> paired;
     std::shared_ptr<better_source::AppearanceInput> appearance;
-    QString owner,requested_scene,claimed_scene;
+    QString owner,requested_scene,claimed_scene,configured_descriptor;
+    bool claimed_capture=false;
     bool appearance_active=false;
-    bool scene_required=false,scene_invalid=false;
+    bool scene_required=false,capture_required=false,scene_invalid=false;
     unsigned output_width=800,output_height=500;
     QString bound_channel,bound_instance;
     std::shared_ptr<const DynamicShaderImage> native;

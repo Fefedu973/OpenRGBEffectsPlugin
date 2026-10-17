@@ -39,6 +39,12 @@ bool Guid(const QString& v)
     static const QRegularExpression re(QStringLiteral("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"));
     return re.match(v).hasMatch()&&v!=QStringLiteral("00000000-0000-0000-0000-000000000000");
 }
+bool ValidOwner(const QString& owner)
+{
+    if(owner.isEmpty()||owner.size()>128)return false;
+    for(auto ch:owner)if(ch.isNull()||ch.unicode()<32||ch.unicode()==127)return false;
+    return true;
+}
 bool UInt(const QJsonValue& value,unsigned lo,unsigned hi,unsigned& out)
 {
     if(!value.isDouble())return false;double d=value.toDouble();
@@ -136,37 +142,60 @@ public:
     {std::lock_guard<std::mutex> lock(state_mutex);auto found=states.find(generation);return found==states.end()?nullptr:found->second.value;}
     RequestResult RequestScene(const QString& owner,const QString& scene)
     {
-        if(owner.isEmpty()||owner.size()>128)return RequestResult::Invalid;
-        for(auto ch:owner)if(ch.isNull()||ch.unicode()<32||ch.unicode()==127)return RequestResult::Invalid;
+        if(!ValidOwner(owner))return RequestResult::Invalid;
         if(scene.isEmpty()){ReleaseScene(owner);return RequestResult::Accepted;}
         if(!Guid(scene))return RequestResult::Invalid;
         std::lock_guard<std::mutex> lock(control_mutex);
+        const auto previous=DesiredUnlocked();
         auto result=claims.Claim(owner.toStdString(),scene.toLower().toStdString());
         if(result==SceneClaims::ClaimResult::Conflict||result==SceneClaims::ClaimResult::Full)
         {if(denied.size()<64)denied.insert(owner);return RequestResult::Conflict;}
         if(result==SceneClaims::ClaimResult::Invalid)return RequestResult::Invalid;
         owners.insert(owner);denied.erase(owner);
-        if(result!=SceneClaims::ClaimResult::Unchanged){control_requested=true;wake.notify_all();}
+        IntentChanged(previous);
         return RequestResult::Accepted;
     }
     void ReleaseScene(const QString& owner)
     {
-        std::lock_guard<std::mutex> lock(control_mutex);owners.erase(owner);denied.erase(owner);
-        if(claims.Release(owner.toStdString())!=SceneClaims::ReleaseResult::Unknown){control_requested=true;wake.notify_all();}
+        std::lock_guard<std::mutex> lock(control_mutex);const auto previous=DesiredUnlocked();
+        owners.erase(owner);denied.erase(owner);claims.Release(owner.toStdString());IntentChanged(previous);
+    }
+    RequestResult RequestCapture(const QString& owner,bool enabled)
+    {
+        if(!ValidOwner(owner))return RequestResult::Invalid;
+        std::lock_guard<std::mutex> lock(control_mutex);const auto previous=DesiredUnlocked();
+        if(enabled)
+        {
+            if(denied.count(owner)||(!capture_owners.count(owner)&&capture_owners.size()>=64))return RequestResult::Conflict;
+            if(capture_owners.insert(owner).second)++capture_epoch;
+        }
+        else capture_owners.erase(owner);
+        IntentChanged(previous);return RequestResult::Accepted;
+    }
+    void ReleaseOwner(const QString& owner)
+    {
+        std::lock_guard<std::mutex> lock(control_mutex);const auto previous=DesiredUnlocked();
+        owners.erase(owner);denied.erase(owner);capture_owners.erase(owner);claims.Release(owner.toStdString());IntentChanged(previous);
     }
     std::shared_ptr<const ControlSnapshot> ReadControl(const QString& owner)const
     {
         std::lock_guard<std::mutex> lock(control_mutex);ControlSnapshot result;
         if(denied.count(owner)){result.phase=ControlPhase::Conflict;result.detail="local_scene_conflict";return std::make_shared<const ControlSnapshot>(result);}
-        if(!owners.count(owner))return std::make_shared<const ControlSnapshot>(result);
+        if(!owners.count(owner)&&!capture_owners.count(owner))return std::make_shared<const ControlSnapshot>(result);
+        if(capture_owners.count(owner)&&revoked_capture_epoch&&capture_epoch<=revoked_capture_epoch)
+        {result.phase=ControlPhase::Superseded;result.detail="capture_overridden";return std::make_shared<const ControlSnapshot>(result);}
+        if(owners.count(owner)&&!superseded_scene.isEmpty()&&superseded_scene==QString::fromStdString(claims.Scene()))
+        {result=*control;result.phase=ControlPhase::Superseded;result.detail="scene_overridden";return std::make_shared<const ControlSnapshot>(result);}
         const auto scene=QString::fromStdString(claims.Scene());
-        if(control_epoch!=claims.Epoch()||control->scene_id!=scene){result.phase=ControlPhase::Waiting;result.detail="waiting";result.scene_id=scene;return std::make_shared<const ControlSnapshot>(result);}
+        if(control_epoch!=intent_epoch){result.phase=ControlPhase::Waiting;result.detail="waiting";result.scene_id=scene;return std::make_shared<const ControlSnapshot>(result);}
+        if(!owners.count(owner)&&capture_owners.count(owner)&&control->capture_active)
+        {result=*control;result.phase=ControlPhase::Effective;result.detail="capture_active";return std::make_shared<const ControlSnapshot>(result);}
         return control;
     }
 private:
     using Clock=std::chrono::steady_clock;
     struct Response { State state=State::Unavailable;int status=0;QJsonObject body; };
-    struct Intent { std::uint64_t epoch=0;QString scene; };
+    struct Intent { std::uint64_t epoch=0;QString scene;bool capture=false;std::uint64_t capture_epoch=0;bool capture_revoked=false; };
     const Config config;std::atomic<bool> stopping{false},requested{false},control_requested{false};std::mutex sleep_mutex;
     std::condition_variable wake;mutable std::mutex snapshot_mutex,control_mutex;
     std::shared_ptr<const Snapshot> snapshot;std::shared_ptr<const ControlSnapshot> control;
@@ -181,14 +210,28 @@ private:
         while(state_order.size()>8){states.erase(state_order.front());state_order.pop_front();}
     }
     void ClearStates(){std::lock_guard<std::mutex> lock(state_mutex);states.clear();state_order.clear();}
-    SceneClaims claims;std::set<QString> owners,denied;std::uint64_t control_epoch=0;
-    QString lease_id,lease_scene;Descriptor lease_descriptor;SceneTarget target;
-    bool pending=false;std::uint64_t blocked_epoch=~std::uint64_t(0);
+    SceneClaims claims;std::set<QString> owners,denied,capture_owners;std::uint64_t control_epoch=0,intent_epoch=0;
+    std::uint64_t capture_epoch=0,revoked_capture_epoch=0,target_manual_revision=0,capture_start_revision=0;
+    QString superseded_scene;
+    QString lease_id,lease_scene,lease_requested_scene;Descriptor lease_descriptor;SceneTarget target;
+    bool pending=false,capture_applied=false,capture_running=false,capture_uncertain=false,lease_capture_revoked=false,lease_scene_revoked=false;unsigned lease_ttl=30;
+    std::uint64_t blocked_epoch=~std::uint64_t(0);
     Clock::time_point renewed{},pending_since{};
-    Intent Desired()const{std::lock_guard<std::mutex> lock(control_mutex);return {claims.Epoch(),QString::fromStdString(claims.Scene())};}
+    Intent DesiredUnlocked()const{return {intent_epoch,QString::fromStdString(claims.Scene()),!capture_owners.empty(),capture_epoch,
+        revoked_capture_epoch!=0&&capture_epoch<=revoked_capture_epoch};}
+    Intent Desired()const{std::lock_guard<std::mutex> lock(control_mutex);return DesiredUnlocked();}
+    void IntentChanged(const Intent& previous)
+    {
+        const auto next=DesiredUnlocked();
+        if(previous.scene==next.scene&&previous.capture==next.capture&&previous.capture_epoch==next.capture_epoch)return;
+        if(previous.scene!=next.scene)superseded_scene.clear();
+        ++intent_epoch;control_requested=true;wake.notify_all();
+    }
     void Publish(Snapshot value){std::lock_guard<std::mutex> lock(snapshot_mutex);value.revision=snapshot->revision+1;snapshot=std::make_shared<const Snapshot>(std::move(value));}
     void PublishControl(ControlSnapshot value,std::uint64_t epoch)
-    {std::lock_guard<std::mutex> lock(control_mutex);if(claims.Epoch()!=epoch)return;value.revision=control->revision+1;control_epoch=epoch;control=std::make_shared<const ControlSnapshot>(std::move(value));}
+    {std::lock_guard<std::mutex> lock(control_mutex);if(intent_epoch!=epoch)return;value.revision=control->revision+1;
+        value.capture_active=capture_applied&&capture_running&&!lease_capture_revoked;value.minimum_capture_revision=capture_start_revision;
+        control_epoch=epoch;control=std::make_shared<const ControlSnapshot>(std::move(value));}
     void ControlStatus(ControlPhase phase,const char* detail,const Intent& intent)
     {ControlSnapshot v;v.phase=phase;v.detail=detail;v.scene_id=intent.scene;v.instance_id=lease_descriptor.instance;PublishControl(std::move(v),intent.epoch);}
     Response Request(QNetworkAccessManager& manager,const Descriptor& d,const QByteArray& method,const QString& path,const QJsonObject& body={},bool cleanup=false)
@@ -204,9 +247,12 @@ private:
         QEventLoop loop;QTimer poll,deadline;poll.setInterval(20);deadline.setSingleShot(true);QByteArray bytes;bool oversized=false,timed_out=false;
         auto consume=[&]{bytes+=reply->read(ResponseLimit+1-bytes.size());if(bytes.size()>ResponseLimit){oversized=true;reply->abort();}};
         QObject::connect(reply,&QNetworkReply::readyRead,&loop,consume);QObject::connect(reply,&QNetworkReply::finished,&loop,&QEventLoop::quit);
-        QObject::connect(&poll,&QTimer::timeout,&loop,[&]{if(stopping&&!cleanup){reply->abort();loop.quit();}});
+        QObject::connect(&poll,&QTimer::timeout,&loop,[&]{
+            if((stopping&&!cleanup)||(path.endsWith("/capture")&&!Desired().capture))
+            {timed_out=true;reply->abort();loop.quit();}});
         QObject::connect(&deadline,&QTimer::timeout,&loop,[&]{timed_out=true;reply->abort();loop.quit();});
-        poll.start();deadline.start(cleanup?750:(method=="GET"?config.request_timeout_ms:std::max(3000u,config.request_timeout_ms)));
+        poll.start();deadline.start(cleanup?750:(method=="GET"?config.request_timeout_ms:
+            path.endsWith("/capture")?60000u:std::max(3000u,config.request_timeout_ms)));
         if(!reply->isFinished())loop.exec();consume();poll.stop();deadline.stop();
         Response result;result.status=reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();const auto error=reply->error();delete reply;
         if(stopping&&!cleanup){result.state=State::Stopped;return result;}
@@ -214,7 +260,7 @@ private:
         if(result.status==401||result.status==403){result.state=State::Unauthorized;return result;}
         // Qt reports HTTP4xx as network errors. The bounded JSON error code is
         // still parsed for lease policy; 3xx is never followed or accepted.
-        if((result.status<200||result.status>=300)&&result.status!=409&&result.status!=404)return result;
+        if((result.status<200||result.status>=300)&&result.status!=409&&result.status!=404&&result.status!=503)return result;
         if(error!=QNetworkReply::NoError&&result.status<400)return result;
         result.state=Json(bytes,result.body)?State::Ready:State::Incompatible;return result;
     }
@@ -233,38 +279,94 @@ private:
             ParseDecimal64(image.value("generation").toString().toStdString(),generation)&&ParseDecimal64(image.value("sequence").toString().toStdString(),sequence)&&
             image.value("outputId").toString()=="canvas-raw"&&image.value("format").toString()=="BGRA8_OPAQUE_SRGB";
     }
-    void ForgetLease(){lease_id.clear();lease_scene.clear();pending=false;target={};}
+    void ForgetLease()
+    {
+        lease_id.clear();lease_scene.clear();lease_requested_scene.clear();pending=false;capture_applied=false;capture_running=false;
+        capture_uncertain=false;lease_capture_revoked=false;lease_scene_revoked=false;lease_ttl=30;target={};target_manual_revision=0;capture_start_revision=0;
+    }
+    void RevokeCapture(const Intent& intent)
+    {
+        lease_capture_revoked=true;
+        std::lock_guard<std::mutex> lock(control_mutex);
+        revoked_capture_epoch=std::max(revoked_capture_epoch,intent.capture_epoch);
+    }
+    bool SceneSupersededFor(const QString& scene)const
+    {std::lock_guard<std::mutex> lock(control_mutex);return !superseded_scene.isEmpty()&&superseded_scene==scene;}
+    void RevokeScene(const Intent& intent)
+    {
+        if(intent.scene.isEmpty())return;
+        lease_scene_revoked=true;
+        std::lock_guard<std::mutex> lock(control_mutex);superseded_scene=intent.scene;
+    }
+    static bool CaptureRunning(const QJsonObject& scene)
+    {
+        return scene.value("isRecording").isBool()&&scene.value("isRecording").toBool()&&
+            scene.value("isPaused").isBool()&&!scene.value("isPaused").toBool()&&
+            scene.value("isStopping").isBool()&&!scene.value("isStopping").toBool();
+    }
+    bool ObserveCaptureStatus(const QJsonObject& state,const Intent& intent)
+    {
+        const auto scene=state.value("scene").toObject();
+        const auto revoked=scene.value("captureControlRevoked");
+        if(revoked.toBool(false))
+        {
+            RevokeCapture(intent);ControlStatus(ControlPhase::Superseded,"capture_overridden",intent);return false;
+        }
+        capture_running=CaptureRunning(scene);
+        // Appearance, canvas edits and source diagnostics advance the global
+        // revision too. They never revoke an independent capture interest.
+        std::uint64_t revision=0,scene_revision=0,manual=0;
+        const auto actual_scene=scene.value("activeSceneId").toString().toLower();
+        if(!Revision(state.value("revision"),revision)||!Revision(scene.value("stateRevision"),scene_revision,true)||
+           (!scene.value("activeSceneId").isNull()&&!Guid(actual_scene)))
+        {ControlStatus(ControlPhase::Unavailable,"invalid_capture_status",intent);return false;}
+        Revision(scene.value("manualRevision"),manual,true);
+        if(!lease_requested_scene.isEmpty()&&!intent.scene.isEmpty()&&(actual_scene!=lease_requested_scene||manual!=target_manual_revision))
+            RevokeScene(intent);
+        target={lease_descriptor.instance.toStdString(),revision,scene_revision,actual_scene.toStdString()};
+        lease_scene=actual_scene;return true;
+    }
     bool Release(QNetworkAccessManager& manager,bool cleanup=false)
     {
         if(lease_id.isEmpty())return true;
         auto r=Request(manager,lease_descriptor,"DELETE",Root+"leases/"+lease_id,{},cleanup);
         const QString error=r.body.value("error").toString();
-        if((r.state==State::Ready&&(r.status==200||r.status==202||error=="lease_expired"||error=="lease_conflict"))||Clock::now()-renewed>std::chrono::seconds(31))
+        if((r.state==State::Ready&&(r.status==200||r.status==202||error=="lease_expired"||error=="lease_conflict"))||Clock::now()-renewed>std::chrono::seconds(lease_ttl+1))
         {ForgetLease();return true;}return false;
     }
-    void HandleFailure(const Response& r,const Intent& intent,bool acquiring)
+    void HandleFailure(const Response& r,const Intent& intent,bool acquiring,bool capturing=false)
     {
         const QString code=r.body.value("error").toString();
-        if(r.state==State::Ready&&(code=="command_in_progress"||code=="scene_busy")){ControlStatus(ControlPhase::Waiting,"command_busy",intent);return;}
+        if(r.state==State::Ready&&(code=="command_in_progress"||code=="scene_busy"||code=="capture_busy")){ControlStatus(ControlPhase::Waiting,"command_busy",intent);return;}
+        if(code=="state_superseded"||code=="manual_override")
+        {
+            if(capturing)RevokeCapture(intent);
+            else if(!intent.scene.isEmpty())RevokeScene(intent);
+            else blocked_epoch=intent.epoch;
+            ControlStatus(ControlPhase::Superseded,"state_superseded",intent);return;
+        }
         blocked_epoch=intent.epoch;
-        if(code=="state_superseded"||code=="manual_override"){ControlStatus(ControlPhase::Superseded,"state_superseded",intent);return;}
         if(code=="lease_conflict"){ControlStatus(ControlPhase::Conflict,"lease_conflict",intent);return;}
+        if(code=="capture_failed"){ControlStatus(ControlPhase::Unavailable,"capture_failed",intent);return;}
         // A failed/aborted acquisition may have created ownership without
         // returning its capability. Never immediately reacquire in a loop.
         ControlStatus(ControlPhase::Unavailable,acquiring?"acquire_uncertain":"control_unavailable",intent);
     }
-    bool AcceptTarget(const Response& r,const Descriptor& d,const Intent& intent,bool acquiring,bool renewal=false)
+    bool AcceptTarget(const Response& r,const Descriptor& d,const Intent& intent,bool acquiring,bool renewal=false,bool capturing=false)
     {
-        if(r.state!=State::Ready||(r.status!=200&&r.status!=202)){HandleFailure(r,intent,acquiring);return false;}
+        if(r.state!=State::Ready||(r.status!=200&&r.status!=202)){HandleFailure(r,intent,acquiring,capturing);return false;}
         const auto state=renewal?r.body:r.body.value("control").toObject();
         if(acquiring)
         {
             const auto id=state.value("lease").toObject().value("id").toString();
             if(!Guid(id)){blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Unavailable,"missing_lease_capability",intent);return false;}
-            lease_id=id;lease_descriptor=d;lease_scene=intent.scene;renewed=Clock::now();
+            lease_id=id;lease_descriptor=d;lease_requested_scene=intent.scene;renewed=Clock::now();
         }
         const auto scene=state.value("scene").toObject();std::uint64_t revision=0,scene_revision=0;
-        const bool valid=Revision(state.value("revision"),revision)&&Revision(scene.value("stateRevision"),scene_revision,true)&&scene.value("activeSceneId").toString().compare(intent.scene,Qt::CaseInsensitive)==0;
+        const auto actual_scene=scene.value("activeSceneId").toString().toLower();
+        const bool valid=Revision(state.value("revision"),revision)&&Revision(scene.value("stateRevision"),scene_revision,true)&&
+            (scene.value("activeSceneId").isNull()||Guid(actual_scene))&&
+            (intent.scene.isEmpty()||actual_scene==intent.scene||((capturing||renewal)&&intent.capture));
         if(!valid){blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Unavailable,"invalid_control_ack",intent);return false;}
         if(!renewal)
         {
@@ -272,7 +374,17 @@ private:
             if(!Revision(r.body.value("targetControlRevision"),requested_revision)||!Revision(r.body.value("targetSceneRevision"),requested_scene,true)||requested_revision!=revision||requested_scene!=scene_revision)
             {blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Unavailable,"invalid_control_target",intent);return false;}
         }
-        target={d.instance.toStdString(),revision,scene_revision,intent.scene.toStdString()};lease_scene=intent.scene;if(acquiring||renewal)renewed=Clock::now();pending_since=Clock::now();pending=true;
+        if(capturing)
+        {
+            if(r.status!=200||r.body.value("result").toString()!="capture_applied"||!CaptureRunning(scene)||
+               scene.value("captureControlRevoked").toBool(false)||
+               !scene.value("isCaptureChanging").isBool()||scene.value("isCaptureChanging").toBool())
+            {blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Unavailable,"invalid_capture_ack",intent);return false;}
+            capture_applied=true;capture_running=true;capture_start_revision=revision;
+        }
+        target={d.instance.toStdString(),revision,scene_revision,actual_scene.toStdString()};lease_scene=actual_scene;
+        if(acquiring)Revision(scene.value("manualRevision"),target_manual_revision,true);
+        if(acquiring||renewal)renewed=Clock::now();if(!renewal||!pending)pending_since=Clock::now();pending=true;
         ControlStatus(ControlPhase::Pending,"pending_frame",intent);
         if(!renewal&&r.status==200&&r.body.value("result").toString()=="effective")Observe(r.body.value("effectiveState").toObject(),revision,d,intent);
         return true;
@@ -283,13 +395,13 @@ private:
         bool valid=Effective(value,effective,generation,sequence);
         auto result=ObserveScene(target,d.instance.toStdString(),current,valid?&effective:nullptr);
         if(result==SceneResult::Superseded||result==SceneResult::InstanceChanged)
-        {blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Superseded,"state_superseded",intent);return;}
+        {if(result==SceneResult::Superseded)RevokeScene(intent);blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Superseded,"state_superseded",intent);return;}
         if(result!=SceneResult::Effective){ControlStatus(ControlPhase::Pending,"pending_frame",intent);return;}
         // Bind the result to the discovered raw output as well as the exact
         // control/scene revision. The reader still validates TTL and dimensions.
         if(value.value("image").toObject().value("channel").toString()!=Read()->raw_channel)
         {blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Unavailable,"invalid_effective_channel",intent);return;}
-        pending=false;if(target.scene_id!=intent.scene.toStdString()){ControlStatus(ControlPhase::Waiting,"scene_transition",intent);return;}ControlSnapshot v;v.phase=ControlPhase::Effective;v.detail="effective";v.scene_id=intent.scene;v.instance_id=d.instance;
+        pending=false;if(!intent.scene.isEmpty()&&target.scene_id!=intent.scene.toStdString()){ControlStatus(ControlPhase::Waiting,"scene_transition",intent);return;}ControlSnapshot v;v.phase=ControlPhase::Effective;v.detail="effective";v.scene_id=QString::fromStdString(target.scene_id);v.instance_id=d.instance;
         v.control_revision=target.control_revision;v.scene_revision=target.scene_revision;v.effective_generation=generation;v.minimum_sequence=sequence;PublishControl(std::move(v),intent.epoch);
     }
     void ProcessState(QNetworkAccessManager& manager,const Descriptor& d,bool available)
@@ -313,31 +425,79 @@ private:
     void ProcessControl(QNetworkAccessManager& manager,const Descriptor& d,bool available)
     {
         const auto intent=Desired();
-        if(intent.scene.isEmpty()){if(!lease_id.isEmpty()){ControlStatus(ControlPhase::Releasing,"releasing",intent);if(!Release(manager))return;}ControlStatus(ControlPhase::Idle,"idle",intent);return;}
         if(!lease_id.isEmpty()&&available&&lease_descriptor.instance!=d.instance){ForgetLease();blocked_epoch=~std::uint64_t(0);}
+        // A timed-out start may still be preparing devices in Better. Its status,
+        // not a lost HTTP response, decides when it is safe to restore the lease.
+        if(capture_uncertain&&!lease_id.isEmpty())
+        {
+            QJsonObject status;const auto result=Get(manager,lease_descriptor,Root+"status",status);
+            const auto scene=status.value("control").toObject().value("scene").toObject();
+            if(result==State::Ready&&scene.value("isCaptureChanging").isBool()&&!scene.value("isCaptureChanging").toBool())capture_uncertain=false;
+            else if(Clock::now()-renewed>std::chrono::seconds(lease_ttl+1))ForgetLease();
+            else{ControlStatus(ControlPhase::Unavailable,"capture_outcome_unknown",intent);return;}
+        }
+        const bool wants_capture=intent.capture&&!intent.capture_revoked&&(!available||Read()->capabilities.contains("captureControl"));
+        const bool wants_scene=!intent.scene.isEmpty()&&!SceneSupersededFor(intent.scene);
+        if(!wants_scene&&!wants_capture)
+        {
+            if(!lease_id.isEmpty()){ControlStatus(ControlPhase::Releasing,"releasing",intent);if(!Release(manager))return;}
+            ControlStatus(intent.capture_revoked||!intent.scene.isEmpty()?ControlPhase::Superseded:ControlPhase::Idle,
+                intent.capture_revoked?"capture_overridden":!intent.scene.isEmpty()?"scene_overridden":intent.capture?"capture_control_unsupported":"idle",intent);return;
+        }
         if(blocked_epoch==intent.epoch){if(!lease_id.isEmpty())Release(manager);return;}
         if(!available){ControlStatus(ControlPhase::Waiting,"discovery_unavailable",intent);return;}
         if(lease_id.isEmpty())
         {
-            auto response=Request(manager,d,"POST",Root+"leases",{{"clientId","openrgb-room/effects"},{"ttlSeconds",30},{"sceneId",intent.scene}});
-            AcceptTarget(response,d,intent,true);return;
+            lease_ttl=wants_capture?300:30;
+            QJsonObject body{{"clientId","openrgb-room/effects"},{"ttlSeconds",int(lease_ttl)}};
+            if(wants_scene)body["sceneId"]=intent.scene;
+            auto acquiring=intent;if(!wants_scene)acquiring.scene.clear();
+            auto response=Request(manager,d,"POST",Root+"leases",body);
+            AcceptTarget(response,d,acquiring,true);return;
         }
-        if(pending&&Clock::now()-pending_since>std::chrono::seconds(25))
-        {blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Unavailable,"pending_frame_timeout",intent);Release(manager);return;}
-        if(!pending&&Clock::now()-renewed>=std::chrono::seconds(10))
-        {
-            // Renew does not select a different scene. Finish its effective
-            // frame before applying a newly requested scene on this lease.
-            Intent renewing=intent;renewing.scene=lease_scene;
-            auto response=Request(manager,d,"PUT",Root+"leases/"+lease_id+"/renew",{{"ttlSeconds",30}});AcceptTarget(response,d,renewing,false,true);return;
-        }
-        if(!pending&&lease_scene!=intent.scene)
-        {
-            auto response=Request(manager,d,"PUT",Root+"leases/"+lease_id+"/scene",{{"sceneId",intent.scene}});AcceptTarget(response,d,intent,false);return;
-        }
+        // Removing one kind of interest must restore its baseline even if the
+        // other kind remains. Reacquire only after DELETE completed; never stop
+        // a pre-existing user recording with a blind capture=false command.
+        if((capture_applied&&!wants_capture)||(!lease_requested_scene.isEmpty()&&intent.scene.isEmpty())||
+           (lease_capture_revoked&&wants_capture)||(lease_scene_revoked&&wants_scene&&lease_requested_scene!=intent.scene))
+        {ControlStatus(ControlPhase::Releasing,"restoring_previous_state",intent);Release(manager);return;}
+
         QJsonObject status;auto result=Get(manager,d,Root+"status",status);std::uint64_t current=0;
-        if(result!=State::Ready||!Revision(status.value("control").toObject().value("revision"),current))
+        const auto current_control=status.value("control").toObject();
+        if(result!=State::Ready||!Revision(current_control.value("revision"),current))
         {ControlStatus(ControlPhase::Unavailable,"status_unavailable",intent);return;}
+        if(wants_capture)
+        {if(!ObserveCaptureStatus(current_control,intent))return;}
+        else if(current>target.control_revision)
+        {RevokeScene(intent);blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Superseded,"state_superseded",intent);return;}
+
+        auto renew=[&](unsigned ttl)
+        {
+            Intent renewing=intent;renewing.scene=lease_scene;
+            auto response=Request(manager,d,"PUT",Root+"leases/"+lease_id+"/renew",{{"ttlSeconds",int(ttl)}});
+            if(AcceptTarget(response,d,renewing,false,true))lease_ttl=ttl;
+        };
+        if(!pending&&lease_requested_scene!=intent.scene&&wants_scene)
+        {
+            auto response=Request(manager,d,"PUT",Root+"leases/"+lease_id+"/scene",{{"sceneId",intent.scene}});
+            if(AcceptTarget(response,d,intent,false))lease_requested_scene=intent.scene;
+            return;
+        }
+        if(wants_capture&&!capture_applied)
+        {
+            if(lease_ttl!=300){renew(300);return;}
+            auto response=Request(manager,d,"PUT",Root+"leases/"+lease_id+"/capture",{{"recording",true}});
+            if(response.state!=State::Ready)capture_uncertain=true;
+            AcceptTarget(response,d,intent,false,false,true);return;
+        }
+        if(capture_applied&&lease_ttl!=30){renew(30);return;}
+        if(pending&&!capture_applied&&Clock::now()-pending_since>std::chrono::seconds(25))
+        {blocked_epoch=intent.epoch;ControlStatus(ControlPhase::Unavailable,"pending_frame_timeout",intent);Release(manager);return;}
+        if((!pending||capture_applied)&&Clock::now()-renewed>=std::chrono::seconds(10))
+        {
+            renew(30);return;
+        }
+        if(capture_applied&&!capture_running){ControlStatus(ControlPhase::Waiting,"capture_transition",intent);return;}
         Observe(status.value("output").toObject().value("effectiveState").toObject(),current,d,intent);
     }
     void run()override
@@ -361,7 +521,8 @@ private:
             }
             if(!stopping)ProcessControl(manager,d,available);
             if(!stopping)ProcessState(manager,d,available);
-            auto deadline=next_discovery;if(!Desired().scene.isEmpty()||!lease_id.isEmpty())deadline=std::min(deadline,Clock::now()+std::chrono::milliseconds(250));
+            const auto desired=Desired();
+            auto deadline=next_discovery;if(!desired.scene.isEmpty()||desired.capture||!lease_id.isEmpty())deadline=std::min(deadline,Clock::now()+std::chrono::milliseconds(250));
             std::unique_lock<std::mutex> lock(sleep_mutex);wake.wait_until(lock,deadline,[&]{return stopping||requested||control_requested||state_requested!=0;});
         }
         // Best effort release is bounded and uses only an owned capability.
@@ -395,5 +556,7 @@ void Discovery::RequestState(std::uint64_t generation){impl->RequestState(genera
 std::shared_ptr<const PublishedState> Discovery::ReadState(std::uint64_t generation)const{return impl->ReadState(generation);}
 RequestResult Discovery::RequestScene(const QString& owner,const QString& scene){return impl->RequestScene(owner,scene);}
 void Discovery::ReleaseScene(const QString& owner){impl->ReleaseScene(owner);}
+RequestResult Discovery::RequestCapture(const QString& owner,bool enabled){return impl->RequestCapture(owner,enabled);}
+void Discovery::ReleaseOwner(const QString& owner){impl->ReleaseOwner(owner);}
 std::shared_ptr<const ControlSnapshot> Discovery::ReadControl(const QString& owner)const{return impl->ReadControl(owner);}
 }

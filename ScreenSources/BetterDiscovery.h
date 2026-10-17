@@ -51,6 +51,10 @@ struct ControlSnapshot
     QString detail,scene_id,instance_id;
     std::uint64_t revision=0,control_revision=0,scene_revision=0;
     std::uint64_t effective_generation=0,minimum_sequence=0;
+    // Capture ownership does not depend on a particular image/control revision.
+    // Pixel consumers still validate the current generation and coverage pair.
+    bool capture_active=false;
+    std::uint64_t minimum_capture_revision=0;
 };
 class Discovery final
 {
@@ -74,6 +78,11 @@ public:
     // Empty scene UUID is equivalent to ReleaseScene(owner). No appearance edit.
     RequestResult RequestScene(const QString& owner,const QString& scene_uuid);
     void ReleaseScene(const QString& owner);
+    // Opt-in only. All interested effects share the scene lease. Disabling or
+    // releasing the last interest restores the lease baseline; never sends stop.
+    // Producers without captureControl remain passive and expose that status.
+    RequestResult RequestCapture(const QString& owner,bool enabled);
+    void ReleaseOwner(const QString& owner);
     std::shared_ptr<const ControlSnapshot> ReadControl(const QString& owner) const;
 private:
     class Impl;

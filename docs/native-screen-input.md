@@ -22,7 +22,7 @@ instance's channels; it does not assume a channel named `better-screen-capture`.
 The editable channel field belongs only to advanced shared-memory mode.
 
 Profiles save `screen_source.kind`, display identity, optional connection-file
-path, scene UUID and appearance choice. They never save a Bearer token or lease
+path, scene UUID, capture-on-demand and appearance choices. They never save a Bearer token or lease
 capability. Screen Ambience can passively follow Better with:
 
 ```json
@@ -30,6 +30,7 @@ capability. Screen Ambience can passively follow Better with:
   "kind": "better",
   "connection_file": "",
   "scene": "",
+  "capture_on_demand": false,
   "follow_better_appearance": true
 }
 ```
@@ -38,6 +39,46 @@ Discovery runs only while the effect runs or its source panel is visible. Image
 capture/subscription follows effect lifetime. This consumer never launches
 Better or silently falls back to another screen. Missing, invalid or expired
 input produces black and an explicit source status.
+
+## Capture only while needed
+
+**Start Better capture while this effect runs** is an explicit opt-in, saved as
+`screen_source.capture_on_demand`. Its default is false, including older profiles
+that omit the field. Merely opening settings or selecting a scene while stopped
+does not start capture. The same selector is used by screen effects, Intelligent
+Ambience when it needs video, and Pump Up Beats only with its ScreenDominant palette.
+
+The producer must advertise `captureControl`. Older Better versions continue to
+provide passive images and the UI reports that capture control is unsupported.
+For exclusive on-demand use, enable Better's native output and disable **Auto-start
+recording on launch** in Better. This plugin never changes that preference or
+launches Better itself.
+
+Active effects share a single worker and lease. The first interested effect sends
+`recording:true`; releasing the final owner restores the state that existed before
+the first capture command. This stops capture if it was initially stopped, but
+preserves a pre-existing recording or pause. A manual playback change takes precedence
+and is not undone. Ending an effect uses lease release, not a blind stop command.
+Changing appearance or output dimensions preserves ownership and its original baseline.
+Optional scene interests share this lease; no scene selection is sent for **Follow
+active Better scene**. Different explicitly requested scenes still conflict.
+
+Startup uses a 300-second lease and a bounded 60-second capture request. After a
+successful capture acknowledgement, the lease becomes 30 seconds and renews about
+every ten seconds. A pending first image does not prevent the initial start command.
+Capture-only image reads require the acknowledged control revision, current instance,
+paired generation metadata and fresh pixels. Explicit scene reads additionally retain
+their exact scene/revision checks. A lost start response is resolved through status;
+it does not trigger a blind second start. Normal destruction attempts a bounded
+release; process loss falls back to lease expiry, up to 300 seconds during startup.
+
+The 17 October 2026 source migration brings this lifecycle into the Intelligence
+checkout without copying the paused effect ports. At audit time the installed
+Better 1.4.1 did not advertise `captureControl`, the installed Effects DLL lacked
+this option, and existing local profiles omitted it. Compilation and synthetic
+tests are separate from deployment and the live start/stop acceptance check.
+See the [worker tests](../tests/room-better-discovery/README.md) and
+[selection-widget tests](../tests/room-better-selection/README.md).
 
 ## Authentication and temporary scenes
 
@@ -48,8 +89,8 @@ proxies, refuses redirects, does not persist cookies, and bounds response sizes
 and deadlines. Public snapshots/logs contain no credentials, URLs or remote
 error bodies. There is no manual token field in the effect profile.
 
-**Follow active Better scene** is the default and is passive: it acquires no
-lease. Selecting a saved scene instead requests temporary ownership while that
+**Follow active Better scene** is the default and is passive when capture on demand
+is off: it acquires no lease. Selecting a saved scene requests temporary ownership while that
 effect runs. This changes **one global Better scene**, not a private capture
 canvas. Effects requesting the same scene share ownership; incompatible requests
 report a conflict. Stopping the last owner releases the lease so Better can
